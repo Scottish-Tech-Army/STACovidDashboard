@@ -1,6 +1,7 @@
-import React from 'react';
-import logo from './i-van.jpeg';
-import './App.css';
+import React from "react";
+import logo from "./i-van.jpeg";
+import "./App.css";
+import Heatmap from "./Heatmap.js";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <Heatmap />
     </div>
   );
 }
