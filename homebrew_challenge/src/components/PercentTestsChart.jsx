@@ -5,10 +5,33 @@ import Chart from 'chart.js';
 const chartConfig = {
   type: 'line',
       data: {
-          dates: ['04/04/2020', '05/04/2020', '06/04/2020', '07/04/2020', '08/04/2020', '09/04/2020'],
+          // dates: ['04/04/2020', '05/04/2020', '06/04/2020', '07/04/2020', '08/04/2020', '09/04/2020'],
           datasets: [{
               label: '% of Positive Tests',
-              data: [5, 7, 12, 16, 3, 2]
+              data: [{
+                t: new Date(2020, 3, 6),
+                y: 5
+              },
+              {
+                t: new Date(2020, 3, 7),
+                y: 7
+              },
+              {
+                t: new Date(2020, 3, 8),
+                y: 12
+              },
+              {
+                t: new Date(2020, 3, 9),
+                y: 16
+              },
+              {
+                t: new Date(2020, 3, 10),
+                y: 25
+              },
+              {
+                t: new Date(2020, 3, 11),
+                y: 22
+              }]
           }]
       },
       options: {
@@ -18,6 +41,11 @@ const chartConfig = {
                       beginAtZero: true,
                       maxTicksLimit: 100
                   }
+              }],
+              xAxes: [{
+                type: 'time',
+
+                distribution: 'series'
               }]
           }
       }
