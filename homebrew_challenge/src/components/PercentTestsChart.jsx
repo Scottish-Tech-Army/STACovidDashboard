@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js';
+import './PercentTestsChart.css';
 
 const chartConfig = {
   type: 'line',
+
       data: {
           datasets: [{
               label: '% of Positive Tests',
@@ -38,7 +40,7 @@ const chartConfig = {
                   ticks: {
                       beginAtZero: true,
                       maxTicksLimit: 100
-                  }
+                  },
               }],
               xAxes: [{
                 type: 'time',
@@ -60,7 +62,7 @@ const PercentTestsChart = () => {
   }, [chartContainer]);
 
   return (
-    <div>
+    <div class="chart-container">
       <canvas
         ref={chartContainer}/>
     </div>
