@@ -4,7 +4,6 @@ import './PercentTestsChart.css';
 
 const chartConfig = {
   type: 'line',
-
       data: {
           datasets: [{
               label: '% of Positive Tests',
