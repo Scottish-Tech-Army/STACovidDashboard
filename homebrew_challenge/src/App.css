@@ -2,6 +2,27 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
   align-items: center;
   height: 100vh;
+}
+
+.heatmap .l-0 {
+  stroke: #e0e0e0;
+}
+.heatmap .l-1 {
+  stroke: #fef0d9;
+}
+.heatmap .l-2 {
+  stroke: #fdcc8a;
+}
+.heatmap .l-3 {
+  stroke: #fc8d59;
+}
+.heatmap .l-4 {
+  stroke: #e34a33;
+}
+.heatmap .l-5 {
+  stroke: #b30000;
 }
