@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import Heatmap from "./Heatmap";
-import TestFetch from './TestFetch';
+import Heatmap from "./components/HeatMap/Heatmap";
+import TestFetch from './containers/TestFetch';
 
 function App() {
   return (
