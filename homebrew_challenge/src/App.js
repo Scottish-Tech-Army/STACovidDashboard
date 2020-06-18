@@ -1,13 +1,13 @@
 import React from "react";
 import "./App.css";
 import Heatmap from "./Heatmap";
+import TestFetch from './TestFetch';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+        <TestFetch/>
         <Heatmap />
-      </header>
     </div>
   );
 }
