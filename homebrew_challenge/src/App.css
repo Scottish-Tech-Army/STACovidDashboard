@@ -1,11 +1,15 @@
 .App {
   text-align: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
   align-items: center;
   height: 100vh;
+}
+
+.chart-container {
+    margin-bottom: 150px;
 }
 
 .heatmap .l-0 {
