@@ -3,13 +3,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   align-items: center;
   height: 100vh;
 }
 
 .chart-container {
-    margin-bottom: 150px;
+  margin-bottom: 150px;
+}
+.heatmap {
+  overflow: auto;
+}
+.heatmap table td:first-child {
+  text-align: left;
 }
 
 .heatmap .l-0 {
