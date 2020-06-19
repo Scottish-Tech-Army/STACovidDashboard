@@ -8,8 +8,10 @@
     "@testing-library/user-event": "^7.2.1",
     "canvas": "^2.6.1",
     "chart.js": "^2.9.3",
+    "leaflet": "^1.6.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-leaflet": "^2.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,9 +37,13 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "react-scripts": "^3.4.1",
-    "yarn": "^1.22.4",
     "i": "^0.3.6",
-    "npm": "^6.14.5"
+    "jquery": "^3.5.1",
+    "npm": "^6.14.5",
+    "react-redux": "^7.2.0",
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.5",
+    "sparql-connect": "^0.1.6",
+    "yarn": "^1.22.4"
   }
 }
