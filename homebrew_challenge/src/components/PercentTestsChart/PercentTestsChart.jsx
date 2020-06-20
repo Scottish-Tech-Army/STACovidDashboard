@@ -63,7 +63,10 @@ export function parseCsvData(csvData) {
   dates.forEach((date) => {
     const total = totalsMap.get(date);
     const positive = positivesMap.get(date);
-    points.push({ t: Date.parse(date), y: total === 0 ? 0 : positive / total });
+    points.push({
+      t: Date.parse(date),
+      y: total === 0 ? 0 : (positive * 100) / total,
+    });
   });
 
   return points;
@@ -76,6 +79,8 @@ const PercentTestsChart = () => {
   const [seriesData, setSeriesData] = useState(defaultSeriesData);
   const [dataFetched, setDataFetched] = useState(false);
 
+  const datasetLabel = "% of Positive Tests";
+
   useEffect(() => {
     function createChart(chartRef) {
       const chart = new Chart(chartRef, {
@@ -83,7 +88,7 @@ const PercentTestsChart = () => {
         data: {
           datasets: [
             {
-              label: "% of Positive Tests",
+              label: datasetLabel,
               data: seriesData,
             },
           ],
@@ -96,7 +101,7 @@ const PercentTestsChart = () => {
                   beginAtZero: true,
                   maxTicksLimit: 100,
                   callback: function (value, index, values) {
-                    return Math.round(value * 100) + "%";
+                    return Math.round(value) + "%";
                   },
                 },
               },
@@ -105,8 +110,18 @@ const PercentTestsChart = () => {
               {
                 type: "time",
                 distribution: "series",
+                time: {
+                  tooltipFormat: "D MMM YYYY",
+                },
               },
             ],
+          },
+          tooltips: {
+            callbacks: {
+              label: (tooltipItem, data) => {
+                return datasetLabel + ": " + tooltipItem.yLabel.toFixed(2);
+              },
+            },
           },
         },
       });
