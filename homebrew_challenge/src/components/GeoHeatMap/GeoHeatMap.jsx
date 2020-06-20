@@ -9,13 +9,13 @@ const GeoHeatMap = () => {
       area: 'Aberdeen City',
       lat: 57.1667,
       lng: -2.1667,
-      totalCases: 60
+      totalCases: 400
     },
     {
       area: 'Aberdeenshire',
       lat: 57.2869,
       lng: -2.3816,
-      totalCases: 50
+      totalCases: 1000
     }
   ]
 
@@ -24,12 +24,13 @@ const GeoHeatMap = () => {
     <div id='area-component' key={id}>
 
       <h3>{a.area}</h3>
+      <h4>{a.totalCases}</h4>
     </div>
 
   ));
 
   const calculateRadius = (totalCases) => {
-    return totalCases * 600;
+    return totalCases * 20;
   };
 
   const createSeeds = (baseLayer) => {
@@ -78,12 +79,9 @@ const GeoHeatMap = () => {
         <h1 id='title'>Covid-19 Tracker</h1>
         <hr></hr>
         <h3>TOTAL CONFIRMED CASES</h3>
-        <h1 id='total-cases'>300K</h1>
-        <ul>
-          <li>Active Cases 140,000</li>
-          <li>Recovered Cases 130,000</li>
-          <li>Fatal Cases 30,000</li>
-        </ul>
+        <h1 id='total-cases'>15,428</h1>
+        <h3>Fatal Cases:</h3>
+        <h1>4,070</h1>
         <hr></hr>
         {areaComponents}
       </div>
