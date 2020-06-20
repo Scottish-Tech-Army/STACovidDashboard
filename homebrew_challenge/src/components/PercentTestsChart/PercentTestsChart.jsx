@@ -110,19 +110,17 @@ const PercentTestsChart = () => {
           },
         },
       });
-      console.log("Created chart");
       return chart;
     }
 
     function updateChart() {
-      console.log(JSON.stringify(seriesData));
       chartInstance.current.data.datasets[0].data = seriesData;
       chartInstance.current.update();
-      console.log("Updated chart");
     }
 
     // Only attempt to fetch data once
     if (!dataFetched) {
+      setDataFetched(true);
       const form = new FormData();
       form.append("query", query);
       fetch(queryUrl, {
@@ -131,13 +129,10 @@ const PercentTestsChart = () => {
       })
         .then((res) => res.text())
         .then((csvData) => {
-          console.log(csvData);
           setSeriesData(parseCsvData(csvData));
-          setDataFetched(true);
         })
         .catch((error) => {
           console.error(error);
-          setDataFetched(true);
         });
     }
 
