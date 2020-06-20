@@ -1,20 +1,44 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import L from 'leaflet';
 import './GeoHeatMap.css';
 
-const GeoHeatMap = ({areas}) => {
+const GeoHeatMap = () => {
 
-  // const areasList = areas.map((a, id) => (
-  //   <Fragment key={id}>
-  //     <div className="area">
-  //       <h2>a.areaName</h2>
-  //     </div>
-  //   </Fragment>
-  // ))
+  const calculateRadius = () => {
+    //to be refactored to create dynamic value for radius: e.g. (area.casesCount * x)
+    return 30000;
+  };
+
+  const areas = [
+    {
+      lat: 57.5907,
+      lng: -4.7026
+    },
+    {
+      lat: 57.0907,
+      lng: -4.7026
+    }
+  ]
+
+  const createSeeds = (baseLayer) => {
+
+    const radius = calculateRadius();
+
+    const circles = areas.map((a, id) => (
+      L.circle([a.lat, a.lng], {
+        color: 'red',
+        fillColor: 'red',
+        fillOpacity: 0.5,
+        radius: radius
+      }).addTo(baseLayer)
+    ));
+
+  };
 
   useEffect(() => {
+
     // create map
-    L.map('map', {
+    const geoHeatMap = L.map('map', {
       center: [57.4907, -4.7026],
       zoom: 7,
       layers: [
@@ -24,6 +48,9 @@ const GeoHeatMap = ({areas}) => {
         }),
       ]
     });
+
+    createSeeds(geoHeatMap);
+
   }, []);
 
   return (
@@ -31,8 +58,18 @@ const GeoHeatMap = ({areas}) => {
       <div className="tracker">
         <h1>Covid-19 Tracker</h1>
         <h2>TOTAL CONFIRMED CASES</h2>
-        <h3>302K</h3>
-        {/*{areasList}*/}
+        <h3>300K</h3>
+        <ul>
+          <li>Active Cases 140,000</li>
+          <li>Recovered Cases 130,000</li>
+          <li>Fatal Cases 30,000</li>
+        </ul>
+        <div>
+          <h3>Aberdeen City</h3>
+        </div>
+        <div>
+          <h3>Aberdeenshire</h3>
+        </div>
       </div>
       <div id="map"></div>
     </>
