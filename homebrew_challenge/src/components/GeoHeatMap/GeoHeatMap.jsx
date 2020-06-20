@@ -2,24 +2,24 @@ import React, { useEffect } from 'react';
 import L from 'leaflet';
 import './GeoHeatMap.css';
 
-const GeoHeatMap = () => {
+const defaultInputData = [
+  {
+    area: 'Aberdeen City',
+    lat: 57.1667,
+    lng: -2.1667,
+    totalCases: 400
+  },
+  {
+    area: 'Aberdeenshire',
+    lat: 57.2869,
+    lng: -2.3816,
+    totalCases: 1000
+  }
+]
 
-  const areas = [
-    {
-      area: 'Aberdeen City',
-      lat: 57.1667,
-      lng: -2.1667,
-      totalCases: 400
-    },
-    {
-      area: 'Aberdeenshire',
-      lat: 57.2869,
-      lng: -2.3816,
-      totalCases: 1000
-    }
-  ]
+const GeoHeatMap = ({inputData=defaultInputData}) => {
 
-  const areaComponents = areas.map((a, id) => (
+  const areaComponents = inputData.map((a, id) => (
 
     <div id='area-component' key={id}>
 
