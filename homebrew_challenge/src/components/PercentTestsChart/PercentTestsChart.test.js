@@ -19,22 +19,19 @@ afterEach(() => {
 
 it("PercentTestsChart renders default data", () => {
   act(() => {
-    render(
-      <PercentTestsChart/>,
-      container
-    );
+    render(<PercentTestsChart />, container);
   });
   const canvas = container.querySelector(".chart-container canvas");
   expect(canvas).not.toBeNull();
 });
 
 it("Test PercentTestsChart throw errors when arrays don't match", () => {
+  // Suppress console error message
+  spyOn(console, "error");
+  
   expect(() => {
     act(() => {
-      render(
-        <PercentTestsChart inputData={badInputData} />,
-        container
-      );
+      render(<PercentTestsChart inputData={badInputData} />, container);
     });
   }).toThrow("Array lengths don't match");
 });
@@ -46,7 +43,7 @@ const badInputData = {
     "2020-04-08",
     "2020-04-09",
     "2020-04-10",
-    "2020-04-11"
+    "2020-04-11",
   ],
-  y: [5, 7, 12, 16, 25, 22, 15]
+  y: [5, 7, 12, 16, 25, 22, 15],
 };
