@@ -46,11 +46,11 @@ it("PercentTestsChart renders dynamic fetched data", async () => {
 
 it("parseCsvData", () => {
   const expectedResult = [
-    { t: Date.parse("2020-03-02"), y: 1 / 815 },
-    { t: Date.parse("2020-03-03"), y: 1 / 915 },
-    { t: Date.parse("2020-03-04"), y: 3 / 1046 },
-    { t: Date.parse("2020-03-05"), y: 6 / 1256 },
-    { t: Date.parse("2020-03-06"), y: 11 / 1525 },
+    { t: Date.parse("2020-03-02"), y: 100 / 815 },
+    { t: Date.parse("2020-03-03"), y: 100 / 915 },
+    { t: Date.parse("2020-03-04"), y: 300 / 1046 },
+    { t: Date.parse("2020-03-05"), y: 600 / 1256 },
+    { t: Date.parse("2020-03-06"), y: 1100 / 1525 },
   ];
 
   expect(parseCsvData(csvData)).toEqual(expectedResult);
