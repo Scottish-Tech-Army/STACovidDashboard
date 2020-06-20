@@ -35,7 +35,7 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
 
   const createSeeds = (baseLayer) => {
 
-    const circles = areas.map((a, id) => (
+    const circles = inputData.map((a, id) => (
 
       L.circle([a.lat, a.lng], {
         color: 'red',
