@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import "./App.css";
 import GeoHeatMap from './components/GeoHeatMap/GeoHeatMap';
 // import Heatmap from "./components/HeatMap/Heatmap";

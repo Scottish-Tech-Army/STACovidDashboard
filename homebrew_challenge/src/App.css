@@ -1,11 +1,12 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /*font-size: calc(10px + 2vmin);*/
   align-items: center;
   height: 100vh;
+  width: 100vw;
 }
 
 .chart-container {

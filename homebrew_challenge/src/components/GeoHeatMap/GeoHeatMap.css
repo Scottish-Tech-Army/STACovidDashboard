@@ -1,4 +1,9 @@
+.tracker {
+  height: 95%;
+  width: 30%;
+}
+
 #map {
-  height: 50%;
-  width: 50%;
+  height: 95%;
+  width: 65%;
 }

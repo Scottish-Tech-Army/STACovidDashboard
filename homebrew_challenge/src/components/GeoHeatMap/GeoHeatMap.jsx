@@ -1,14 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import L from 'leaflet';
 import './GeoHeatMap.css';
 
-const GeoHeatMap = () => {
+const GeoHeatMap = ({areas}) => {
+
+  // const areasList = areas.map((a, id) => (
+  //   <Fragment key={id}>
+  //     <div className="area">
+  //       <h2>a.areaName</h2>
+  //     </div>
+  //   </Fragment>
+  // ))
 
   useEffect(() => {
     // create map
     L.map('map', {
-      center: [56.4907, -4.2026],
-      zoom: 6,
+      center: [57.4907, -4.7026],
+      zoom: 7,
       layers: [
         L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
           attribution:
@@ -18,7 +26,17 @@ const GeoHeatMap = () => {
     });
   }, []);
 
-  return <div id="map"></div>
+  return (
+    <>
+      <div className="tracker">
+        <h1>Covid-19 Tracker</h1>
+        <h2>TOTAL CONFIRMED CASES</h2>
+        <h3>302K</h3>
+        {/*{areasList}*/}
+      </div>
+      <div id="map"></div>
+    </>
+  )
 
 }
 
