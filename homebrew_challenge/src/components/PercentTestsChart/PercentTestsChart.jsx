@@ -95,6 +95,9 @@ const PercentTestsChart = () => {
                 ticks: {
                   beginAtZero: true,
                   maxTicksLimit: 100,
+                  callback: function (value, index, values) {
+                    return Math.round(value * 100) + "%";
+                  },
                 },
               },
             ],
