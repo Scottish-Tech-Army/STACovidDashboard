@@ -4,32 +4,34 @@ import './GeoHeatMap.css';
 
 const GeoHeatMap = () => {
 
-  const calculateRadius = () => {
-    //to be refactored to create dynamic value for radius: e.g. (area.casesCount * x)
-    return 30000;
+  const calculateRadius = (casesCount) => {
+    return casesCount * 600;
   };
 
   const areas = [
     {
+      area: 'Aberdeen City',
       lat: 57.5907,
-      lng: -4.7026
+      lng: -4.7026,
+      casesCount: 60
     },
     {
+      area: 'Aberdeenshire',
       lat: 57.0907,
-      lng: -4.7026
+      lng: -4.7026,
+      casesCount: 50
     }
   ]
 
   const createSeeds = (baseLayer) => {
 
-    const radius = calculateRadius();
-
     const circles = areas.map((a, id) => (
+
       L.circle([a.lat, a.lng], {
         color: 'red',
         fillColor: 'red',
         fillOpacity: 0.5,
-        radius: radius
+        radius: calculateRadius(a.casesCount)
       }).addTo(baseLayer)
     ));
 
