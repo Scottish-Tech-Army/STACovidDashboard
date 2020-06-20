@@ -94,9 +94,8 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
   const areaComponents = inputData.map((a, id) => (
 
     <div id='area-component' key={id}>
-
-      <h3>{a.area}</h3>
-      <h4>{a.totalCases}</h4>
+      <h3 className='name'>{a.area}</h3>
+      <h4 className='total'>{a.totalCases}</h4>
     </div>
 
   ));
@@ -151,9 +150,9 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
         <h1 id='title'>Covid-19 Tracker</h1>
         <hr></hr>
         <h3>TOTAL CONFIRMED CASES</h3>
-        <h1 id='total-cases'>15,428</h1>
+        <h1 id='total-cases' className='numbers'>15,428</h1>
         <h3>Fatal Cases:</h3>
-        <h1>4,070</h1>
+        <h1 className='numbers'>4,070</h1>
         <hr></hr>
         {areaComponents}
       </div>

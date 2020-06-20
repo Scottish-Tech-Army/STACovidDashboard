@@ -15,8 +15,25 @@
 
 #area-component {
   display: grid;
-  margin: 5% 0;
+  grid-template-areas: 'name total';
+  grid-gap: 1%;
+  margin: 2% 0;
   padding: 2%;
   border: 1px solid LightGray;
   border-radius: 2px;
+}
+
+.name {
+  grid-area: 'name';
+}
+
+.total {
+  grid-area: 'total';
+  display: flex;
+  justify-content: flex-end;
+  color: Red;
+}
+
+.numbers {
+  color: Red;
 }
