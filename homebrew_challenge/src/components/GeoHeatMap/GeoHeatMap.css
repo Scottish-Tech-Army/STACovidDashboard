@@ -1,9 +1,22 @@
 .tracker {
   height: 95%;
-  width: 30%;
+  width: 25%;
+  margin-right: 2%;
+}
+
+#total-cases {
+  color: Red;
 }
 
 #map {
   height: 95%;
   width: 65%;
+}
+
+#area-component {
+  display: grid;
+  margin: 5% 0;
+  padding: 2%;
+  border: 1px solid LightGray;
+  border-radius: 2px;
 }

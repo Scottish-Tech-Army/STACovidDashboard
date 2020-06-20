@@ -4,24 +4,33 @@ import './GeoHeatMap.css';
 
 const GeoHeatMap = () => {
 
-  const calculateRadius = (casesCount) => {
-    return casesCount * 600;
-  };
-
   const areas = [
     {
       area: 'Aberdeen City',
-      lat: 57.5907,
-      lng: -4.7026,
-      casesCount: 60
+      lat: 57.1667,
+      lng: -2.1667,
+      totalCases: 60
     },
     {
       area: 'Aberdeenshire',
-      lat: 57.0907,
-      lng: -4.7026,
-      casesCount: 50
+      lat: 57.2869,
+      lng: -2.3816,
+      totalCases: 50
     }
   ]
+
+  const areaComponents = areas.map((a, id) => (
+
+    <div id='area-component' key={id}>
+
+      <h3>{a.area}</h3>
+    </div>
+
+  ));
+
+  const calculateRadius = (totalCases) => {
+    return totalCases * 600;
+  };
 
   const createSeeds = (baseLayer) => {
 
@@ -31,7 +40,7 @@ const GeoHeatMap = () => {
         color: 'red',
         fillColor: 'red',
         fillOpacity: 0.5,
-        radius: calculateRadius(a.casesCount)
+        radius: calculateRadius(a.totalCases)
       }).addTo(baseLayer)
     ));
 
@@ -43,6 +52,14 @@ const GeoHeatMap = () => {
     const geoHeatMap = L.map('map', {
       center: [57.4907, -4.7026],
       zoom: 7,
+      doubleClickZoom: false,
+      closePopupOnClick: false,
+      dragging: false,
+      zoomSnap: false,
+      zoomDelta: false,
+      trackResize: false,
+      touchZoom: false,
+      scrollWheelZoom: false,
       layers: [
         L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
           attribution:
@@ -58,20 +75,17 @@ const GeoHeatMap = () => {
   return (
     <>
       <div className="tracker">
-        <h1>Covid-19 Tracker</h1>
-        <h2>TOTAL CONFIRMED CASES</h2>
-        <h3>300K</h3>
+        <h1 id='title'>Covid-19 Tracker</h1>
+        <hr></hr>
+        <h3>TOTAL CONFIRMED CASES</h3>
+        <h1 id='total-cases'>300K</h1>
         <ul>
           <li>Active Cases 140,000</li>
           <li>Recovered Cases 130,000</li>
           <li>Fatal Cases 30,000</li>
         </ul>
-        <div>
-          <h3>Aberdeen City</h3>
-        </div>
-        <div>
-          <h3>Aberdeenshire</h3>
-        </div>
+        <hr></hr>
+        {areaComponents}
       </div>
       <div id="map"></div>
     </>
