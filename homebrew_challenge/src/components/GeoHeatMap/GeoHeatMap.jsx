@@ -11,8 +11,8 @@ const defaultInputData = [
   },
   {
     area: 'Borders',
-    lat: 57.2869,
-    lng: -2.3816,
+    lat: 55.2869,
+    lng: -2.7861,
     totalCases: 345
   },
   {
@@ -129,12 +129,12 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
 
     // create map
     const geoHeatMap = L.map('map', {
-      center: [57.4907, -4.7026],
-      zoom: 7,
+      center: [57.8907, -4.7026],
+      zoom: 7.25,
       doubleClickZoom: false,
       closePopupOnClick: false,
       dragging: false,
-      zoomSnap: false,
+      zoomSnap: 0.25,
       zoomDelta: false,
       trackResize: false,
       touchZoom: false,
