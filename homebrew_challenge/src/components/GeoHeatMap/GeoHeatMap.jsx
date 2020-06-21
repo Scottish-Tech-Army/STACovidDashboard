@@ -7,85 +7,99 @@ const defaultInputData = [
     area: 'Ayrshire and Arran',
     lat: 55.445,
     lng: -4.575,
-    totalCases: 1249
+    totalCases: 1249,
+    totalDeaths: 288
   },
   {
     area: 'Borders',
     lat: 55.2869,
     lng: -2.7861,
-    totalCases: 345
+    totalCases: 345,
+    totalDeaths: 71
   },
   {
     area: 'Dumfries and Galloway',
     lat: 55.0701,
     lng: -3.6053,
-    totalCases: 284
+    totalCases: 284,
+    totalDeaths: 47
   },
   {
     area: 'Fife',
     lat: 56.2082,
     lng: -3.1495,
-    totalCases: 928
+    totalCases: 928,
+    totalDeaths: 195
   },
   {
     area: 'Forth Valley',
     lat: 56.0253,
     lng: -3.8490,
-    totalCases: 1055
+    totalCases: 1055,
+    totalDeaths: 299
   },
   {
     area: 'Grampian',
     lat: 57.1497,
     lng: -2.0943,
-    totalCases: 1400
+    totalCases: 1400,
+    totalDeaths: 251
   },
   {
     area: 'Greater Glasgow and Clyde',
     lat: 55.8836,
     lng: -4.3210,
-    totalCases: 4819
+    totalCases: 4819,
+    totalDeaths: 1300
   },
   {
     area: 'Highland',
     lat: 57.4596,
     lng: -4.2264,
-    totalCases: 373
+    totalCases: 373,
+    totalDeaths: 113
   },
   {
     area: 'Lanarkshire',
     lat: 55.6736,
     lng: -3.7820,
-    totalCases: 2698
+    totalCases: 2698,
+    totalDeaths: 561
   },
   {
     area: 'Lothian',
     lat: 55.9484,
     lng: -3.2121,
-    totalCases: 3139
+    totalCases: 3139,
+    totalDeaths: 699
   },
   {
     area: 'Orkney',
     lat: 58.9809,
     lng: -2.9605,
-    totalCases: 9
+    totalCases: 9,
+    totalDeaths: 2
   },
   {
     area: 'Shetland',
     lat: 60.1580,
     lng: -1.1659,
-    totalCases: 54
+    totalCases: 54,
+    totalDeaths: 7
   },
   {
     area: 'Tayside',
     lat: 56.4620,
     lng: -2.970,
-    totalCases: 1760
+    totalCases: 1760,
+    totalDeaths: 307
   },
   {
     area: 'Eileanan Siar (Western Isles)',
     lat: 57.1667,
     lng: -7.3594,
-    totalCases: 7
+    totalCases: 7,
+    totalDeaths: 0
   }
 ]
 
@@ -105,6 +119,13 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
   const totalCasesScotland = inputData.map((a) => {
     totalCasesCount += a.totalCases;
   }
+);
+
+let totalDeathsCount = 0;
+
+const totalDeathsScotland = inputData.map((a) => {
+  totalDeathsCount += a.totalDeaths;
+}
 );
 
   const calculateRadius = (totalCases) => {
@@ -159,8 +180,8 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
           <hr></hr>
           <h3>TOTAL CONFIRMED CASES</h3>
           <h1 id='total-cases' className='numbers'>{totalCasesCount}</h1>
-          <h3>Fatal Cases:</h3>
-          <h1 className='numbers'>2472</h1>
+          <h3>FATAL CASES</h3>
+          <h1 className='numbers'>{totalDeathsCount}</h1>
           <hr></hr>
         </div>
         <h2>Scotland Health Boards - Confirmed Cases</h2>
