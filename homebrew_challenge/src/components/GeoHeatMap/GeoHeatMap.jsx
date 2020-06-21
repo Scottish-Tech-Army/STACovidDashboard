@@ -6,7 +6,7 @@ const defaultInputData = [
   {
     area: 'Ayrshire and Arran',
     lat: 55.445,
-    lng: -4.975,
+    lng: -4.575,
     totalCases: 1249
   },
   {
@@ -71,8 +71,8 @@ const defaultInputData = [
   },
   {
     area: 'Shetland',
-    lat: 60.5297,
-    lng: -1.2659,
+    lat: 60.1580,
+    lng: -1.1659,
     totalCases: 54
   },
   {
@@ -84,7 +84,7 @@ const defaultInputData = [
   {
     area: 'Eileanan Siar (Western Isles)',
     lat: 57.1667,
-    lng: -7.0194,
+    lng: -7.3594,
     totalCases: 7
   }
 ]
@@ -100,8 +100,15 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
 
   ));
 
+  let totalCasesCount = 0;
+
+  const totalCasesScotland = inputData.map((a) => {
+    totalCasesCount += a.totalCases;
+  }
+);
+
   const calculateRadius = (totalCases) => {
-    return totalCases * 10;
+    return totalCases * 6.5;
   };
 
   const createSeeds = (baseLayer) => {
@@ -113,7 +120,7 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
         fillColor: 'red',
         fillOpacity: 0.5,
         radius: calculateRadius(a.totalCases)
-      }).addTo(baseLayer)
+      }).addTo(baseLayer).bindPopup(a.area + ' - Total Cases: ' + a.totalCases)
     ));
 
   };
@@ -148,14 +155,15 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
     <>
       <div className="tracker-grid">
         <div className='tracker-header'>
-          <h1 id='title'>Scotland Health Boards Covid-19 Tracker</h1>
+          <h1 id='title'>Covid-19 Tracker</h1>
           <hr></hr>
           <h3>TOTAL CONFIRMED CASES</h3>
-          <h1 id='total-cases' className='numbers'>15,428</h1>
+          <h1 id='total-cases' className='numbers'>{totalCasesCount}</h1>
           <h3>Fatal Cases:</h3>
-          <h1 className='numbers'>4,070</h1>
+          <h1 className='numbers'>2472</h1>
           <hr></hr>
         </div>
+        <h2>Scotland Health Boards - Confirmed Cases</h2>
         <div className='scroll-components'>
           {areaComponents}
         </div>
