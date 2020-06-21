@@ -1,9 +1,3 @@
-.tracker {
-  height: 95%;
-  width: 25%;
-  margin-right: 2%;
-}
-
 #total-cases {
   color: Red;
 }
@@ -36,4 +30,26 @@
 
 .numbers {
   color: Red;
+}
+
+.tracker-grid {
+  display: grid;
+  grid-template-areas: 'tracker-header'
+                       'scroll-components';
+  height: 95%;
+  width: 25%;
+  margin-right: 2%;
+}
+
+.scroll-components {
+  grid-area: 'scroll-components';
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.tracker-header {
+  grid-area: 'tracker-header';
+  width: 100%;
+  height: 25%;
 }

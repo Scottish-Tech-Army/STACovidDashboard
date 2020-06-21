@@ -146,15 +146,19 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
 
   return (
     <>
-      <div className="tracker">
-        <h1 id='title'>Covid-19 Tracker</h1>
-        <hr></hr>
-        <h3>TOTAL CONFIRMED CASES</h3>
-        <h1 id='total-cases' className='numbers'>15,428</h1>
-        <h3>Fatal Cases:</h3>
-        <h1 className='numbers'>4,070</h1>
-        <hr></hr>
-        {areaComponents}
+      <div className="tracker-grid">
+        <div className='tracker-header'>
+          <h1 id='title'>Scotland Health Boards Covid-19 Tracker</h1>
+          <hr></hr>
+          <h3>TOTAL CONFIRMED CASES</h3>
+          <h1 id='total-cases' className='numbers'>15,428</h1>
+          <h3>Fatal Cases:</h3>
+          <h1 className='numbers'>4,070</h1>
+          <hr></hr>
+        </div>
+        <div className='scroll-components'>
+          {areaComponents}
+        </div>
       </div>
       <div id="map"></div>
     </>
