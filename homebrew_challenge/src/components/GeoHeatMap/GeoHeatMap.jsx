@@ -117,14 +117,14 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
   let totalCasesCount = 0;
 
   const totalCasesScotland = inputData.map((a) => {
-    totalCasesCount += a.totalCases;
+    return totalCasesCount += a.totalCases;
   }
 );
 
 let totalDeathsCount = 0;
 
 const totalDeathsScotland = inputData.map((a) => {
-  totalDeathsCount += a.totalDeaths;
+  return totalDeathsCount += a.totalDeaths;
 }
 );
 
