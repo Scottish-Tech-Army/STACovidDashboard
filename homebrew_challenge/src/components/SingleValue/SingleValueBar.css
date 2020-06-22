@@ -1,7 +1,12 @@
+.singlevalues {
+    display: flex;
+    flex-direction: row;
+}
+
 .singlevalue {
   height: 100px;
   width: 200px;
-  background-color: grey;
+  background-color: lightgrey;
   color: black;
   text-align: center;
 }
