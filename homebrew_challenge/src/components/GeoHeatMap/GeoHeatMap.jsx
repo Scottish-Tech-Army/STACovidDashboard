@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { formatRelative, format, subDays } from "date-fns";
+import { format, subDays } from "date-fns";
 import L from 'leaflet';
 import './GeoHeatMap.css';
 
