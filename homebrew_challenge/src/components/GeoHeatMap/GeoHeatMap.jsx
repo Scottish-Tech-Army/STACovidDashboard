@@ -91,21 +91,19 @@ const defaultInputData = [
 
 const queryUrl = "http://statistics.gov.scot/sparql.csv";
 
-const query = `PREFIX qb: <http://purl.org/linked-data/cube#>
+const query = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?date ?shortValue ?count
+PREFIX qb: <http://purl.org/linked-data/cube#>
+SELECT ?areaname ?count
 WHERE {
-   VALUES (?value ?shortValue) {
+  VALUES (?value ?shortValue) {
     ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "positive" )
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "total" )
-  }
+   }
   ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
-  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
-  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
   ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-  ?obs dim:refPeriod ?perioduri .
-  ?perioduri rdfs:label ?date
+    ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+  ?obs dim:refArea ?areauri .
+  ?areauri rdfs:label ?areaname.
 }`;
 
 const GeoHeatMap = ({inputData=defaultInputData}) => {
