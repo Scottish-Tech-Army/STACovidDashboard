@@ -1,0 +1,18 @@
+.singlevalue {
+  height: 100px;
+  width: 200px;
+  background-color: grey;
+  color: black;
+  text-align: center;
+}
+
+.singlevalue .title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.singlevalue .value {
+  font-size: 24px;
+  font-weight: bold;
+  color: blue;
+}
