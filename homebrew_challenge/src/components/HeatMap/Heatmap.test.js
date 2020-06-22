@@ -34,6 +34,8 @@ const csvData = `date,areaname,count
 
 it("Heatmap renders default data when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
+  // Suppress console error message
+  spyOn(console, "error");
 
   await act(async () => {
     render(<Heatmap />, container);
