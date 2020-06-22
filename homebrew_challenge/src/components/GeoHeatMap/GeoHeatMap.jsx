@@ -87,7 +87,26 @@ const defaultInputData = [
     lng: -7.3594,
     totalCases: 7
   }
-]
+];
+
+const queryUrl = "http://statistics.gov.scot/sparql.csv";
+
+const query = `PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?date ?shortValue ?count
+WHERE {
+   VALUES (?value ?shortValue) {
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "positive" )
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "total" )
+  }
+  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
+  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
+  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+  ?obs dim:refPeriod ?perioduri .
+  ?perioduri rdfs:label ?date
+}`;
 
 const GeoHeatMap = ({inputData=defaultInputData}) => {
 
@@ -114,7 +133,7 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
     // create map
     const geoHeatMap = L.map('map', {
       center: [57.8907, -4.7026],
-      zoom: 6.25,
+      zoom: 7.25,
       doubleClickZoom: false,
       closePopupOnClick: false,
       dragging: false,
@@ -124,8 +143,10 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
       touchZoom: false,
       scrollWheelZoom: false,
       layers:
-        L.tileLayer('./MapofScotlandSHOWversion.png')
-
+      L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+        attribution:
+          '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+      }),
     });
 
     createSeeds(geoHeatMap);
@@ -134,7 +155,7 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
 
   return (
     <>
-      <div id="container">
+      <div id="map-container">
         <div id="map"></div>
       </div>
     </>
