@@ -20,9 +20,6 @@ export function parseCsvData(csvData) {
   });
   lines.shift();
 
-  const dailyPositiveTestsMap = new Map();
-  const cumulativePositiveTestsMap = new Map();
-
   const valueMap = new Map();
 
   lines.forEach(([date, areaname, count], i) => {
@@ -130,8 +127,6 @@ const latLngs = [
   }
 ];
 
-const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
-
 // Exported for tests
 export function getDateValueClause() {
   const today = Date.now();
@@ -153,8 +148,6 @@ export function getDateValueClause() {
 
 const GeoHeatMap = () => {
 
-  const [dailyCases, setDailyCases] = useState(emptyDate);
-  const [totalCases, setTotalCases] = useState(emptyDate);
   const [dataFetched, setDataFetched] = useState(false);
 
   const queryUrl = "http://statistics.gov.scot/sparql.csv";
