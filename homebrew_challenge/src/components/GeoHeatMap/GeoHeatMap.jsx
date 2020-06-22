@@ -1,8 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { formatRelative, format, subDays } from "date-fns";
 import L from 'leaflet';
 import './GeoHeatMap.css';
 
-const defaultInputData = [
+// Exported for tests
+export function parseCsvData(csvData) {
+  function getLatestValue(dateValueMap) {
+    const lastDate = [...dateValueMap.keys()].sort().pop();
+    return dateValueMap.get(lastDate);
+  }
+
+  let allTextLines = csvData.split(/\r\n|\n/);
+  let lines = [];
+
+  allTextLines.forEach((line) => {
+    if (line.length > 0) {
+      lines.push(line.split(",").map((s) => s.trim()));
+    }
+  });
+  lines.shift();
+
+  const dailyPositiveTestsMap = new Map();
+  const cumulativePositiveTestsMap = new Map();
+
+  const valueMap = new Map();
+
+  lines.forEach(([date, areaname, count], i) => {
+    if (!valueMap.has(areaname)) {
+      valueMap.set(areaname, new Map());
+    }
+    var dateMap = valueMap.get(areaname);
+    dateMap.set(date, (count === '*') ? 0 : Number(count));
+  });
+
+  const regions = new Map();
+
+  valueMap.forEach((dateMap, areaname) => {
+    regions.set( areaname, getLatestValue(dateMap));
+  });
+  console.log(regions);
+  return regions;
+
+};
+
+const latLngs = [
   {
     area: 'Ayrshire and Arran',
     lat: 55.445,
@@ -82,52 +123,87 @@ const defaultInputData = [
     totalCases: 1760
   },
   {
-    area: 'Eileanan Siar (Western Isles)',
+    area: 'Western Isles',
     lat: 57.1667,
     lng: -7.3594,
     totalCases: 7
   }
 ];
 
-const queryUrl = "http://statistics.gov.scot/sparql.csv";
+const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
 
-const query = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX qb: <http://purl.org/linked-data/cube#>
-SELECT ?areaname ?count
-WHERE {
-  VALUES (?value ?shortValue) {
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "positive" )
-   }
-  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
-  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-    ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
-  ?obs dim:refArea ?areauri .
-  ?areauri rdfs:label ?areaname.
-}`;
+// Exported for tests
+export function getDateValueClause() {
+  const today = Date.now();
+  const yesterday = subDays(Date.now(), 1);
 
-const GeoHeatMap = ({inputData=defaultInputData}) => {
-
-  const calculateRadius = (totalCases) => {
-    return totalCases * 15;
+  const singleLine = (date) => {
+    const dateString = format(date, "yyyy-MM-dd");
+    return (
+      "( <http://reference.data.gov.uk/id/day/" +
+      dateString +
+      '> "' +
+      dateString +
+      '" )'
+    );
   };
 
-  const createSeeds = (baseLayer) => {
+  return singleLine(today) + singleLine(yesterday);
+}
 
-    const circles = inputData.map((a, id) => (
+const GeoHeatMap = () => {
 
-      L.circle([a.lat, a.lng], {
+  const [dailyCases, setDailyCases] = useState(emptyDate);
+  const [totalCases, setTotalCases] = useState(emptyDate);
+  const [dataFetched, setDataFetched] = useState(false);
+
+  const queryUrl = "http://statistics.gov.scot/sparql.csv";
+  // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
+  const query = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+  PREFIX qb: <http://purl.org/linked-data/cube#>
+  SELECT ?date ?areaname ?count
+  WHERE {
+    VALUES (?value) {
+      ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> )
+     }
+     VALUES (?perioduri ?date) {` +
+       getDateValueClause() +
+    `}
+    ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+    ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+    ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
+      ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+    ?obs dim:refArea ?areauri .
+    ?areauri rdfs:label ?areaname.
+    ?obs dim:refPeriod ?perioduri
+  }`;
+
+  const calculateRadius = (totalCases) => {
+    return Math.sqrt(totalCases) * 500;
+  };
+
+  const createSeeds = (baseLayer, latLngs, totalCases) => {
+
+    const circles = latLngs.map(({area, lat, lng}) => {
+      if (totalCases.has(area)) {
+        const value = totalCases.get(area);
+        L.circle([lat, lng], {
         color: 'red',
         fillColor: 'red',
         fillOpacity: 0.5,
-        radius: calculateRadius(a.totalCases)
-      }).addTo(baseLayer).bindPopup(a.area + ' - Total Cases: ' + a.totalCases)
-    ));
-
+        radius: calculateRadius(value)
+      }).addTo(baseLayer).bindPopup(area + ' - Total Cases: ' + value);
+    } else {
+      console.error("Can't find " + area);
+    }
+    });
   };
 
   useEffect(() => {
-
+    if (!dataFetched) {
+      console.log(query);
+      setDataFetched(true);
     // create map
     const geoHeatMap = L.map('map', {
       center: [57.8907, -4.7026],
@@ -147,7 +223,24 @@ const GeoHeatMap = ({inputData=defaultInputData}) => {
       }),
     });
 
-    createSeeds(geoHeatMap);
+
+      const form = new FormData();
+      form.append("query", query);
+      fetch(queryUrl, {
+        method: "POST",
+        body: form,
+      })
+        .then((res) => res.text())
+        .then((csvData) => {
+          console.log(csvData);
+          const totalCases = parseCsvData(csvData);
+          // setTotalCases(totalCases);
+        createSeeds(geoHeatMap, latLngs, totalCases);
+      })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
 
   }, []);
 
