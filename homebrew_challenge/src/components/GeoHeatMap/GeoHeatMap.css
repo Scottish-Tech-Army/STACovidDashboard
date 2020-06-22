@@ -1,55 +1,13 @@
-#total-cases {
-  color: Red;
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
 }
 
 #map {
-  height: 95%;
-  width: 65%;
-}
-
-#area-component {
-  display: grid;
-  grid-template-areas: 'name total';
-  grid-gap: 1%;
-  margin: 2% 0;
-  padding: 2%;
-  border: 1px solid LightGray;
-  border-radius: 2px;
-}
-
-.name {
-  grid-area: 'name';
-}
-
-.total {
-  grid-area: 'total';
-  display: flex;
-  justify-content: flex-end;
-  color: Red;
-}
-
-.numbers {
-  color: Red;
-}
-
-.tracker-grid {
-  display: grid;
-  grid-template-areas: 'tracker-header'
-                       'scroll-components';
-  height: 95%;
-  width: 25%;
-  margin-right: 2%;
-}
-
-.scroll-components {
-  grid-area: 'scroll-components';
-  width: 100%;
   height: 100%;
-  overflow: scroll;
-}
-
-.tracker-header {
-  grid-area: 'tracker-header';
   width: 100%;
-  height: 25%;
 }

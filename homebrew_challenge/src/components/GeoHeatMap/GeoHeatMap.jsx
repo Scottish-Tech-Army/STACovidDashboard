@@ -105,31 +105,8 @@ const defaultInputData = [
 
 const GeoHeatMap = ({inputData=defaultInputData}) => {
 
-  const areaComponents = inputData.map((a, id) => (
-
-    <div id='area-component' key={id}>
-      <h3 className='name'>{a.area}</h3>
-      <h4 className='total'>{a.totalCases}</h4>
-    </div>
-
-  ));
-
-  let totalCasesCount = 0;
-
-  const totalCasesScotland = inputData.map((a) => {
-    return totalCasesCount += a.totalCases;
-  }
-);
-
-let totalDeathsCount = 0;
-
-const totalDeathsScotland = inputData.map((a) => {
-  return totalDeathsCount += a.totalDeaths;
-}
-);
-
   const calculateRadius = (totalCases) => {
-    return totalCases * 6.5;
+    return totalCases * 15;
   };
 
   const createSeeds = (baseLayer) => {
@@ -151,7 +128,7 @@ const totalDeathsScotland = inputData.map((a) => {
     // create map
     const geoHeatMap = L.map('map', {
       center: [57.8907, -4.7026],
-      zoom: 7.25,
+      zoom: 6.25,
       doubleClickZoom: false,
       closePopupOnClick: false,
       dragging: false,
@@ -174,22 +151,9 @@ const totalDeathsScotland = inputData.map((a) => {
 
   return (
     <>
-      <div className="tracker-grid">
-        <div className='tracker-header'>
-          <h1 id='title'>Covid-19 Tracker</h1>
-          <hr></hr>
-          <h3>TOTAL CONFIRMED CASES</h3>
-          <h1 id='total-cases' className='numbers'>{totalCasesCount}</h1>
-          <h3>FATAL CASES</h3>
-          <h1 className='numbers'>{totalDeathsCount}</h1>
-          <hr></hr>
-        </div>
-        <h2>Scotland Health Boards - Confirmed Cases</h2>
-        <div className='scroll-components'>
-          {areaComponents}
-        </div>
+      <div id="container">
+        <div id="map"></div>
       </div>
-      <div id="map"></div>
     </>
   )
 
