@@ -46,7 +46,7 @@ function HeatmapContainer() {
       </Row>
       <Row>
       <Col xs={6} md={4}><Heatmap areaType={areaType} valueType={valueType} /></Col>
-      <Col xs={12} md={8}><GeoHeatMap /></Col>
+      <Col xs={12} md={8}><GeoHeatMap areaType={areaType} valueType={valueType} /></Col>
       </Row>
 </Container>
   );
