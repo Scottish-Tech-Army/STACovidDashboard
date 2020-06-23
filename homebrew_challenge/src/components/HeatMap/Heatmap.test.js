@@ -1,5 +1,5 @@
 import React from "react";
-import Heatmap, { parseCsvData } from "./Heatmap";
+import Heatmap, { parseCsvData, parseDiffCsvData } from "./Heatmap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -18,7 +18,7 @@ afterEach(() => {
   container = null;
 });
 
-const csvData = `date,areaname,count
+const weeklyDeathsCsvData = `date,areaname,count
   w/c 2020-03-16,Orkney Islands,0
   w/c 2020-03-16,Glasgow City,1
   w/c 2020-03-16,Aberdeen City,1
@@ -32,7 +32,22 @@ const csvData = `date,areaname,count
   w/c 2020-04-06,Glasgow City,97
   w/c 2020-04-06,Aberdeen City,12`;
 
-it("Heatmap renders default data when fetch fails", async () => {
+// These are cumulative values, the deltas are calculated
+const dailyCasesCsvData = `date,areaname,count
+2020-03-06,Greater Glasgow and Clyde,*
+2020-03-06,Highland,1
+2020-03-06,Grampian,1
+2020-03-09,Greater Glasgow and Clyde,*
+2020-03-09,Highland,300
+2020-03-09,Grampian,-8
+2020-03-08,Greater Glasgow and Clyde,*
+2020-03-08,Highland,201
+2020-03-08,Grampian,26
+2020-03-07,Greater Glasgow and Clyde,*
+2020-03-07,Highland,-1
+2020-03-07,Grampian,-1`;
+
+it("Heatmap renders no data when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
   // Suppress console error message
   spyOn(console, "error");
@@ -41,28 +56,58 @@ it("Heatmap renders default data when fetch fails", async () => {
     render(<Heatmap />, container);
   });
 
-  checkHeaderRow(headers(), "Area", "Total deaths", "Cases over time");
+  checkHeaderRow(headers(), "Council Areas", "Total deaths", "Weekly count");
 
   const dataRows = rows();
-  expect(dataRows).toHaveLength(2);
-  checkRow(dataRows[0], "Edinburgh", "234", [0, 1, 2, 3, 4, 5]);
-  checkRow(dataRows[1], "Glasgow", "345", [3, 4, 5, 0, 1, 2]);
+  expect(dataRows).toHaveLength(0);
 });
 
-it("Heatmap renders dynamic fetched data", async () => {
-  fetch.mockResponse(csvData);
+it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
+  fetch.mockResponse(weeklyDeathsCsvData);
 
   await act(async () => {
-    render(<Heatmap />, container);
+    render(<Heatmap valueType="deaths" areaType="council-areas" />, container);
   });
 
-  checkHeaderRow(headers(), "Area", "Total deaths", "Cases over time");
+  checkHeaderRow(headers(), "Council Areas", "Total deaths", "Weekly count");
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(3);
   checkRow(dataRows[0], "Aberdeen City", "15", [1, 0, 1, 3]);
   checkRow(dataRows[1], "Glasgow City", "151", [1, 2, 3, 3]);
   checkRow(dataRows[2], "Orkney Islands", "2", [0, 0, 0, 1]);
+});
+
+it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
+  fetch.mockResponse(weeklyDeathsCsvData);
+
+  await act(async () => {
+    render(<Heatmap valueType="deaths" areaType="health-boards" />, container);
+  });
+
+  checkHeaderRow(headers(), "Health Boards", "Total deaths", "Weekly count");
+
+  const dataRows = rows();
+  expect(dataRows).toHaveLength(3);
+  checkRow(dataRows[0], "Aberdeen City", "15", [1, 0, 1, 3]);
+  checkRow(dataRows[1], "Glasgow City", "151", [1, 2, 3, 3]);
+  checkRow(dataRows[2], "Orkney Islands", "2", [0, 0, 0, 1]);
+});
+
+it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
+  fetch.mockResponse(dailyCasesCsvData);
+
+  await act(async () => {
+    render(<Heatmap valueType="cases" areaType="health-boards" />, container);
+  });
+
+  checkHeaderRow(headers(), "Health Boards", "Total cases", "Daily count");
+
+  const dataRows = rows();
+  expect(dataRows).toHaveLength(3);
+  checkRow(dataRows[0], "Grampian", "-8", [1, 0, 3, 0]);
+  checkRow(dataRows[1], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
+  checkRow(dataRows[2], "Highland", "300", [1, 0, 5, 3]);
 });
 
 const table = () => container.querySelector(".heatmap table");
@@ -96,7 +141,33 @@ it("parseCsvData", () => {
     ],
   };
 
-  expect(parseCsvData(csvData)).toEqual(expectedResult);
+  expect(parseCsvData(weeklyDeathsCsvData)).toEqual(expectedResult);
+});
+
+it("parseDiffCsvData", () => {
+  // Remember these are deltas of cumulative figures
+  const expectedResult = {
+    dates: ["2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09"],
+    regions: [
+      {
+        counts: [1, -2, 27, -34],
+        name: "Grampian",
+        totalDeaths: -8,
+      },
+      {
+        counts: [0, 0, 0, 0],
+        name: "Greater Glasgow and Clyde",
+        totalDeaths: 0,
+      },
+      {
+        counts: [1, -2, 202, 99],
+        name: "Highland",
+        totalDeaths: 300,
+      },
+    ],
+  };
+
+  expect(parseDiffCsvData(dailyCasesCsvData)).toEqual(expectedResult);
 });
 
 function checkHeaderRow(row, areaName, areaCount, heatLevels) {

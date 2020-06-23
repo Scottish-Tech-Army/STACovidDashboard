@@ -154,7 +154,6 @@ export function parseDiffCsvData(csvData) {
     });
     regions.push({ name: place, totalDeaths: total, counts: values });
   });
-
   return { dates: dates, regions: regions };
 }
 
