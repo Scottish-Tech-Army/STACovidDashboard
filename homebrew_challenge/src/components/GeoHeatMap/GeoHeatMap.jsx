@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { format, subDays } from "date-fns";
 import "./GeoHeatMap.css";
-import {
-  Map as LeafletMap,
-  Circle,
-  TileLayer,
-} from "react-leaflet";
+import { Map as LeafletMap, Circle, TileLayer, Popup } from "react-leaflet";
 
-// Exported for tests
-export function parseCsvData(csvData) {
+function parseCsvData(csvData) {
   function getLatestValue(dateValueMap) {
     const lastDate = [...dateValueMap.keys()].sort().pop();
     return dateValueMap.get(lastDate);
@@ -118,7 +113,6 @@ const latLngs = [
 ];
 
 const GeoHeatMap = () => {
-  const [dataFetched, setDataFetched] = useState(false);
   const [totalCases, setTotalCases] = useState(null);
 
   const queryUrl = "http://statistics.gov.scot/sparql.csv";
@@ -167,26 +161,20 @@ const GeoHeatMap = () => {
       return singleLine(today) + singleLine(yesterday);
     }
 
-    if (!dataFetched) {
-      console.log(query);
-      setDataFetched(true);
-
-      const form = new FormData();
-      form.append("query", query);
-      fetch(queryUrl, {
-        method: "POST",
-        body: form,
+    const form = new FormData();
+    form.append("query", query);
+    fetch(queryUrl, {
+      method: "POST",
+      body: form,
+    })
+      .then((res) => res.text())
+      .then((csvData) => {
+        setTotalCases(parseCsvData(csvData));
       })
-        .then((res) => res.text())
-        .then((csvData) => {
-          console.log(csvData);
-          setTotalCases(parseCsvData(csvData));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [dataFetched]);
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const regionCircles = () => {
     if (totalCases === null) {
@@ -203,7 +191,9 @@ const GeoHeatMap = () => {
             color="red"
             fillOpacity={0.5}
             radius={calculateRadius(value)}
-          />
+          >
+            <Popup>{area + " - Total Cases: " + value}</Popup>
+          </Circle>
         );
       } else {
         console.error("Can't find " + area);
@@ -214,7 +204,18 @@ const GeoHeatMap = () => {
 
   return (
     <div id="map-container">
-      <LeafletMap center={[57.8907, -4.7026]} id="map" zoom={7.25}>
+      <LeafletMap
+        center={[57.8907, -4.7026]}
+        id="map"
+        zoom={7.25}
+        zoomSnap={0.25}
+        zoomDelta={false}
+        doubleClickZoom={false}
+        dragging={false}
+        trackResize={false}
+        touchZoom={false}
+        scrollWheelZoom={false}
+      >
         <TileLayer
           url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
