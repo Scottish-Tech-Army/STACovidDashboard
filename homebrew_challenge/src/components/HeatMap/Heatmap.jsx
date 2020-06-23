@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Heatmap.css";
 
 const defaultDataset = {
   dates: ["1-May", "2-May", "3-May", "4-May", "5-May", "6-May"],
