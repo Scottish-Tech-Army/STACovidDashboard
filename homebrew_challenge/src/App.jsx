@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";

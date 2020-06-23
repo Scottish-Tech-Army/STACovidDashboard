@@ -1,9 +1,13 @@
-.tracker {
-  height: 95%;
-  width: 30%;
+#map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
 }
 
 #map {
-  height: 95%;
-  width: 65%;
+  height: 100%;
+  width: 100%;
 }
