@@ -19,7 +19,7 @@ export function parseCsvData(csvData) {
     }
   });
   lines.shift();
-
+  
   const valueMap = new Map();
 
   lines.forEach(([date, areaname, count], i) => {
@@ -29,6 +29,7 @@ export function parseCsvData(csvData) {
     var dateMap = valueMap.get(areaname);
     dateMap.set(date, (count === '*') ? 0 : Number(count));
   });
+  console.log(valueMap);
 
   const regions = new Map();
 
@@ -151,7 +152,7 @@ const GeoHeatMap = () => {
   const [dataFetched, setDataFetched] = useState(false);
 
   const queryUrl = "http://statistics.gov.scot/sparql.csv";
-  // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
+
   const query = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
   PREFIX qb: <http://purl.org/linked-data/cube#>
