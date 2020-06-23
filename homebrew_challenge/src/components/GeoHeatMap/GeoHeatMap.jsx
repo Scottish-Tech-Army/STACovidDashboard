@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { format, subDays } from "date-fns";
-import L from 'leaflet';
-import './GeoHeatMap.css';
+import "./GeoHeatMap.css";
+import {
+  Map as LeafletMap,
+  Circle,
+  TileLayer,
+} from "react-leaflet";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -27,96 +31,95 @@ export function parseCsvData(csvData) {
       valueMap.set(areaname, new Map());
     }
     var dateMap = valueMap.get(areaname);
-    dateMap.set(date, (count === '*') ? 0 : Number(count));
+    dateMap.set(date, count === "*" ? 0 : Number(count));
   });
   console.log(valueMap);
 
   const regions = new Map();
 
   valueMap.forEach((dateMap, areaname) => {
-    regions.set( areaname, getLatestValue(dateMap));
+    regions.set(areaname, getLatestValue(dateMap));
   });
   console.log(regions);
   return regions;
-
-};
+}
 
 const latLngs = [
   {
-    area: 'Ayrshire and Arran',
+    area: "Ayrshire and Arran",
     lat: 55.445,
-    lng: -4.575
+    lng: -4.575,
   },
   {
-    area: 'Borders',
+    area: "Borders",
     lat: 55.2869,
-    lng: -2.7861
+    lng: -2.7861,
   },
   {
-    area: 'Dumfries and Galloway',
+    area: "Dumfries and Galloway",
     lat: 55.0701,
-    lng: -3.6053
+    lng: -3.6053,
   },
   {
-    area: 'Fife',
+    area: "Fife",
     lat: 56.2082,
-    lng: -3.1495
+    lng: -3.1495,
   },
   {
-    area: 'Forth Valley',
+    area: "Forth Valley",
     lat: 56.0253,
-    lng: -3.8490
+    lng: -3.849,
   },
   {
-    area: 'Grampian',
+    area: "Grampian",
     lat: 57.1497,
-    lng: -2.0943
+    lng: -2.0943,
   },
   {
-    area: 'Greater Glasgow and Clyde',
+    area: "Greater Glasgow and Clyde",
     lat: 55.8836,
-    lng: -4.3210
+    lng: -4.321,
   },
   {
-    area: 'Highland',
+    area: "Highland",
     lat: 57.4596,
-    lng: -4.2264
+    lng: -4.2264,
   },
   {
-    area: 'Lanarkshire',
+    area: "Lanarkshire",
     lat: 55.6736,
-    lng: -3.7820
+    lng: -3.782,
   },
   {
-    area: 'Lothian',
+    area: "Lothian",
     lat: 55.9484,
-    lng: -3.2121
+    lng: -3.2121,
   },
   {
-    area: 'Orkney',
+    area: "Orkney",
     lat: 58.9809,
-    lng: -2.9605
+    lng: -2.9605,
   },
   {
-    area: 'Shetland',
-    lat: 60.1580,
-    lng: -1.1659
+    area: "Shetland",
+    lat: 60.158,
+    lng: -1.1659,
   },
   {
-    area: 'Tayside',
-    lat: 56.4620,
-    lng: -2.970
+    area: "Tayside",
+    lat: 56.462,
+    lng: -2.97,
   },
   {
-    area: 'Western Isles',
+    area: "Western Isles",
     lat: 57.1667,
-    lng: -7.3594
-  }
+    lng: -7.3594,
+  },
 ];
 
 const GeoHeatMap = () => {
-
   const [dataFetched, setDataFetched] = useState(false);
+  const [totalCases, setTotalCases] = useState(null);
 
   const queryUrl = "http://statistics.gov.scot/sparql.csv";
 
@@ -125,8 +128,8 @@ const GeoHeatMap = () => {
   };
 
   useEffect(() => {
-
-    const query = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    const query =
+      `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
     PREFIX qb: <http://purl.org/linked-data/cube#>
     SELECT ?date ?areaname ?count
@@ -135,7 +138,7 @@ const GeoHeatMap = () => {
         ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> )
        }
        VALUES (?perioduri ?date) {` +
-         getDateValueClause() +
+      getDateValueClause() +
       `}
       ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
       ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
@@ -162,47 +165,11 @@ const GeoHeatMap = () => {
       };
 
       return singleLine(today) + singleLine(yesterday);
-    };
-
-    const createSeeds = (baseLayer, latLngs, totalCases) => {
-
-      latLngs.apply(({area, lat, lng}) => {
-        if (totalCases.has(area)) {
-          const value = totalCases.get(area);
-          L.circle([lat, lng], {
-          color: 'red',
-          fillColor: 'red',
-          fillOpacity: 0.5,
-          radius: calculateRadius(value)
-        }).addTo(baseLayer).bindPopup(area + ' - Total Cases: ' + value);
-      } else {
-        console.error("Can't find " + area);
-      }
-      });
-    };
+    }
 
     if (!dataFetched) {
       console.log(query);
       setDataFetched(true);
-    // create map
-    const geoHeatMap = L.map('map', {
-      center: [57.8907, -4.7026],
-      zoom: 7.25,
-      doubleClickZoom: false,
-      closePopupOnClick: false,
-      dragging: false,
-      zoomSnap: 0.25,
-      zoomDelta: false,
-      trackResize: false,
-      touchZoom: false,
-      scrollWheelZoom: false,
-      layers:
-      L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-        attribution:
-          '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-      }),
-    });
-
 
       const form = new FormData();
       form.append("query", query);
@@ -213,25 +180,49 @@ const GeoHeatMap = () => {
         .then((res) => res.text())
         .then((csvData) => {
           console.log(csvData);
-          const totalCases = parseCsvData(csvData);
-          // setTotalCases(totalCases);
-        createSeeds(geoHeatMap, latLngs, totalCases);
-      })
+          setTotalCases(parseCsvData(csvData));
+        })
         .catch((error) => {
           console.error(error);
         });
     }
-
   }, [dataFetched]);
 
-  return (
-    <>
-      <div id="map-container">
-        <div id="map"></div>
-      </div>
-    </>
-  )
+  const regionCircles = () => {
+    if (totalCases === null) {
+      return <></>;
+    }
 
-}
+    return latLngs.map(({ area, lat, lng }) => {
+      if (totalCases.has(area)) {
+        const value = totalCases.get(area);
+        return (
+          <Circle
+            center={[lat, lng]}
+            fillColor="red"
+            color="red"
+            fillOpacity={0.5}
+            radius={calculateRadius(value)}
+          />
+        );
+      } else {
+        console.error("Can't find " + area);
+        return <></>;
+      }
+    });
+  };
+
+  return (
+    <div id="map-container">
+      <LeafletMap center={[57.8907, -4.7026]} id="map" zoom={7.25}>
+        <TileLayer
+          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        />
+        {regionCircles()}
+      </LeafletMap>
+    </div>
+  );
+};
 
 export default GeoHeatMap;
