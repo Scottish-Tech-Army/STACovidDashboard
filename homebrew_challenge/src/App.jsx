@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
-import Heatmap from "./components/HeatMap/Heatmap";
+import HeatmapContainer from "./components/HeatmapContainer/HeatmapContainer";
 import PercentTestsChart from "./components/PercentTestsChart/PercentTestsChart";
 import SingleValueBar from "./components/SingleValue/SingleValueBar";
-
+/*<SingleValueBar />
+<GeoHeatMap />
+<PercentTestsChart />*/
 const App = () => {
   return (
     <div className="App">
-      <SingleValueBar />
-      <GeoHeatMap />
-      <PercentTestsChart />
-      <Heatmap />
+
+      <HeatmapContainer />
     </div>
   );
 };
