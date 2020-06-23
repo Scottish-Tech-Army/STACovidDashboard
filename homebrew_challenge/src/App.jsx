@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import Heatmap from "./components/HeatMap/Heatmap";
@@ -10,8 +10,6 @@ const App = () => {
     <div className="App">
       <SingleValueBar />
       <GeoHeatMap />
-      <PercentTestsChart />
-      <Heatmap />
     </div>
   );
 };
