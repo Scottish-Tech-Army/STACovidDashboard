@@ -44,9 +44,9 @@ function HeatmapContainer() {
           <ToggleButton value={VALUETYPE_DEATHS}>Deaths</ToggleButton>
         </ToggleButtonGroup></Col>
       </Row>
-      <Row xs={1} md={2}>
-      <Col><Heatmap areaType={areaType} valueType={valueType} /></Col>
-      <Col><GeoHeatMap /></Col>
+      <Row>
+      <Col xs={6} md={4}><Heatmap areaType={areaType} valueType={valueType} /></Col>
+      <Col xs={12} md={8}><GeoHeatMap /></Col>
       </Row>
 </Container>
   );
