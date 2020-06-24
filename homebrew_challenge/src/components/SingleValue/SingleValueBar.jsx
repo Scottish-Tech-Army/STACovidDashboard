@@ -154,7 +154,7 @@ WHERE {
           console.error(error);
         });
     }
-  }, []);
+}, [dataFetched, query]);
 
   function getRelativeDate(date) {
     var result = formatRelative(date, Date.now());

@@ -1,7 +1,12 @@
 .heatmap {
   overflow: auto;
 }
-.heatmap table td:first-child {
+
+.heatmap table {
+  text-align: center;
+}
+
+.heatmap table td:first-child , .heatmap table th:first-child {
   text-align: left;
 }
 
