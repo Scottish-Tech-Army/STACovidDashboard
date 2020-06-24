@@ -2,6 +2,7 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { formatRelative, format, subDays } from "date-fns";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -168,6 +169,8 @@ WHERE {
 
   return (
     <div className="singlevalues">
+    <>
+    <div className={isDataReady()? "singlevalues": "singlevalues hidden-values" }>
       <SingleValue
         id="dailyCases"
         title={"Cases " + getRelativeDate(dailyCases.date)}
@@ -204,6 +207,8 @@ WHERE {
         value={totalTestsCompleted.value}
       />
     </div>
+    { isDataReady()? <></> : <LoadingComponent/> }
+    </>
   );
 }
 
