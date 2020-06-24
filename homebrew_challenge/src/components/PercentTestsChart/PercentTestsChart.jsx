@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./PercentTestsChart.css";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 const defaultSeriesData = [
   { t: Date.parse("2020-04-06"), y: 5 },
@@ -76,7 +77,7 @@ const PercentTestsChart = () => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
 
-  const [seriesData, setSeriesData] = useState(defaultSeriesData);
+  const [seriesData, setSeriesData] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
 
   const datasetLabel = "% of Positive Tests";
@@ -144,7 +145,8 @@ const PercentTestsChart = () => {
       })
         .then((res) => res.text())
         .then((csvData) => {
-          setSeriesData(parseCsvData(csvData));
+      setSeriesData(parseCsvData(csvData));
+
         })
         .catch((error) => {
           console.error(error);
@@ -159,10 +161,17 @@ const PercentTestsChart = () => {
     }
   }, [dataFetched, seriesData]);
 
+  const isDataReady = () => {
+    return seriesData !== null;
+  };
+
   return (
-    <div className="chart-container">
-      <canvas ref={chartContainer} />
-    </div>
+    <>
+      <div className={isDataReady()? "chart-container": "chart-container hidden-chart" }>
+        <canvas  ref={chartContainer} />
+      </div>
+      { isDataReady()? <></> : <LoadingComponent/> }
+    </>
   );
 };
 
