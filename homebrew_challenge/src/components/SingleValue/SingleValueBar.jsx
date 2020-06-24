@@ -168,46 +168,44 @@ WHERE {
   }
 
   return (
-    <div className="singlevalues">
     <>
-    <div className={isDataReady()? "singlevalues": "singlevalues hidden-values" }>
-      <SingleValue
-        id="dailyCases"
-        title={"Cases " + getRelativeDate(dailyCases.date)}
-        value={dailyCases.value}
-      />
-      <SingleValue
-        id="totalCases"
-        title="Total Cases"
-        value={totalCases.value}
-      />
-      <SingleValue
-        id="dailyFatalities"
-        title={"Fatalities " + getRelativeDate(dailyCases.date)}
-        value={dailyFatalities.value}
-      />
-      <SingleValue
-        id="totalFatalities"
-        title="Total Fatalities"
-        value={totalFatalities.value}
-      />
-      <SingleValue
-        id="fatalityCaseRatio"
-        title="Fatality / Case Ratio"
-        value={fatalityCaseRatio}
-      />
-      <SingleValue
-        id="dailyTestsCompleted"
-        title="Daily Tests Completed"
-        value={dailyTestsCompleted.value}
-      />
-      <SingleValue
-        id="totalTestsCompleted"
-        title="Total Tests Completed"
-        value={totalTestsCompleted.value}
-      />
-    </div>
-    { isDataReady()? <></> : <LoadingComponent/> }
+      <div className="singlevalues">
+        <SingleValue
+          id="dailyCases"
+          title={"Cases " + getRelativeDate(dailyCases.date)}
+          value={dailyCases.value}
+        />
+        <SingleValue
+          id="totalCases"
+          title="Total Cases"
+          value={totalCases.value}
+        />
+        <SingleValue
+          id="dailyFatalities"
+          title={"Fatalities " + getRelativeDate(dailyCases.date)}
+          value={dailyFatalities.value}
+        />
+        <SingleValue
+          id="totalFatalities"
+          title="Total Fatalities"
+          value={totalFatalities.value}
+        />
+        <SingleValue
+          id="fatalityCaseRatio"
+          title="Fatality / Case Ratio"
+          value={fatalityCaseRatio}
+        />
+        <SingleValue
+          id="dailyTestsCompleted"
+          title="Daily Tests Completed"
+          value={dailyTestsCompleted.value}
+        />
+        <SingleValue
+          id="totalTestsCompleted"
+          title="Total Tests Completed"
+          value={totalTestsCompleted.value}
+        />
+      </div>
     </>
   );
 }
