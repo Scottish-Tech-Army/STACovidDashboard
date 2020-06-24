@@ -6,6 +6,9 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import TestRenderer from "react-test-renderer";
 
+jest.mock('../HeatMap/Heatmap', () => () => 'Heatmap');
+jest.mock('../GeoHeatMap/GeoHeatMap', () => () => 'GeoHeatMap');
+
 var container = null;
 beforeEach(() => {
   // setup a DOM element as a render target

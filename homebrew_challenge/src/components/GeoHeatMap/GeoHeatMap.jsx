@@ -21,7 +21,7 @@ function parseCsvData(csvData) {
 
   var lines = readCsvData(csvData);
 
-  const { dates, placeDateValueMap } = createPlaceDateValueMap(lines);
+  const { placeDateValueMap } = createPlaceDateValueMap(lines);
 
   const regions = new Map();
 
