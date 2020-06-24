@@ -2,6 +2,7 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { formatRelative, format, subDays } from "date-fns";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -167,43 +168,45 @@ WHERE {
   }
 
   return (
-    <div className="singlevalues">
-      <SingleValue
-        id="dailyCases"
-        title={"Cases " + getRelativeDate(dailyCases.date)}
-        value={dailyCases.value}
-      />
-      <SingleValue
-        id="totalCases"
-        title="Total Cases"
-        value={totalCases.value}
-      />
-      <SingleValue
-        id="dailyFatalities"
-        title={"Fatalities " + getRelativeDate(dailyCases.date)}
-        value={dailyFatalities.value}
-      />
-      <SingleValue
-        id="totalFatalities"
-        title="Total Fatalities"
-        value={totalFatalities.value}
-      />
-      <SingleValue
-        id="fatalityCaseRatio"
-        title="Fatality / Case Ratio"
-        value={fatalityCaseRatio}
-      />
-      <SingleValue
-        id="dailyTestsCompleted"
-        title="Daily Tests Completed"
-        value={dailyTestsCompleted.value}
-      />
-      <SingleValue
-        id="totalTestsCompleted"
-        title="Total Tests Completed"
-        value={totalTestsCompleted.value}
-      />
-    </div>
+    <>
+      <div className="singlevalues">
+        <SingleValue
+          id="dailyCases"
+          title={"Cases " + getRelativeDate(dailyCases.date)}
+          value={dailyCases.value}
+        />
+        <SingleValue
+          id="totalCases"
+          title="Total Cases"
+          value={totalCases.value}
+        />
+        <SingleValue
+          id="dailyFatalities"
+          title={"Fatalities " + getRelativeDate(dailyCases.date)}
+          value={dailyFatalities.value}
+        />
+        <SingleValue
+          id="totalFatalities"
+          title="Total Fatalities"
+          value={totalFatalities.value}
+        />
+        <SingleValue
+          id="fatalityCaseRatio"
+          title="Fatality / Case Ratio"
+          value={fatalityCaseRatio}
+        />
+        <SingleValue
+          id="dailyTestsCompleted"
+          title="Daily Tests Completed"
+          value={dailyTestsCompleted.value}
+        />
+        <SingleValue
+          id="totalTestsCompleted"
+          title="Total Tests Completed"
+          value={totalTestsCompleted.value}
+        />
+      </div>
+    </>
   );
 }
 

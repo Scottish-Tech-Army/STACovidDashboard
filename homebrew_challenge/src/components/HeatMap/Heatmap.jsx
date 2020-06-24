@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Heatmap.css";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -220,27 +221,31 @@ function Heatmap({
     healthBoardsCasesDataset,
   ]);
 
-  function renderTableBody() {
-    var dataset = null;
+  function getDataSet() {
     if (VALUETYPE_DEATHS === valueType) {
       if (AREATYPE_COUNCIL_AREAS === areaType) {
-        dataset = councilAreasDeathsDataset;
+        return councilAreasDeathsDataset;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        dataset = healthBoardsDeathsDataset;
+        return healthBoardsDeathsDataset;
       }
     } else {
       // VALUETYPE_CASES === valueType
       if (AREATYPE_COUNCIL_AREAS === areaType) {
+        return null;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        dataset = healthBoardsCasesDataset;
+        return healthBoardsCasesDataset;
       }
     }
+  }
+
+  function renderTableBody() {
+    const dataset = getDataSet();
     if (dataset !== null) {
       return dataset.regions.map(createRegionTableline);
     }
-    return <></>;
+    return null;
   }
 
   function areaTitle() {
@@ -256,6 +261,12 @@ function Heatmap({
   function timeRangeTitle() {
     return VALUETYPE_DEATHS === valueType ? "Weekly count" : "Daily count";
   }
+
+  if (getDataSet() === null) {
+    return (
+      <LoadingComponent/>
+    );
+  };
 
   return (
     <div className="heatmap">

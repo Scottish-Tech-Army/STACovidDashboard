@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-=======
 .App {
   display: flex;
-   flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
 }
->>>>>>> 9660ae50fea0b5202ba767f13d93fdfdc1db1dad
-

@@ -257,8 +257,10 @@ const GeoHeatMap = ({
         touchZoom={false}
         scrollWheelZoom={false}
 */
+
+
   return (
-    <div id="map-container">
+    <div className="geo-map">
       <LeafletMap
         center={[57.8907, -4.7026]}
         id="map"
