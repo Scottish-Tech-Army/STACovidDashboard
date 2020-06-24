@@ -233,15 +233,18 @@ const GeoHeatMap = ({
     return locations.map(({ area, lat, lng }) => {
       if (dataset.has(area)) {
         const value = dataset.get(area);
+        const colour = (value === 0) ? "green" : "red";
+
         return (
           <Circle
+            key={area}
             center={[lat, lng]}
-            fillColor="red"
-            color="red"
+            fillColor={colour}
+            color={colour}
             fillOpacity={0.5}
             radius={calculateRadius(value)}
           >
-            <Popup>{area + " - " + popupUnit + ": " + value}</Popup>
+            <Popup key={area}>{area + " - " + popupUnit + ": " + value}</Popup>
           </Circle>
         );
       } else {
