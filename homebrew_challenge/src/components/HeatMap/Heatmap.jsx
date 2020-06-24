@@ -4,24 +4,11 @@ import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
 } from "../HeatmapContainer/HeatmapConsts";
-
-/*const defaultDataset = {
-  dates: ["1-May", "2-May", "3-May", "4-May", "5-May", "6-May"],
-  regions: [
-    {
-      name: "Edinburgh",
-      totalDeaths: "234",
-      counts: [-10, 1, 5, 10, 100, 200],
-    },
-    {
-      name: "Glasgow",
-      totalDeaths: "345",
-      counts: [10, 100, 200, 0, 1, 5],
-    },
-  ],
-};*/
-
-const queryUrl = "http://statistics.gov.scot/sparql.csv";
+import {
+  readCsvData,
+  createPlaceDateValueMap,
+  fetchAndStore,
+} from "../Utils/CsvUtils";
 
 const queryDeathsByCouncilArea = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
@@ -93,37 +80,6 @@ export function parseCsvData(csvData) {
   return { dates: dates, regions: regions };
 }
 
-function createPlaceDateValueMap(lines) {
-  const placeDateValueMap = new Map();
-  const dateSet = new Set();
-
-  lines.forEach(([date, place, count], i) => {
-    if (!placeDateValueMap.has(place)) {
-      placeDateValueMap.set(place, new Map());
-    }
-    var dateValueMap = placeDateValueMap.get(place);
-    dateValueMap.set(date, count === "*" ? 0 : Number(count));
-    dateSet.add(date);
-  });
-
-  const sortedPlaceDateValueMap = new Map([...placeDateValueMap].sort());
-  const dates = [...dateSet].sort();
-  return { dates: dates, placeDateValueMap: sortedPlaceDateValueMap };
-}
-
-export function readCsvData(csvData) {
-  var allTextLines = csvData.split(/\r\n|\n/);
-  var lines = [];
-
-  allTextLines.forEach((line) => {
-    if (line.length > 0) {
-      lines.push(line.split(",").map((s) => s.trim()));
-    }
-  });
-  lines.shift();
-  return lines;
-}
-
 // Exported for tests
 // Extract diffs of cumulative data
 export function parseDiffCsvData(csvData) {
@@ -157,7 +113,10 @@ export function parseDiffCsvData(csvData) {
   return { dates: dates, regions: regions };
 }
 
-function Heatmap({ valueType = VALUETYPE_DEATHS, areaType = AREATYPE_COUNCIL_AREAS }) {
+function Heatmap({
+  valueType = VALUETYPE_DEATHS,
+  areaType = AREATYPE_COUNCIL_AREAS,
+}) {
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 1, 5, 10, 100, 200];
 
@@ -219,22 +178,6 @@ function Heatmap({ valueType = VALUETYPE_DEATHS, areaType = AREATYPE_COUNCIL_ARE
   }
 
   useEffect(() => {
-    function fetchAndStore(query, setDataset, processCsvData) {
-      const form = new FormData();
-      form.append("query", query);
-      fetch(queryUrl, {
-        method: "POST",
-        body: form,
-      })
-        .then((res) => res.text())
-        .then((csvData) => {
-          setDataset(processCsvData(csvData));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-
     if (VALUETYPE_DEATHS === valueType) {
       if (AREATYPE_COUNCIL_AREAS === areaType) {
         if (null === councilAreasDeathsDataset) {
@@ -257,19 +200,25 @@ function Heatmap({ valueType = VALUETYPE_DEATHS, areaType = AREATYPE_COUNCIL_ARE
     } else {
       // VALUETYPE_CASES === valueType
       if (AREATYPE_COUNCIL_AREAS === areaType) {
-          // We don't have a dataset for this case
+        // We don't have a dataset for this case
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
         if (null === healthBoardsCasesDataset) {
-        fetchAndStore(
-          queryCasesByHealthBoard,
-          setHealthBoardsCasesDataset,
-          parseDiffCsvData
-        );
-    }
+          fetchAndStore(
+            queryCasesByHealthBoard,
+            setHealthBoardsCasesDataset,
+            parseDiffCsvData
+          );
+        }
       }
     }
-}, [valueType, areaType, councilAreasDeathsDataset, healthBoardsDeathsDataset, healthBoardsCasesDataset]);
+  }, [
+    valueType,
+    areaType,
+    councilAreasDeathsDataset,
+    healthBoardsDeathsDataset,
+    healthBoardsCasesDataset,
+  ]);
 
   function renderTableBody() {
     var dataset = null;
@@ -295,15 +244,17 @@ function Heatmap({ valueType = VALUETYPE_DEATHS, areaType = AREATYPE_COUNCIL_ARE
   }
 
   function areaTitle() {
-      return (AREATYPE_COUNCIL_AREAS === areaType) ? "Council Areas" : "Health Boards";
+    return AREATYPE_COUNCIL_AREAS === areaType
+      ? "Council Areas"
+      : "Health Boards";
   }
 
   function valueTitle() {
-      return (VALUETYPE_DEATHS === valueType) ? "Total deaths" : "Total cases";
+    return VALUETYPE_DEATHS === valueType ? "Total deaths" : "Total cases";
   }
 
   function timeRangeTitle() {
-      return (VALUETYPE_DEATHS === valueType) ? "Weekly count" : "Daily count";
+    return VALUETYPE_DEATHS === valueType ? "Weekly count" : "Daily count";
   }
 
   return (

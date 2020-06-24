@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { format, subDays } from "date-fns";
+import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
 import { Map as LeafletMap, Circle, TileLayer, Popup } from "react-leaflet";
+import { HEALTH_BOARD_LOCATIONS, COUNCIL_AREA_LOCATIONS } from "./Locations";
+import {
+  AREATYPE_COUNCIL_AREAS,
+  VALUETYPE_DEATHS,
+} from "../HeatmapContainer/HeatmapConsts";
+import {
+  readCsvData,
+  createPlaceDateValueMap,
+  fetchAndStore,
+} from "../Utils/CsvUtils";
 
 function parseCsvData(csvData) {
   function getLatestValue(dateValueMap) {
@@ -9,120 +19,37 @@ function parseCsvData(csvData) {
     return dateValueMap.get(lastDate);
   }
 
-  let allTextLines = csvData.split(/\r\n|\n/);
-  let lines = [];
+  var lines = readCsvData(csvData);
 
-  allTextLines.forEach((line) => {
-    if (line.length > 0) {
-      lines.push(line.split(",").map((s) => s.trim()));
-    }
-  });
-  lines.shift();
-
-  const valueMap = new Map();
-
-  lines.forEach(([date, areaname, count], i) => {
-    if (!valueMap.has(areaname)) {
-      valueMap.set(areaname, new Map());
-    }
-    var dateMap = valueMap.get(areaname);
-    dateMap.set(date, count === "*" ? 0 : Number(count));
-  });
-  console.log(valueMap);
+  const { dates, placeDateValueMap } = createPlaceDateValueMap(lines);
 
   const regions = new Map();
 
-  valueMap.forEach((dateMap, areaname) => {
-    regions.set(areaname, getLatestValue(dateMap));
+  placeDateValueMap.forEach((dateValueMap, areaname) => {
+    regions.set(areaname, getLatestValue(dateValueMap));
   });
   console.log(regions);
   return regions;
 }
 
-const latLngs = [
-  {
-    area: "Ayrshire and Arran",
-    lat: 55.445,
-    lng: -4.575,
-  },
-  {
-    area: "Borders",
-    lat: 55.2869,
-    lng: -2.7861,
-  },
-  {
-    area: "Dumfries and Galloway",
-    lat: 55.0701,
-    lng: -3.6053,
-  },
-  {
-    area: "Fife",
-    lat: 56.2082,
-    lng: -3.1495,
-  },
-  {
-    area: "Forth Valley",
-    lat: 56.0253,
-    lng: -3.849,
-  },
-  {
-    area: "Grampian",
-    lat: 57.1497,
-    lng: -2.0943,
-  },
-  {
-    area: "Greater Glasgow and Clyde",
-    lat: 55.8836,
-    lng: -4.321,
-  },
-  {
-    area: "Highland",
-    lat: 57.4596,
-    lng: -4.2264,
-  },
-  {
-    area: "Lanarkshire",
-    lat: 55.6736,
-    lng: -3.782,
-  },
-  {
-    area: "Lothian",
-    lat: 55.9484,
-    lng: -3.2121,
-  },
-  {
-    area: "Orkney",
-    lat: 58.9809,
-    lng: -2.9605,
-  },
-  {
-    area: "Shetland",
-    lat: 60.158,
-    lng: -1.1659,
-  },
-  {
-    area: "Tayside",
-    lat: 56.462,
-    lng: -2.97,
-  },
-  {
-    area: "Western Isles",
-    lat: 57.1667,
-    lng: -7.3594,
-  },
-];
-
-const GeoHeatMap = () => {
-  const [totalCases, setTotalCases] = useState(null);
-
-  const queryUrl = "http://statistics.gov.scot/sparql.csv";
+const GeoHeatMap = ({
+  valueType = VALUETYPE_DEATHS,
+  areaType = AREATYPE_COUNCIL_AREAS,
+}) => {
+  const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
+  const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
+    null
+  );
+  const [totalDeathsByCouncilArea, setTotalDeathsByCouncilArea] = useState(
+    null
+  );
 
   const calculateRadius = (totalCases) => {
     return Math.sqrt(totalCases) * 500;
   };
 
   useEffect(() => {
-    const query =
+    const queryTotalCasesByHealthBoard =
       `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
     PREFIX qb: <http://purl.org/linked-data/cube#>
@@ -132,7 +59,7 @@ const GeoHeatMap = () => {
         ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> )
        }
        VALUES (?perioduri ?date) {` +
-      getDateValueClause() +
+      getDaysDateValueClause() +
       `}
       ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
       ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
@@ -143,7 +70,7 @@ const GeoHeatMap = () => {
       ?obs dim:refPeriod ?perioduri .
     }`;
 
-    function getDateValueClause() {
+    function getDaysDateValueClause() {
       const today = Date.now();
       const yesterday = subDays(Date.now(), 1);
 
@@ -157,33 +84,155 @@ const GeoHeatMap = () => {
           '" )'
         );
       };
-
       return singleLine(today) + singleLine(yesterday);
     }
 
-    const form = new FormData();
-    form.append("query", query);
-    fetch(queryUrl, {
-      method: "POST",
-      body: form,
-    })
-      .then((res) => res.text())
-      .then((csvData) => {
-        setTotalCases(parseCsvData(csvData));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    const queryTotalDeathsByCouncilArea =
+      `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>    SELECT ?date ?areaname ?count
+        WHERE {
+          VALUES (?perioduri ?date) {` +
+      getYearsDateValueClause() +
+      `}
+        ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+        ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+        ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+        ?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.
+        ?obs <http://statistics.gov.scot/def/dimension/locationOfDeath> <http://statistics.gov.scot/def/concept/location-of-death/all>.
+        ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+        ?obs dim:refArea ?areauri .
+        ?obs dim:refPeriod ?perioduri .
+        ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .
+        ?areauri rdfs:label ?areaname
+        }`;
+
+    function getYearsDateValueClause() {
+      const thisYear = Date.now();
+      const lastYear = subYears(Date.now(), 1);
+      const singleLine = (date) => {
+        const dateString = format(date, "yyyy");
+        return (
+          "( <http://reference.data.gov.uk/id/year/" +
+          dateString +
+          '> "' +
+          dateString +
+          '" )'
+        );
+      };
+      return singleLine(thisYear) + singleLine(lastYear);
+    }
+
+    const queryTotalDeathsByHealthBoard =
+      `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>    SELECT ?date ?areaname ?count
+    WHERE {
+      VALUES (?perioduri ?date) {` +
+      getDateValueClause() +
+      `}
+    ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+    ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+    ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+    ?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.
+    ?obs <http://statistics.gov.scot/def/dimension/locationOfDeath> <http://statistics.gov.scot/def/concept/location-of-death/all>.
+    ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+    ?obs dim:refArea ?areauri .
+    ?obs dim:refPeriod ?perioduri .
+    ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+    ?areauri rdfs:label ?areaname
+    }`;
+
+    function getDateValueClause() {
+      const thisYear = Date.now();
+      const lastYear = subYears(Date.now(), 1);
+      const singleLine = (date) => {
+        const dateString = format(date, "yyyy");
+        return (
+          "( <http://reference.data.gov.uk/id/year/" +
+          dateString +
+          '> "' +
+          dateString +
+          '" )'
+        );
+      };
+      return singleLine(thisYear) + singleLine(lastYear);
+    }
+
+    if (VALUETYPE_DEATHS === valueType) {
+      if (AREATYPE_COUNCIL_AREAS === areaType) {
+        if (null === totalDeathsByCouncilArea) {
+          fetchAndStore(
+            queryTotalDeathsByCouncilArea,
+            setTotalDeathsByCouncilArea,
+            parseCsvData
+          );
+        }
+      } else {
+        // AREATYPE_HEALTH_BOARDS == areaType
+        if (null === totalDeathsByHealthBoard) {
+          fetchAndStore(
+            queryTotalDeathsByHealthBoard,
+            setTotalDeathsByHealthBoard,
+            parseCsvData
+          );
+        }
+      }
+    } else {
+      // VALUETYPE_CASES === valueType
+      if (AREATYPE_COUNCIL_AREAS === areaType) {
+        // We don't have a dataset for this case
+      } else {
+        // AREATYPE_HEALTH_BOARDS == areaType
+        if (null === totalCasesByHealthBoard) {
+          fetchAndStore(
+            queryTotalCasesByHealthBoard,
+            setTotalCasesByHealthBoard,
+            parseCsvData
+          );
+        }
+      }
+    }
+  }, [
+    areaType,
+    valueType,
+    totalCasesByHealthBoard,
+    totalDeathsByCouncilArea,
+    totalDeathsByHealthBoard,
+  ]);
 
   const regionCircles = () => {
-    if (totalCases === null) {
+    var dataset = null;
+    var locations = null;
+    if (AREATYPE_COUNCIL_AREAS === areaType) {
+      locations = COUNCIL_AREA_LOCATIONS;
+
+      if (VALUETYPE_DEATHS === valueType) {
+        dataset = totalDeathsByCouncilArea;
+      } else {
+        // VALUETYPE_CASES === valueType
+        // No dataset here
+      }
+    } else {
+      // AREATYPE_HEALTH_BOARDS == areaType
+      locations = HEALTH_BOARD_LOCATIONS;
+
+      if (VALUETYPE_DEATHS === valueType) {
+        dataset = totalDeathsByHealthBoard;
+      } else {
+        // VALUETYPE_CASES === valueType
+        dataset = totalCasesByHealthBoard;
+      }
+    }
+
+    if (dataset === null || locations === null) {
       return <></>;
     }
 
-    return latLngs.map(({ area, lat, lng }) => {
-      if (totalCases.has(area)) {
-        const value = totalCases.get(area);
+    const popupUnit =
+      VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
+
+    return locations.map(({ area, lat, lng }) => {
+      if (dataset.has(area)) {
+        const value = dataset.get(area);
         return (
           <Circle
             center={[lat, lng]}
@@ -192,7 +241,7 @@ const GeoHeatMap = () => {
             fillOpacity={0.5}
             radius={calculateRadius(value)}
           >
-            <Popup>{area + " - Total Cases: " + value}</Popup>
+            <Popup>{area + " - " + popupUnit + ": " + value}</Popup>
           </Circle>
         );
       } else {
@@ -201,7 +250,13 @@ const GeoHeatMap = () => {
       }
     });
   };
-
+  /*        zoomDelta={false}
+        doubleClickZoom={false}
+        dragging={false}
+        trackResize={false}
+        touchZoom={false}
+        scrollWheelZoom={false}
+*/
   return (
     <div id="map-container">
       <LeafletMap
@@ -209,12 +264,6 @@ const GeoHeatMap = () => {
         id="map"
         zoom={7.25}
         zoomSnap={0.25}
-        zoomDelta={false}
-        doubleClickZoom={false}
-        dragging={false}
-        trackResize={false}
-        touchZoom={false}
-        scrollWheelZoom={false}
       >
         <TileLayer
           url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
