@@ -24,7 +24,7 @@ const App = () => {
       </Navbar>
 
       <Container fluid className="pt-3">
-        <div class="section">
+        <div className="section">
           <span id="icon">
             <FontAwesomeIcon icon={faInfoCircle} />
           </span>
@@ -43,10 +43,10 @@ const App = () => {
       <Container fluid>
         <div className="widgets_block">
           <Row>
-            <Col>
+            <Col xs={12} md={8}>
               <HeatmapContainer />
             </Col>
-            <Col>
+            <Col xs={6} md={4}>
               <PercentTestsChart />
             </Col>
           </Row>
@@ -65,7 +65,7 @@ const App = () => {
             <ul className="list-inline">
               <li
                 className="list-inline-item"
-                style={{ "margin-right": "200px" }}
+                style={{ marginRight: "200px" }}
               >
                 <a href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/">
                   Scottish Government guidance
@@ -73,7 +73,7 @@ const App = () => {
               </li>
               <li
                 className="list-inline-item"
-                style={{ "margin-right": "200px" }}
+                style={{ marginRight: "200px" }}
               >
                 <a href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19">
                   NHS inform
@@ -81,7 +81,7 @@ const App = () => {
               </li>
               <li
                 className="list-inline-item"
-                style={{ "margin-right": "200px" }}
+                style={{ marginRight: "200px" }}
               >
                 <a href="https://www.scottishtecharmy.org/">STA pages</a>
               </li>
@@ -90,7 +90,7 @@ const App = () => {
 
           <div className="footer-copyright text-center py-3">
             © 2020 Copyright:
-            <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+            <a href="https://www.scottishtecharmy.org/">ScottishTechArmy.org</a>
           </div>
         </Container>
       </footer>

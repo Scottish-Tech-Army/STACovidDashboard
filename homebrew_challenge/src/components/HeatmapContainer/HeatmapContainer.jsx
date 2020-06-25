@@ -67,12 +67,10 @@ function HeatmapContainer() {
         </Col>
       </Row>
       <Row>
-    {/*  <div class="col">widget 1</div>
-      <div class="col">widget 2</div> */}
-        <Col xs={6} md={4}>
+        <Col xs={9} md={6}>
           <Heatmap areaType={areaType} valueType={valueType} />
         </Col>
-        <Col xs={12} md={8}>
+        <Col xs={9} md={6}>
           <GeoHeatMap areaType={areaType} valueType={valueType} />
         </Col>
       </Row>
