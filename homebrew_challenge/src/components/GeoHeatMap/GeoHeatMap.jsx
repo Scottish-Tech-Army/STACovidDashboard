@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
+import "leaflet/dist/leaflet.css";
 import { Map as LeafletMap, Circle, TileLayer, Popup } from "react-leaflet";
 import { HEALTH_BOARD_LOCATIONS, COUNCIL_AREA_LOCATIONS } from "./Locations";
 import {
@@ -261,6 +262,8 @@ const GeoHeatMap = ({
         scrollWheelZoom={false}
 */
 
+const tilesStadiaAlidadeSmooth = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 
   return (
     <div className="geo-map">
@@ -268,10 +271,11 @@ const GeoHeatMap = ({
         center={[57.8907, -4.7026]}
         id="map"
         zoom={7.25}
-        zoomSnap={0.25}
+        
+        maxZoom={20}
       >
         <TileLayer
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+          url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         {regionCircles()}
