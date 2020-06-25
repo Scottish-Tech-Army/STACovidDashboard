@@ -19,8 +19,9 @@ SELECT ?date ?areaname ?count WHERE {
 ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
 ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
 ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
-?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.
+?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
 ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
 ?obs dim:refArea ?areauri .
 ?obs dim:refPeriod ?perioduri .
 ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .
@@ -36,15 +37,40 @@ SELECT ?date ?areaname ?count WHERE {
 ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
 ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
 ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
-?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.
+?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
 ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
 ?obs dim:refArea ?areauri .
-?obs dim:refPeriod ?perioduri .
 ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
 ?areauri rdfs:label ?areaname.
+?obs dim:refPeriod ?perioduri .
 ?perioduri rdfs:label ?date
 FILTER regex(?date, "^w")
 }`;
+
+// TODO work in progress - pulling down all deaths at once
+const queryDeaths = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+
+SELECT ?date ?areatype ?shortareatype ?areaname ?count WHERE {
+VALUES (?areatype ?shortareatype) {
+ ( <http://statistics.gov.scot/def/foi/collection/council-areas> "councilArea" )
+ ( <http://statistics.gov.scot/def/foi/collection/health-boards> "healthBoard" )
+}
+?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
+?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+?obs dim:refArea ?areauri .
+?areauri rdfs:label ?areaname.
+?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+?obs dim:refPeriod ?perioduri .
+?perioduri rdfs:label ?date
+FILTER regex(?date, "^w")
+}`;
+
 
 const queryCasesByHealthBoard = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
