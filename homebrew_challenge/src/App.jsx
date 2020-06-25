@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
-import Nav from 'react-bootstrap/Nav';
+import Nav from "react-bootstrap/Nav";
 
 const App = () => {
   return (
@@ -23,17 +23,20 @@ const App = () => {
         </Nav>
       </Navbar>
 
-      <Container fluid className="pt-3">
+      <Container fluid className="pt-3 d-none d-sm-block">
         <div className="section">
           <span id="icon">
-            <FontAwesomeIcon icon={faInfoCircle} />
+            <FontAwesomeIcon icon={faInfoCircle} size="3x" color="#319bd5" />
           </span>
           <span id="message">
-            The Scottish Government is the devolved government for Scotland and
-            has a range of responsibilities that include: the economy,
-            education, health, justice, rural affairs, housing, environment,
-            equal opportunities, consumer advocacy and advice, transport and
-            taxation.
+            Provisional dates for the relaxation of travel restrictions,
+            restarting of the hospitality industry and reopening of hairdressers
+            are among further route map measures announced today (Wednesday 24,
+            June) by First Minister Nicola Sturgeon. For more information visit
+            <a href="https://www.gov.scot/news/further-route-map-detail-announced/">
+              https://www.gov.scot/news/further-route-map-detail-announced/
+            </a>
+            .
           </span>
         </div>
       </Container>
@@ -63,26 +66,17 @@ const App = () => {
 
           <Row style={{ margin: "0 0 20px 20px" }}>
             <ul className="list-inline">
-              <li
-                className="list-inline-item"
-                style={{ marginRight: "200px" }}
-              >
+              <li className="list-inline-item" style={{ marginRight: "200px" }}>
                 <a href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/">
                   Scottish Government guidance
                 </a>
               </li>
-              <li
-                className="list-inline-item"
-                style={{ marginRight: "200px" }}
-              >
+              <li className="list-inline-item" style={{ marginRight: "200px" }}>
                 <a href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19">
                   NHS inform
                 </a>
               </li>
-              <li
-                className="list-inline-item"
-                style={{ marginRight: "200px" }}
-              >
+              <li className="list-inline-item" style={{ marginRight: "200px" }}>
                 <a href="https://www.scottishtecharmy.org/">STA pages</a>
               </li>
             </ul>

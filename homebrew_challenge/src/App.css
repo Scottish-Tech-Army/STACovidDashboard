@@ -16,16 +16,16 @@
 }
 
 #icon {
-  width: 5%;
+  width: 10%;
   padding-left: 30px;
 }
 #message {
-  width: 90%;
+  width: 85%;
   font-weight: bold;
 }
 
 .widgets_block {
-  height: 600px;
+  /*height: 600px;*/
 }
 .widgets_block .row {
   height: 100%;
