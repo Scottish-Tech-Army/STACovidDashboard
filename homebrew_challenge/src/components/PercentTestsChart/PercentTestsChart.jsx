@@ -77,6 +77,7 @@ const PercentTestsChart = () => {
     function createChart(chartRef) {
       const chart = new Chart(chartRef, {
         type: "line",
+
         data: {
           datasets: [
             {
@@ -86,6 +87,8 @@ const PercentTestsChart = () => {
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             yAxes: [
               {
@@ -136,8 +139,7 @@ const PercentTestsChart = () => {
       })
         .then((res) => res.text())
         .then((csvData) => {
-      setSeriesData(parseCsvData(csvData));
-
+          setSeriesData(parseCsvData(csvData));
         })
         .catch((error) => {
           console.error(error);
@@ -158,10 +160,14 @@ const PercentTestsChart = () => {
 
   return (
     <>
-      <div className={isDataReady()? "chart-container": "chart-container hidden-chart" }>
-        <canvas  ref={chartContainer} />
+      <div
+        className={
+          isDataReady() ? "chart-container" : "chart-container hidden-chart"
+        }
+      >
+        <canvas ref={chartContainer} />
       </div>
-      { isDataReady()? <></> : <LoadingComponent/> }
+      {isDataReady() ? <></> : <LoadingComponent />}
     </>
   );
 };
