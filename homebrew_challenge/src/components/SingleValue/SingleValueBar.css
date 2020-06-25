@@ -1,27 +1,18 @@
-.singlevalues {
-    display: flex;
-    flex-direction: row;
+.card {
+  margin: 10px;
+  height: 70px;
 }
 
-.singlevalue {
-  height: 100px;
-  width: 200px;
-  background-color: lightgrey;
-  color: black;
+.card-body {
+  padding: 0 !important;
+  border: 2px solid black;
+  /*    border-radius: 5px!important;*/
+  background-color: #d3d3d3;
   text-align: center;
 }
 
-.singlevalue .title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.singlevalue .value {
-  font-size: 24px;
-  font-weight: bold;
-  color: blue;
-}
-
-.hidden-values {
-  display: none;
+.card-title,
+.card-text {
+  height: 50%;
+  margin: 0 !important;
 }

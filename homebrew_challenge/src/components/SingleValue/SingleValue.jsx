@@ -1,11 +1,14 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
 
 function SingleValue({ id, title = "Missing title", value = "Missing value" }) {
   return (
-    <div className="singlevalue" id={id}>
-      <div className="title">{title}</div>
-      <div className="value">{value}</div>
-    </div>
+    <Card>
+      <Card.Body className="card-body border-0">
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>{value}</Card.Text>
+      </Card.Body>
+    </Card>
   );
 }
 

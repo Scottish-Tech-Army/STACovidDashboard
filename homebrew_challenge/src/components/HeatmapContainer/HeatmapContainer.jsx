@@ -67,6 +67,8 @@ function HeatmapContainer() {
         </Col>
       </Row>
       <Row>
+    {/*  <div class="col">widget 1</div>
+      <div class="col">widget 2</div> */}
         <Col xs={6} md={4}>
           <Heatmap areaType={areaType} valueType={valueType} />
         </Col>

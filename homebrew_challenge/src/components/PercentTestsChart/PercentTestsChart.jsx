@@ -3,16 +3,7 @@ import Chart from "chart.js";
 import "./PercentTestsChart.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
-const defaultSeriesData = [
-  { t: Date.parse("2020-04-06"), y: 5 },
-  { t: Date.parse("2020-04-07"), y: 7 },
-  { t: Date.parse("2020-04-08"), y: 12 },
-  { t: Date.parse("2020-04-09"), y: 16 },
-  { t: Date.parse("2020-04-10"), y: 25 },
-  { t: Date.parse("2020-04-11"), y: 22 },
-];
-
-const queryUrl = "http://statistics.gov.scot/sparql.csv";
+const queryUrl = "https://statistics.gov.scot/sparql.csv";
 
 const query = `PREFIX qb: <http://purl.org/linked-data/cube#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>

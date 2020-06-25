@@ -10,6 +10,7 @@ import {
   createPlaceDateValueMap,
   fetchAndStore,
 } from "../Utils/CsvUtils";
+import Table from "react-bootstrap/Table";
 
 const queryDeathsByCouncilArea = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
@@ -263,14 +264,12 @@ function Heatmap({
   }
 
   if (getDataSet() === null) {
-    return (
-      <LoadingComponent/>
-    );
-  };
+    return <LoadingComponent />;
+  }
 
   return (
     <div className="heatmap">
-      <table>
+      <Table size="sm">
         <thead>
           <tr>
             <th>{areaTitle()}</th>
@@ -279,7 +278,7 @@ function Heatmap({
           </tr>
         </thead>
         <tbody>{renderTableBody()}</tbody>
-      </table>
+      </Table>
     </div>
   );
 }
