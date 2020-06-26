@@ -96,24 +96,24 @@ const App = () => {
           <Row style={{ margin: "0 0 20px 20px" }}>
             <ul className="list-inline">
               <li className="list-inline-item" style={{ marginRight: "200px" }}>
-                <a href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/">
+                <a href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/" target="_blank">
                   Scottish Government guidance
                 </a>
               </li>
               <li className="list-inline-item" style={{ marginRight: "200px" }}>
-                <a href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19">
+                <a href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19" target="_blank">
                   NHS inform
                 </a>
               </li>
               <li className="list-inline-item" style={{ marginRight: "200px" }}>
-                <a href="https://www.scottishtecharmy.org/">STA pages</a>
+                <a href="https://www.scottishtecharmy.org/" target="_blank">STA pages</a>
               </li>
             </ul>
           </Row>
 
           <div className="footer-copyright text-center py-3">
             © 2020 Copyright:
-            <a href="https://www.scottishtecharmy.org/">ScottishTechArmy.org</a>
+            <a href="https://www.scottishtecharmy.org/" target="_blank">ScottishTechArmy.org</a>
           </div>
         </Container>
       </footer>
