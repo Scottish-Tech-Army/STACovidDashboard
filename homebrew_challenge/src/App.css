@@ -46,3 +46,11 @@
 .row {
   height: 125%;
 }
+
+#logo img {
+  height: 50px;
+}
+#logo {
+  -ms-flex: 0 0 230px;
+  flex: 0 0 230px;
+}

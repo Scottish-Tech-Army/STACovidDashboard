@@ -24,13 +24,16 @@ const App = () => {
 
   return (
     <div className="App">
-      <Navbar>
-        <Nav activeKey="/home">
-          <Nav.Item>
-            <img src="final_logo.PNG" alt="" />
-          </Nav.Item>
-        </Nav>
-      </Navbar>
+      <Container fluid>
+        <Row>
+          <Col id="logo">
+            <img id="logo" src="STALogo.png" alt="Scottish Tech Army Logo" />
+          </Col>
+          <Col className="text-center">
+            <h1>Covid-19 Dashboard</h1>
+          </Col>
+        </Row>
+      </Container>
 
       <Container
         fluid
@@ -54,21 +57,21 @@ const App = () => {
       <SingleValueBar />
 
       <Container fluid className="widgets_block">
-      <Row>
-        <Col xs={12} md={8}>
-          <HeatmapDataSelector
-            areaType={areaType}
-            valueType={valueType}
-            setAreaType={setAreaType}
-            setValueType={setValueType}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} md={8}>
-          <hr className="underHeatmapSelector"/>
-        </Col>
-      </Row>
+        <Row>
+          <Col xs={12} md={8}>
+            <HeatmapDataSelector
+              areaType={areaType}
+              valueType={valueType}
+              setAreaType={setAreaType}
+              setValueType={setValueType}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={8}>
+            <hr className="underHeatmapSelector" />
+          </Col>
+        </Row>
         <Row>
           <Col xs={12} md={4}>
             <Heatmap areaType={areaType} valueType={valueType} />
