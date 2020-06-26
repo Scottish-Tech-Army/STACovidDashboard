@@ -14,6 +14,7 @@ import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSel
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TotalCasesChart from './components/TotalCasesChart/TotalCasesChart';
+import TotalDeathsChart from './components/TotalDeathsChart/TotalDeathsChart';
 
 import {
   AREATYPE_HEALTH_BOARDS,
@@ -82,7 +83,7 @@ const App = () => {
             <GeoHeatMap areaType={areaType} valueType={valueType} />
           </Col>
           <Col xs={12} md={4}>
-            <TotalCasesChart />
+            <TotalDeathsChart />
           </Col>
         </Row>
       </Container>
