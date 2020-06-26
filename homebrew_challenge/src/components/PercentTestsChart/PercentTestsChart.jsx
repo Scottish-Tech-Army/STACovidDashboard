@@ -83,6 +83,8 @@ const PercentTestsChart = () => {
             {
               label: datasetLabel,
               data: seriesData,
+              backgroundColor: " #fdeee8",
+              borderColor: "#ec6730",
             },
           ],
         },
