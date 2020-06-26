@@ -1,18 +1,21 @@
-.card {
-  margin: 10px;
-  height: 70px;
+.single-value-bar {
+  margin-top: 2rem;
 }
 
-.card-body {
-  padding: 0 !important;
-  border: 2px solid black;
-  /*    border-radius: 5px!important;*/
-  background-color: #d5e9f6;
+.single-value {
+  color: White;
+  background-color: #3192d0;
   text-align: center;
 }
 
-.card-title,
-.card-text {
-  height: 50%;
-  margin: 0 !important;
+.single-value-header {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.single-value-total {
+  padding: 0.2rem 1rem 2rem 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }

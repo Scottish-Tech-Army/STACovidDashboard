@@ -171,7 +171,7 @@ WHERE {
   }
 
   return (
-    <Container fluid>
+    <Container fluid className="single-value-bar">
       <Row>
         <Col>
           <SingleValue

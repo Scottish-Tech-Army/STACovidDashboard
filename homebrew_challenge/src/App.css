@@ -22,7 +22,7 @@
   margin-top: 8px;
   margin-bottom: 8px;
 }
-.underSingleValues {
+.full-width-hr {
   border: 1px solid #319bd5;
 }
 
@@ -51,9 +51,34 @@
 }
 
 #logo img {
-  height: 50px;
+  height: 6rem;
+  margin-bottom: 2rem;
 }
 #logo {
-  -ms-flex: 0 0 230px;
-  flex: 0 0 230px;
+  /* -ms-flex: 0 0 230px;
+  flex: 0 0 230px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.info-bar {
+  margin-top: 1rem;
+  padding:
+}
+
+.route-map-link:before {
+  content: "\00a0 ";
+}
+
+.header {
+  background-color: #00001a;
+  color: White;
+  height: 8rem;
+}
+
+.header-title {
+  margin-bottom: 2rem;
+  margin-left: 2rem;
 }

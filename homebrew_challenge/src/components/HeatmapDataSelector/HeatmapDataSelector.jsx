@@ -4,6 +4,7 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./HeatmapDataSelector.css";
 
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -40,29 +41,29 @@ function HeatmapDataSelector({
   }
 
   const casesText =
-    "Cases" +
+    "Total Cases" +
     (AREATYPE_COUNCIL_AREAS === areaType ? " [Data not available]" : "");
   const councilAreasText =
-    "Council areas" +
+    "Council Areas" +
     (VALUETYPE_CASES === valueType ? " [Data not available]" : "");
 
   return (
-    <Container fluid className="justify-content-between align-items-center">
-      <Row className="justify-content-between align-items-stretch">
+    <Container fluid>
+      <Row>
         <Col>
           <span class="align-middle">
-            <strong>View data by</strong>
+            <strong>View data by:</strong>
           </span>
-        </Col>
-        <Col className="h-100">
+
           <ToggleButtonGroup
+            className="toggle-button-group"
             name="areaType"
             type="radio"
             value={areaType}
             onChange={val => setAreaType(val)}
           >
             <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-              Health boards
+              Health Boards
             </ToggleButton>
             <ToggleButton
               id="councilAreas"
@@ -72,16 +73,16 @@ function HeatmapDataSelector({
               {councilAreasText}
             </ToggleButton>
           </ToggleButtonGroup>
-        </Col>
-        <Col className="h-100">
+
           <ToggleButtonGroup
+            className="toggle-button-group"
             name="valueType"
             type="radio"
             value={valueType}
             onChange={val => setValueType(val)}
           >
             <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-              Deaths
+              Total Deaths
             </ToggleButton>
             <ToggleButton
               id="cases"
