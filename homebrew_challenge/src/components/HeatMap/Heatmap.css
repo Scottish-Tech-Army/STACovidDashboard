@@ -4,6 +4,8 @@
 
 .heatmap table {
   text-align: center;
+  overflow-y: auto;
+/*  height: 20vh;*/
 }
 
 .heatmap table td:first-child , .heatmap table th:first-child {
@@ -28,3 +30,27 @@
 .heatmap .l-5 {
   stroke: #b30000;
 }
+
+/*table {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+thead {
+    flex: 0 0 auto;
+}
+
+tbody {
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+*/
