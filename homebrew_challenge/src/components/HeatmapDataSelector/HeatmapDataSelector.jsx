@@ -9,14 +9,14 @@ import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
-  VALUETYPE_DEATHS,
+  VALUETYPE_DEATHS
 } from "./HeatmapConsts";
 
 function HeatmapDataSelector({
   areaType,
   setAreaType,
   valueType,
-  setValueType,
+  setValueType
 }) {
   if (
     areaType !== AREATYPE_COUNCIL_AREAS &&
@@ -48,50 +48,50 @@ function HeatmapDataSelector({
 
   return (
     <Container fluid className="justify-content-between align-items-center">
-<Row className="justify-content-between align-items-stretch">
-      <Col>
-        <span class="align-middle">
-          <strong>View data by</strong>
-        </span>
-      </Col>
-      <Col className="h-100">
-        <ToggleButtonGroup
-          name="areaType"
-          type="radio"
-          value={areaType}
-          onChange={(val) => setAreaType(val)}
-        >
-          <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-            Health boards
-          </ToggleButton>
-          <ToggleButton
-            id="councilAreas"
-            value={AREATYPE_COUNCIL_AREAS}
-            disabled={VALUETYPE_CASES === valueType}
+      <Row className="justify-content-between align-items-stretch">
+        <Col>
+          <span class="align-middle">
+            <strong>View data by</strong>
+          </span>
+        </Col>
+        <Col className="h-100">
+          <ToggleButtonGroup
+            name="areaType"
+            type="radio"
+            value={areaType}
+            onChange={val => setAreaType(val)}
           >
-            {councilAreasText}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Col>
-      <Col className="h-100 align-self-stretch">
-        <ToggleButtonGroup
-          name="valueType"
-          type="radio"
-          value={valueType}
-          onChange={(val) => setValueType(val)}
-        >
-          <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-            Deaths
-          </ToggleButton>
-          <ToggleButton
-            id="cases"
-            value={VALUETYPE_CASES}
-            disabled={AREATYPE_COUNCIL_AREAS === areaType}
+            <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
+              Health boards
+            </ToggleButton>
+            <ToggleButton
+              id="councilAreas"
+              value={AREATYPE_COUNCIL_AREAS}
+              disabled={VALUETYPE_CASES === valueType}
+            >
+              {councilAreasText}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Col>
+        <Col className="h-100">
+          <ToggleButtonGroup
+            name="valueType"
+            type="radio"
+            value={valueType}
+            onChange={val => setValueType(val)}
           >
-            {casesText}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Col>
+            <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
+              Deaths
+            </ToggleButton>
+            <ToggleButton
+              id="cases"
+              value={VALUETYPE_CASES}
+              disabled={AREATYPE_COUNCIL_AREAS === areaType}
+            >
+              {casesText}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Col>
       </Row>
     </Container>
   );
