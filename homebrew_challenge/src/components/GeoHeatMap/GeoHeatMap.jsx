@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
+import "leaflet/dist/leaflet.css";
 import { Map as LeafletMap, Circle, TileLayer, Popup } from "react-leaflet";
 import { HEALTH_BOARD_LOCATIONS, COUNCIL_AREA_LOCATIONS } from "./Locations";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
-} from "../HeatmapContainer/HeatmapConsts";
+} from "../HeatmapDataSelector/HeatmapConsts";
 import {
   readCsvData,
   createPlaceDateValueMap,
@@ -73,6 +74,7 @@ const GeoHeatMap = ({
     function getDaysDateValueClause() {
       const today = Date.now();
       const yesterday = subDays(Date.now(), 1);
+      const dayBefore = subDays(Date.now(), 2);
 
       const singleLine = (date) => {
         const dateString = format(date, "yyyy-MM-dd");
@@ -84,7 +86,7 @@ const GeoHeatMap = ({
           '" )'
         );
       };
-      return singleLine(today) + singleLine(yesterday);
+      return singleLine(today) + singleLine(yesterday) + singleLine(yesterday) + singleLine(dayBefore);
     }
 
     const queryTotalDeathsByCouncilArea =
@@ -261,6 +263,8 @@ const GeoHeatMap = ({
         scrollWheelZoom={false}
 */
 
+const tilesStadiaAlidadeSmooth = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 
   return (
     <div className="geo-map">
@@ -268,10 +272,11 @@ const GeoHeatMap = ({
         center={[57.8907, -4.7026]}
         id="map"
         zoom={7.25}
-        zoomSnap={0.25}
+
+        maxZoom={20}
       >
         <TileLayer
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+          url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         {regionCircles()}

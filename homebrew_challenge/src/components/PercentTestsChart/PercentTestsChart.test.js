@@ -79,3 +79,12 @@ const csvData = `date,shortValue,count
 2020-03-04,total,1046
 2020-03-06,positive,11
 2020-03-06,total,1525`;
+
+const defaultSeriesData = [
+  { t: Date.parse("2020-04-06"), y: 5 },
+  { t: Date.parse("2020-04-07"), y: 7 },
+  { t: Date.parse("2020-04-08"), y: 12 },
+  { t: Date.parse("2020-04-09"), y: 16 },
+  { t: Date.parse("2020-04-10"), y: 25 },
+  { t: Date.parse("2020-04-11"), y: 22 },
+];

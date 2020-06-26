@@ -2,7 +2,9 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { formatRelative, format, subDays } from "date-fns";
-import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -71,6 +73,7 @@ export function getDateValueClause() {
   const today = Date.now();
   const yesterday = subDays(Date.now(), 1);
   const dayBefore = subDays(Date.now(), 2);
+  const twoDaysBefore = subDays(Date.now(), 3);
 
   const singleLine = (date) => {
     const dateString = format(date, "yyyy-MM-dd");
@@ -83,7 +86,7 @@ export function getDateValueClause() {
     );
   };
 
-  return singleLine(today) + singleLine(yesterday) + singleLine(dayBefore);
+  return singleLine(today) + singleLine(yesterday) + singleLine(dayBefore) + singleLine(twoDaysBefore);
 }
 
 function SingleValueBar() {
@@ -96,7 +99,7 @@ function SingleValueBar() {
   const [totalTestsCompleted, setTotalTestsCompleted] = useState(emptyDate);
   const [dataFetched, setDataFetched] = useState(false);
 
-  const queryUrl = "http://statistics.gov.scot/sparql.csv";
+  const queryUrl = "https://statistics.gov.scot/sparql.csv";
 
   // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
   const query =
@@ -155,7 +158,7 @@ WHERE {
           console.error(error);
         });
     }
-}, [dataFetched, query]);
+  }, [dataFetched, query]);
 
   function getRelativeDate(date) {
     var result = formatRelative(date, Date.now());
@@ -168,45 +171,59 @@ WHERE {
   }
 
   return (
-    <>
-      <div className="singlevalues">
-        <SingleValue
-          id="dailyCases"
-          title={"Cases " + getRelativeDate(dailyCases.date)}
-          value={dailyCases.value}
-        />
-        <SingleValue
-          id="totalCases"
-          title="Total Cases"
-          value={totalCases.value}
-        />
-        <SingleValue
-          id="dailyFatalities"
-          title={"Fatalities " + getRelativeDate(dailyCases.date)}
-          value={dailyFatalities.value}
-        />
-        <SingleValue
-          id="totalFatalities"
-          title="Total Fatalities"
-          value={totalFatalities.value}
-        />
-        <SingleValue
-          id="fatalityCaseRatio"
-          title="Fatality / Case Ratio"
-          value={fatalityCaseRatio}
-        />
-        <SingleValue
-          id="dailyTestsCompleted"
-          title="Daily Tests Completed"
-          value={dailyTestsCompleted.value}
-        />
-        <SingleValue
-          id="totalTestsCompleted"
-          title="Total Tests Completed"
-          value={totalTestsCompleted.value}
-        />
-      </div>
-    </>
+    <Container fluid>
+      <Row>
+        <Col>
+          <SingleValue
+            id="dailyCases"
+            title={"Cases " + getRelativeDate(dailyCases.date)}
+            value={dailyCases.value}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="totalCases"
+            title="Total Cases"
+            value={totalCases.value}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="dailyFatalities"
+            title={"Fatalities " + getRelativeDate(dailyFatalities.date)}
+            value={dailyFatalities.value}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="totalFatalities"
+            title="Total Fatalities"
+            value={totalFatalities.value}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="fatalityCaseRatio"
+            title="Fatality / Case Ratio"
+            value={fatalityCaseRatio}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="dailyTestsCompleted"
+            title="Daily Tests Completed"
+            value={dailyTestsCompleted.value}
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="totalTestsCompleted"
+            title="Total Tests Completed"
+            value={totalTestsCompleted.value}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

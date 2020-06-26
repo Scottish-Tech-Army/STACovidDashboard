@@ -32,7 +32,7 @@ export function createPlaceDateValueMap(lines) {
   return { dates: dates, placeDateValueMap: sortedPlaceDateValueMap };
 }
 
-const queryUrl = "http://statistics.gov.scot/sparql.csv";
+const queryUrl = "https://statistics.gov.scot/sparql.csv";
 
 // Retrieve a csv response to a query fetch, do some processing on it, then store the processed result
 export async function fetchAndStore(query, setDataset, processCsvData) {
