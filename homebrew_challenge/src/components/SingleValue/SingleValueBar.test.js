@@ -85,7 +85,8 @@ it("getDateValueClause", () => {
   expect(getDateValueClause()).toBe(
     '( <http://reference.data.gov.uk/id/day/2020-06-22> "2020-06-22" )' +
       '( <http://reference.data.gov.uk/id/day/2020-06-21> "2020-06-21" )' +
-      '( <http://reference.data.gov.uk/id/day/2020-06-20> "2020-06-20" )'
+      '( <http://reference.data.gov.uk/id/day/2020-06-20> "2020-06-20" )' +
+      '( <http://reference.data.gov.uk/id/day/2020-06-19> "2020-06-19" )'
   );
 });
 

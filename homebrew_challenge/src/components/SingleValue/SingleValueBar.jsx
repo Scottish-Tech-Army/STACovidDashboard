@@ -73,6 +73,7 @@ export function getDateValueClause() {
   const today = Date.now();
   const yesterday = subDays(Date.now(), 1);
   const dayBefore = subDays(Date.now(), 2);
+  const twoDaysBefore = subDays(Date.now(), 3);
 
   const singleLine = (date) => {
     const dateString = format(date, "yyyy-MM-dd");
@@ -85,7 +86,7 @@ export function getDateValueClause() {
     );
   };
 
-  return singleLine(today) + singleLine(yesterday) + singleLine(dayBefore);
+  return singleLine(today) + singleLine(yesterday) + singleLine(dayBefore) + singleLine(twoDaysBefore);
 }
 
 function SingleValueBar() {
@@ -189,7 +190,7 @@ WHERE {
         <Col>
           <SingleValue
             id="dailyFatalities"
-            title={"Fatalities " + getRelativeDate(dailyCases.date)}
+            title={"Fatalities " + getRelativeDate(dailyFatalities.date)}
             value={dailyFatalities.value}
           />
         </Col>
