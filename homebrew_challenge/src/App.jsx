@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import HeatmapContainer from "./components/HeatmapContainer/HeatmapContainer";
 import PercentTestsChart from "./components/PercentTestsChart/PercentTestsChart";
 import SingleValueBar from "./components/SingleValue/SingleValueBar";
 import Container from "react-bootstrap/Container";
@@ -11,8 +10,18 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
+import Heatmap from "./components/HeatMap/Heatmap";
+import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
+import {
+  AREATYPE_HEALTH_BOARDS,
+  VALUETYPE_DEATHS,
+} from "./components/HeatmapDataSelector/HeatmapConsts";
 
 const App = () => {
+  const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
+  const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
+
   return (
     <div className="App">
       <Navbar>
@@ -43,17 +52,28 @@ const App = () => {
 
       <SingleValueBar />
 
-      <Container fluid>
-        <div className="widgets_block">
-          <Row>
-            <Col xs={12} md={8}>
-              <HeatmapContainer />
-            </Col>
-            <Col xs={6} md={4}>
-              <PercentTestsChart />
-            </Col>
-          </Row>
-        </div>
+      <Container fluid className="widgets_block">
+        <Row>
+          <Col xs={12} md={8}>
+            <HeatmapDataSelector
+              areaType={areaType}
+              valueType={valueType}
+              setAreaType={setAreaType}
+              setValueType={setValueType}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={4}>
+            <Heatmap areaType={areaType} valueType={valueType} />
+          </Col>
+          <Col xs={12} md={4}>
+            <GeoHeatMap areaType={areaType} valueType={valueType} />
+          </Col>
+          <Col xs={12} md={4}>
+            <PercentTestsChart />
+          </Col>
+        </Row>
       </Container>
 
       <hr />

@@ -1,11 +1,9 @@
-import Heatmap from "../HeatMap/Heatmap";
-import React, { useState } from "react";
+import React from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import GeoHeatMap from "../GeoHeatMap/GeoHeatMap";
 
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -14,11 +12,33 @@ import {
   VALUETYPE_DEATHS,
 } from "./HeatmapConsts";
 
-function HeatmapContainer() {
-  const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
-  const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
+function HeatmapDataSelector({
+  areaType,
+  setAreaType,
+  valueType,
+  setValueType,
+}) {
+  if (
+    areaType !== AREATYPE_COUNCIL_AREAS &&
+    areaType !== AREATYPE_HEALTH_BOARDS
+  ) {
+    throw new Error("Unrecognised areaType: " + areaType);
+  }
+  if (valueType !== VALUETYPE_CASES && valueType !== VALUETYPE_DEATHS) {
+    throw new Error("Unrecognised valueType: " + valueType);
+  }
+  if (setAreaType === null || setAreaType === undefined) {
+    throw new Error("Unrecognised setAreaType: " + setAreaType);
+  }
+  if (setValueType === null || setValueType === undefined) {
+    throw new Error("Unrecognised setValueType: " + setValueType);
+  }
 
   // Council areas with cases is a disallowed combination
+  if (areaType === AREATYPE_COUNCIL_AREAS && valueType === VALUETYPE_CASES) {
+    throw new Error("Invalid combination: " + areaType + " and " + valueType);
+  }
+
   const casesText =
     "Cases" +
     (AREATYPE_COUNCIL_AREAS === areaType ? " [Data not available]" : "");
@@ -27,7 +47,7 @@ function HeatmapContainer() {
     (VALUETYPE_CASES === valueType ? " [Data not available]" : "");
 
   return (
-    <Container fluid id="datasetSelectionButtons">
+    <Container fluid>
       <Row>
         <Col>
           <ToggleButtonGroup
@@ -66,16 +86,8 @@ function HeatmapContainer() {
           </ToggleButtonGroup>
         </Col>
       </Row>
-      <Row>
-        <Col xs={9} md={6}>
-          <Heatmap areaType={areaType} valueType={valueType} />
-        </Col>
-        <Col xs={9} md={6}>
-          <GeoHeatMap areaType={areaType} valueType={valueType} />
-        </Col>
-      </Row>
     </Container>
   );
 }
 
-export default HeatmapContainer;
+export default HeatmapDataSelector;

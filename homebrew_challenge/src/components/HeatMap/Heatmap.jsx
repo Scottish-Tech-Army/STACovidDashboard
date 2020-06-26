@@ -4,7 +4,7 @@ import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
-} from "../HeatmapContainer/HeatmapConsts";
+} from "../HeatmapDataSelector/HeatmapConsts";
 import {
   readCsvData,
   createPlaceDateValueMap,
