@@ -13,6 +13,8 @@ import Nav from "react-bootstrap/Nav";
 import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
+import TotalCasesChart from './components/TotalCasesChart/TotalCasesChart';
+
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_DEATHS,
@@ -80,7 +82,7 @@ const App = () => {
             <GeoHeatMap areaType={areaType} valueType={valueType} />
           </Col>
           <Col xs={12} md={4}>
-            <PercentTestsChart />
+            <TotalCasesChart />
           </Col>
         </Row>
       </Container>
