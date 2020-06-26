@@ -22,6 +22,9 @@
   margin-top: 8px;
   margin-bottom: 8px;
 }
+.underSingleValues {
+  border: 1px solid #319bd5;
+}
 
 .widgets_block {
   height: 100%;

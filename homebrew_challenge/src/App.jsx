@@ -61,6 +61,9 @@ const App = () => {
 
       <Container fluid className="widgets_block">
         <Row>
+        <Col xs={12}>
+          <hr className="underSingleValues" />
+        </Col>
           <Col xs={12} md={8}>
             <HeatmapDataSelector
               areaType={areaType}
