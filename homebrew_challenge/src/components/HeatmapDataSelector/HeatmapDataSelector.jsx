@@ -90,7 +90,7 @@ function HeatmapDataSelector({
           >
             {casesText}
           </ToggleButton>
-        </ToggleButtonGroup>{" "}
+        </ToggleButtonGroup>
       </Col>
       </Row>
     </Container>
