@@ -54,16 +54,21 @@ const App = () => {
       <SingleValueBar />
 
       <Container fluid className="widgets_block">
-        <Row>
-          <Col xs={12} md={8}>
-            <HeatmapDataSelector
-              areaType={areaType}
-              valueType={valueType}
-              setAreaType={setAreaType}
-              setValueType={setValueType}
-            />
-          </Col>
-        </Row>
+      <Row>
+        <Col xs={12} md={8}>
+          <HeatmapDataSelector
+            areaType={areaType}
+            valueType={valueType}
+            setAreaType={setAreaType}
+            setValueType={setValueType}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={8}>
+          <hr className="underHeatmapSelector"/>
+        </Col>
+      </Row>
         <Row>
           <Col xs={12} md={4}>
             <Heatmap areaType={areaType} valueType={valueType} />
