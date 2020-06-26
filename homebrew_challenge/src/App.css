@@ -8,23 +8,17 @@
 .col-11 p {
   font-weight: bold;
 }
-.section {
-  width: 100%;
-  height: 55px;
-  -ms-display: flexbox;
-  display: flex;
-}
 
 #icon {
-  width: 10%;
   padding-left: 30px;
+  padding-right: 30px;
 }
 #message {
-  width: 85%;
   font-weight: bold;
 }
 
 .widgets_block {
+    height: 100%;
   /*height: 600px;*/
 }
 .widgets_block .row {

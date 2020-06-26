@@ -32,22 +32,23 @@ const App = () => {
         </Nav>
       </Navbar>
 
-      <Container fluid className="pt-3 d-none d-sm-block">
-        <div className="section">
-          <span id="icon">
-            <FontAwesomeIcon icon={faInfoCircle} size="3x" color="#319bd5" />
-          </span>
-          <span id="message">
-            Provisional dates for the relaxation of travel restrictions,
-            restarting of the hospitality industry and reopening of hairdressers
-            are among further route map measures announced today (Wednesday 24,
-            June) by First Minister Nicola Sturgeon. For more information visit
-            <a href="https://www.gov.scot/news/further-route-map-detail-announced/">
-              https://www.gov.scot/news/further-route-map-detail-announced/
-            </a>
-            .
-          </span>
-        </div>
+      <Container
+        fluid
+        className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
+      >
+        <span id="icon">
+          <FontAwesomeIcon icon={faInfoCircle} size="3x" color="#319bd5" />
+        </span>
+        <span id="message">
+          Provisional dates for the relaxation of travel restrictions,
+          restarting of the hospitality industry and reopening of hairdressers
+          are among further route map measures announced today (Wednesday 24,
+          June) by First Minister Nicola Sturgeon. For more information visit
+          <a href="https://www.gov.scot/news/further-route-map-detail-announced/">
+            https://www.gov.scot/news/further-route-map-detail-announced/
+          </a>
+          .
+        </span>
       </Container>
 
       <SingleValueBar />
