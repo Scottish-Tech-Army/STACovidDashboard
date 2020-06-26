@@ -47,44 +47,51 @@ function HeatmapDataSelector({
     (VALUETYPE_CASES === valueType ? " [Data not available]" : "");
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <ToggleButtonGroup
-            name="areaType"
-            type="radio"
-            value={areaType}
-            onChange={(val) => setAreaType(val)}
+    <Container fluid className="justify-content-between align-items-center">
+<Row className="justify-content-between align-items-stretch">
+      <Col>
+        <span class="align-middle">
+          <strong>View data by</strong>
+        </span>
+      </Col>
+      <Col className="h-100">
+        <ToggleButtonGroup
+          name="areaType"
+          type="radio"
+          value={areaType}
+          onChange={(val) => setAreaType(val)}
+        >
+          <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
+            Health boards
+          </ToggleButton>
+          <ToggleButton
+            id="councilAreas"
+            value={AREATYPE_COUNCIL_AREAS}
+            disabled={VALUETYPE_CASES === valueType}
           >
-            <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-              Health boards
-            </ToggleButton>
-            <ToggleButton
-              id="councilAreas"
-              value={AREATYPE_COUNCIL_AREAS}
-              disabled={VALUETYPE_CASES === valueType}
-            >
-              {councilAreasText}
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <ToggleButtonGroup
-            name="valueType"
-            type="radio"
-            value={valueType}
-            onChange={(val) => setValueType(val)}
+            {councilAreasText}
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Col>
+      <Col className="h-100 align-self-stretch">
+        <ToggleButtonGroup
+          name="valueType"
+          type="radio"
+          value={valueType}
+          onChange={(val) => setValueType(val)}
+        >
+          <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
+            Deaths
+          </ToggleButton>
+          <ToggleButton
+            id="cases"
+            value={VALUETYPE_CASES}
+            disabled={AREATYPE_COUNCIL_AREAS === areaType}
           >
-            <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-              Deaths
-            </ToggleButton>
-            <ToggleButton
-              id="cases"
-              value={VALUETYPE_CASES}
-              disabled={AREATYPE_COUNCIL_AREAS === areaType}
-            >
-              {casesText}
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Col>
+            {casesText}
+          </ToggleButton>
+        </ToggleButtonGroup>{" "}
+      </Col>
       </Row>
     </Container>
   );
