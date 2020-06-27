@@ -2,6 +2,7 @@ import React from "react";
 import SingleValueBar, {
   parseCsvData,
   getDateValueClause,
+  getRelativeDate,
 } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
@@ -31,9 +32,9 @@ it("SingleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases 01/01/1999", "0");
+  checkSingleValue("dailyCases", "Cases on 01/01/1999", "0");
   checkSingleValue("totalCases", "Total Cases", "0");
-  checkSingleValue("dailyFatalities", "Fatalities 01/01/1999", "0");
+  checkSingleValue("dailyFatalities", "Fatalities on 01/01/1999", "0");
   checkSingleValue("totalFatalities", "Total Fatalities", "0");
   checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "0");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "0");
@@ -50,9 +51,9 @@ it("SingleValueBar renders dynamic fetched data for today", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases today", "26");
+  checkSingleValue("dailyCases", "Cases Today", "26");
   checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Fatalities today", "-1");
+  checkSingleValue("dailyFatalities", "Fatalities Today", "-1");
   checkSingleValue("totalFatalities", "Total Fatalities", "2472");
   checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.62%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
@@ -69,9 +70,9 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases yesterday", "26");
+  checkSingleValue("dailyCases", "Cases Yesterday", "26");
   checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Fatalities yesterday", "-1");
+  checkSingleValue("dailyFatalities", "Fatalities Yesterday", "-1");
   checkSingleValue("totalFatalities", "Total Fatalities", "2472");
   checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.62%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
@@ -88,6 +89,20 @@ it("getDateValueClause", () => {
       '( <http://reference.data.gov.uk/id/day/2020-06-20> "2020-06-20" )' +
       '( <http://reference.data.gov.uk/id/day/2020-06-19> "2020-06-19" )'
   );
+});
+
+it("getRelativeDate", () => {
+  // Set today to be 2020-06-22
+  setMockDate("2020-06-22");
+
+  expect(getRelativeDate(Date.parse("2020-06-22"))).toBe("Today");
+  expect(getRelativeDate(Date.parse("2020-06-21"))).toBe("Yesterday");
+  expect(getRelativeDate(Date.parse("2020-06-20"))).toBe("last Saturday");
+  expect(getRelativeDate(Date.parse("2020-06-19"))).toBe("last Friday");
+  expect(getRelativeDate(Date.parse("2020-06-18"))).toBe("last Thursday");
+  expect(getRelativeDate(Date.parse("2020-06-17"))).toBe("last Wednesday");
+  expect(getRelativeDate(Date.parse("2020-06-16"))).toBe("last Tuesday");
+  expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("on 15/06/2020");
 });
 
 it("parseCsvData", () => {
@@ -118,8 +133,8 @@ it("parseCsvData with bad count type", () => {
 
 function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  const title = singleValueElement.querySelector(".card-title");
-  const value = singleValueElement.querySelector(".card-text");
+  const title = singleValueElement.querySelector(".single-value-header");
+  const value = singleValueElement.querySelector(".single-value-total");
   expect(title.textContent).toBe(expectedTitle);
   expect(value.textContent).toBe(expectedValue);
 }

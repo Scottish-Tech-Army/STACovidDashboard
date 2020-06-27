@@ -34,8 +34,8 @@ it("SingleValue renders error message when missing props", async () => {
   checkSingleValue("Missing title", "Missing value");
 });
 
-const title = () => container.querySelector(".card-title");
-const value = () => container.querySelector(".card-text");
+const title = () => container.querySelector(".single-value-header");
+const value = () => container.querySelector(".single-value-total");
 
 function checkSingleValue(expectedTitle, expectedValue) {
   expect(title().textContent).toBe(expectedTitle);

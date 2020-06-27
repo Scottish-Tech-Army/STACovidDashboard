@@ -1,7 +1,7 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import { formatRelative, format, subDays } from "date-fns";
+import { differenceInDays, format, subDays } from "date-fns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -86,7 +86,27 @@ export function getDateValueClause() {
     );
   };
 
-  return singleLine(today) + singleLine(yesterday) + singleLine(dayBefore) + singleLine(twoDaysBefore);
+  return (
+    singleLine(today) +
+    singleLine(yesterday) +
+    singleLine(dayBefore) +
+    singleLine(twoDaysBefore)
+  );
+}
+
+// Exported for tests
+export function getRelativeDate(date) {
+  const daysDifference = differenceInDays(Date.now(), date);
+  if (daysDifference === 0) {
+    return "Today";
+  }
+  if (daysDifference === 1) {
+    return "Yesterday";
+  }
+  if (daysDifference > 1 && daysDifference < 7) {
+    return "last " + format(date, "EEEE");
+  }
+  return "on " + format(date, "dd/MM/yyyy");
 }
 
 function SingleValueBar() {
@@ -159,16 +179,6 @@ WHERE {
         });
     }
   }, [dataFetched, query]);
-
-  function getRelativeDate(date) {
-    var result = formatRelative(date, Date.now());
-    // Trim off the trailing 'at HH:MM...' time
-    const index = result.indexOf(" at");
-    if (index > -1) {
-      result = result.substring(0, index);
-    }
-    return result;
-  }
 
   return (
     <Container fluid className="single-value-bar">
