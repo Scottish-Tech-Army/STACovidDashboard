@@ -102,10 +102,14 @@ const App = () => {
             />
           </Col>
           <Col xs={12} md={4}>
-            <DataCharts chartType={chartType} />
-          </Col>
-          <Col xs={12} md={4}>
-            <TimeLine/>
+            <Row>
+              <Col xs={12}>
+                <DataCharts chartType={chartType} />
+              </Col>
+              <Col xs={12}>
+                <TimeLine/>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>
