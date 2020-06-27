@@ -4,6 +4,7 @@ const TimeLine = () => {
 
   return (
     <>
+      <h2>Scotland's Covid-19 Timeline</h2>
       <ul>
         <li>01/03/2020 - First positive case in Scotland</li>
         <li>11/03/2020 - First identified case of community transmission</li>
