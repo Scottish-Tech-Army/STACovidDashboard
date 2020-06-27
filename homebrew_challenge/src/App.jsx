@@ -10,7 +10,7 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
-import RoadMap from "./components/RoadMap/RoadMap";
+import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
 
@@ -102,7 +102,14 @@ const App = () => {
             />
           </Col>
           <Col xs={12} md={4}>
-            <DataCharts chartType={chartType} />
+            <Row>
+              <Col xs={12}>
+                <DataCharts chartType={chartType} />
+              </Col>
+              <Col xs={12}>
+                <TimeLine/>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>
