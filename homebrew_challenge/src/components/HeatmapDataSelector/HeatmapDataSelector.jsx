@@ -51,7 +51,7 @@ function HeatmapDataSelector({
     <Container fluid>
       <Row>
         <Col>
-          <span class="align-middle">
+          <span className="align-middle">
             <strong>View data by:</strong>
           </span>
 

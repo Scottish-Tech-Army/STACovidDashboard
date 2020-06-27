@@ -1,5 +1,5 @@
 import React from "react";
-import PercentTestsChart, { parseCsvData } from "./PercentTestsChart";
+import DataCharts, { parseCsvData } from "./DataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -18,13 +18,13 @@ afterEach(() => {
   container = null;
 });
 
-it("PercentTestsChart renders default data when fetch fails", async () => {
+it("DataCharts renders default data when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
   // Suppress console error message
   spyOn(console, "error");
 
   await act(async () => {
-    render(<PercentTestsChart />, container);
+    render(<DataCharts />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -32,11 +32,11 @@ it("PercentTestsChart renders default data when fetch fails", async () => {
   expect(fetch.mock.calls.length).toEqual(1);
 });
 
-it("PercentTestsChart renders dynamic fetched data", async () => {
+it("DataCharts renders dynamic fetched data", async () => {
   fetch.mockResponse(csvData);
 
   await act(async () => {
-    render(<PercentTestsChart />, container);
+    render(<DataCharts />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -45,13 +45,29 @@ it("PercentTestsChart renders dynamic fetched data", async () => {
 });
 
 it("parseCsvData", () => {
-  const expectedResult = [
-    { t: Date.parse("2020-03-02"), y: 100 / 815 },
-    { t: Date.parse("2020-03-03"), y: 100 / 915 },
-    { t: Date.parse("2020-03-04"), y: 300 / 1046 },
-    { t: Date.parse("2020-03-05"), y: 600 / 1256 },
-    { t: Date.parse("2020-03-06"), y: 1100 / 1525 },
-  ];
+  const expectedResult = {
+    percentageCases: [
+      { t: Date.parse("2020-03-02"), y: 0 },
+      { t: Date.parse("2020-03-03"), y: 100 / 915 },
+      { t: Date.parse("2020-03-04"), y: 300 / 1046 },
+      { t: Date.parse("2020-03-05"), y: 600 / 1256 },
+      { t: Date.parse("2020-03-06"), y: 1100 / 1525 },
+    ],
+    totalCases: [
+      { t: Date.parse("2020-03-02"), y: 1 },
+      { t: Date.parse("2020-03-03"), y: 1 },
+      { t: Date.parse("2020-03-04"), y: 3 },
+      { t: Date.parse("2020-03-05"), y: 6 },
+      { t: Date.parse("2020-03-06"), y: 11 },
+    ],
+    totalDeaths: [
+      { t: Date.parse("2020-03-02"), y: 0 },
+      { t: Date.parse("2020-03-03"), y: 1 },
+      { t: Date.parse("2020-03-04"), y: 2 },
+      { t: Date.parse("2020-03-05"), y: 3 },
+      { t: Date.parse("2020-03-06"), y: 4 },
+    ],
+  };
 
   expect(parseCsvData(csvData)).toEqual(expectedResult);
 });
@@ -69,16 +85,21 @@ it("parseCsvData with bad count type", () => {
 });
 
 const csvData = `date,shortValue,count
-2020-03-02,total,815
-2020-03-02,positive,1
-2020-03-05,positive,6
-  2020-03-05,total,1256
-  2020-03-03,total,915
-2020-03-03,positive,1
-2020-03-04,positive,3
-2020-03-04,total,1046
-2020-03-06,positive,11
-2020-03-06,total,1525`;
+2020-03-02,totalCases,0
+2020-03-02,positiveCases,1
+  2020-03-02,totalDeaths,0
+  2020-03-05,positiveCases,6
+2020-03-05,totalCases,1256
+2020-03-05,totalDeaths,3
+2020-03-03,totalCases,915
+2020-03-03,positiveCases,1
+2020-03-03,totalDeaths,1
+2020-03-04,positiveCases,3
+2020-03-04,totalCases,1046
+2020-03-04,totalDeaths,2
+2020-03-06,positiveCases,11
+2020-03-06,totalDeaths,4
+2020-03-06,totalCases,1525`;
 
 const defaultSeriesData = [
   { t: Date.parse("2020-04-06"), y: 5 },

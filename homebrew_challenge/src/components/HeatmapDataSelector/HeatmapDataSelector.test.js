@@ -189,37 +189,52 @@ it("default render", async () => {
     );
   });
 
-  checkButtonText("Health boards", "Council areas", "Deaths", "Cases");
+  checkButtonText(
+    "Health Boards",
+    "Council Areas",
+    "Total Deaths",
+    "Total Cases"
+  );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
 
   click(councilAreasButton());
   checkButtonText(
-    "Health boards",
-    "Council areas",
-    "Deaths",
-    "Cases [Data not available]"
+    "Health Boards",
+    "Council Areas",
+    "Total Deaths",
+    "Total Cases [Data not available]"
   );
   checkButtonsDisabled(true, false);
   checkStoredValues("council-areas", "deaths");
 
   click(healthBoardsButton());
-  checkButtonText("Health boards", "Council areas", "Deaths", "Cases");
+  checkButtonText(
+    "Health Boards",
+    "Council Areas",
+    "Total Deaths",
+    "Total Cases"
+  );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
 
   click(casesButton());
   checkButtonText(
-    "Health boards",
-    "Council areas [Data not available]",
-    "Deaths",
-    "Cases"
+    "Health Boards",
+    "Council Areas [Data not available]",
+    "Total Deaths",
+    "Total Cases"
   );
   checkButtonsDisabled(false, true);
   checkStoredValues("health-boards", "cases");
 
   click(deathsButton());
-  checkButtonText("Health boards", "Council areas", "Deaths", "Cases");
+  checkButtonText(
+    "Health Boards",
+    "Council Areas",
+    "Total Deaths",
+    "Total Cases"
+  );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
 });
