@@ -71,7 +71,6 @@ VALUES (?areatype ?shortareatype) {
 FILTER regex(?date, "^w")
 }`;
 
-
 const queryCasesByHealthBoard = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
 PREFIX qb: <http://purl.org/linked-data/cube#>
@@ -158,7 +157,10 @@ function Heatmap({
     null
   );
 
-  function createHeatbar(width, height, elements) {
+  function createHeatbar(elements) {
+    const width = 200;
+    const height = 20;
+    const viewBox = "0 0 " + width + " " + height;
     const count = elements.length;
     const elementWidth = width / count;
     const offset = elementWidth / 2;
@@ -179,7 +181,12 @@ function Heatmap({
     }
 
     return (
-      <svg width={width} height={height}>
+      <svg
+        viewBox={viewBox}
+        preserveAspectRatio="none"
+        height="100%"
+        width="100%"
+      >
         {elements.map(createHeatbarline)}
       </svg>
     );
@@ -200,7 +207,11 @@ function Heatmap({
       <tr className="area" key={index}>
         <td>{name}</td>
         <td>{totalDeaths}</td>
-        <td>{createHeatbar(500, 20, counts.map(getHeatLevel))}</td>
+        <td className="heatbarCell">
+          <div className="heatbarLine">
+            {createHeatbar(counts.map(getHeatLevel))}
+          </div>
+        </td>
       </tr>
     );
   }
@@ -282,15 +293,29 @@ function Heatmap({
   }
 
   function valueTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Total deaths" : "Total cases";
+    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
   }
 
   function timeRangeTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Weekly count" : "Daily count";
+    return VALUETYPE_DEATHS === valueType ? "Weekly Count" : "Daily Count";
   }
 
   if (getDataSet() === null) {
     return <LoadingComponent />;
+  }
+
+  function heatbarScale() {
+    return (
+      <div className="heatmapScale">
+        {heatLevels.map((value, index) => {
+          return (
+            <span key={index} className={"l-" + index}>
+              &ge;&nbsp;{value}
+            </span>
+          );
+        })}{" "}
+      </div>
+    );
   }
 
   return (
@@ -300,7 +325,11 @@ function Heatmap({
           <tr>
             <th>{areaTitle()}</th>
             <th>{valueTitle()}</th>
-            <th>{timeRangeTitle()}</th>
+            <th>
+              {timeRangeTitle()}
+              <br />
+              {heatbarScale()}
+            </th>
           </tr>
         </thead>
         <tbody>{renderTableBody()}</tbody>
