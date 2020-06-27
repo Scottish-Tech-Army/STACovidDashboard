@@ -1,14 +1,25 @@
 .heatmap {
   overflow: auto;
+  overflow-y: auto;
+  max-height: 600px;
+  height: 100%;
 }
 
 .heatmap table {
   text-align: center;
   overflow-y: auto;
-/*  height: 20vh;*/
 }
-
-.heatmap table td:first-child , .heatmap table th:first-child {
+.heatmap table th {
+  vertical-align: middle;
+}
+.heatmap table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: white;
+}
+.heatmap table td:first-child,
+.heatmap table th:first-child {
   text-align: left;
 }
 
@@ -31,26 +42,35 @@
   stroke: #b30000;
 }
 
-/*table {
-    display: flex;
-    flex-flow: column;
-    width: 100%;
+.heatmapScale span {
+  padding: 5px 10px;
 }
-
-thead {
-    flex: 0 0 auto;
+.heatmapScale .l-0 {
+  background-color: #e0e0e0;
 }
-
-tbody {
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
+.heatmapScale .l-1 {
+  background-color: #fef0d9;
 }
-
-tr {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
+.heatmapScale .l-2 {
+  background-color: #fdcc8a;
 }
-*/
+.heatmapScale .l-3 {
+  background-color: #fc8d59;
+}
+.heatmapScale .l-4 {
+  background-color: #e34a33;
+}
+.heatmapScale .l-5 {
+  background-color: #b30000;
+}
+.heatbarLine {
+  height: 100%;
+}
+tr.area,
+tr.area td.heatbarCell {
+  height: 100%;
+}
+tr.area td {
+  border: 0;
+  padding: 0;
+}

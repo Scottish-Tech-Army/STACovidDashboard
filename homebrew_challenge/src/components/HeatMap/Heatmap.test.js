@@ -56,7 +56,12 @@ it("Heatmap renders no data when fetch fails", async () => {
     render(<Heatmap />, container);
   });
 
-  checkHeaderRow(headers(), "Council Areas", "Total deaths", "Weekly count");
+  checkHeaderRow(
+    headers(),
+    "Council Areas",
+    "Total Deaths",
+    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+  );
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(0);
@@ -69,7 +74,12 @@ it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
     render(<Heatmap valueType="deaths" areaType="council-areas" />, container);
   });
 
-  checkHeaderRow(headers(), "Council Areas", "Total deaths", "Weekly count");
+  checkHeaderRow(
+    headers(),
+    "Council Areas",
+    "Total Deaths",
+    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+  );
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(3);
@@ -85,7 +95,12 @@ it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
     render(<Heatmap valueType="deaths" areaType="health-boards" />, container);
   });
 
-  checkHeaderRow(headers(), "Health Boards", "Total deaths", "Weekly count");
+  checkHeaderRow(
+    headers(),
+    "Health Boards",
+    "Total Deaths",
+    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+  );
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(3);
@@ -101,7 +116,12 @@ it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
     render(<Heatmap valueType="cases" areaType="health-boards" />, container);
   });
 
-  checkHeaderRow(headers(), "Health Boards", "Total cases", "Daily count");
+  checkHeaderRow(
+    headers(),
+    "Health Boards",
+    "Total Cases",
+    "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+  );
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(3);
