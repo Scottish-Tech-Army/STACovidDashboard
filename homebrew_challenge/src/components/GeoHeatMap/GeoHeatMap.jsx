@@ -255,7 +255,7 @@ const GeoHeatMap = ({
       }
     });
   };
-  /*        zoomDelta={false}
+  /*    zoomDelta={false}
         doubleClickZoom={false}
         dragging={false}
         trackResize={false}
@@ -269,10 +269,10 @@ const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade
   return (
     <div className="geo-map">
       <LeafletMap
-        center={[57.8907, -4.7026]}
+        center={[56.5814, -4.0545]}
         id="map"
-        zoom={7.25}
-
+        zoom={6.4}
+        zoomSnap={0.1}
         maxZoom={20}
       >
         <TileLayer
