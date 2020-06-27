@@ -269,10 +269,9 @@ const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade
   return (
     <div className="geo-map">
       <LeafletMap
-      // Calculate these for breakpoints - center, zoom
-        center={[54.407, -4.7026]}
+        center={[56.5814, -4.0545]}
         id="map"
-        zoom={6.1}
+        zoom={6.4}
         zoomSnap={0.1}
         maxZoom={20}
       >

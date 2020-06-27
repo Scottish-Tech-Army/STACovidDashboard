@@ -11,6 +11,7 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
+import RoadMap from "./components/RoadMap/RoadMap";
 import TotalCasesChart from './components/TotalCasesChart/TotalCasesChart';
 import TotalDeathsChart from './components/TotalDeathsChart/TotalDeathsChart';
 
@@ -80,9 +81,9 @@ const App = () => {
           <Col xs={12} md={4}>
             <GeoHeatMap areaType={areaType} valueType={valueType} />
           </Col>
-          <Col xs={12} md={4}>
-            <TotalDeathsChart />
-          </Col>
+        <Col xs={12} md={4}>
+          <TotalCasesChart/>
+        </Col>
         </Row>
       </Container>
 
