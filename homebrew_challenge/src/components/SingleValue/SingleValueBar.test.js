@@ -118,8 +118,8 @@ it("parseCsvData with bad count type", () => {
 
 function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  const title = singleValueElement.querySelector(".card-title");
-  const value = singleValueElement.querySelector(".card-text");
+  const title = singleValueElement.querySelector(".single-value-header");
+  const value = singleValueElement.querySelector(".single-value-total");
   expect(title.textContent).toBe(expectedTitle);
   expect(value.textContent).toBe(expectedValue);
 }
