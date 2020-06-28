@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Heatmap.css";
+import FullScreen from "react-full-screen";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -158,6 +159,9 @@ function Heatmap({
     null
   );
 
+  const fullScreenRef = useRef(null);
+  const [fullScreenMode, setfullScreenMode]= useState(false);
+
   function createHeatbar(width, height, elements) {
     const count = elements.length;
     const elementWidth = width / count;
@@ -293,19 +297,29 @@ function Heatmap({
     return <LoadingComponent />;
   }
 
+  const fullScreenToggler = () => {
+    setfullScreenMode(!fullScreenMode);
+  }
+
+
   return (
-    <div className="heatmap">
-      <Table size="sm">
-        <thead>
-          <tr>
-            <th>{areaTitle()}</th>
-            <th>{valueTitle()}</th>
-            <th>{timeRangeTitle()}</th>
-          </tr>
-        </thead>
-        <tbody>{renderTableBody()}</tbody>
-      </Table>
-    </div>
+    <FullScreen enabled={fullScreenMode}>
+      <div className="heatmap">
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>{areaTitle()}</th>
+              <th>{valueTitle()}</th>
+              <th>{timeRangeTitle()}</th>
+            </tr>
+          </thead>
+          <tbody>{renderTableBody()}</tbody>
+        </Table>
+      </div>
+      <button onClick={fullScreenToggler}>
+         FullScreen Mode
+      </button>
+    </FullScreen>
   );
 }
 

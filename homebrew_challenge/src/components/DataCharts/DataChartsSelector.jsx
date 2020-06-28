@@ -23,6 +23,7 @@ function DataChartsSelector({ chartType, setChartType }) {
   }
 
   return (
+
     <Container fluid className="justify-content-between align-items-center">
       <Row className="justify-content-between align-items-stretch">
           <span className="align-middle">

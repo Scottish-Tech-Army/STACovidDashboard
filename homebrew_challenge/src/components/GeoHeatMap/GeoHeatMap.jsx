@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
+import FullScreen from "react-full-screen";
 import { Map as LeafletMap, Circle, TileLayer, Popup } from "react-leaflet";
 import { HEALTH_BOARD_LOCATIONS, COUNCIL_AREA_LOCATIONS } from "./Locations";
 import {
@@ -44,6 +45,12 @@ const GeoHeatMap = ({
   const [totalDeathsByCouncilArea, setTotalDeathsByCouncilArea] = useState(
     null
   );
+  const fullScreenRef = useRef(null);
+  const [fullScreenMode, setfullScreenMode]= useState(false);
+
+  const fullScreenToggler = () => {
+    setfullScreenMode(!fullScreenMode);
+  }
 
   const calculateRadius = (totalCases) => {
     return Math.sqrt(totalCases) * 500;
@@ -267,7 +274,9 @@ const tilesStadiaAlidadeSmooth = 'https://tiles.stadiamaps.com/tiles/alidade_smo
 const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 
   return (
+
     <div className="geo-map">
+    <FullScreen enabled={fullScreenMode}>
       <LeafletMap
         center={[56.5814, -4.0545]}
         id="map"
@@ -281,7 +290,13 @@ const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade
         />
         {regionCircles()}
       </LeafletMap>
+      <button onClick={fullScreenToggler}>
+         FullScreen Mode
+      </button>
+      </FullScreen>
     </div>
+
+
   );
 };
 
