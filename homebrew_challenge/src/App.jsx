@@ -183,7 +183,7 @@ const App = () => {
       <footer>
         <Container className="text-center font-small blue pt-4">
           <Row>
-            <Col>
+            <Col xs={12} md={4}>
               <a
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
                 target="_blank"
@@ -192,7 +192,7 @@ const App = () => {
                 Scottish Government guidance
               </a>
             </Col>
-            <Col>
+            <Col xs={12} md={4}>
               <a
                 href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
                 target="_blank"
@@ -201,7 +201,7 @@ const App = () => {
                 NHS inform
               </a>
             </Col>
-            <Col>
+            <Col xs={12} md={4}>
               <a
                 href="https://www.scottishtecharmy.org/"
                 target="_blank"
