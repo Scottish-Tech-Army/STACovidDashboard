@@ -82,3 +82,10 @@
   margin-bottom: 2rem;
   margin-left: 2rem;
 }
+
+.main-page {
+  background-color: White;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+}
