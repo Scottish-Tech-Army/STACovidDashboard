@@ -36,6 +36,7 @@ function parseCsvData(csvData) {
 const GeoHeatMap = ({
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
+  fullScreenModeMap = false
 }) => {
   const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
   const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
@@ -268,7 +269,7 @@ const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade
 
   return (
 
-    <div className="geo-map">
+    <div className={  fullScreenModeMap? "full-screen geo-map": "geo-map" }>
       <LeafletMap
         center={[56.5814, -4.0545]}
         id="map"
