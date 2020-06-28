@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
+import Button from "react-bootstrap/Button";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -24,6 +25,39 @@ const App = () => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
   const [chartType, setChartType] = useState(PERCENTAGE_CASES);
+  const [zoomDataCharts, setZoomDataCharts] = useState(false);
+
+  const zoomableCharts = useRef();
+
+  function toggleFullscreen() {
+    var elem = zoomableCharts.current || document.documentElement;
+    if (
+      !document.fullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.msFullscreenElement
+    ) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  }
 
   return (
     <div className="App">
@@ -60,53 +94,55 @@ const App = () => {
         </span>
       </Container>
       <SingleValueBar />
+      <hr className="full-width-hr" />
       <Container fluid className="widgets_block">
         <Row>
-          <Col xs={12}>
-            <hr className="full-width-hr" />
-          </Col>
           <Col xs={12} md={8}>
-            <HeatmapDataSelector
-              areaType={areaType}
-              valueType={valueType}
-              setAreaType={setAreaType}
-              setValueType={setValueType}
-            />
-          </Col>
-          <Col className="d-none d-sm-flex" md={4}>
-            <DataChartsSelector
-              chartType={chartType}
-              setChartType={setChartType}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={8}>
-            <hr className="underHeatmapSelector" />
-          </Col>
-          <Col xs={0} md={4}>
-            <hr className="underHeatmapSelector" />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={4}>
-            <Heatmap areaType={areaType} valueType={valueType} />
-          </Col>
-          <Col xs={12} md={4}>
-            <GeoHeatMap areaType={areaType} valueType={valueType} />
-          </Col>
-          <Col className="d-sm-none d-flex" xs={12} md={0}>
-            <DataChartsSelector
-              chartType={chartType}
-              setChartType={setChartType}
-            />
+            <Row>
+              <Col>
+                <HeatmapDataSelector
+                  areaType={areaType}
+                  valueType={valueType}
+                  setAreaType={setAreaType}
+                  setValueType={setValueType}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <hr className="underHeatmapSelector" />
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={6}>
+                <Heatmap areaType={areaType} valueType={valueType} />
+              </Col>
+              <Col xs={12} md={6}>
+                <GeoHeatMap areaType={areaType} valueType={valueType} />
+              </Col>
+            </Row>
           </Col>
           <Col xs={12} md={4}>
             <Row>
-              <Col xs={12}>
+              <Col>
+                <DataChartsSelector
+                  chartType={chartType}
+                  setChartType={setChartType}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <hr className="underHeatmapSelector" />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
                 <DataCharts chartType={chartType} />
               </Col>
-              <Col xs={12}>
+            </Row>
+            <Row>
+              <Col>
                 <TimeLine/>
               </Col>
             </Row>
@@ -114,13 +150,10 @@ const App = () => {
         </Row>
       </Container>
 
-      <hr />
+      <hr className="full-width-hr" />
 
       <footer className="page-footer font-small blue pt-4">
         <Container fluid className="text-center text-md-left">
-          <Row style={{ margin: "0 0 20px 20px" }}>
-            <img src="final_logo.png" alt="" width="270" height="50" />
-          </Row>
 
           <Row style={{ margin: "0 0 20px 20px" }}>
             <ul className="list-inline">
@@ -148,14 +181,14 @@ const App = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  STA pages
+                 <img src="final_logo.PNG" alt="Scottish Tech Army" width="270" height="50" />
                 </a>
               </li>
             </ul>
           </Row>
 
           <div className="footer-copyright text-center py-3">
-            © 2020 Copyright:
+            © 2020 Copyright:&nbsp;
             <a
               href="https://www.scottishtecharmy.org/"
               target="_blank"

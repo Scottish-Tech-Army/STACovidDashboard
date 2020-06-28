@@ -1,11 +1,12 @@
 import React from 'react';
+import "./TimeLine.css";
 
 const TimeLine = () => {
 
   return (
     <>
       <h2>Scotland's Covid-19 Timeline</h2>
-      <ul>
+      <ul className="dates">
         <li>01/03/2020 - First positive case in Scotland</li>
         <li>11/03/2020 - First identified case of community transmission</li>
         <li>13/03/2020 - First confirmed death in Scotland</li>

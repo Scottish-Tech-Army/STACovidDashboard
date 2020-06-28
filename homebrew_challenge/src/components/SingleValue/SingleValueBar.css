@@ -1,17 +1,44 @@
 .single-value-bar {
-  margin-top: 2rem;
+  /*margin-top: 2rem;*/
+}
+.single-value-bar .ro2w {
+  padding-top: 2rem;
+  height: 100%;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+.single-value-bar .row {
+  height: 100%;
+}
+
+.single-value-bar-row {
+  margin-right: -5px;
+  margin-left: -5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.single-value-bar-col {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.single-value-bar .ro2w div {
 }
 
 .single-value {
   color: White;
   background-color: #3192d0;
   text-align: center;
+  height: 100%;
+  width: 100%;
 }
 
 .single-value-header {
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: lighter;
+  height: 50%;
 }
 
 .single-value-total {

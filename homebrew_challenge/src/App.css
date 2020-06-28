@@ -5,10 +5,10 @@
   align-items: center;
   width: 100vw;
 }
-.col-11 p {
+/*.col-11 p {
   font-weight: bold;
 }
-
+*/
 #icon {
   padding-left: 30px;
   padding-right: 30px;
@@ -24,30 +24,32 @@
 }
 .full-width-hr {
   border: 1px solid #319bd5;
+  width: 95%;
 }
 
 .widgets_block {
-  height: 100%;
+    /*  height: 100%;*/
+  /*flex-direction: row;*/
   /*height: 600px;*/
 }
 .widgets_block .row {
-  height: 100%;
+/*  height: 100%;*/
 }
-.widgets_block col {
-  height: 100%;
+.widgets_block .col {
+ /* height: 100%;*/
 }
 
-.widgets_block p {
+/*.widgets_block p {
   position: absolute;
   left: 50%;
   top: 50%;
-}
+}*/
 .navbar {
   margin-bottom: 15px;
 }
 
 .row {
-  height: 125%;
+ /* height: 125%;*/
 }
 
 #logo img {
