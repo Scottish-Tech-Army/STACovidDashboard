@@ -4,6 +4,8 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./DataChartsSelector.css";
+
 import {
   PERCENTAGE_CASES,
   TOTAL_CASES,
@@ -23,12 +25,13 @@ function DataChartsSelector({ chartType, setChartType }) {
   }
 
   return (
-    <Container fluid className="justify-content-between align-items-center">
-      <Row className="justify-content-between align-items-stretch">
+    <Container fluid>
+      <Row>
         <span className="align-middle">
           <strong>Select chart:</strong>
         </span>
-        <ToggleButtonGroup
+
+        <ToggleButtonGroup className="toggle-button-group"
           name="chartType"
           type="radio"
           value={chartType}
