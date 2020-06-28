@@ -1,17 +1,8 @@
-.App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-}
-/*.col-11 p {
-  font-weight: bold;
-}
-*/
 #icon {
   padding-left: 30px;
   padding-right: 30px;
+  height: 100%;
+  float: left;
 }
 #message {
   font-weight: bold;
@@ -24,63 +15,17 @@
 }
 .full-width-hr {
   border: 1px solid #319bd5;
-  width: 95%;
 }
 
-.widgets_block {
-    /*  height: 100%;*/
-  /*flex-direction: row;*/
-  /*height: 600px;*/
-}
-.widgets_block .row {
-/*  height: 100%;*/
-}
-.widgets_block .col {
- /* height: 100%;*/
-}
-
-/*.widgets_block p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-}*/
-.navbar {
-  margin-bottom: 15px;
-}
-
-.row {
- /* height: 125%;*/
-}
-
-#logo img {
+img#logo {
   height: 6rem;
-  margin-bottom: 2rem;
-}
-#logo {
-  /* -ms-flex: 0 0 230px;
-  flex: 0 0 230px; */
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  margin-right: 2rem;
 }
 
 .info-bar {
-  margin-top: 1rem;
- /* padding: ;*/
+  display: flex;
+  align-items: center;
 }
-
 .route-map-link:before {
   content: "\00a0 ";
-}
-
-.header {
-  /* background-color: #00001a;
-  color: White; */
-  height: 8rem;
-}
-
-.header-title {
-  margin-bottom: 2rem;
-  margin-left: 2rem;
 }
