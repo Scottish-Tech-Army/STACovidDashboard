@@ -24,7 +24,6 @@ function HeatmapDataSelector({
   toggleFullScreen,
   fullScreenModeMap
 }) {
-  console.log(toggleFullScreen)
   if (
     areaType !== AREATYPE_COUNCIL_AREAS &&
     areaType !== AREATYPE_HEALTH_BOARDS
@@ -101,7 +100,7 @@ function HeatmapDataSelector({
           <span id="icon">
             <FontAwesomeIcon
               icon={!fullScreenModeMap? faSearchPlus : faSearchMinus}
-              size="2x"
+              size="1x"
               color="#319bd5"
               onClick = {() => toggleFullScreen()}/>
           </span>

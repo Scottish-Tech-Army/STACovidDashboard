@@ -26,12 +26,15 @@ const App = () => {
   const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
   const [chartType, setChartType] = useState(PERCENTAGE_CASES);
   const [zoomDataCharts, setZoomDataCharts] = useState(false);
+  const [zoomGeoMap, setZoomGeoMap] = useState(false);
+
 
   const zoomableCharts = useRef();
+  const zoomableMap = useRef();
 
-  function toggleFullscreen() {
+  function toggleFullscreen(element, setter) {
   console.log("to here");
-    var elem = zoomableCharts.current || document.documentElement;
+    var elem = element.current || document.documentElement;
     if (
       !document.fullscreenElement &&
       !document.mozFullScreenElement &&
@@ -47,7 +50,7 @@ const App = () => {
       } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
-    setZoomDataCharts(true);
+    setter(true);
   } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -58,7 +61,7 @@ const App = () => {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-    setZoomDataCharts(false);
+    setter(false);
   }
   }
 
@@ -125,7 +128,7 @@ const App = () => {
           </Col>
         </Row>
         <Row className="widgets_block">
-          <Col xs={12} md={8} ref={zoomableCharts}>
+          <Col xs={12} md={8} ref={zoomableMap}  className={zoomGeoMap? "full-screen": ""} >
             <Row>
               <Col>
                 <HeatmapDataSelector
@@ -133,8 +136,8 @@ const App = () => {
                   valueType={valueType}
                   setAreaType={setAreaType}
                   setValueType={setValueType}
-                  toggleFullScreen={toggleFullscreen}
-                  fullScreenModeMap={zoomDataCharts}
+                  toggleFullScreen= {() => toggleFullscreen(zoomableMap, setZoomGeoMap)}
+                  fullScreenModeMap={zoomGeoMap}
                 />
               </Col>
             </Row>
@@ -144,20 +147,22 @@ const App = () => {
               </Col>
             </Row>
             <Row>
-              <Col xs={zoomDataCharts? 0 : 12} md={zoomDataCharts? 0 : 6}>
-              {zoomDataCharts? <></> : <Heatmap areaType={areaType} valueType={valueType} />}
+              <Col xs={zoomGeoMap? 0 : 12} md={zoomGeoMap? 0 : 6}>
+              {zoomGeoMap? <></> : <Heatmap/>}
               </Col>
-              <Col xs={12} md={zoomDataCharts? 12: 6}>
-                <GeoHeatMap areaType={areaType} valueType={valueType} fullScreenModeMap={zoomDataCharts}/>
+              <Col xs={12} md={zoomGeoMap? 12: 6}>
+                <GeoHeatMap areaType={areaType} valueType={valueType} fullScreenModeMap={zoomGeoMap}/>
               </Col>
             </Row>
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={4} ref={zoomableCharts} className={zoomDataCharts? "full-screen": "" }>
             <Row>
               <Col>
                 <DataChartsSelector
                   chartType={chartType}
                   setChartType={setChartType}
+                  toggleFullScreen={() => toggleFullscreen(zoomableCharts, setZoomDataCharts)}
+                  fullScreenModeChart={zoomDataCharts}
                 />
               </Col>
             </Row>
@@ -168,12 +173,12 @@ const App = () => {
             </Row>
             <Row>
               <Col>
-                <DataCharts chartType={chartType} />
+                <DataCharts chartType={chartType} fullScreenModeChart={zoomDataCharts}/>
               </Col>
             </Row>
             <Row>
               <Col>
-                <TimeLine />
+              {zoomDataCharts? <></> : <TimeLine/>}
               </Col>
             </Row>
           </Col>

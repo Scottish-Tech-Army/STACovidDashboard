@@ -2,8 +2,15 @@
   height: 100%;
   width: 100%;
   min-height: 250px;
+  max-height: 250px;
 }
 
 .hidden-chart {
   display: none;
+}
+
+.full-screen {
+  height: 90vh;
+  max-height: 90vh;
+  background-color: White;
 }
