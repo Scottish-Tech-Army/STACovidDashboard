@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +30,7 @@ const App = () => {
   const zoomableCharts = useRef();
 
   function toggleFullscreen() {
-  console.log("to here");
+    console.log("to here");
     var elem = zoomableCharts.current || document.documentElement;
     if (
       !document.fullscreenElement &&
@@ -47,8 +47,8 @@ const App = () => {
       } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
-    setZoomDataCharts(true);
-  } else {
+      setZoomDataCharts(true);
+    } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.msExitFullscreen) {
@@ -58,9 +58,39 @@ const App = () => {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-    setZoomDataCharts(false);
+      setZoomDataCharts(false);
+    }
   }
-  }
+
+  useEffect(() => {
+    function setFullscreenMode(fullscreenEnabled) {
+      if (!fullscreenEnabled) {
+        setZoomDataCharts(false);
+      }
+    }
+
+    // Monitor changes to fullscreen
+    document.addEventListener(
+      "fullscreenchange",
+      () => setFullscreenMode(document.fullscreen),
+      false
+    );
+    document.addEventListener(
+      "mozfullscreenchange",
+      () => setFullscreenMode(document.mozFullScreen),
+      false
+    );
+    document.addEventListener(
+      "webkitfullscreenchange",
+      () => setFullscreenMode(document.webkitIsFullScreen),
+      false
+    );
+    document.addEventListener(
+      "msfullscreenchange",
+      () => setFullscreenMode(document.msFullscreenElement),
+      false
+    );
+  }, []);
 
   return (
     <div className="App">
@@ -144,11 +174,20 @@ const App = () => {
               </Col>
             </Row>
             <Row>
-              <Col xs={zoomDataCharts? 0 : 12} md={zoomDataCharts? 0 : 6}>
-              {zoomDataCharts? <></> : <Heatmap areaType={areaType} valueType={valueType} />}
+              <Col xs={zoomDataCharts ? 0 : 12} md={zoomDataCharts ? 0 : 6}>
+                {zoomDataCharts ? (
+                  <></>
+                ) : (
+                  <Heatmap areaType={areaType} valueType={valueType} />
+                )}
               </Col>
-              <Col xs={12} md={zoomDataCharts? 12: 6}>
-                <GeoHeatMap areaType={areaType} valueType={valueType} fullScreenModeMap={zoomDataCharts}/>
+              <Col xs={12} md={zoomDataCharts ? 12 : 6}>
+                <GeoHeatMap
+                  areaType={areaType}
+                  valueType={valueType}
+                  toggleFullscreen={toggleFullscreen}
+                  fullscreenEnabled={zoomDataCharts}
+                />
               </Col>
             </Row>
           </Col>
