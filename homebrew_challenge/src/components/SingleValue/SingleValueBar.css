@@ -1,12 +1,7 @@
 .single-value-bar {
   /*margin-top: 2rem;*/
 }
-.single-value-bar .ro2w {
-  padding-top: 2rem;
-  height: 100%;
-  margin-right: -5px;
-  margin-left: -5px;
-}
+
 .single-value-bar .row {
   height: 100%;
 }

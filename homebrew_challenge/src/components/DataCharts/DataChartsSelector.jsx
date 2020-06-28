@@ -16,7 +16,12 @@ import {
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
 
-function DataChartsSelector({ chartType, setChartType, toggleFullScreen, fullScreenModeChart }) {
+function DataChartsSelector({
+  chartType,
+  setChartType,
+  toggleFullScreen,
+  fullScreenModeChart
+}) {
   if (
     chartType !== PERCENTAGE_CASES &&
     chartType !== TOTAL_CASES &&
@@ -54,9 +59,9 @@ function DataChartsSelector({ chartType, setChartType, toggleFullScreen, fullScr
         <span id="icon">
           <FontAwesomeIcon
             icon={!fullScreenModeChart? faSearchPlus : faSearchMinus}
-            size="2x"
+            size="1x"
             color="#319bd5"
-            onClick={toggleFullScreen}/>
+            onClick={() => toggleFullScreen()}/>
         </span>
       </Row>
     </Container>

@@ -29,3 +29,7 @@ img#logo {
 .route-map-link:before {
   content: "\00a0 ";
 }
+
+.full-screen {
+  background-color: White;
+}

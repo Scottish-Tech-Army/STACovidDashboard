@@ -88,11 +88,12 @@ export function parseCsvData(csvData) {
   };
 }
 
-const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
+const DataCharts = ({
+  chartType = PERCENTAGE_CASES,
+  fullScreenModeChart = false
+}) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
-  const fullScreenRef = useRef(null);
-  const [fullScreenMode, setfullScreenMode]= useState(false);
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
     null
   );
@@ -260,11 +261,19 @@ const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
     return false;
   };
 
+function getScreenModeClassName() {
+  if (isDataReady()) {
+    return fullScreenModeChart? "full-screen chart-container": "chart-container";
+  } else {
+    return "chart-container hidden-chart";
+  }
+}
+
   return (
     <>
       <div
         className={
-          isDataReady() ? "chart-container" : "chart-container hidden-chart"
+          getScreenModeClassName()
         }
       >
         <canvas ref={chartContainer} />
