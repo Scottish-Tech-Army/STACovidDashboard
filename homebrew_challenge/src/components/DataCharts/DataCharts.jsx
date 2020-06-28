@@ -7,11 +7,7 @@ import {
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
-import {
-  readCsvData,
-  createPlaceDateValueMap,
-  fetchAndStore,
-} from "../Utils/CsvUtils";
+import { readCsvData } from "../Utils/CsvUtils";
 
 const queryUrl = "https://statistics.gov.scot/sparql.csv";
 
@@ -90,7 +86,7 @@ export function parseCsvData(csvData) {
 
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
-  fullScreenModeChart = false
+  fullScreenModeChart = false,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -261,21 +257,19 @@ const DataCharts = ({
     return false;
   };
 
-function getScreenModeClassName() {
-  if (isDataReady()) {
-    return fullScreenModeChart? "full-screen chart-container": "chart-container";
-  } else {
-    return "chart-container hidden-chart";
+  function getScreenModeClassName() {
+    if (isDataReady()) {
+      return fullScreenModeChart
+        ? "full-screen chart-container"
+        : "chart-container";
+    } else {
+      return "chart-container hidden-chart";
+    }
   }
-}
 
   return (
     <>
-      <div
-        className={
-          getScreenModeClassName()
-        }
-      >
+      <div className={getScreenModeClassName()}>
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}
