@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Heatmap.css";
-import FullScreen from "react-full-screen";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -71,7 +70,6 @@ VALUES (?areatype ?shortareatype) {
 ?perioduri rdfs:label ?date
 FILTER regex(?date, "^w")
 }`;
-
 
 const queryCasesByHealthBoard = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
@@ -162,7 +160,10 @@ function Heatmap({
   const fullScreenRef = useRef(null);
   const [fullScreenMode, setfullScreenMode]= useState(false);
 
-  function createHeatbar(width, height, elements) {
+  function createHeatbar(elements) {
+    const width = 200;
+    const height = 20;
+    const viewBox = "0 0 " + width + " " + height;
     const count = elements.length;
     const elementWidth = width / count;
     const offset = elementWidth / 2;
@@ -183,7 +184,12 @@ function Heatmap({
     }
 
     return (
-      <svg width={width} height={height}>
+      <svg
+        viewBox={viewBox}
+        preserveAspectRatio="none"
+        height="100%"
+        width="100%"
+      >
         {elements.map(createHeatbarline)}
       </svg>
     );
@@ -204,7 +210,11 @@ function Heatmap({
       <tr className="area" key={index}>
         <td>{name}</td>
         <td>{totalDeaths}</td>
-        <td>{createHeatbar(500, 20, counts.map(getHeatLevel))}</td>
+        <td className="heatbarCell">
+          <div className="heatbarLine">
+            {createHeatbar(counts.map(getHeatLevel))}
+          </div>
+        </td>
       </tr>
     );
   }
@@ -286,40 +296,50 @@ function Heatmap({
   }
 
   function valueTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Total deaths" : "Total cases";
+    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
   }
 
   function timeRangeTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Weekly count" : "Daily count";
+    return VALUETYPE_DEATHS === valueType ? "Weekly Count" : "Daily Count";
   }
 
   if (getDataSet() === null) {
     return <LoadingComponent />;
   }
 
-  const fullScreenToggler = () => {
-    setfullScreenMode(!fullScreenMode);
+  function heatbarScale() {
+    return (
+      <div className="heatmapScale">
+        {heatLevels.map((value, index) => {
+          return (
+            <span key={index} className={"l-" + index}>
+              &ge;&nbsp;{value}
+            </span>
+          );
+        })}{" "}
+      </div>
+    );
   }
 
-
   return (
-    <FullScreen enabled={fullScreenMode}>
-      <div className="heatmap">
-        <Table size="sm">
-          <thead>
-            <tr>
-              <th>{areaTitle()}</th>
-              <th>{valueTitle()}</th>
-              <th>{timeRangeTitle()}</th>
-            </tr>
-          </thead>
-          <tbody>{renderTableBody()}</tbody>
-        </Table>
-      </div>
-      <button onClick={fullScreenToggler}>
-         FullScreen Mode
-      </button>
-    </FullScreen>
+
+    <div className="heatmap">
+      <Table size="sm">
+        <thead>
+          <tr>
+            <th>{areaTitle()}</th>
+            <th>{valueTitle()}</th>
+            <th>
+              {timeRangeTitle()}
+              <br />
+              {heatbarScale()}
+            </th>
+          </tr>
+        </thead>
+        <tbody>{renderTableBody()}</tbody>
+      </Table>
+    </div>
+
   );
 }
 

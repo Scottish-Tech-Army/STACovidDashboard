@@ -1,18 +1,9 @@
 import React, {useState, useRef} from 'react';
-import FullScreen from "react-full-screen";
 
 const TimeLine = () => {
 
-  const fullScreenRef = useRef(null);
-  const [fullScreenMode, setfullScreenMode]= useState(false);
-
-  const fullScreenToggler = () => {
-    setfullScreenMode(!fullScreenMode);
-  }
-
   return (
     <>
-      <FullScreen enabled={fullScreenMode}>
         <h2>Scotland's Covid-19 Timeline</h2>
         <ul>
           <li>01/03/2020 - First positive case in Scotland</li>
@@ -28,10 +19,6 @@ const TimeLine = () => {
           <li>29/05/2020 - Scotland moves to Phase 1 on the route map out of lockdown</li>
           <li>19/06/2020 - Scotland begins transition to Phase 2 of the Covid-19 roadmap</li>
         </ul>
-        <button onClick={fullScreenToggler}>
-           FullScreen Mode
-        </button>
-      </FullScreen>
     </>
   );
 

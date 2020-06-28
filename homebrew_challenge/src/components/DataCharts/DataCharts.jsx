@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
-import FullScreen from "react-full-screen";
 import {
   PERCENTAGE_CASES,
   TOTAL_CASES,
@@ -94,12 +93,6 @@ const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
   const chartInstance = useRef(null);
   const fullScreenRef = useRef(null);
   const [fullScreenMode, setfullScreenMode]= useState(false);
-
-
-  const fullScreenToggler = () => {
-      setfullScreenMode(!fullScreenMode);
-    }
-
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
     null
   );
@@ -269,7 +262,6 @@ const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
 
   return (
     <>
-      <FullScreen enabled={fullScreenMode}>
       <div
         className={
           isDataReady() ? "chart-container" : "chart-container hidden-chart"
@@ -278,10 +270,6 @@ const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}
-      <button onClick={fullScreenToggler}>
-         FullScreen Mode
-      </button>
-      </FullScreen>
     </>
   );
 };

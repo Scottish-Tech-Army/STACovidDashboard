@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
+import Fullscreen from "react-full-screen";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -24,6 +25,18 @@ const App = () => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
   const [chartType, setChartType] = useState(PERCENTAGE_CASES);
+  let fullScreenRef = useRef(null);
+  let [fullScreenModeMap, setfullScreenModeMap]= useState(false);
+  let [fullScreenModeChart, setfullScreenModeChart]= useState(false);
+
+
+  const fullScreenTogglerMap = () => {
+      setfullScreenModeMap(!fullScreenModeMap);
+    }
+
+  const fullScreenTogglerChart = () => {
+      setfullScreenModeChart(!fullScreenModeChart);
+    }
 
   return (
     <div className="App">
@@ -71,12 +84,16 @@ const App = () => {
               valueType={valueType}
               setAreaType={setAreaType}
               setValueType={setValueType}
+              toggleFullScreen={fullScreenTogglerMap}
+              fullScreenModeMap={fullScreenModeMap}
             />
           </Col>
           <Col className="d-none d-sm-flex" md={4}>
             <DataChartsSelector
               chartType={chartType}
               setChartType={setChartType}
+              toggleFullScreen={fullScreenTogglerChart}
+              fullScreenModeChart={fullScreenModeChart}
             />
           </Col>
         </Row>
