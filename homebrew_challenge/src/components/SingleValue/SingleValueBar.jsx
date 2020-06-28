@@ -206,21 +206,21 @@ WHERE {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyFatalities"
-                title={"Fatalities " + getRelativeDate(dailyFatalities.date)}
+                title={"Deaths " + getRelativeDate(dailyFatalities.date)}
                 value={dailyFatalities.value}
               />
             </Col>
             <Col className="single-value-bar-col">
               <SingleValue
                 id="totalFatalities"
-                title="Total Fatalities"
+                title="Total Deaths"
                 value={totalFatalities.value}
               />
             </Col>
             <Col className="single-value-bar-col">
               <SingleValue
                 id="fatalityCaseRatio"
-                title="Fatality / Case Ratio"
+                title="Death / Case Ratio"
                 value={fatalityCaseRatio}
               />
             </Col>

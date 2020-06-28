@@ -34,9 +34,9 @@ it("SingleValueBar renders default data when fetch fails", async () => {
 
   checkSingleValue("dailyCases", "Cases on 01/01/1999", "0");
   checkSingleValue("totalCases", "Total Cases", "0");
-  checkSingleValue("dailyFatalities", "Fatalities on 01/01/1999", "0");
-  checkSingleValue("totalFatalities", "Total Fatalities", "0");
-  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "0");
+  checkSingleValue("dailyFatalities", "Deaths on 01/01/1999", "0");
+  checkSingleValue("totalFatalities", "Total Deaths", "0");
+  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "0");
   checkSingleValue("totalTestsCompleted", "Total Tests Completed", "0");
 });
@@ -53,9 +53,9 @@ it("SingleValueBar renders dynamic fetched data for today", async () => {
 
   checkSingleValue("dailyCases", "Cases Today", "26");
   checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Fatalities Today", "-1");
-  checkSingleValue("totalFatalities", "Total Fatalities", "2472");
-  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.6%");
+  checkSingleValue("dailyFatalities", "Deaths Today", "-1");
+  checkSingleValue("totalFatalities", "Total Deaths", "2472");
+  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
   checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
 });
@@ -72,9 +72,9 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
 
   checkSingleValue("dailyCases", "Cases Yesterday", "26");
   checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Fatalities Yesterday", "-1");
-  checkSingleValue("totalFatalities", "Total Fatalities", "2472");
-  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.6%");
+  checkSingleValue("dailyFatalities", "Deaths Yesterday", "-1");
+  checkSingleValue("totalFatalities", "Total Deaths", "2472");
+  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
   checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
 });
