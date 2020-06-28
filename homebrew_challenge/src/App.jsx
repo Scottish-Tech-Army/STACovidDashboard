@@ -78,6 +78,7 @@ const App = () => {
           <Col xs={12}>
             <hr className="full-width-hr" />
           </Col>
+          Fullscree
           <Col xs={12} md={8}>
             <HeatmapDataSelector
               areaType={areaType}

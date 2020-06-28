@@ -61,7 +61,7 @@ export function parseCsvData(csvData) {
     dailyFatalities: getLatestDiff(cumulativeDeathsMap),
     totalFatalities: totalFatalities,
     fatalityCaseRatio:
-      ((totalFatalities.value * 100) / totalCases.value).toFixed(2) + "%",
+      ((totalFatalities.value * 100) / totalCases.value).toFixed(1) + "%",
     dailyTestsCompleted: getLatestDiff(cumulativeTotalTestsMap),
     totalTestsCompleted: getLatestValue(cumulativeTotalTestsMap),
   };
@@ -183,54 +183,66 @@ WHERE {
   return (
     <Container fluid className="single-value-bar">
       <Row>
-        <Col>
-          <SingleValue
-            id="dailyCases"
-            title={"Cases " + getRelativeDate(dailyCases.date)}
-            value={dailyCases.value}
-          />
+        <Col xs={12} lg={4}>
+          <Row className="single-value-bar-row">
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="dailyCases"
+                title={"Cases " + getRelativeDate(dailyCases.date)}
+                value={dailyCases.value}
+              />
+            </Col>
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="totalCases"
+                title="Total Cases"
+                value={totalCases.value}
+              />
+            </Col>
+          </Row>
         </Col>
-        <Col>
-          <SingleValue
-            id="totalCases"
-            title="Total Cases"
-            value={totalCases.value}
-          />
+        <Col xs={12} lg={4}>
+          <Row className="single-value-bar-row">
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="dailyFatalities"
+                title={"Deaths " + getRelativeDate(dailyFatalities.date)}
+                value={dailyFatalities.value}
+              />
+            </Col>
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="totalFatalities"
+                title="Total Deaths"
+                value={totalFatalities.value}
+              />
+            </Col>
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="fatalityCaseRatio"
+                title="Death / Case Ratio"
+                value={fatalityCaseRatio}
+              />
+            </Col>
+          </Row>
         </Col>
-        <Col>
-          <SingleValue
-            id="dailyFatalities"
-            title={"Fatalities " + getRelativeDate(dailyFatalities.date)}
-            value={dailyFatalities.value}
-          />
-        </Col>
-        <Col>
-          <SingleValue
-            id="totalFatalities"
-            title="Total Fatalities"
-            value={totalFatalities.value}
-          />
-        </Col>
-        <Col>
-          <SingleValue
-            id="fatalityCaseRatio"
-            title="Fatality / Case Ratio"
-            value={fatalityCaseRatio}
-          />
-        </Col>
-        <Col>
-          <SingleValue
-            id="dailyTestsCompleted"
-            title="Daily Tests Completed"
-            value={dailyTestsCompleted.value}
-          />
-        </Col>
-        <Col>
-          <SingleValue
-            id="totalTestsCompleted"
-            title="Total Tests Completed"
-            value={totalTestsCompleted.value}
-          />
+        <Col xs={12} lg={4}>
+          <Row className="single-value-bar-row">
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="dailyTestsCompleted"
+                title="Daily Tests Completed"
+                value={dailyTestsCompleted.value}
+              />
+            </Col>
+            <Col className="single-value-bar-col">
+              <SingleValue
+                id="totalTestsCompleted"
+                title="Total Tests Completed"
+                value={totalTestsCompleted.value}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
