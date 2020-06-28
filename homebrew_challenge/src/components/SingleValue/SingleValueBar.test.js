@@ -55,7 +55,7 @@ it("SingleValueBar renders dynamic fetched data for today", async () => {
   checkSingleValue("totalCases", "Total Cases", "18156");
   checkSingleValue("dailyFatalities", "Fatalities Today", "-1");
   checkSingleValue("totalFatalities", "Total Fatalities", "2472");
-  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.62%");
+  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
   checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
 });
@@ -74,7 +74,7 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
   checkSingleValue("totalCases", "Total Cases", "18156");
   checkSingleValue("dailyFatalities", "Fatalities Yesterday", "-1");
   checkSingleValue("totalFatalities", "Total Fatalities", "2472");
-  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.62%");
+  checkSingleValue("fatalityCaseRatio", "Fatality / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
   checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
 });
@@ -110,7 +110,7 @@ it("parseCsvData", () => {
     dailyCases: { date: 1592697600000, value: 26 },
     dailyFatalities: { date: 1592697600000, value: -1 },
     dailyTestsCompleted: { date: 1592697600000, value: 3442 },
-    fatalityCaseRatio: "13.62%",
+    fatalityCaseRatio: "13.6%",
     totalCases: { date: 1592697600000, value: 18156 },
     totalFatalities: { date: 1592697600000, value: 2472 },
     totalTestsCompleted: { date: 1592697600000, value: 231525 },
