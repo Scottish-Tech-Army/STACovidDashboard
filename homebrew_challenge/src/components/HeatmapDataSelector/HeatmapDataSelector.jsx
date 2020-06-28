@@ -5,6 +5,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./HeatmapDataSelector.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
+import { faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -17,8 +20,11 @@ function HeatmapDataSelector({
   areaType,
   setAreaType,
   valueType,
-  setValueType
+  setValueType,
+  toggleFullScreen,
+  fullScreenModeMap
 }) {
+  console.log(toggleFullScreen)
   if (
     areaType !== AREATYPE_COUNCIL_AREAS &&
     areaType !== AREATYPE_HEALTH_BOARDS
@@ -92,6 +98,13 @@ function HeatmapDataSelector({
               {casesText}
             </ToggleButton>
           </ToggleButtonGroup>
+          <span id="icon">
+            <FontAwesomeIcon
+              icon={!fullScreenModeMap? faSearchPlus : faSearchMinus}
+              size="2x"
+              color="#319bd5"
+              onClick = {() => toggleFullScreen()}/>
+          </span>
         </Col>
       </Row>
     </Container>

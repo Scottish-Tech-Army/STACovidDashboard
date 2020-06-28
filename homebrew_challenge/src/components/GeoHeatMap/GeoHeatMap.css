@@ -17,3 +17,7 @@
   height: 100%;
   width: 100%;
 }
+
+.full-screen {
+  height: 90vh;
+}

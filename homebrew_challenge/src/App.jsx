@@ -30,6 +30,7 @@ const App = () => {
   const zoomableCharts = useRef();
 
   function toggleFullscreen() {
+  console.log("to here");
     var elem = zoomableCharts.current || document.documentElement;
     if (
       !document.fullscreenElement &&
@@ -46,7 +47,8 @@ const App = () => {
       } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
-    } else {
+    setZoomDataCharts(true);
+  } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.msExitFullscreen) {
@@ -56,7 +58,8 @@ const App = () => {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-    }
+    setZoomDataCharts(false);
+  }
   }
 
   return (
@@ -122,7 +125,7 @@ const App = () => {
           </Col>
         </Row>
         <Row className="widgets_block">
-          <Col xs={12} md={8}>
+          <Col xs={12} md={8} ref={zoomableCharts}>
             <Row>
               <Col>
                 <HeatmapDataSelector
@@ -130,6 +133,8 @@ const App = () => {
                   valueType={valueType}
                   setAreaType={setAreaType}
                   setValueType={setValueType}
+                  toggleFullScreen={toggleFullscreen}
+                  fullScreenModeMap={zoomDataCharts}
                 />
               </Col>
             </Row>
@@ -139,11 +144,11 @@ const App = () => {
               </Col>
             </Row>
             <Row>
-              <Col xs={12} md={6}>
-                <Heatmap areaType={areaType} valueType={valueType} />
+              <Col xs={zoomDataCharts? 0 : 12} md={zoomDataCharts? 0 : 6}>
+              {zoomDataCharts? <></> : <Heatmap areaType={areaType} valueType={valueType} />}
               </Col>
-              <Col xs={12} md={6}>
-                <GeoHeatMap areaType={areaType} valueType={valueType} />
+              <Col xs={12} md={zoomDataCharts? 12: 6}>
+                <GeoHeatMap areaType={areaType} valueType={valueType} fullScreenModeMap={zoomDataCharts}/>
               </Col>
             </Row>
           </Col>

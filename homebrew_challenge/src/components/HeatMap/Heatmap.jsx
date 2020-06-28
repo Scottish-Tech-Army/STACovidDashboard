@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Heatmap.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
@@ -156,6 +156,9 @@ function Heatmap({
   const [healthBoardsCasesDataset, setHealthBoardsCasesDataset] = useState(
     null
   );
+
+  const fullScreenRef = useRef(null);
+  const [fullScreenMode, setfullScreenMode]= useState(false);
 
   function createHeatbar(elements) {
     const width = 200;
@@ -319,6 +322,7 @@ function Heatmap({
   }
 
   return (
+
     <div className="heatmap">
       <Table size="sm">
         <thead>
@@ -335,6 +339,7 @@ function Heatmap({
         <tbody>{renderTableBody()}</tbody>
       </Table>
     </div>
+
   );
 }
 

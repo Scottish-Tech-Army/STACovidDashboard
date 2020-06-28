@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
@@ -36,6 +36,7 @@ function parseCsvData(csvData) {
 const GeoHeatMap = ({
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
+  fullScreenModeMap = false
 }) => {
   const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
   const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
@@ -267,7 +268,8 @@ const tilesStadiaAlidadeSmooth = 'https://tiles.stadiamaps.com/tiles/alidade_smo
 const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 
   return (
-    <div className="geo-map">
+
+    <div className={  fullScreenModeMap? "full-screen geo-map": "geo-map" }>
       <LeafletMap
         center={[56.5814, -4.0545]}
         id="map"

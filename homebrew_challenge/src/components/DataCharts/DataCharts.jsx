@@ -91,7 +91,8 @@ export function parseCsvData(csvData) {
 const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
-
+  const fullScreenRef = useRef(null);
+  const [fullScreenMode, setfullScreenMode]= useState(false);
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
     null
   );
@@ -218,7 +219,7 @@ const DataCharts = ({ chartType = PERCENTAGE_CASES }) => {
     if (chartInstance.current !== null) {
       chartInstance.current.destroy();
     }
-    
+
     const chartRef = chartContainer.current.getContext("2d");
     if (chartType === PERCENTAGE_CASES) {
       chartInstance.current = new Chart(
