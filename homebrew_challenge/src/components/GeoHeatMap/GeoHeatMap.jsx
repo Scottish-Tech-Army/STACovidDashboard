@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { format, subDays, subYears } from "date-fns";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
@@ -13,6 +13,7 @@ import {
   createPlaceDateValueMap,
   fetchAndStore,
 } from "../Utils/CsvUtils";
+import FullscreenControl from "./FullscreenControl";
 
 function parseCsvData(csvData) {
   function getLatestValue(dateValueMap) {
@@ -36,7 +37,8 @@ function parseCsvData(csvData) {
 const GeoHeatMap = ({
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
-  fullScreenModeMap = false
+  toggleFullscreen,
+  fullscreenEnabled = false,
 }) => {
   const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
   const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
@@ -87,7 +89,12 @@ const GeoHeatMap = ({
           '" )'
         );
       };
-      return singleLine(today) + singleLine(yesterday) + singleLine(yesterday) + singleLine(dayBefore);
+      return (
+        singleLine(today) +
+        singleLine(yesterday) +
+        singleLine(yesterday) +
+        singleLine(dayBefore)
+      );
     }
 
     const queryTotalDeathsByCouncilArea =
@@ -236,7 +243,7 @@ const GeoHeatMap = ({
     return locations.map(({ area, lat, lng }) => {
       if (dataset.has(area)) {
         const value = dataset.get(area);
-        const colour = (value === 0) ? "green" : "red";
+        const colour = value === 0 ? "green" : "red";
 
         return (
           <Circle
@@ -264,12 +271,12 @@ const GeoHeatMap = ({
         scrollWheelZoom={false}
 */
 
-const tilesStadiaAlidadeSmooth = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
-const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+  const tilesStadiaAlidadeSmooth =
+    "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
+  //const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
 
   return (
-
-    <div className={  fullScreenModeMap? "full-screen geo-map": "geo-map" }>
+    <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
       <LeafletMap
         center={[56.5814, -4.0545]}
         id="map"
@@ -282,6 +289,10 @@ const tilesStadiaAlidadeSmoothDark = 'https://tiles.stadiamaps.com/tiles/alidade
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         {regionCircles()}
+        <FullscreenControl
+          toggleFullscreen={toggleFullscreen}
+          fullscreenEnabled={fullscreenEnabled}
+        />
       </LeafletMap>
     </div>
   );
