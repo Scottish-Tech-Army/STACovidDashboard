@@ -208,10 +208,6 @@ const App = () => {
                 <DataChartsSelector
                   chartType={chartType}
                   setChartType={setChartType}
-                  toggleFullScreen={() =>
-                    toggleFullscreen(zoomableCharts, setZoomDataCharts)
-                  }
-                  fullScreenModeChart={zoomDataCharts}
                 />
               </Col>
             </Row>
@@ -224,7 +220,10 @@ const App = () => {
               <Col>
                 <DataCharts
                   chartType={chartType}
-                  fullScreenModeChart={zoomDataCharts}
+                  fullscreenEnabled={zoomDataCharts}
+                  toggleFullscreen={() =>
+                    toggleFullscreen(zoomableCharts, setZoomDataCharts)
+                  }
                 />
               </Col>
             </Row>
