@@ -13,6 +13,7 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
+import SpikeAlert from "./components/SpikeAlert/SpikeAlert";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -107,6 +108,14 @@ const App = () => {
                 />
                 Covid-19 Dashboard
               </h1>
+            </Col>
+          </Row>
+          <Row
+            fluid
+            className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
+          >
+            <Col>
+              <SpikeAlert/>
             </Col>
           </Row>
           <Row

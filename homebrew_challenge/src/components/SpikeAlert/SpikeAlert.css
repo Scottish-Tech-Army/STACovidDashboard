@@ -1,0 +1,17 @@
+.alert-bar {
+  background-color: #fecdd1;
+  padding: 30px 0 30px 30px;;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#icon-alert {
+  padding-right: 30px;
+  height: 100%;
+  float: left;
+}
+
+.advice-link:before {
+  content: "\00a0 ";
+}
