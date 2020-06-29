@@ -17,7 +17,7 @@ const SpikeAlert = () => {
       <span id="message">
         Over the last 24 hours there has been a spike in infections in the Greater Glasgow and Clyde Health Board region. Please follow the latest government advice available at
         <a
-          className="advice-link"
+          className="advice-link link"
           target="_blank"
           href="https://www.gov.scot/coronavirus-covid-19/"
           rel="noopener noreferrer"

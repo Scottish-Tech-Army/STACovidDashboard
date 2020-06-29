@@ -1,17 +1,16 @@
-.alert-bar {
+.info-bar {
   display: flex;
   align-items: center;
-  background-color: #fecdd1;
+  background-color: #c1def1;
   padding: 30px 10px 30px 30px;
-  margin-bottom: 10px;
 }
 
-#icon-alert {
+#icon {
   padding-right: 30px;
   height: 100%;
   float: left;
 }
 
-.advice-link:before {
+.route-map-link:before {
   content: "\00a0 ";
 }
