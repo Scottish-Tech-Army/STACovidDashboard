@@ -1,20 +1,15 @@
-#icon {
-  padding-left: 30px;
-  padding-right: 30px;
-  height: 100%;
-  float: left;
-}
-#message {
-  font-weight: bold;
-}
-
 .underHeatmapSelector {
   border: 1px solid #319bd5;
   margin-top: 8px;
   margin-bottom: 8px;
 }
+
 .full-width-hr {
   border: 1px solid #319bd5;
+}
+
+.full-screen {
+  background-color: White;
 }
 
 img#logo {
@@ -22,14 +17,12 @@ img#logo {
   margin-right: 2rem;
 }
 
-.info-bar {
-  display: flex;
-  align-items: center;
-}
-.route-map-link:before {
-  content: "\00a0 ";
+.link {
+  color: #3c3c3b;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
-.full-screen {
-  background-color: White;
+#message {
+  font-weight: bold;
 }

@@ -1,0 +1,16 @@
+.info-bar {
+  display: flex;
+  align-items: center;
+  background-color: #c1def1;
+  padding: 30px 10px 30px 30px;
+}
+
+#icon {
+  padding-right: 30px;
+  height: 100%;
+  float: left;
+}
+
+.route-map-link:before {
+  content: "\00a0 ";
+}

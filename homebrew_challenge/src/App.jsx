@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import SingleValueBar from "./components/SingleValue/SingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -13,6 +11,8 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
+import SpikeAlert from "./components/SpikeAlert/SpikeAlert";
+import InfoBar from "./components/InfoBar/InfoBar";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -111,35 +111,19 @@ const App = () => {
           </Row>
           <Row
             fluid
-            className="pt-3 d-none d-sm-flex justify-content-center align-items-center info-bar"
+            className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
           >
             <Col>
-              <div className="info-bar">
-                <span id="icon">
-                  <FontAwesomeIcon
-                    icon={faInfoCircle}
-                    size="3x"
-                    color="#319bd5"
-                  />
-                </span>
-                <span id="message">
-                  Provisional dates for the relaxation of travel restrictions,
-                  restarting of the hospitality industry and reopening of
-                  hairdressers are among further route map measures announced
-                  today (Wednesday 24, June) by First Minister Nicola Sturgeon.
-                  For more information visit
-                  <a
-                    className="route-map-link"
-                    target="_blank"
-                    href="https://www.gov.scot/news/further-route-map-detail-announced/"
-                    rel="noopener noreferrer"
-                  >
-                    www.gov.scot/news/further-route-map-detail-announced
-                  </a>
-                  .
-                </span>
-              </div>
+              <SpikeAlert/>
             </Col>
+          </Row>
+          <Row
+            fluid
+            className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
+          >
+          <Col>
+            <InfoBar/>
+          </Col>
           </Row>
         </Container>
       </header>
@@ -247,6 +231,7 @@ const App = () => {
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="link"
               >
                 Scottish Government guidance
               </a>
@@ -256,6 +241,7 @@ const App = () => {
                 href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="link"
               >
                 NHS inform
               </a>
@@ -284,6 +270,7 @@ const App = () => {
                   href="https://www.scottishtecharmy.org/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="link"
                 >
                   ScottishTechArmy.org
                 </a>
