@@ -5,9 +5,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./DataChartsSelector.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
-import { faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 
 import {
   PERCENTAGE_CASES,
@@ -18,8 +15,6 @@ import {
 function DataChartsSelector({
   chartType,
   setChartType,
-  toggleFullScreen,
-  fullScreenModeChart,
 }) {
   if (
     chartType !== PERCENTAGE_CASES &&
@@ -57,14 +52,6 @@ function DataChartsSelector({
               Total Deaths
             </ToggleButton>
           </ToggleButtonGroup>
-          <span id="icon">
-            <FontAwesomeIcon
-              icon={!fullScreenModeChart ? faSearchPlus : faSearchMinus}
-              size="1x"
-              color="#319bd5"
-              onClick={() => toggleFullScreen()}
-            />
-          </span>
         </Col>
       </Row>
     </Container>

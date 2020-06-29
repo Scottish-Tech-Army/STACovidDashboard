@@ -8,6 +8,7 @@ import {
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
 import { readCsvData } from "../Utils/CsvUtils";
+import "./FullscreenButton";
 
 const queryUrl = "https://statistics.gov.scot/sparql.csv";
 
@@ -86,7 +87,8 @@ export function parseCsvData(csvData) {
 
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
-  fullScreenModeChart = false,
+  fullscreenEnabled = false,
+  toggleFullscreen,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -147,6 +149,15 @@ const DataCharts = ({
                 },
               },
             ],
+          },
+          legend: {
+            position: "bottom",
+          },
+          plugins: {
+            chartJsPluginFullscreenButton: {
+              fullscreenEnabled: fullscreenEnabled,
+              toggleFullscreen: toggleFullscreen,
+            },
           },
         },
       };
@@ -242,6 +253,8 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
+    fullscreenEnabled,
+    toggleFullscreen,
   ]);
 
   const isDataReady = () => {
@@ -259,7 +272,7 @@ const DataCharts = ({
 
   function getScreenModeClassName() {
     if (isDataReady()) {
-      return fullScreenModeChart
+      return fullscreenEnabled
         ? "full-screen chart-container"
         : "chart-container";
     } else {
