@@ -68,6 +68,7 @@ function HeatmapDataSelector({
             <ToggleButton
               id="councilAreas"
               value={AREATYPE_COUNCIL_AREAS}
+              variant={VALUETYPE_CASES === valueType? "secondary": "primary"}
               disabled={VALUETYPE_CASES === valueType}
             >
               {councilAreasText}
@@ -87,6 +88,7 @@ function HeatmapDataSelector({
             <ToggleButton
               id="cases"
               value={VALUETYPE_CASES}
+              variant={AREATYPE_COUNCIL_AREAS === areaType? "secondary": "primary"}
               disabled={AREATYPE_COUNCIL_AREAS === areaType}
             >
               {casesText}
