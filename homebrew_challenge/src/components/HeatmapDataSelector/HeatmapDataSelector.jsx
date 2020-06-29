@@ -5,15 +5,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./HeatmapDataSelector.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
-import { faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 
 import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
-  VALUETYPE_DEATHS
+  VALUETYPE_DEATHS,
 } from "./HeatmapConsts";
 
 function HeatmapDataSelector({
@@ -21,8 +18,6 @@ function HeatmapDataSelector({
   setAreaType,
   valueType,
   setValueType,
-  toggleFullScreen,
-  fullScreenModeMap
 }) {
   if (
     areaType !== AREATYPE_COUNCIL_AREAS &&
@@ -65,7 +60,7 @@ function HeatmapDataSelector({
             name="areaType"
             type="radio"
             value={areaType}
-            onChange={val => setAreaType(val)}
+            onChange={(val) => setAreaType(val)}
           >
             <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
               Health Boards
@@ -84,7 +79,7 @@ function HeatmapDataSelector({
             name="valueType"
             type="radio"
             value={valueType}
-            onChange={val => setValueType(val)}
+            onChange={(val) => setValueType(val)}
           >
             <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
               Total Deaths
@@ -97,13 +92,6 @@ function HeatmapDataSelector({
               {casesText}
             </ToggleButton>
           </ToggleButtonGroup>
-          <span id="icon">
-            <FontAwesomeIcon
-              icon={!fullScreenModeMap? faSearchPlus : faSearchMinus}
-              size="1x"
-              color="#319bd5"
-              onClick = {() => toggleFullScreen()}/>
-          </span>
         </Col>
       </Row>
     </Container>

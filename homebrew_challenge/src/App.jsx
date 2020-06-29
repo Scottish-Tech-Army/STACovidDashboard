@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +13,6 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
-import Button from "react-bootstrap/Button";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -28,12 +27,10 @@ const App = () => {
   const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
-
   const zoomableCharts = useRef();
   const zoomableMap = useRef();
 
   function toggleFullscreen(element, setter) {
-  console.log("to here");
     var elem = element.current || document.documentElement;
     if (
       !document.fullscreenElement &&
@@ -50,8 +47,8 @@ const App = () => {
       } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
-    setter(true);
-  } else {
+      setter(true);
+    } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.msExitFullscreen) {
@@ -61,9 +58,40 @@ const App = () => {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-    setter(false);
+      setter(false);
+    }
   }
-  }
+
+  useEffect(() => {
+    function setFullscreenMode(fullscreenEnabled) {
+      if (!fullscreenEnabled) {
+        setZoomDataCharts(false);
+        setZoomGeoMap(false);
+      }
+    }
+
+    // Monitor changes to fullscreen
+    document.addEventListener(
+      "fullscreenchange",
+      () => setFullscreenMode(document.fullscreen),
+      false
+    );
+    document.addEventListener(
+      "mozfullscreenchange",
+      () => setFullscreenMode(document.mozFullScreen),
+      false
+    );
+    document.addEventListener(
+      "webkitfullscreenchange",
+      () => setFullscreenMode(document.webkitIsFullScreen),
+      false
+    );
+    document.addEventListener(
+      "msfullscreenchange",
+      () => setFullscreenMode(document.msFullscreenElement),
+      false
+    );
+  }, []);
 
   return (
     <div className="App">
@@ -128,7 +156,12 @@ const App = () => {
           </Col>
         </Row>
         <Row className="widgets_block">
-          <Col xs={12} md={8} ref={zoomableMap}  className={zoomGeoMap? "full-screen": ""} >
+          <Col
+            xs={12}
+            md={8}
+            ref={zoomableMap}
+            className={zoomGeoMap ? "full-screen" : ""}
+          >
             <Row>
               <Col>
                 <HeatmapDataSelector
@@ -136,8 +169,6 @@ const App = () => {
                   valueType={valueType}
                   setAreaType={setAreaType}
                   setValueType={setValueType}
-                  toggleFullScreen= {() => toggleFullscreen(zoomableMap, setZoomGeoMap)}
-                  fullScreenModeMap={zoomGeoMap}
                 />
               </Col>
             </Row>
@@ -147,21 +178,39 @@ const App = () => {
               </Col>
             </Row>
             <Row>
-              <Col xs={zoomGeoMap? 0 : 12} md={zoomGeoMap? 0 : 6}>
-              {zoomGeoMap? <></> : <Heatmap/>}
+              <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 6}>
+                {zoomGeoMap ? (
+                  <></>
+                ) : (
+                  <Heatmap areaType={areaType} valueType={valueType} />
+                )}
               </Col>
-              <Col xs={12} md={zoomGeoMap? 12: 6}>
-                <GeoHeatMap areaType={areaType} valueType={valueType} fullScreenModeMap={zoomGeoMap}/>
+              <Col xs={12} md={zoomGeoMap ? 12 : 6}>
+                <GeoHeatMap
+                  areaType={areaType}
+                  valueType={valueType}
+                  toggleFullscreen={() =>
+                    toggleFullscreen(zoomableMap, setZoomGeoMap)
+                  }
+                  fullscreenEnabled={zoomGeoMap}
+                />
               </Col>
             </Row>
           </Col>
-          <Col xs={12} md={4} ref={zoomableCharts} className={zoomDataCharts? "full-screen": "" }>
+          <Col
+            xs={12}
+            md={4}
+            ref={zoomableCharts}
+            className={zoomDataCharts ? "full-screen" : ""}
+          >
             <Row>
               <Col>
                 <DataChartsSelector
                   chartType={chartType}
                   setChartType={setChartType}
-                  toggleFullScreen={() => toggleFullscreen(zoomableCharts, setZoomDataCharts)}
+                  toggleFullScreen={() =>
+                    toggleFullscreen(zoomableCharts, setZoomDataCharts)
+                  }
                   fullScreenModeChart={zoomDataCharts}
                 />
               </Col>
@@ -173,13 +222,14 @@ const App = () => {
             </Row>
             <Row>
               <Col>
-                <DataCharts chartType={chartType} fullScreenModeChart={zoomDataCharts}/>
+                <DataCharts
+                  chartType={chartType}
+                  fullScreenModeChart={zoomDataCharts}
+                />
               </Col>
             </Row>
             <Row>
-              <Col>
-              {zoomDataCharts? <></> : <TimeLine/>}
-              </Col>
+              <Col>{zoomDataCharts ? <></> : <TimeLine />}</Col>
             </Row>
           </Col>
         </Row>
