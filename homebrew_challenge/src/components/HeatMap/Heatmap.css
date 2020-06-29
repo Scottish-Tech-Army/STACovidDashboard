@@ -41,7 +41,10 @@
 .heatmap .l-5 {
   stroke: #b30000;
 }
-
+.heatmapScale {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 .heatmapScale span {
   padding: 5px 10px;
 }

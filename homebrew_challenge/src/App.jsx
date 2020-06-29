@@ -97,7 +97,7 @@ const App = () => {
     <div className="App">
       <header>
         <Container fluid className="header">
-          <Row id="page-title">
+          <Row id="page-title" className="pt-3">
             <Col>
               <h1 className="header-title">
                 <img
@@ -225,7 +225,7 @@ const App = () => {
 
       <footer>
         <Container className="text-center font-small blue pt-4">
-          <Row>
+          <Row className="align-items-center">
             <Col xs={12} md={4}>
               <a
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
@@ -233,17 +233,12 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-                Scottish Government guidance
-              </a>
-            </Col>
-            <Col xs={12} md={4}>
-              <a
-                href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link"
-              >
-                NHS inform
+              <img
+                src="Scottish Government logo.svg"
+                alt="Scottish Government guidance"
+                width="270"
+                height="50"
+              />
               </a>
             </Col>
             <Col xs={12} md={4}>
@@ -258,6 +253,21 @@ const App = () => {
                   width="270"
                   height="50"
                 />
+              </a>
+            </Col>
+            <Col xs={12} md={4}>
+              <a
+                href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link"
+              >
+              <img
+                src="nhsinform-110height.png"
+                alt="NHS Inform"
+                width="180"
+                height="83"
+              />
               </a>
             </Col>
           </Row>
