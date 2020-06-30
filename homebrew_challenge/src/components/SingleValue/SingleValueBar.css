@@ -29,12 +29,12 @@
 .single-value-header {
   padding: 0.5rem;
   font-size: 1rem;
-  font-weight: lighter;
+  font-weight: bold;
   height: 50%;
 }
 
 .single-value-total {
   padding: 0.2rem 1rem 2rem 1rem;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: bolder;
 }
