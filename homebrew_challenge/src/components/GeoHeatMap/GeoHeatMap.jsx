@@ -30,7 +30,6 @@ function parseCsvData(csvData) {
   placeDateValueMap.forEach((dateValueMap, areaname) => {
     regions.set(areaname, getLatestValue(dateValueMap));
   });
-  console.log(regions);
   return regions;
 }
 
