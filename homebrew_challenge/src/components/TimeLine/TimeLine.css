@@ -1,9 +1,14 @@
-.events {
+.events h5 {
+    text-align: center;
+}
+
+.eventsTable {
   overflow-y: auto;
   max-height: 300px;
 }
 
-.events table td.date {
+.events table td.date,
+.events table td.year {
   text-align: right;
   color: rgb(0, 42, 58);
   border-right: 2px rgb(204, 204, 204) solid;
@@ -19,6 +24,10 @@
   margin-right: -10px;
   font-weight: bold;
   font-size: 18px;
+}
+
+.events table td.year {
+  font-weight: bold;
 }
 
 .events table td.text {
