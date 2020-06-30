@@ -109,21 +109,15 @@ const App = () => {
               </h1>
             </Col>
           </Row>
-          <Row
-            fluid
-            className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
-          >
+          <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
             <Col>
-              <SpikeAlert/>
+              <SpikeAlert />
             </Col>
           </Row>
-          <Row
-            fluid
-            className="pt-3 d-none d-sm-flex justify-content-center align-items-center"
-          >
-          <Col>
-            <InfoBar/>
-          </Col>
+          <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
+            <Col>
+              <InfoBar />
+            </Col>
           </Row>
         </Container>
       </header>
@@ -233,12 +227,12 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-              <img
-                src="Scottish Government logo.svg"
-                alt="Scottish Government guidance"
-                width="270"
-                height="50"
-              />
+                <img
+                  src="Scottish Government logo.svg"
+                  alt="Scottish Government guidance"
+                  width="270"
+                  height="50"
+                />
               </a>
             </Col>
             <Col xs={12} md={4}>
@@ -262,12 +256,12 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-              <img
-                src="nhsinform-110height.png"
-                alt="NHS Inform"
-                width="180"
-                height="83"
-              />
+                <img
+                  src="nhsinform-110height.png"
+                  alt="NHS Inform"
+                  width="180"
+                  height="83"
+                />
               </a>
             </Col>
           </Row>
