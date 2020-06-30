@@ -10,16 +10,13 @@
   padding-right: 10px;
 }
 
-.events table td.tick {
-  padding: 0;
-}
-
-.events table td.tick::before {
+.events table td.date::after {
   content: "\2014";
   color: rgb(204, 204, 204);
   position: relative;
-  left: -10px;
-  margin-right: -5px;
+  left: 10px;
+  margin-left: -5px;
+  margin-right: -10px;
   font-weight: bold;
   font-size: 18px;
 }
@@ -28,12 +25,12 @@
   color: rgb(0, 42, 58);
   font-weight: bold;
   margin-bottom: 5px;
+  padding-left: 15px;
   font-size: 16px;
   margin-top: 5px;
   text-align: left;
-  border-top: 1px rgb(204, 204, 204) solid;
 }
 
-.events table tr:first-child td.text {
-  border-top: 0;
+.events table tr:nth-child(even) {
+  background-color: rgba(204, 204, 204, 0.4);
 }

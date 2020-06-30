@@ -42,9 +42,8 @@ const TimeLine = () => {
   function getTableEntry({ date, text }) {
     const dateString = format(new Date(date), dateFormatString);
     return (
-      <tr>
+      <tr key={date}>
         <td className="date">{dateString}</td>
-        <td className="tick"></td>
         <td className="text">
           <span>{text}</span>
         </td>
