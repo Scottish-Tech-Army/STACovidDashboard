@@ -228,7 +228,7 @@ const App = () => {
                 className="link"
               >
                 <img
-                  src="Scottish Government logo.svg"
+                  src="ScottishGovernmentLogo.svg"
                   alt="Scottish Government guidance"
                   width="270"
                   height="50"
@@ -242,7 +242,7 @@ const App = () => {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="final_logo.PNG"
+                  src="STABanner.png"
                   alt="Scottish Tech Army"
                   width="270"
                   height="50"
@@ -257,7 +257,7 @@ const App = () => {
                 className="link"
               >
                 <img
-                  src="nhsinform-110height.png"
+                  src="NHSInformLogo.png"
                   alt="NHS Inform"
                   width="180"
                   height="83"
