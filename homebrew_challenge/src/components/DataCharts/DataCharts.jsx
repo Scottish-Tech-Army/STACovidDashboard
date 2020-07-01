@@ -10,25 +10,7 @@ import {
 import { readCsvData } from "../Utils/CsvUtils";
 import "./FullscreenButton";
 
-const queryUrl = "https://statistics.gov.scot/sparql.csv";
-
-const query = `PREFIX qb: <http://purl.org/linked-data/cube#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?date ?shortValue ?count
-WHERE {
-   VALUES (?value ?shortValue) {
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "positiveCases" )
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "totalCases" )
-    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> "totalDeaths" )
-  }
-  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
-  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
-  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
-  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-  ?obs dim:refPeriod ?perioduri .
-  ?perioduri rdfs:label ?date
-}`;
+const dataUrl = "data/dailyScottishCasesAndDeaths.csv";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -204,11 +186,8 @@ const DataCharts = ({
     // Only attempt to fetch data once
     if (!dataFetched) {
       setDataFetched(true);
-      const form = new FormData();
-      form.append("query", query);
-      fetch(queryUrl, {
-        method: "POST",
-        body: form,
+      fetch(dataUrl, {
+        method: "GET",
       })
         .then((res) => res.text())
         .then((csvData) => {
