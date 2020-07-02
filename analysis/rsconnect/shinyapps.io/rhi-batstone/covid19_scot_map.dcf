@@ -1,0 +1,10 @@
+name: covid19_scot_map
+title:
+username:
+account: rhi-batstone
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2497391
+bundleId: 3335000
+url: https://rhi-batstone.shinyapps.io/covid19_scot_map/
+when: 1593535800.45318
