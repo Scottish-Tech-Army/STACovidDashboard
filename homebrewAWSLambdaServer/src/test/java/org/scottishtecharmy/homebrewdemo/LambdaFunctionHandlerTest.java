@@ -3,12 +3,12 @@ package org.scottishtecharmy.homebrewdemo;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -30,6 +30,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 
@@ -58,8 +59,7 @@ public class LambdaFunctionHandlerTest {
     private ArgumentCaptor<GetObjectRequest> getObjectRequest;
 
     ArgumentCaptor<HttpPost> postRequestCaptor = ArgumentCaptor.forClass(HttpPost.class);
-    ArgumentCaptor<String> s3KeyCaptor = ArgumentCaptor.forClass(String.class);
-    ArgumentCaptor<String> s3ContentCaptor = ArgumentCaptor.forClass(String.class);
+    ArgumentCaptor<PutObjectRequest> s3RequestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
 
     @Before
     public void setUp() throws IOException {
@@ -67,8 +67,7 @@ public class LambdaFunctionHandlerTest {
 
         subject = spy(new LambdaFunctionHandler(s3Client));
 
-        when(s3Client.putObject(eq("sta-homebrew-iteam"), s3KeyCaptor.capture(), s3ContentCaptor.capture()))
-                .thenReturn(putObjectResult);
+        when(s3Client.putObject(s3RequestCaptor.capture())).thenReturn(putObjectResult);
         when(subject.createHttpClient()).thenReturn(httpClient);
         when(httpClient.execute(postRequestCaptor.capture())).thenReturn(httpResponse);
         when(httpResponse.getEntity()).thenReturn(new StringEntity("testoutput1"), new StringEntity("testoutput2"),
@@ -81,7 +80,6 @@ public class LambdaFunctionHandlerTest {
         return new TestContext();
     }
 
-    
     @Test
     public void testLambdaFunctionHandler() throws UnsupportedOperationException, IOException {
         Context ctx = createContext();
@@ -95,27 +93,29 @@ public class LambdaFunctionHandlerTest {
             checkPostRequest(postRequest);
         }
 
-        List<String> s3Keys = s3KeyCaptor.getAllValues();
-        List<String> s3Contents = s3ContentCaptor.getAllValues();
-        assertEquals(8, s3Keys.size());
+        List<PutObjectRequest> s3Requests = s3RequestCaptor.getAllValues();
+        assertEquals(8, s3Requests.size());
 
         String[] expectedKeys = new String[] { "data/weeklyHealthBoardsDeaths.csv",
                 "data/dailyScottishCasesAndDeaths.csv", "data/weeklyCouncilAreasDeaths.csv",
                 "data/dailyHealthBoardsCases.csv", "data/summaryCounts.csv", "data/totalHealthBoardsCases.csv",
                 "data/annualHealthBoardsDeaths.csv", "data/annualCouncilAreasDeaths.csv", };
-        assertArrayEquals(expectedKeys, s3Keys.toArray());
+        assertArrayEquals(expectedKeys, s3Requests.stream().map(PutObjectRequest::getKey).toArray());
 
         String[] expectedContents = new String[] { "testoutput1", "testoutput2", "testoutput3", "testoutput4",
                 "testoutput5", "testoutput6", "testoutput7", "testoutput8", };
-        assertArrayEquals(expectedContents, s3Contents.toArray());
+        assertArrayEquals(expectedContents, s3Requests.stream().map(PutObjectRequest::getInputStream).map(this::readInputStream).toArray());
     }
 
     private void checkPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {
         assertEquals("https://statistics.gov.scot/sparql.csv", postRequest.getURI().toString());
-        String text = new BufferedReader(
-                new InputStreamReader(postRequest.getEntity().getContent(), StandardCharsets.UTF_8)).lines()
-                        .collect(Collectors.joining("\n"));
+        String text = readInputStream(postRequest.getEntity().getContent());
         System.out.println(text);
         assertTrue(text.contains("SELECT"));
+    }
+
+    private String readInputStream(InputStream inputStream) {
+        return new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
     }
 }

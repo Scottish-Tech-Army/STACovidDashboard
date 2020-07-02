@@ -1,6 +1,7 @@
 package org.scottishtecharmy.homebrewdemo;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,12 +29,15 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 
 public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
     private static final String BUCKET_NAME = "sta-homebrew-iteam";
 
-    
     private AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_2).build();
 
     public LambdaFunctionHandler() {
@@ -82,7 +86,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     CloseableHttpClient createHttpClient() {
         return HttpClients.createDefault();
     }
-    
+
     // public void storeStatsQuery(String query, S3Entity targetLocation) throws
     // ClientProtocolException, IOException {
     public void storeStatsQuery(String query, String targetObjectKeyName, Context context)
@@ -109,8 +113,18 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         }
 
         // Output to file on S3
+        // TODO could probably just feed the stats response inputstream straight
+        // to S3
         try {
-            s3.putObject(BUCKET_NAME, targetObjectKeyName, text);
+            byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(textBytes.length);
+            metadata.setContentType("text/plain");
+            
+            PutObjectResult putResult = s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes),
+                    metadata));
+//            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes),
+//                    metadata).withCannedAcl(CannedAccessControlList.PublicRead));
             context.getLogger().log("Response stored in S3 at " + targetObjectKeyName);
         }
         catch (AmazonServiceException e) {
