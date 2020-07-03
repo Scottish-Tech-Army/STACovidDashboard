@@ -73,7 +73,7 @@ public class LambdaFunctionHandlerTest {
         when(httpResponse.getEntity()).thenReturn(new StringEntity("testoutput1"), new StringEntity("testoutput2"),
                 new StringEntity("testoutput3"), new StringEntity("testoutput4"), new StringEntity("testoutput5"),
                 new StringEntity("testoutput6"), new StringEntity("testoutput7"), new StringEntity("testoutput8"),
-                new StringEntity("unexpected"));
+                new StringEntity("testoutput9"), new StringEntity("unexpected"));
     }
 
     private Context createContext() {
@@ -88,23 +88,25 @@ public class LambdaFunctionHandlerTest {
 
         assertEquals("Success", output);
         List<HttpPost> postRequests = postRequestCaptor.getAllValues();
-        assertEquals(8, postRequests.size());
+        assertEquals(9, postRequests.size());
         for (HttpPost postRequest : postRequests) {
             checkPostRequest(postRequest);
         }
 
         List<PutObjectRequest> s3Requests = s3RequestCaptor.getAllValues();
-        assertEquals(8, s3Requests.size());
+        assertEquals(9, s3Requests.size());
 
         String[] expectedKeys = new String[] { "data/weeklyHealthBoardsDeaths.csv",
                 "data/dailyScottishCasesAndDeaths.csv", "data/weeklyCouncilAreasDeaths.csv",
-                "data/dailyHealthBoardsCases.csv", "data/summaryCounts.csv", "data/totalHealthBoardsCases.csv",
-                "data/annualHealthBoardsDeaths.csv", "data/annualCouncilAreasDeaths.csv", };
+                "data/dailyHealthBoardsCases.csv", "data/analysis/dailyHealthBoardsCasesAndPatients.csv",
+                "data/summaryCounts.csv", "data/totalHealthBoardsCases.csv", "data/annualHealthBoardsDeaths.csv",
+                "data/annualCouncilAreasDeaths.csv", };
         assertArrayEquals(expectedKeys, s3Requests.stream().map(PutObjectRequest::getKey).toArray());
 
         String[] expectedContents = new String[] { "testoutput1", "testoutput2", "testoutput3", "testoutput4",
-                "testoutput5", "testoutput6", "testoutput7", "testoutput8", };
-        assertArrayEquals(expectedContents, s3Requests.stream().map(PutObjectRequest::getInputStream).map(this::readInputStream).toArray());
+                "testoutput5", "testoutput6", "testoutput7", "testoutput8", "testoutput9", };
+        assertArrayEquals(expectedContents,
+                s3Requests.stream().map(PutObjectRequest::getInputStream).map(this::readInputStream).toArray());
     }
 
     private void checkPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {

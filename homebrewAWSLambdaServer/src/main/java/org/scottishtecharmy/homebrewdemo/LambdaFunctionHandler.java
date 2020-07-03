@@ -53,6 +53,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             storeStatsQuery(QUERY_DAILY_SCOTTISH_CASES_AND_DEATHS, OBJECTKEY_DAILY_SCOTTISH_CASES_AND_DEATHS, context);
             storeStatsQuery(QUERY_WEEKLY_COUNCIL_AREAS_DEATHS, OBJECTKEY_WEEKLY_COUNCIL_AREAS_DEATHS, context);
             storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES, context);
+            storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, context);
 
             String last4Days = getDaysDateValueClause();
             String last2Years = getYearsDateValueClause();
@@ -99,7 +100,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             // Pipe straight to S3
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("text/plain");
-            
+
             HttpEntity entity = response.getEntity();
             if (entity.getContentLength() > 0) {
                 metadata.setContentLength(entity.getContentLength());
@@ -108,8 +109,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             AccessControlList acl = new AccessControlList();
             acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 
-            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, entity.getContent(),
-                    metadata).withAccessControlList(acl));
+            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, entity.getContent(), metadata)
+                    .withAccessControlList(acl));
         }
 
         context.getLogger().log("Response stored in S3 at " + targetObjectKeyName + "\n");
@@ -154,7 +155,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS = OBJECT_FOLDER + "annualCouncilAreasDeaths.csv";
     private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "dailyHealthBoardsCases.csv";
     private static final String OBJECTKEY_TOTAL_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "totalHealthBoardsCases.csv";
-
+    private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS = OBJECT_FOLDER + "analysis/dailyHealthBoardsCasesAndPatients.csv";
+    
     // // Last 4 days
     // + "( <http://reference.data.gov.uk/id/day/2020-07-01> \"2020-07-01\" )"
     // + "( <http://reference.data.gov.uk/id/day/2020-06-30> \"2020-06-30\" )"
@@ -254,5 +256,21 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .\n"
             + "  ?obs dim:refArea ?areauri .\n" + "  ?areauri rdfs:label ?areaname.\n"
             + "  ?obs dim:refPeriod ?perioduri .\n" + "}";
+
+    private static final String QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS = FRAGMENT_COMMON_PREFIXES 
+            + "SELECT ?date ?value ?variable ?areaname \n"
+            + "WHERE {\n" + "   VALUES (?fullVariable ?variable) {\n"
+            + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> \"cumulativeTestedPositive\" )\n"
+            + "    ( <http://statistics.gov.scot/def/concept/variable/covid-19-patients-in-hospital-confirmed> \"hospitalCasesConfirmed\" )\n"
+            + "    ( <http://statistics.gov.scot/def/concept/variable/covid-19-patients-in-hospital-suspected> \"hospitalCasesSuspected\" )\n"
+            + "    ( <http://statistics.gov.scot/def/concept/variable/covid-19-patients-in-icu-total> \"ICUCasesTotal\" )\n"
+            + "  }\n"
+            + "  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .\n"
+            + "  ?obs <http://statistics.gov.scot/def/dimension/variable> ?fullVariable .\n"
+            + "  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?value .\n"
+            + "  ?obs dim:refArea ?areauri .\n"
+            + "  ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards>.\n"
+            + "  ?areauri rdfs:label ?areaname.\n" + "  ?obs dim:refPeriod ?perioduri .\n"
+            + "  ?perioduri rdfs:label ?date\n" + "}";
 
 }
