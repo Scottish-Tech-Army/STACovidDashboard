@@ -1,11 +1,34 @@
+
+##################################################################
+##                            Global                            ##
+##################################################################
+
+cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
+management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
+
+scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
+
+local_authorities <- unique(scotland_covid$local_authority) %>% 
+  sort()
+
+
+#shape file and reducing the polygons to increase render speed
+scotland <- st_read("clean_data/scotland.shp", quiet = TRUE) %>%
+  ms_simplify(keep = 0.025)
+
+
+##################################################################
+##                          Server                              ##
+##################################################################
+
+
+
 server <- function(input, output, session) {
-  
-  
+ 
   
   # Create reactive dataset
   management_reactive <- reactive({
     
-    management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
     
     if (input$data == "Testing - Cumulative people tested for COVID-19 - Positive") {
       management %>%
@@ -113,7 +136,6 @@ server <- function(input, output, session) {
   
   output$scot_covid_plot <- renderLeaflet({ 
     
-    #scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
     
     # this needs to be reactive i think
     labels2 <- labels <- sprintf(
@@ -157,8 +179,7 @@ server <- function(input, output, session) {
   
   output$prescriptions <- renderPlot({
     
-   # cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
-    
+   
   cardio_prescriptions %>% 
     filter(area_name %in% input$local_auth) %>% 
     group_by(week_ending) %>%

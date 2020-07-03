@@ -1,6 +1,27 @@
+
+##################################################################
+##                            Global                            ##
+##################################################################
+
+cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
+management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
+scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
+
+local_authorities <- unique(scotland_covid$local_authority) %>% 
+  sort()
+
+
+
+##################################################################
+##                              ui                              ##
+##################################################################
+
+
+
 ui <- fluidPage(
   theme = shinytheme("flatly"),
 
+ 
   navbarPage(
     # Page title
     # Displayed to the left of the navigation bar
@@ -93,7 +114,7 @@ ui <- fluidPage(
 
       # App title
       titlePanel("COVID-19 at a local level"),
-
+     
 
       # Sidebar with a slider input for date and selector for data
       sidebarLayout(
