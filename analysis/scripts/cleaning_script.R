@@ -63,7 +63,7 @@ covid <- read_csv("covid19_scot_map/raw_data/covid.csv") %>%
   clean_names() 
 
 # Shapefile read
-scotland_interm <- st_read("covid19_scot_map/raw_data/SG_IntermediateZoneCent_2011/SG_IntermediateZone_Cent_2011.shp") %>% 
+scotland_interm <- st_read("raw_data/SG_IntermediateZoneCent_2011/SG_IntermediateZone_Cent_2011.shp") %>% 
   st_transform("+proj=longlat +datum=WGS84")
 
 # Converting shapfile to tibble and extracting coordinates

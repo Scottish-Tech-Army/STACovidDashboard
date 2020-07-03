@@ -1,7 +1,12 @@
 server <- function(input, output, session) {
-
+  
+  
+  
   # Create reactive dataset
   management_reactive <- reactive({
+    
+    management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
+    
     if (input$data == "Testing - Cumulative people tested for COVID-19 - Positive") {
       management %>%
         filter(variable == input$data) %>%
@@ -108,6 +113,8 @@ server <- function(input, output, session) {
   
   output$scot_covid_plot <- renderLeaflet({ 
     
+    #scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
+    
     # this needs to be reactive i think
     labels2 <- labels <- sprintf(
       "<strong>%s</strong><br/>%g",
@@ -149,6 +156,8 @@ server <- function(input, output, session) {
   ##################################################################
   
   output$prescriptions <- renderPlot({
+    
+   # cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
     
   cardio_prescriptions %>% 
     filter(area_name %in% input$local_auth) %>% 
