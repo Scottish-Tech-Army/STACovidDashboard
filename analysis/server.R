@@ -29,20 +29,10 @@ server <- function(input, output, session) {
   # Create reactive dataset
   management_reactive <- reactive({
     
+      management %>%
+        filter(variable == input$data) %>%
+        filter(date_code == input$date)
     
-    if (input$data == "Testing - Cumulative people tested for COVID-19 - Positive") {
-      management %>%
-        filter(variable == input$data) %>%
-        filter(date_code <= input$date) %>%
-        group_by(official_name) %>%
-        mutate(total = max(value)) %>%
-        ungroup()
-    } else {
-      management %>%
-        filter(variable == input$data) %>%
-        filter(date_code == input$date) %>%
-        mutate(total = value)
-    }
   })
 
   ## ----------------------------------------------------------------
@@ -58,20 +48,20 @@ server <- function(input, output, session) {
     # creates bins and palette for leaflet plot
     #bins <- seq(0, max(management_reactive()$total), length.out = 6)
     
-    pal <- colorBin("plasma", domain = scotland_count$total, bins = 5)
+    pal <- colorBin("plasma", domain = scotland_count$value, bins = 5)
 
     # creates hover over labels
     labels <- sprintf(
       "<strong>%s</strong><br/>%g",
       scotland_count$HBName,
-      scotland_count$total
+      scotland_count$value
     ) %>% lapply(htmltools::HTML)
 
 
     scotland_count %>%
       leaflet() %>%
       addPolygons(
-        fillColor = ~ pal(total),
+        fillColor = ~pal(value),
         weight = 2,
         opacity = 1,
         color = "white",
@@ -96,7 +86,7 @@ server <- function(input, output, session) {
       ) %>%
       addLegend(
         pal = pal,
-        values = ~total,
+        values = ~value,
         opacity = 0.7,
         title = "Count",
         position = "topleft"
