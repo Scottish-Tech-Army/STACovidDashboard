@@ -119,40 +119,15 @@ function SingleValueBar() {
   const [totalTestsCompleted, setTotalTestsCompleted] = useState(emptyDate);
   const [dataFetched, setDataFetched] = useState(false);
 
-  const queryUrl = "https://statistics.gov.scot/sparql.csv";
-
   // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
-  const query =
-    `PREFIX qb: <http://purl.org/linked-data/cube#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?date ?shortValue ?count
-WHERE {
-  VALUES (?value ?shortValue) {
-    ( <http://statistics.gov.scot/def/concept/variable/testing-daily-people-found-positive> "dailyPositiveTests" )
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "cumulativePositiveTests" )
-    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "cumulativeTotalTests")
-    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> "cumulativeDeaths" )
-  }
-  VALUES (?perioduri ?date) {` +
-    getDateValueClause() +
-    `}
-  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
-  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
-  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
-  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-  ?obs dim:refPeriod ?perioduri
-}`;
+  const dataUrl = "data/summaryCounts.csv";
 
   useEffect(() => {
     // Only attempt to fetch data once
     if (!dataFetched) {
       setDataFetched(true);
-      const form = new FormData();
-      form.append("query", query);
-      fetch(queryUrl, {
-        method: "POST",
-        body: form,
+      fetch(dataUrl, {
+        method: "GET",
       })
         .then((res) => res.text())
         .then((csvData) => {
@@ -178,7 +153,7 @@ WHERE {
           console.error(error);
         });
     }
-  }, [dataFetched, query]);
+  }, [dataFetched]);
 
   return (
     <Container fluid className="single-value-bar">

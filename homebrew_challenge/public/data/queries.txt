@@ -1,0 +1,169 @@
+SUMMARY COUNTS
+==============
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?date ?shortValue ?count
+WHERE {
+  VALUES (?value ?shortValue) {
+    ( <http://statistics.gov.scot/def/concept/variable/testing-daily-people-found-positive> "dailyPositiveTests" )
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "cumulativePositiveTests" )
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "cumulativeTotalTests")
+    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> "cumulativeDeaths" )
+  }
+  VALUES (?perioduri ?date) {( <http://reference.data.gov.uk/id/day/2020-07-01> "2020-07-01" )( <http://reference.data.gov.uk/id/day/2020-06-30> "2020-06-30" )( <http://reference.data.gov.uk/id/day/2020-06-29> "2020-06-29" )( <http://reference.data.gov.uk/id/day/2020-06-28> "2020-06-28" )}
+  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
+  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
+  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+  ?obs dim:refPeriod ?perioduri
+}
+
+
+WEEKLY HEALTH BOARDS DEATHS
+===========================
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+
+SELECT ?date ?areaname ?count WHERE {
+?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
+?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+?obs dim:refArea ?areauri .
+?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+?areauri rdfs:label ?areaname.
+?obs dim:refPeriod ?perioduri .
+?perioduri rdfs:label ?date
+FILTER regex(?date, "^w")
+}
+
+
+ANNUAL HEALTH BOARDS DEATHS
+===========================
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>    SELECT ?date ?areaname ?count
+    WHERE {
+      VALUES (?perioduri ?date) {( <http://reference.data.gov.uk/id/year/2020> "2020" )( <http://reference.data.gov.uk/id/year/2019> "2019" )}
+    ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+    ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+    ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+    ?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
+    ?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+    ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+    ?obs dim:refArea ?areauri .
+    ?obs dim:refPeriod ?perioduri .
+    ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+    ?areauri rdfs:label ?areaname
+    }
+
+
+DAILY SCOTTISH CASES AND DEATHS
+===============================
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?date ?shortValue ?count
+WHERE {
+   VALUES (?value ?shortValue) {
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> "positiveCases" )
+    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> "totalCases" )
+    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> "totalDeaths" )
+  }
+  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .
+  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
+  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+  ?obs dim:refPeriod ?perioduri .
+  ?perioduri rdfs:label ?date
+}
+
+WEEKLY COUNCIL AREAS DEATHS
+===========================
+
+Content-Disposition: form-data; name="query"
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+
+SELECT ?date ?areaname ?count WHERE {
+?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
+?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+?obs dim:refArea ?areauri .
+?obs dim:refPeriod ?perioduri .
+?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .
+?areauri rdfs:label ?areaname.
+?perioduri rdfs:label ?date
+FILTER regex(?date, "^w")
+}
+
+
+ANNUAL COUNCIL AREAS DEATHS
+===========================
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>    SELECT ?date ?areaname ?count
+        WHERE {
+          VALUES (?perioduri ?date) {( <http://reference.data.gov.uk/id/year/2020> "2020" )( <http://reference.data.gov.uk/id/year/2019> "2019" )}
+        ?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
+        ?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
+        ?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
+        ?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
+        ?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
+        ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+        ?obs dim:refArea ?areauri .
+        ?obs dim:refPeriod ?perioduri .
+        ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .
+        ?areauri rdfs:label ?areaname
+        }
+
+DAILY HEALTH BOARDS CASES
+=========================
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+PREFIX qb: <http://purl.org/linked-data/cube#>
+
+SELECT ?date ?areaname ?count WHERE {
+?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+?obs <http://statistics.gov.scot/def/dimension/variable> <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> .
+?obs dim:refArea ?areauri .
+?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+?areauri rdfs:label ?areaname.
+?obs dim:refPeriod ?perioduri .
+?perioduri rdfs:label ?date
+}
+
+TOTAL HEALTH BOARDS CASES
+=========================
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
+    PREFIX qb: <http://purl.org/linked-data/cube#>
+    SELECT ?date ?areaname ?count
+    WHERE {
+      VALUES (?value) {
+        ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> )
+       }
+       VALUES (?perioduri ?date) {( <http://reference.data.gov.uk/id/day/2020-07-01> "2020-07-01" )( <http://reference.data.gov.uk/id/day/2020-06-30> "2020-06-30" )( <http://reference.data.gov.uk/id/day/2020-06-30> "2020-06-30" )( <http://reference.data.gov.uk/id/day/2020-06-29> "2020-06-29" )}
+      ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
+      ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
+      ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .
+        ?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
+      ?obs dim:refArea ?areauri .
+      ?areauri rdfs:label ?areaname.
+      ?obs dim:refPeriod ?perioduri .
+    }
+
+

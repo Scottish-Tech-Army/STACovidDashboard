@@ -1,0 +1,482 @@
+date,areaname,count
+w/c 2020-03-16,East Renfrewshire,0
+w/c 2020-03-16,Na h-Eileanan Siar,0
+w/c 2020-03-16,East Lothian,0
+w/c 2020-03-16,East Ayrshire,0
+w/c 2020-03-16,Midlothian,0
+w/c 2020-03-16,Inverclyde,0
+w/c 2020-03-16,Falkirk,0
+w/c 2020-03-16,Highland,1
+w/c 2020-03-16,Dumfries and Galloway,0
+w/c 2020-03-16,Clackmannanshire,0
+w/c 2020-03-16,East Dunbartonshire,0
+w/c 2020-03-16,Dundee City,0
+w/c 2020-03-16,Fife,2
+w/c 2020-03-16,West Lothian,1
+w/c 2020-03-16,West Dunbartonshire,0
+w/c 2020-03-16,Angus,0
+w/c 2020-03-16,Glasgow City,1
+w/c 2020-03-16,Perth and Kinross,0
+w/c 2020-03-16,North Lanarkshire,0
+w/c 2020-03-16,Shetland Islands,0
+w/c 2020-03-16,Scottish Borders,0
+w/c 2020-03-16,South Lanarkshire,0
+w/c 2020-03-16,South Ayrshire,0
+w/c 2020-03-16,North Ayrshire,1
+w/c 2020-03-16,Moray,0
+w/c 2020-03-16,Orkney Islands,0
+w/c 2020-03-16,Renfrewshire,2
+w/c 2020-03-16,Aberdeenshire,1
+w/c 2020-03-16,City of Edinburgh,1
+w/c 2020-03-16,Argyll and Bute,0
+w/c 2020-03-16,Aberdeen City,1
+w/c 2020-03-16,Stirling,0
+w/c 2020-03-23,West Lothian,2
+w/c 2020-03-23,West Dunbartonshire,2
+w/c 2020-03-23,Aberdeenshire,1
+w/c 2020-03-23,Argyll and Bute,5
+w/c 2020-03-23,Aberdeen City,0
+w/c 2020-03-23,Renfrewshire,0
+w/c 2020-03-23,City of Edinburgh,3
+w/c 2020-03-23,Perth and Kinross,2
+w/c 2020-03-23,Glasgow City,7
+w/c 2020-03-23,North Lanarkshire,5
+w/c 2020-03-23,Dundee City,0
+w/c 2020-03-23,Angus,1
+w/c 2020-03-23,Fife,4
+w/c 2020-03-23,East Dunbartonshire,0
+w/c 2020-03-23,Na h-Eileanan Siar,0
+w/c 2020-03-23,Falkirk,6
+w/c 2020-03-23,East Renfrewshire,1
+w/c 2020-03-23,Inverclyde,3
+w/c 2020-03-23,Highland,0
+w/c 2020-03-23,Dumfries and Galloway,0
+w/c 2020-03-23,Clackmannanshire,1
+w/c 2020-03-23,East Lothian,0
+w/c 2020-03-23,East Ayrshire,3
+w/c 2020-03-23,Shetland Islands,0
+w/c 2020-03-23,South Ayrshire,1
+w/c 2020-03-23,Scottish Borders,3
+w/c 2020-03-23,Stirling,0
+w/c 2020-03-23,South Lanarkshire,3
+w/c 2020-03-23,Moray,2
+w/c 2020-03-23,Midlothian,2
+w/c 2020-03-23,Orkney Islands,0
+w/c 2020-03-23,North Ayrshire,5
+w/c 2020-03-30,Stirling,11
+w/c 2020-03-30,Dundee City,8
+w/c 2020-03-30,Aberdeenshire,4
+w/c 2020-03-30,Aberdeen City,2
+w/c 2020-03-30,South Ayrshire,4
+w/c 2020-03-30,Shetland Islands,1
+w/c 2020-03-30,South Lanarkshire,12
+w/c 2020-03-30,West Lothian,8
+w/c 2020-03-30,East Dunbartonshire,7
+w/c 2020-03-30,West Dunbartonshire,16
+w/c 2020-03-30,Renfrewshire,15
+w/c 2020-03-30,City of Edinburgh,17
+w/c 2020-03-30,Argyll and Bute,4
+w/c 2020-03-30,Angus,2
+w/c 2020-03-30,Dumfries and Galloway,12
+w/c 2020-03-30,East Ayrshire,3
+w/c 2020-03-30,Clackmannanshire,3
+w/c 2020-03-30,East Renfrewshire,5
+w/c 2020-03-30,East Lothian,2
+w/c 2020-03-30,Moray,0
+w/c 2020-03-30,North Ayrshire,10
+w/c 2020-03-30,Scottish Borders,13
+w/c 2020-03-30,Orkney Islands,0
+w/c 2020-03-30,Falkirk,6
+w/c 2020-03-30,Highland,7
+w/c 2020-03-30,Na h-Eileanan Siar,0
+w/c 2020-03-30,Midlothian,5
+w/c 2020-03-30,Inverclyde,18
+w/c 2020-03-30,Glasgow City,46
+w/c 2020-03-30,North Lanarkshire,28
+w/c 2020-03-30,Fife,9
+w/c 2020-03-30,Perth and Kinross,4
+w/c 2020-04-06,North Ayrshire,15
+w/c 2020-04-06,Moray,2
+w/c 2020-04-06,Orkney Islands,2
+w/c 2020-04-06,Scottish Borders,15
+w/c 2020-04-06,Midlothian,11
+w/c 2020-04-06,North Lanarkshire,46
+w/c 2020-04-06,Stirling,12
+w/c 2020-04-06,Aberdeenshire,21
+w/c 2020-04-06,Argyll and Bute,7
+w/c 2020-04-06,Aberdeen City,12
+w/c 2020-04-06,Shetland Islands,4
+w/c 2020-04-06,South Ayrshire,15
+w/c 2020-04-06,South Lanarkshire,44
+w/c 2020-04-06,City of Edinburgh,61
+w/c 2020-04-06,Renfrewshire,26
+w/c 2020-04-06,East Lothian,21
+w/c 2020-04-06,East Renfrewshire,15
+w/c 2020-04-06,West Lothian,15
+w/c 2020-04-06,West Dunbartonshire,17
+w/c 2020-04-06,Clackmannanshire,3
+w/c 2020-04-06,Dumfries and Galloway,9
+w/c 2020-04-06,East Ayrshire,10
+w/c 2020-04-06,Dundee City,21
+w/c 2020-04-06,Inverclyde,29
+w/c 2020-04-06,Glasgow City,97
+w/c 2020-04-06,Fife,31
+w/c 2020-04-06,Perth and Kinross,9
+w/c 2020-04-06,East Dunbartonshire,9
+w/c 2020-04-06,Angus,7
+w/c 2020-04-06,Na h-Eileanan Siar,0
+w/c 2020-04-06,Highland,6
+w/c 2020-04-06,Falkirk,17
+w/c 2020-04-13,Aberdeenshire,25
+w/c 2020-04-13,Argyll and Bute,12
+w/c 2020-04-13,Renfrewshire,33
+w/c 2020-04-13,City of Edinburgh,64
+w/c 2020-04-13,South Ayrshire,26
+w/c 2020-04-13,South Lanarkshire,44
+w/c 2020-04-13,Shetland Islands,1
+w/c 2020-04-13,Aberdeen City,18
+w/c 2020-04-13,Stirling,11
+w/c 2020-04-13,East Dunbartonshire,12
+w/c 2020-04-13,Fife,39
+w/c 2020-04-13,Dundee City,29
+w/c 2020-04-13,Perth and Kinross,10
+w/c 2020-04-13,West Dunbartonshire,17
+w/c 2020-04-13,Angus,12
+w/c 2020-04-13,West Lothian,8
+w/c 2020-04-13,East Lothian,21
+w/c 2020-04-13,Dumfries and Galloway,10
+w/c 2020-04-13,East Ayrshire,12
+w/c 2020-04-13,Na h-Eileanan Siar,0
+w/c 2020-04-13,East Renfrewshire,14
+w/c 2020-04-13,Falkirk,16
+w/c 2020-04-13,Inverclyde,26
+w/c 2020-04-13,Highland,9
+w/c 2020-04-13,Orkney Islands,0
+w/c 2020-04-13,North Ayrshire,13
+w/c 2020-04-13,Scottish Borders,7
+w/c 2020-04-13,Clackmannanshire,4
+w/c 2020-04-13,Moray,0
+w/c 2020-04-13,Midlothian,16
+w/c 2020-04-13,North Lanarkshire,46
+w/c 2020-04-13,Glasgow City,95
+w/c 2020-04-20,South Ayrshire,17
+w/c 2020-04-20,Dundee City,27
+w/c 2020-04-20,South Lanarkshire,50
+w/c 2020-04-20,Fife,33
+w/c 2020-04-20,Perth and Kinross,13
+w/c 2020-04-20,Shetland Islands,0
+w/c 2020-04-20,East Dunbartonshire,18
+w/c 2020-04-20,Stirling,5
+w/c 2020-04-20,Aberdeen City,15
+w/c 2020-04-20,Renfrewshire,40
+w/c 2020-04-20,Argyll and Bute,14
+w/c 2020-04-20,Aberdeenshire,23
+w/c 2020-04-20,West Lothian,12
+w/c 2020-04-20,Angus,19
+w/c 2020-04-20,West Dunbartonshire,19
+w/c 2020-04-20,City of Edinburgh,72
+w/c 2020-04-20,Na h-Eileanan Siar,0
+w/c 2020-04-20,East Renfrewshire,13
+w/c 2020-04-20,Highland,8
+w/c 2020-04-20,Falkirk,25
+w/c 2020-04-20,Dumfries and Galloway,3
+w/c 2020-04-20,Clackmannanshire,4
+w/c 2020-04-20,East Lothian,15
+w/c 2020-04-20,East Ayrshire,11
+w/c 2020-04-20,Scottish Borders,3
+w/c 2020-04-20,Orkney Islands,0
+w/c 2020-04-20,Glasgow City,124
+w/c 2020-04-20,North Lanarkshire,33
+w/c 2020-04-20,Midlothian,15
+w/c 2020-04-20,Inverclyde,17
+w/c 2020-04-20,North Ayrshire,11
+w/c 2020-04-20,Moray,2
+w/c 2020-04-27,Na h-Eileanan Siar,0
+w/c 2020-04-27,Inverclyde,6
+w/c 2020-04-27,East Renfrewshire,10
+w/c 2020-04-27,Highland,3
+w/c 2020-04-27,Falkirk,16
+w/c 2020-04-27,Clackmannanshire,11
+w/c 2020-04-27,East Lothian,5
+w/c 2020-04-27,Dumfries and Galloway,6
+w/c 2020-04-27,East Ayrshire,10
+w/c 2020-04-27,West Lothian,6
+w/c 2020-04-27,West Dunbartonshire,17
+w/c 2020-04-27,Angus,7
+w/c 2020-04-27,City of Edinburgh,61
+w/c 2020-04-27,Argyll and Bute,13
+w/c 2020-04-27,Renfrewshire,33
+w/c 2020-04-27,Glasgow City,84
+w/c 2020-04-27,Perth and Kinross,5
+w/c 2020-04-27,North Lanarkshire,37
+w/c 2020-04-27,East Dunbartonshire,20
+w/c 2020-04-27,Dundee City,22
+w/c 2020-04-27,Fife,25
+w/c 2020-04-27,Scottish Borders,4
+w/c 2020-04-27,Orkney Islands,0
+w/c 2020-04-27,Shetland Islands,1
+w/c 2020-04-27,Moray,2
+w/c 2020-04-27,Midlothian,27
+w/c 2020-04-27,North Ayrshire,13
+w/c 2020-04-27,Aberdeen City,15
+w/c 2020-04-27,Stirling,5
+w/c 2020-04-27,Aberdeenshire,13
+w/c 2020-04-27,South Ayrshire,12
+w/c 2020-04-27,South Lanarkshire,37
+w/c 2020-05-04,Falkirk,17
+w/c 2020-05-04,Na h-Eileanan Siar,0
+w/c 2020-05-04,Midlothian,18
+w/c 2020-05-04,Moray,2
+w/c 2020-05-04,Highland,6
+w/c 2020-05-04,Inverclyde,4
+w/c 2020-05-04,Clackmannanshire,9
+w/c 2020-05-04,East Lothian,7
+w/c 2020-05-04,East Renfrewshire,20
+w/c 2020-05-04,Dumfries and Galloway,6
+w/c 2020-05-04,East Ayrshire,12
+w/c 2020-05-04,Angus,5
+w/c 2020-05-04,West Lothian,13
+w/c 2020-05-04,Dundee City,17
+w/c 2020-05-04,Renfrewshire,11
+w/c 2020-05-04,City of Edinburgh,43
+w/c 2020-05-04,West Dunbartonshire,11
+w/c 2020-05-04,Glasgow City,58
+w/c 2020-05-04,Perth and Kinross,11
+w/c 2020-05-04,North Lanarkshire,15
+w/c 2020-05-04,East Dunbartonshire,22
+w/c 2020-05-04,Fife,19
+w/c 2020-05-04,Shetland Islands,0
+w/c 2020-05-04,Scottish Borders,3
+w/c 2020-05-04,South Ayrshire,9
+w/c 2020-05-04,North Ayrshire,7
+w/c 2020-05-04,Orkney Islands,0
+w/c 2020-05-04,Aberdeenshire,11
+w/c 2020-05-04,Aberdeen City,15
+w/c 2020-05-04,Argyll and Bute,3
+w/c 2020-05-04,South Lanarkshire,36
+w/c 2020-05-04,Stirling,5
+w/c 2020-05-11,North Ayrshire,8
+w/c 2020-05-11,Orkney Islands,0
+w/c 2020-05-11,Midlothian,9
+w/c 2020-05-11,Moray,3
+w/c 2020-05-11,Shetland Islands,0
+w/c 2020-05-11,South Ayrshire,9
+w/c 2020-05-11,South Lanarkshire,26
+w/c 2020-05-11,Scottish Borders,6
+w/c 2020-05-11,East Lothian,3
+w/c 2020-05-11,East Renfrewshire,11
+w/c 2020-05-11,Dumfries and Galloway,1
+w/c 2020-05-11,East Ayrshire,4
+w/c 2020-05-11,Highland,5
+w/c 2020-05-11,Inverclyde,3
+w/c 2020-05-11,Na h-Eileanan Siar,0
+w/c 2020-05-11,Falkirk,9
+w/c 2020-05-11,Dundee City,12
+w/c 2020-05-11,East Dunbartonshire,16
+w/c 2020-05-11,West Lothian,3
+w/c 2020-05-11,Angus,5
+w/c 2020-05-11,Glasgow City,59
+w/c 2020-05-11,North Lanarkshire,20
+w/c 2020-05-11,Fife,15
+w/c 2020-05-11,Perth and Kinross,8
+w/c 2020-05-11,Aberdeenshire,8
+w/c 2020-05-11,Argyll and Bute,1
+w/c 2020-05-11,Stirling,2
+w/c 2020-05-11,Aberdeen City,16
+w/c 2020-05-11,Renfrewshire,17
+w/c 2020-05-11,West Dunbartonshire,12
+w/c 2020-05-11,City of Edinburgh,39
+w/c 2020-05-11,Clackmannanshire,6
+w/c 2020-05-18,South Ayrshire,6
+w/c 2020-05-18,South Lanarkshire,22
+w/c 2020-05-18,Shetland Islands,0
+w/c 2020-05-18,Dundee City,13
+w/c 2020-05-18,Renfrewshire,13
+w/c 2020-05-18,North Lanarkshire,8
+w/c 2020-05-18,Midlothian,7
+w/c 2020-05-18,Moray,1
+w/c 2020-05-18,Inverclyde,3
+w/c 2020-05-18,Orkney Islands,0
+w/c 2020-05-18,Scottish Borders,4
+w/c 2020-05-18,North Ayrshire,12
+w/c 2020-05-18,Aberdeenshire,3
+w/c 2020-05-18,Perth and Kinross,3
+w/c 2020-05-18,West Dunbartonshire,4
+w/c 2020-05-18,Glasgow City,32
+w/c 2020-05-18,Fife,4
+w/c 2020-05-18,Stirling,2
+w/c 2020-05-18,Aberdeen City,13
+w/c 2020-05-18,City of Edinburgh,26
+w/c 2020-05-18,Angus,3
+w/c 2020-05-18,Argyll and Bute,2
+w/c 2020-05-18,East Dunbartonshire,18
+w/c 2020-05-18,West Lothian,9
+w/c 2020-05-18,East Lothian,2
+w/c 2020-05-18,East Renfrewshire,5
+w/c 2020-05-18,East Ayrshire,3
+w/c 2020-05-18,Falkirk,8
+w/c 2020-05-18,Highland,2
+w/c 2020-05-18,Na h-Eileanan Siar,0
+w/c 2020-05-18,Dumfries and Galloway,0
+w/c 2020-05-18,Clackmannanshire,2
+w/c 2020-05-25,North Ayrshire,6
+w/c 2020-05-25,Orkney Islands,0
+w/c 2020-05-25,Dundee City,8
+w/c 2020-05-25,Moray,5
+w/c 2020-05-25,Midlothian,4
+w/c 2020-05-25,Scottish Borders,4
+w/c 2020-05-25,Shetland Islands,0
+w/c 2020-05-25,Glasgow City,13
+w/c 2020-05-25,Angus,4
+w/c 2020-05-25,Dumfries and Galloway,0
+w/c 2020-05-25,East Renfrewshire,1
+w/c 2020-05-25,Na h-Eileanan Siar,0
+w/c 2020-05-25,East Dunbartonshire,6
+w/c 2020-05-25,East Ayrshire,2
+w/c 2020-05-25,East Lothian,1
+w/c 2020-05-25,Fife,8
+w/c 2020-05-25,Inverclyde,1
+w/c 2020-05-25,Perth and Kinross,1
+w/c 2020-05-25,Falkirk,3
+w/c 2020-05-25,Clackmannanshire,0
+w/c 2020-05-25,Highland,1
+w/c 2020-05-25,Stirling,0
+w/c 2020-05-25,City of Edinburgh,13
+w/c 2020-05-25,West Dunbartonshire,5
+w/c 2020-05-25,North Lanarkshire,14
+w/c 2020-05-25,Aberdeenshire,1
+w/c 2020-05-25,Argyll and Bute,3
+w/c 2020-05-25,Aberdeen City,3
+w/c 2020-05-25,South Lanarkshire,8
+w/c 2020-05-25,Renfrewshire,4
+w/c 2020-05-25,South Ayrshire,6
+w/c 2020-05-25,West Lothian,6
+w/c 2020-06-01,East Lothian,1
+w/c 2020-06-01,East Dunbartonshire,6
+w/c 2020-06-01,Falkirk,3
+w/c 2020-06-01,West Dunbartonshire,1
+w/c 2020-06-01,City of Edinburgh,8
+w/c 2020-06-01,Na h-Eileanan Siar,0
+w/c 2020-06-01,East Renfrewshire,3
+w/c 2020-06-01,Argyll and Bute,0
+w/c 2020-06-01,Renfrewshire,4
+w/c 2020-06-01,Orkney Islands,0
+w/c 2020-06-01,South Lanarkshire,13
+w/c 2020-06-01,North Ayrshire,3
+w/c 2020-06-01,Angus,6
+w/c 2020-06-01,Scottish Borders,6
+w/c 2020-06-01,Shetland Islands,0
+w/c 2020-06-01,West Lothian,4
+w/c 2020-06-01,South Ayrshire,1
+w/c 2020-06-01,Aberdeenshire,0
+w/c 2020-06-01,Inverclyde,2
+w/c 2020-06-01,Highland,2
+w/c 2020-06-01,Dundee City,3
+w/c 2020-06-01,Stirling,1
+w/c 2020-06-01,Moray,0
+w/c 2020-06-01,Aberdeen City,5
+w/c 2020-06-01,Midlothian,2
+w/c 2020-06-01,Perth and Kinross,0
+w/c 2020-06-01,North Lanarkshire,5
+w/c 2020-06-01,Glasgow City,5
+w/c 2020-06-01,Fife,3
+w/c 2020-06-01,Clackmannanshire,0
+w/c 2020-06-01,East Ayrshire,2
+w/c 2020-06-01,Dumfries and Galloway,0
+w/c 2020-06-08,West Lothian,3
+w/c 2020-06-08,Glasgow City,10
+w/c 2020-06-08,Aberdeenshire,0
+w/c 2020-06-08,City of Edinburgh,6
+w/c 2020-06-08,South Ayrshire,2
+w/c 2020-06-08,Renfrewshire,3
+w/c 2020-06-08,North Lanarkshire,3
+w/c 2020-06-08,Shetland Islands,0
+w/c 2020-06-08,Stirling,1
+w/c 2020-06-08,Argyll and Bute,0
+w/c 2020-06-08,South Lanarkshire,5
+w/c 2020-06-08,West Dunbartonshire,1
+w/c 2020-06-08,Aberdeen City,5
+w/c 2020-06-08,Falkirk,3
+w/c 2020-06-08,Dundee City,4
+w/c 2020-06-08,Fife,3
+w/c 2020-06-08,Inverclyde,0
+w/c 2020-06-08,Highland,0
+w/c 2020-06-08,East Lothian,2
+w/c 2020-06-08,Dumfries and Galloway,0
+w/c 2020-06-08,East Dunbartonshire,2
+w/c 2020-06-08,East Ayrshire,3
+w/c 2020-06-08,Clackmannanshire,2
+w/c 2020-06-08,Na h-Eileanan Siar,0
+w/c 2020-06-08,East Renfrewshire,1
+w/c 2020-06-08,Angus,3
+w/c 2020-06-08,Moray,1
+w/c 2020-06-08,North Ayrshire,1
+w/c 2020-06-08,Orkney Islands,0
+w/c 2020-06-08,Midlothian,0
+w/c 2020-06-08,Scottish Borders,3
+w/c 2020-06-08,Perth and Kinross,2
+w/c 2020-06-15,West Lothian,2
+w/c 2020-06-15,Renfrewshire,3
+w/c 2020-06-15,East Dunbartonshire,0
+w/c 2020-06-15,Fife,2
+w/c 2020-06-15,Glasgow City,9
+w/c 2020-06-15,West Dunbartonshire,0
+w/c 2020-06-15,Angus,1
+w/c 2020-06-15,North Lanarkshire,3
+w/c 2020-06-15,Perth and Kinross,0
+w/c 2020-06-15,Dundee City,1
+w/c 2020-06-15,East Ayrshire,0
+w/c 2020-06-15,Dumfries and Galloway,0
+w/c 2020-06-15,East Lothian,0
+w/c 2020-06-15,Clackmannanshire,2
+w/c 2020-06-15,South Lanarkshire,5
+w/c 2020-06-15,South Ayrshire,4
+w/c 2020-06-15,Stirling,0
+w/c 2020-06-15,Scottish Borders,1
+w/c 2020-06-15,Shetland Islands,0
+w/c 2020-06-15,Argyll and Bute,0
+w/c 2020-06-15,City of Edinburgh,6
+w/c 2020-06-15,Aberdeen City,1
+w/c 2020-06-15,Aberdeenshire,3
+w/c 2020-06-15,Highland,0
+w/c 2020-06-15,Falkirk,2
+w/c 2020-06-15,Inverclyde,2
+w/c 2020-06-15,East Renfrewshire,1
+w/c 2020-06-15,Na h-Eileanan Siar,0
+w/c 2020-06-15,North Ayrshire,0
+w/c 2020-06-15,Orkney Islands,0
+w/c 2020-06-15,Midlothian,1
+w/c 2020-06-15,Moray,0
+w/c 2020-06-22,South Ayrshire,0
+w/c 2020-06-22,South Lanarkshire,7
+w/c 2020-06-22,Shetland Islands,0
+w/c 2020-06-22,Aberdeen City,1
+w/c 2020-06-22,Aberdeenshire,2
+w/c 2020-06-22,Stirling,0
+w/c 2020-06-22,Midlothian,0
+w/c 2020-06-22,Moray,0
+w/c 2020-06-22,Inverclyde,2
+w/c 2020-06-22,Orkney Islands,0
+w/c 2020-06-22,Scottish Borders,0
+w/c 2020-06-22,North Ayrshire,1
+w/c 2020-06-22,East Dunbartonshire,1
+w/c 2020-06-22,Fife,3
+w/c 2020-06-22,Dundee City,1
+w/c 2020-06-22,Glasgow City,3
+w/c 2020-06-22,North Lanarkshire,4
+w/c 2020-06-22,Perth and Kinross,1
+w/c 2020-06-22,City of Edinburgh,2
+w/c 2020-06-22,Renfrewshire,1
+w/c 2020-06-22,Argyll and Bute,0
+w/c 2020-06-22,West Lothian,2
+w/c 2020-06-22,Angus,0
+w/c 2020-06-22,West Dunbartonshire,1
+w/c 2020-06-22,East Lothian,0
+w/c 2020-06-22,East Renfrewshire,0
+w/c 2020-06-22,East Ayrshire,0
+w/c 2020-06-22,Falkirk,3
+w/c 2020-06-22,Highland,0
+w/c 2020-06-22,Na h-Eileanan Siar,0
+w/c 2020-06-22,Dumfries and Galloway,0
+w/c 2020-06-22,Clackmannanshire,0
+

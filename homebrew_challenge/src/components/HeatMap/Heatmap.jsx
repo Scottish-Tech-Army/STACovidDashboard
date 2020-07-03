@@ -12,56 +12,9 @@ import {
 } from "../Utils/CsvUtils";
 import Table from "react-bootstrap/Table";
 
-const queryDeathsByCouncilArea = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-
-SELECT ?date ?areaname ?count WHERE {
-?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
-?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
-?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
-?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
-?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
-?obs dim:refArea ?areauri .
-?obs dim:refPeriod ?perioduri .
-?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .
-?areauri rdfs:label ?areaname.
-?perioduri rdfs:label ?date
-FILTER regex(?date, "^w")
-}`;
-
-const queryDeathsByHealthBoard = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-
-SELECT ?date ?areaname ?count WHERE {
-?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .
-?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.
-?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.
-?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.
-?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.
-?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-?obs dim:refArea ?areauri .
-?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
-?areauri rdfs:label ?areaname.
-?obs dim:refPeriod ?perioduri .
-?perioduri rdfs:label ?date
-FILTER regex(?date, "^w")
-}`;
-
-const queryCasesByHealthBoard = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dim: <http://purl.org/linked-data/sdmx/2009/dimension#>
-PREFIX qb: <http://purl.org/linked-data/cube#>
-
-SELECT ?date ?areaname ?count WHERE {
-?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .
-?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .
-?obs <http://statistics.gov.scot/def/dimension/variable> <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> .
-?obs dim:refArea ?areauri .
-?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .
-?areauri rdfs:label ?areaname.
-?obs dim:refPeriod ?perioduri .
-?perioduri rdfs:label ?date
-}`;
+const deathsByCouncilAreaCsv = "weeklyCouncilAreasDeaths.csv";
+const deathsByHealthBoardCsv = "weeklyHealthBoardsDeaths.csv";
+const casesByHealthBoardCsv = "dailyHealthBoardsCases.csv";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -198,7 +151,7 @@ function Heatmap({
       if (AREATYPE_COUNCIL_AREAS === areaType) {
         if (null === councilAreasDeathsDataset) {
           fetchAndStore(
-            queryDeathsByCouncilArea,
+            deathsByCouncilAreaCsv,
             setCouncilAreasDeathsDataset,
             parseCsvData
           );
@@ -207,7 +160,7 @@ function Heatmap({
         // AREATYPE_HEALTH_BOARDS == areaType
         if (null === healthBoardsDeathsDataset) {
           fetchAndStore(
-            queryDeathsByHealthBoard,
+            deathsByHealthBoardCsv,
             setHealthBoardsDeathsDataset,
             parseCsvData
           );
@@ -221,7 +174,7 @@ function Heatmap({
         // AREATYPE_HEALTH_BOARDS == areaType
         if (null === healthBoardsCasesDataset) {
           fetchAndStore(
-            queryCasesByHealthBoard,
+            casesByHealthBoardCsv,
             setHealthBoardsCasesDataset,
             parseDiffCsvData
           );

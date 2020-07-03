@@ -1,0 +1,212 @@
+date,areaname,count
+w/c 2020-03-16,Highland,1
+w/c 2020-03-16,Lanarkshire,0
+w/c 2020-03-16,Orkney,0
+w/c 2020-03-16,Fife,2
+w/c 2020-03-16,Shetland,0
+w/c 2020-03-16,Western Isles,0
+w/c 2020-03-16,Tayside,0
+w/c 2020-03-16,Lothian,2
+w/c 2020-03-16,Greater Glasgow and Clyde,3
+w/c 2020-03-16,Forth Valley,0
+w/c 2020-03-16,Dumfries and Galloway,0
+w/c 2020-03-16,Borders,0
+w/c 2020-03-16,Ayrshire and Arran,1
+w/c 2020-03-16,Grampian,2
+w/c 2020-03-23,Lanarkshire,8
+w/c 2020-03-23,Greater Glasgow and Clyde,13
+w/c 2020-03-23,Tayside,3
+w/c 2020-03-23,Grampian,3
+w/c 2020-03-23,Fife,4
+w/c 2020-03-23,Western Isles,0
+w/c 2020-03-23,Highland,5
+w/c 2020-03-23,Lothian,7
+w/c 2020-03-23,Orkney,0
+w/c 2020-03-23,Shetland,0
+w/c 2020-03-23,Ayrshire and Arran,9
+w/c 2020-03-23,Borders,3
+w/c 2020-03-23,Dumfries and Galloway,0
+w/c 2020-03-23,Forth Valley,7
+w/c 2020-03-30,Shetland,1
+w/c 2020-03-30,Lothian,32
+w/c 2020-03-30,Orkney,0
+w/c 2020-03-30,Grampian,6
+w/c 2020-03-30,Dumfries and Galloway,12
+w/c 2020-03-30,Ayrshire and Arran,17
+w/c 2020-03-30,Borders,13
+w/c 2020-03-30,Forth Valley,20
+w/c 2020-03-30,Highland,11
+w/c 2020-03-30,Tayside,14
+w/c 2020-03-30,Lanarkshire,40
+w/c 2020-03-30,Western Isles,0
+w/c 2020-03-30,Greater Glasgow and Clyde,107
+w/c 2020-03-30,Fife,9
+w/c 2020-04-06,Greater Glasgow and Clyde,193
+w/c 2020-04-06,Borders,15
+w/c 2020-04-06,Fife,31
+w/c 2020-04-06,Grampian,35
+w/c 2020-04-06,Dumfries and Galloway,9
+w/c 2020-04-06,Ayrshire and Arran,40
+w/c 2020-04-06,Forth Valley,32
+w/c 2020-04-06,Tayside,37
+w/c 2020-04-06,Lothian,108
+w/c 2020-04-06,Shetland,4
+w/c 2020-04-06,Western Isles,0
+w/c 2020-04-06,Orkney,2
+w/c 2020-04-06,Highland,13
+w/c 2020-04-06,Lanarkshire,90
+w/c 2020-04-13,Borders,7
+w/c 2020-04-13,Ayrshire and Arran,51
+w/c 2020-04-13,Shetland,1
+w/c 2020-04-13,Lothian,109
+w/c 2020-04-13,Orkney,0
+w/c 2020-04-13,Tayside,51
+w/c 2020-04-13,Fife,39
+w/c 2020-04-13,Lanarkshire,90
+w/c 2020-04-13,Western Isles,0
+w/c 2020-04-13,Greater Glasgow and Clyde,197
+w/c 2020-04-13,Grampian,43
+w/c 2020-04-13,Highland,21
+w/c 2020-04-13,Forth Valley,31
+w/c 2020-04-13,Dumfries and Galloway,10
+w/c 2020-04-20,Tayside,59
+w/c 2020-04-20,Lothian,114
+w/c 2020-04-20,Greater Glasgow and Clyde,231
+w/c 2020-04-20,Ayrshire and Arran,39
+w/c 2020-04-20,Western Isles,0
+w/c 2020-04-20,Shetland,0
+w/c 2020-04-20,Fife,33
+w/c 2020-04-20,Orkney,0
+w/c 2020-04-20,Lanarkshire,83
+w/c 2020-04-20,Dumfries and Galloway,3
+w/c 2020-04-20,Grampian,40
+w/c 2020-04-20,Forth Valley,34
+w/c 2020-04-20,Borders,3
+w/c 2020-04-20,Highland,22
+w/c 2020-04-27,Forth Valley,32
+w/c 2020-04-27,Borders,4
+w/c 2020-04-27,Ayrshire and Arran,35
+w/c 2020-04-27,Dumfries and Galloway,6
+w/c 2020-04-27,Grampian,30
+w/c 2020-04-27,Shetland,1
+w/c 2020-04-27,Fife,25
+w/c 2020-04-27,Orkney,0
+w/c 2020-04-27,Western Isles,0
+w/c 2020-04-27,Highland,16
+w/c 2020-04-27,Tayside,34
+w/c 2020-04-27,Greater Glasgow and Clyde,170
+w/c 2020-04-27,Lothian,99
+w/c 2020-04-27,Lanarkshire,74
+w/c 2020-05-04,Lanarkshire,51
+w/c 2020-05-04,Tayside,33
+w/c 2020-05-04,Greater Glasgow and Clyde,126
+w/c 2020-05-04,Lothian,81
+w/c 2020-05-04,Highland,9
+w/c 2020-05-04,Shetland,0
+w/c 2020-05-04,Western Isles,0
+w/c 2020-05-04,Orkney,0
+w/c 2020-05-04,Dumfries and Galloway,6
+w/c 2020-05-04,Grampian,28
+w/c 2020-05-04,Forth Valley,31
+w/c 2020-05-04,Ayrshire and Arran,28
+w/c 2020-05-04,Borders,3
+w/c 2020-05-04,Fife,19
+w/c 2020-05-11,Greater Glasgow and Clyde,118
+w/c 2020-05-11,Highland,6
+w/c 2020-05-11,Grampian,27
+w/c 2020-05-11,Fife,15
+w/c 2020-05-11,Ayrshire and Arran,21
+w/c 2020-05-11,Shetland,0
+w/c 2020-05-11,Orkney,0
+w/c 2020-05-11,Western Isles,0
+w/c 2020-05-11,Lothian,54
+w/c 2020-05-11,Lanarkshire,46
+w/c 2020-05-11,Forth Valley,17
+w/c 2020-05-11,Dumfries and Galloway,1
+w/c 2020-05-11,Tayside,25
+w/c 2020-05-11,Borders,6
+w/c 2020-05-18,Lothian,44
+w/c 2020-05-18,Highland,4
+w/c 2020-05-18,Orkney,0
+w/c 2020-05-18,Forth Valley,12
+w/c 2020-05-18,Dumfries and Galloway,0
+w/c 2020-05-18,Grampian,17
+w/c 2020-05-18,Greater Glasgow and Clyde,75
+w/c 2020-05-18,Tayside,19
+w/c 2020-05-18,Lanarkshire,30
+w/c 2020-05-18,Western Isles,0
+w/c 2020-05-18,Shetland,0
+w/c 2020-05-18,Fife,4
+w/c 2020-05-18,Ayrshire and Arran,21
+w/c 2020-05-18,Borders,4
+w/c 2020-05-25,Fife,8
+w/c 2020-05-25,Western Isles,0
+w/c 2020-05-25,Tayside,13
+w/c 2020-05-25,Orkney,0
+w/c 2020-05-25,Lothian,24
+w/c 2020-05-25,Shetland,0
+w/c 2020-05-25,Lanarkshire,22
+w/c 2020-05-25,Greater Glasgow and Clyde,30
+w/c 2020-05-25,Ayrshire and Arran,14
+w/c 2020-05-25,Grampian,9
+w/c 2020-05-25,Dumfries and Galloway,0
+w/c 2020-05-25,Forth Valley,3
+w/c 2020-05-25,Borders,4
+w/c 2020-05-25,Highland,4
+w/c 2020-06-01,Tayside,9
+w/c 2020-06-01,Grampian,5
+w/c 2020-06-01,Forth Valley,4
+w/c 2020-06-01,Lanarkshire,18
+w/c 2020-06-01,Dumfries and Galloway,0
+w/c 2020-06-01,Greater Glasgow and Clyde,21
+w/c 2020-06-01,Lothian,15
+w/c 2020-06-01,Shetland,0
+w/c 2020-06-01,Orkney,0
+w/c 2020-06-01,Highland,2
+w/c 2020-06-01,Fife,3
+w/c 2020-06-01,Western Isles,0
+w/c 2020-06-01,Ayrshire and Arran,6
+w/c 2020-06-01,Borders,6
+w/c 2020-06-08,Highland,0
+w/c 2020-06-08,Lothian,11
+w/c 2020-06-08,Ayrshire and Arran,6
+w/c 2020-06-08,Borders,3
+w/c 2020-06-08,Forth Valley,6
+w/c 2020-06-08,Grampian,6
+w/c 2020-06-08,Dumfries and Galloway,0
+w/c 2020-06-08,Lanarkshire,8
+w/c 2020-06-08,Tayside,9
+w/c 2020-06-08,Greater Glasgow and Clyde,17
+w/c 2020-06-08,Western Isles,0
+w/c 2020-06-08,Shetland,0
+w/c 2020-06-08,Fife,3
+w/c 2020-06-08,Orkney,0
+w/c 2020-06-15,Tayside,2
+w/c 2020-06-15,Fife,2
+w/c 2020-06-15,Greater Glasgow and Clyde,15
+w/c 2020-06-15,Shetland,0
+w/c 2020-06-15,Western Isles,0
+w/c 2020-06-15,Lanarkshire,8
+w/c 2020-06-15,Dumfries and Galloway,0
+w/c 2020-06-15,Borders,1
+w/c 2020-06-15,Forth Valley,4
+w/c 2020-06-15,Ayrshire and Arran,4
+w/c 2020-06-15,Lothian,9
+w/c 2020-06-15,Orkney,0
+w/c 2020-06-15,Grampian,4
+w/c 2020-06-15,Highland,0
+w/c 2020-06-22,Lothian,4
+w/c 2020-06-22,Orkney,0
+w/c 2020-06-22,Highland,0
+w/c 2020-06-22,Western Isles,0
+w/c 2020-06-22,Fife,3
+w/c 2020-06-22,Shetland,0
+w/c 2020-06-22,Ayrshire and Arran,1
+w/c 2020-06-22,Borders,0
+w/c 2020-06-22,Forth Valley,3
+w/c 2020-06-22,Grampian,3
+w/c 2020-06-22,Dumfries and Galloway,0
+w/c 2020-06-22,Greater Glasgow and Clyde,8
+w/c 2020-06-22,Lanarkshire,11
+w/c 2020-06-22,Tayside,2
+
