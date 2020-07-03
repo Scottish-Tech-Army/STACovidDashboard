@@ -1,9 +1,6 @@
 import React from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import "./DataChartsSelector.css";
 
 import {
@@ -12,10 +9,7 @@ import {
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
 
-function DataChartsSelector({
-  chartType,
-  setChartType,
-}) {
+function DataChartsSelector({ chartType, setChartType }) {
   if (
     chartType !== PERCENTAGE_CASES &&
     chartType !== TOTAL_CASES &&
@@ -28,33 +22,28 @@ function DataChartsSelector({
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <span className="align-middle">
-            <strong>Select chart:</strong>
-          </span>
-
-          <ToggleButtonGroup
-            className="toggle-button-group"
-            name="chartType"
-            type="radio"
-            value={chartType}
-            onChange={(val) => setChartType(val)}
-          >
-            <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
-              % Tests Positive
-            </ToggleButton>
-            <ToggleButton id="totalCases" value={TOTAL_CASES}>
-              Total Cases
-            </ToggleButton>
-            <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
-              Total Deaths
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Col>
-      </Row>
-    </Container>
+    <div className="data-charts-selector">
+      <span>
+        <strong>Select chart:</strong>
+      </span>
+      <ToggleButtonGroup
+        className="toggle-button-group"
+        name="chartType"
+        type="radio"
+        value={chartType}
+        onChange={(val) => setChartType(val)}
+      >
+        <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
+          % Tests Positive
+        </ToggleButton>
+        <ToggleButton id="totalCases" value={TOTAL_CASES}>
+          Total Cases
+        </ToggleButton>
+        <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
+          Total Deaths
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </div>
   );
 }
 

@@ -163,6 +163,9 @@ const App = () => {
                   <Heatmap areaType={areaType} valueType={valueType} />
                 )}
               </Col>
+              <Col className="d-block d-md-none">
+                <hr className="underHeatmapSelector" />
+              </Col>
               <Col xs={12} md={zoomGeoMap ? 12 : 6}>
                 <GeoHeatMap
                   areaType={areaType}
@@ -172,6 +175,11 @@ const App = () => {
                   }
                   fullscreenEnabled={zoomGeoMap}
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-block d-md-none">
+                <hr className="underHeatmapSelector" />
               </Col>
             </Row>
           </Col>
@@ -203,6 +211,11 @@ const App = () => {
                     toggleFullscreen(zoomableCharts, setZoomDataCharts)
                   }
                 />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <hr className="underHeatmapSelector" />
               </Col>
             </Row>
             <Row>

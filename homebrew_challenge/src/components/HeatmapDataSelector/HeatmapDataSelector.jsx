@@ -48,11 +48,11 @@ function HeatmapDataSelector({
     (VALUETYPE_CASES === valueType ? " [Data not available]" : "");
 
   return (
-    <Container fluid>
+    <Container fluid className="heatmap-selector">
       <Row>
-        <Col>
-          <span className="align-middle">
-            <strong>View data by:</strong>
+        <Col className="selector-group" xs={12} md={6}>
+          <span>
+            <strong>Select region type:</strong>
           </span>
 
           <ToggleButtonGroup
@@ -68,13 +68,17 @@ function HeatmapDataSelector({
             <ToggleButton
               id="councilAreas"
               value={AREATYPE_COUNCIL_AREAS}
-              variant={VALUETYPE_CASES === valueType? "secondary": "primary"}
+              variant={VALUETYPE_CASES === valueType ? "secondary" : "primary"}
               disabled={VALUETYPE_CASES === valueType}
             >
               {councilAreasText}
             </ToggleButton>
           </ToggleButtonGroup>
-
+        </Col>
+        <Col className="selector-group" xs={12} md={6}>
+          <span>
+            <strong>Select measure:</strong>
+          </span>
           <ToggleButtonGroup
             className="toggle-button-group"
             name="valueType"
@@ -88,7 +92,9 @@ function HeatmapDataSelector({
             <ToggleButton
               id="cases"
               value={VALUETYPE_CASES}
-              variant={AREATYPE_COUNCIL_AREAS === areaType? "secondary": "primary"}
+              variant={
+                AREATYPE_COUNCIL_AREAS === areaType ? "secondary" : "primary"
+              }
               disabled={AREATYPE_COUNCIL_AREAS === areaType}
             >
               {casesText}
