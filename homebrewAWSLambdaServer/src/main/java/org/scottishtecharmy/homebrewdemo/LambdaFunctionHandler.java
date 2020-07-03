@@ -1,17 +1,11 @@
 package org.scottishtecharmy.homebrewdemo;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -96,34 +90,27 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         HttpEntity multipart = builder.build();
         httpPost.setEntity(multipart);
 
-        String text = null;
         context.getLogger().log("Call request\n");
 
         CloseableHttpClient client = createHttpClient();
         try (CloseableHttpResponse response = client.execute(httpPost)) {
             context.getLogger().log("Response received\n");
 
+            // Pipe straight to S3
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("text/plain");
+            
             HttpEntity entity = response.getEntity();
-            InputStream contentStream = entity.getContent();
-            text = new BufferedReader(new InputStreamReader(contentStream, StandardCharsets.UTF_8)).lines()
-                    .collect(Collectors.joining("\n"));
-            context.getLogger().log("Response entity retrieved\n");
+            if (entity.getContentLength() > 0) {
+                metadata.setContentLength(entity.getContentLength());
+            }
+
+            AccessControlList acl = new AccessControlList();
+            acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+
+            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, entity.getContent(),
+                    metadata).withAccessControlList(acl));
         }
-
-        // Output to file on S3
-        // TODO could probably just feed the stats response inputstream straight
-        // to S3
-        byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(textBytes.length);
-        metadata.setContentType("text/plain");
-
-        AccessControlList acl = new AccessControlList();
-        acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
-
-        s3.putObject(
-                new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes), metadata)
-                        .withAccessControlList(acl));
 
         context.getLogger().log("Response stored in S3 at " + targetObjectKeyName + "\n");
     }
