@@ -29,8 +29,16 @@ st_write(scotland, "clean_data/scotland.shp", append=FALSE)
 #################################################################
 
 #!!! curently already joined to scotland_covid data 
-# Just point geometry - would like to find this to polygod geom
+# Just point geometry - would like to find this to polygon geom
+# Converting shapfile to tibble and extracting coordinates
 
-# Shapefile read
 scotland_interm <- st_read("raw_data/SG_IntermediateZoneCent_2011/SG_IntermediateZone_Cent_2011.shp") %>% 
-  st_transform("+proj=longlat +datum=WGS84")
+  st_transform("+proj=longlat +datum=WGS84") %>% 
+  as_tibble() %>% 
+  mutate(geometry = as.character(geometry),
+         geometry = str_sub(geometry, 3, -2)) %>% 
+  separate(col = geometry, c("long", "lat"), sep = ", ") %>% 
+  mutate(lat = as.double(lat),
+         long = as.double(long))
+
+st_write(scotland_local, "covid19_scot_map/clean_data/scotland_covid.csv")
