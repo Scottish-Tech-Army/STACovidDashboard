@@ -1,4 +1,8 @@
+.data-charts-selector .toggle-button-group {
+  margin: 0.5rem 0 0.5rem 0;
+}
 
-.toggle-button-group {
-  margin: 0 0 0.5rem 1rem;
+.data-charts-selector {
+  display: flex;
+  flex-direction: column;
 }

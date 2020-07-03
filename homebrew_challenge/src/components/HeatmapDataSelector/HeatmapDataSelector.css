@@ -1,14 +1,10 @@
-.toggle-button-group {
-  margin: 0 0 0.5rem 1rem;
-}
-
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #2A84BB;
-  border-color: #2A84BB;
+  background-color: #2a84bb;
+  border-color: #2a84bb;
   font-weight: bold;
 }
 
@@ -17,8 +13,8 @@
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active:focus {
   color: white;
-  background-color: #133A53;
-  border-color: #133A53;
+  background-color: #133a53;
+  border-color: #133a53;
   font-weight: bold;
 }
 
@@ -33,4 +29,17 @@
   background-color: #616161;
   border-color: #616161;
   font-weight: bold;
+}
+
+.heatmap-selector .toggle-button-group {
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.heatmap-selector {
+  padding: 0;
+}
+
+.heatmap-selector .selector-group {
+  display: flex;
+  flex-direction: column;
 }
