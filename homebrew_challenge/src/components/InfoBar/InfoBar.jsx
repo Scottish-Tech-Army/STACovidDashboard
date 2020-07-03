@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "./InfoBar.css";
+import { rssFeed } from "../Utils/rssFeedUtils";
 
 const InfoBar = () => {
+
+  const [covidNews, setCovidNews] = useState(null);
+
+  useEffect(() => {
+    setCovidNews(rssFeed);
+  }, []);
+
   return (
     <div className="info-bar">
       <span id="icon">
