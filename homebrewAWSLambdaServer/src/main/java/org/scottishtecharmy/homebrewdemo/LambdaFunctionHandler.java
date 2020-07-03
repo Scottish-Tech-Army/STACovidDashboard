@@ -21,7 +21,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -29,10 +28,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.AccessControlList;
+import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 
 public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
@@ -73,9 +73,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                     OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS, context);
             context.getLogger().log("end");
         }
-        catch (Exception e) {
+        catch (SdkClientException | IOException e) {
+            context.getLogger().log("Error: " + e + "\n");
             e.printStackTrace();
-            context.getLogger().log("Failed to query");
             return "Failure";
         }
 
@@ -87,8 +87,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         return HttpClients.createDefault();
     }
 
-    // public void storeStatsQuery(String query, S3Entity targetLocation) throws
-    // ClientProtocolException, IOException {
     public void storeStatsQuery(String query, String targetObjectKeyName, Context context)
             throws ClientProtocolException, IOException {
 
@@ -99,45 +97,35 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         httpPost.setEntity(multipart);
 
         String text = null;
-        context.getLogger().log("Call request");
+        context.getLogger().log("Call request\n");
 
         CloseableHttpClient client = createHttpClient();
         try (CloseableHttpResponse response = client.execute(httpPost)) {
-            context.getLogger().log("Response received");
+            context.getLogger().log("Response received\n");
 
             HttpEntity entity = response.getEntity();
             InputStream contentStream = entity.getContent();
             text = new BufferedReader(new InputStreamReader(contentStream, StandardCharsets.UTF_8)).lines()
                     .collect(Collectors.joining("\n"));
-            context.getLogger().log("Response entity retrieved");
+            context.getLogger().log("Response entity retrieved\n");
         }
 
         // Output to file on S3
         // TODO could probably just feed the stats response inputstream straight
         // to S3
-        try {
-            byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(textBytes.length);
-            metadata.setContentType("text/plain");
-            
-            PutObjectResult putResult = s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes),
-                    metadata));
-//            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes),
-//                    metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-            context.getLogger().log("Response stored in S3 at " + targetObjectKeyName);
-        }
-        catch (AmazonServiceException e) {
-            // The call was transmitted successfully, but Amazon S3 couldn't
-            // process
-            // it, so it returned an error response.
-            e.printStackTrace();
-        }
-        catch (SdkClientException e) {
-            // Amazon S3 couldn't be contacted for a response, or the client
-            // couldn't parse the response from Amazon S3.
-            e.printStackTrace();
-        }
+        byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(textBytes.length);
+        metadata.setContentType("text/plain");
+
+        AccessControlList acl = new AccessControlList();
+        acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+
+        s3.putObject(
+                new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, new ByteArrayInputStream(textBytes), metadata)
+                        .withAccessControlList(acl));
+
+        context.getLogger().log("Response stored in S3 at " + targetObjectKeyName + "\n");
     }
 
     // Last 2 years
