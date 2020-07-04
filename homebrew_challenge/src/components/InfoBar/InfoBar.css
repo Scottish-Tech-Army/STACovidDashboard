@@ -14,3 +14,15 @@
 .scot-gov-link:before {
   content: "\00a0 ";
 }
+
+.info-bar .message {
+  font-weight: bold;
+}
+
+.info-bar .news-item {
+  margin: 0;
+}
+
+.news-item-link, .news-item-link:hover {
+  color: Black;
+}

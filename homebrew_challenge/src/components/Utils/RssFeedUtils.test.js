@@ -1,5 +1,7 @@
 import {
   getLatestNewsItem,
+  rssFeed,
+  getText,
 } from "./RssFeedUtils";
 
 const inputXml = `
@@ -16,7 +18,9 @@ const inputXml = `
 <link>link1</link>
 <category>Scotland</category>
 <title>title1</title>
-<description>description1</description>
+<description>
+<![CDATA[ <p><strong>description1</strong></p> ]]>
+</description>
 <pubDate>Fri, 03 Jul 2020 11:54:32 Z</pubDate>
 </item>
 <item>
@@ -24,7 +28,9 @@ const inputXml = `
 <link>link2</link>
 <category>Scotland</category>
 <title>title2</title>
-<description>description2</description>
+<description>
+<![CDATA[ <p><strong>description2</strong></p> ]]>
+</description>
 <pubDate>Fri, 03 Jul 2020 08:32:48 Z</pubDate>
 </item>
 </channel>
@@ -33,6 +39,12 @@ const inputXml = `
 
 it("getLatestNewsItem reads feed", () => {
   const result = getLatestNewsItem(inputXml);
-  const expectedResult = {title: "title1", description: "description1", link: "link1"};
+  const expectedResult = {title: "title1", description: "description1", link: "link1", timestamp: "03 Jul 2020 12:54"};
   expect(result).toEqual(expectedResult);
+});
+
+it("getText", () => {
+  expect(getText("string1")).toEqual("string1");
+  expect(getText({ p: "string1" })).toEqual("string1");
+  expect(getText({ p: { strong: 'string1' }})).toEqual("string1");
 });

@@ -1,4 +1,6 @@
-const strxml = `
+import { format } from "date-fns";
+
+const defaultStrXml = `
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 <channel>
 <title>Scottish Government News - News</title>
@@ -109,24 +111,22 @@ const strxml = `
 </rss>
 `;
 
-const parser = new DOMParser();  // initialize dom parser
-const srcDOM = parser.parseFromString(strxml, "application/xml");  // convert dom string to dom tree.
-
 function xml2json(srcDOM) {
   let children = [...srcDOM.children];
 
   // base case for recursion.
   if (!children.length) {
-    return srcDOM.innerHTML
+    return srcDOM.innerHTML;
   }
 
   // initializing object to be returned.
   let jsonResult = {};
 
   for (let child of children) {
-
     // checking is child has siblings of same name.
-    let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
+    let childIsArray =
+      children.filter(eachChild => eachChild.nodeName === child.nodeName)
+        .length > 1;
 
     // if child is array, save the values as array, else as strings.
     if (childIsArray) {
@@ -141,20 +141,34 @@ function xml2json(srcDOM) {
   }
 
   return jsonResult;
+}
 
+export const getText = input => {
+  if (typeof input === "string") {
+    return input;
+  }
+  if (typeof input === "object") {
+    return getText(Object.values(input)[0]);
+  }
 };
 
-export const rssFeed = () => {
-  return xml2json(srcDOM).rss.channel.item[0];
-};
-
-export const getLatestNewsItem = (strxml) => {
-  console.log(strxml);
-  const inputDom = parser.parseFromString(strxml, "application/xml");
+export const getLatestNewsItem = strxml => {
+  const trimStrxml = strxml.replace(`<![CDATA[`, "").replace(`]]>`, "");
+  const parser = new DOMParser();
+  const inputDom = parser.parseFromString(trimStrxml, "application/xml");
   const json = xml2json(inputDom);
   const item = json.rss.channel.item[0];
-  console.log(item);
-  const result = {title: item.title, description: item.description, link: item.link}
+
+  const pubDate = Date.parse(item.pubDate);
+
+
+
+  const result = {
+    title: item.title,
+    description: getText(item.description),
+    link: item.link,
+    timestamp: format(pubDate, "dd MMM yyyy HH:mm")
+  };
   return result;
 };
 

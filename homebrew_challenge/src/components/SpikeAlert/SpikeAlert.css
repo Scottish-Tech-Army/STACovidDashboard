@@ -15,3 +15,7 @@
 .advice-link:before {
   content: "\00a0 ";
 }
+
+.alert-bar .message {
+  font-weight: bold;
+}
