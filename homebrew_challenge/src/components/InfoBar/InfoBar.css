@@ -10,3 +10,7 @@
   height: 100%;
   float: left;
 }
+
+.scot-gov-link:before {
+  content: "\00a0 ";
+}

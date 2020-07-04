@@ -33,8 +33,12 @@ const InfoBar = () => {
           color="#319bd5"
         />
       </span>
-      <span>
-        <p id="message">The latest Coronavirus news from news.gov.scot </p>
+      <span className="news-title">
+        <p id="message">
+          The latest Coronavirus news from
+            <a className="scot-gov-link link"
+                href="https://news.gov.scot/news?SearchString=coronavirus">news.gov.scot</a>
+        </p>
         <p>{newsTitleDescription}...
           <a
           target="_blank"
