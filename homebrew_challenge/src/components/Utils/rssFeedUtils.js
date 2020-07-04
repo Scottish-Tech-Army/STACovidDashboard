@@ -145,7 +145,17 @@ function xml2json(srcDOM) {
 };
 
 export const rssFeed = () => {
-  return xml2json(srcDOM);
+  return xml2json(srcDOM).rss.channel.item[0];
+};
+
+export const getLatestNewsItem = (strxml) => {
+  console.log(strxml);
+  const inputDom = parser.parseFromString(strxml, "application/xml");
+  const json = xml2json(inputDom);
+  const item = json.rss.channel.item[0];
+  console.log(item);
+  const result = {title: item.title, description: item.description, link: item.link}
+  return result;
 };
 
 //  psuedo code for function

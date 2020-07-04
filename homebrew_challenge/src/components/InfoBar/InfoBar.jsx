@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "./InfoBar.css";
-import { rssFeed } from "../Utils/rssFeedUtils";
+import { rssFeed } from "../Utils/RssFeedUtils";
 
 const InfoBar = () => {
 
@@ -11,6 +11,18 @@ const InfoBar = () => {
   useEffect(() => {
     setCovidNews(rssFeed);
   }, []);
+
+  console.log(covidNews);
+
+  let newsTitleDescription = "no news yet";
+  if (covidNews !== null) {
+    newsTitleDescription = `${covidNews.title} - ${covidNews.description}`;
+  };
+
+  let newsLink = "no link yet";
+  if (covidNews !== null) {
+    newsLink = covidNews.link;
+  };
 
   return (
     <div className="info-bar">
@@ -21,21 +33,17 @@ const InfoBar = () => {
           color="#319bd5"
         />
       </span>
-      <span id="message">
-        Provisional dates for the relaxation of travel restrictions,
-        restarting of the hospitality industry and reopening of
-        hairdressers are among further route map measures announced
-        today (Wednesday 24, June) by First Minister Nicola Sturgeon.
-        For more information visit
-        <a
-          className="route-map-link link"
+      <span>
+        <p id="message">The latest Coronavirus news from news.gov.scot </p>
+        <p>{newsTitleDescription}...
+          <a
           target="_blank"
-          href="https://www.gov.scot/news/further-route-map-detail-announced/"
+          href={newsLink}
           rel="noopener noreferrer"
-        >
-          www.gov.scot/news/further-route-map-detail-announced
-        </a>
-        .
+          >
+          Read More
+          </a>
+        </p>
       </span>
     </div>
   );

@@ -116,7 +116,7 @@ const App = () => {
           </Row>
           <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
             <Col>
-              <InfoBar />
+              <InfoBar/>
             </Col>
           </Row>
         </Container>
