@@ -4,12 +4,14 @@ import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
+  VALUETYPE_CASES
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
   readCsvData,
   createPlaceDateValueMap,
-  fetchAndStore,
+  fetchAndStore
 } from "../Utils/CsvUtils";
+import { format, addDays } from "date-fns";
 import Table from "react-bootstrap/Table";
 
 const deathsByCouncilAreaCsv = "weeklyCouncilAreasDeaths.csv";
@@ -26,7 +28,7 @@ export function parseCsvData(csvData) {
   placeDateValueMap.forEach((dateValueMap, place) => {
     const values = [];
     var total = 0;
-    dates.forEach((date) => {
+    dates.forEach(date => {
       const value = dateValueMap.get(date);
       values.push(value);
       total += value;
@@ -34,7 +36,7 @@ export function parseCsvData(csvData) {
     regions.push({ name: place, totalDeaths: total, counts: values });
   });
 
-  return { dates: dates, regions: regions };
+  return { dates: dates.map((d) => d.replace("w/c ", "")), regions: regions };
 }
 
 // Exported for tests
@@ -60,7 +62,7 @@ export function parseDiffCsvData(csvData) {
   placeDateValueDiffMap.forEach((dateValueMap, place) => {
     const values = [];
     var total = 0;
-    dates.forEach((date) => {
+    dates.forEach(date => {
       const value = dateValueMap.get(date);
       values.push(value);
       total += value;
@@ -72,7 +74,7 @@ export function parseDiffCsvData(csvData) {
 
 function Heatmap({
   valueType = VALUETYPE_DEATHS,
-  areaType = AREATYPE_COUNCIL_AREAS,
+  areaType = AREATYPE_COUNCIL_AREAS
 }) {
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 1, 5, 10, 100, 200];
@@ -186,17 +188,15 @@ function Heatmap({
     areaType,
     councilAreasDeathsDataset,
     healthBoardsDeathsDataset,
-    healthBoardsCasesDataset,
+    healthBoardsCasesDataset
   ]);
 
   function getDataSet() {
     if (VALUETYPE_DEATHS === valueType) {
       if (AREATYPE_COUNCIL_AREAS === areaType) {
-        console.log(councilAreasDeathsDataset);
         return councilAreasDeathsDataset;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        console.log(healthBoardsDeathsDataset);
         return healthBoardsDeathsDataset;
       }
     } else {
@@ -205,33 +205,33 @@ function Heatmap({
         return null;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        console.log(healthBoardsCasesDataset);
         return healthBoardsCasesDataset;
       }
     }
-  };
+  }
 
-  // function getDateRangeStart() {
-  //   if (VALUETYPE_DEATHS === valueType) {
-  //     if (AREATYPE_COUNCIL_AREAS === areaType) {
-  //       console.log(councilAreasDeathsDataset.dates[0]);
-  //       return councilAreasDeathsDataset.dates[0];
-  //     } else {
-  //       // AREATYPE_HEALTH_BOARDS == areaType
-  //       console.log(councilAreasDeathsDataset.dates[0]);
-  //       return healthBoardsDeathsDataset.dates[0];
-  //     }
-  //   } else {
-  //     // VALUETYPE_CASES === valueType
-  //     if (AREATYPE_COUNCIL_AREAS === areaType) {
-  //       return null;
-  //     } else {
-  //       // AREATYPE_HEALTH_BOARDS == areaType
-  //       console.log(healthBoardsCasesDataset.dates[0])
-  //       return healthBoardsCasesDataset.dates[0];
-  //     }
-  //   }
-  // };
+  function dateRangeTableCell() {
+
+    function formatDate(date) {
+      return format(date, "dd MMM yyyy");
+
+    }
+
+    const dates = dataset["dates"];
+    let startDate = Date.parse(dates[0]);
+    let endDate = Date.parse(dates[dates.length - 1]);
+
+    if (VALUETYPE_DEATHS === valueType) {
+      endDate = addDays(endDate, 6);
+    }
+
+    return (
+      <td className="flex-container">
+        <div>{formatDate(startDate)}</div>
+        <div>{formatDate(endDate)}</div>
+      </td>
+    );
+  }
 
   function renderTableBody() {
     const dataset = getDataSet();
@@ -273,6 +273,8 @@ function Heatmap({
     );
   }
 
+  const dataset = getDataSet();
+
   return (
     <div className="heatmap">
       <Table size="sm">
@@ -287,7 +289,14 @@ function Heatmap({
             </th>
           </tr>
         </thead>
-        <tbody>{renderTableBody()}</tbody>
+        <tbody>
+          <tr className="date-range">
+            <td></td>
+            <td></td>
+            {dateRangeTableCell()}
+          </tr>
+          {renderTableBody()}
+        </tbody>
       </Table>
     </div>
   );
