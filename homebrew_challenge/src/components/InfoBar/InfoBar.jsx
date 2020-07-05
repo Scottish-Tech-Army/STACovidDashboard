@@ -2,27 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "./InfoBar.css";
-import { rssFeed } from "../Utils/RssFeedUtils";
+import { getLatestNewsItem } from "../Utils/RssFeedUtils";
 
 const InfoBar = () => {
 
   const [covidNews, setCovidNews] = useState(null);
-
+  const rssFeedUrl = "data/newsScotGovRss.xml";
   useEffect(() => {
-    setCovidNews(rssFeed);
+    fetch(rssFeedUrl, {
+      method: "GET",
+    })
+      .then((res) => res.text())
+      .then((rssFeed) => {
+        setCovidNews(getLatestNewsItem(rssFeed));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
-
-  console.log(covidNews);
-
-  let newsTitleDescription = "no news yet";
-  if (covidNews !== null) {
-    newsTitleDescription = `${covidNews.title} - ${covidNews.description}`;
-  };
-
-  let newsLink = "no link yet";
-  if (covidNews !== null) {
-    newsLink = covidNews.link;
-  };
 
   return (
     <div className="info-bar">
@@ -33,20 +30,29 @@ const InfoBar = () => {
           color="#319bd5"
         />
       </span>
-      <span className="news-title">
-        <p id="message">
-          The latest Coronavirus news from
+      <span>
+        <p className="message">
+          The latest news from
             <a className="scot-gov-link link"
-                href="https://news.gov.scot/news?SearchString=coronavirus">news.gov.scot</a>
+                target="_blank"
+                href="https://news.gov.scot/news"
+                rel="noopener noreferrer">
+                news.gov.scot
+            </a>
         </p>
-        <p>{newsTitleDescription}...
+        <p className="news-item">
           <a
-          target="_blank"
-          href={newsLink}
-          rel="noopener noreferrer"
+             className="news-item-link"
+             target="_blank"
+             href={covidNews? covidNews.link : "#"}
+             rel="noopener noreferrer"
           >
-          Read More
+            {covidNews? covidNews.title : "no news yet"}
           </a>
+          {" - "}
+          {covidNews? covidNews.description : "no news yet"}
+          {" "}
+          {covidNews? covidNews.timestamp : "no news yet"}
         </p>
       </span>
     </div>

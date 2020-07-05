@@ -1,6 +1,5 @@
 import {
   getLatestNewsItem,
-  rssFeed,
   getText,
 } from "./RssFeedUtils";
 
