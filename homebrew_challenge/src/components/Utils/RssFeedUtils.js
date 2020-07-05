@@ -161,6 +161,5 @@ export const getLatestNewsItem = strxml => {
     link: item.link,
     timestamp: format(pubDate, "dd MMM yyyy HH:mm")
   };
-  console.log(result);
   return result;
 };
