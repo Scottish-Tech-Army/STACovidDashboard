@@ -114,21 +114,17 @@ const defaultStrXml = `
 function xml2json(srcDOM) {
   let children = [...srcDOM.children];
 
-  // base case for recursion.
   if (!children.length) {
     return srcDOM.innerHTML;
   }
 
-  // initializing object to be returned.
   let jsonResult = {};
 
   for (let child of children) {
-    // checking is child has siblings of same name.
     let childIsArray =
       children.filter(eachChild => eachChild.nodeName === child.nodeName)
         .length > 1;
 
-    // if child is array, save the values as array, else as strings.
     if (childIsArray) {
       if (jsonResult[child.nodeName] === undefined) {
         jsonResult[child.nodeName] = [xml2json(child)];
@@ -157,6 +153,7 @@ export const getLatestNewsItem = strxml => {
   const parser = new DOMParser();
   const inputDom = parser.parseFromString(trimStrxml, "application/xml");
   const json = xml2json(inputDom);
+  console.log(json);
   const item = json.rss.channel.item[0];
   const pubDate = Date.parse(item.pubDate);
   const result = {
@@ -167,16 +164,3 @@ export const getLatestNewsItem = strxml => {
   };
   return result;
 };
-
-//  psuedo code for function
-// Initialize variable jsonResult is empty object.
-// If scrDOM has no children nodes:
-//     return innerHTML of the DOM. // This is our base case.
-//
-// For each childNode in children nodes:
-//     Check if childNode has siblings of same name.
-//     If it has no siblings of same name:
-//         set childnode name as key whose value is json of the child node. (we're calling the function recursively.)
-//     If it has no siblings of same name
-//         set childnode name as key whose value is an empty array, every child whose name is same as this pushed into this array.
-// return jsonResult
