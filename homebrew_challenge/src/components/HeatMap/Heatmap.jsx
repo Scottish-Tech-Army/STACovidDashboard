@@ -192,9 +192,11 @@ function Heatmap({
   function getDataSet() {
     if (VALUETYPE_DEATHS === valueType) {
       if (AREATYPE_COUNCIL_AREAS === areaType) {
+        console.log(councilAreasDeathsDataset);
         return councilAreasDeathsDataset;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
+        console.log(healthBoardsDeathsDataset);
         return healthBoardsDeathsDataset;
       }
     } else {
@@ -203,10 +205,33 @@ function Heatmap({
         return null;
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
+        console.log(healthBoardsCasesDataset);
         return healthBoardsCasesDataset;
       }
     }
-  }
+  };
+
+  // function getDateRangeStart() {
+  //   if (VALUETYPE_DEATHS === valueType) {
+  //     if (AREATYPE_COUNCIL_AREAS === areaType) {
+  //       console.log(councilAreasDeathsDataset.dates[0]);
+  //       return councilAreasDeathsDataset.dates[0];
+  //     } else {
+  //       // AREATYPE_HEALTH_BOARDS == areaType
+  //       console.log(councilAreasDeathsDataset.dates[0]);
+  //       return healthBoardsDeathsDataset.dates[0];
+  //     }
+  //   } else {
+  //     // VALUETYPE_CASES === valueType
+  //     if (AREATYPE_COUNCIL_AREAS === areaType) {
+  //       return null;
+  //     } else {
+  //       // AREATYPE_HEALTH_BOARDS == areaType
+  //       console.log(healthBoardsCasesDataset.dates[0])
+  //       return healthBoardsCasesDataset.dates[0];
+  //     }
+  //   }
+  // };
 
   function renderTableBody() {
     const dataset = getDataSet();
