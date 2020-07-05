@@ -77,3 +77,8 @@ tr.area td {
   border: 0;
   padding: 0;
 }
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+}
