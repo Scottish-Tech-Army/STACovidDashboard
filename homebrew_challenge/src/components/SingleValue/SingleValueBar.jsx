@@ -5,6 +5,9 @@ import { differenceInDays, format, subDays } from "date-fns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import ReactToolTip from 'react-tooltip';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -179,6 +182,17 @@ function SingleValueBar() {
         <Col xs={12} lg={4}>
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="1x"
+                  color="#319bd5"
+                  title="Test"
+                />
+                <div className="tooltip callout" title="Test">
+                  <span>Test</span>
+                </div>
+              </div>
               <SingleValue
                 id="dailyFatalities"
                 title={"Deaths " + getRelativeDate(dailyFatalities.date)}
