@@ -37,8 +37,13 @@ server <- function(input, output, session) {
     read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv")) 
   })
   
-  
- 
+  observe({
+    updateCheckboxGroupInput(
+      session, 
+      inputId = "local_auth",
+      choices = unique(scotland_covid_reactive()$local_authority),
+      selected = unique(scotland_covid_reactive()$local_authority))
+  })
   
   cardio_prescriptions_reactive <- reactive({
   read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv")) %>% 

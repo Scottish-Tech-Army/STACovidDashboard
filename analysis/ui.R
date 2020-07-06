@@ -117,8 +117,8 @@ ui <- fluidPage(
           checkboxInput("bar", "All/None", value = T),
           checkboxGroupInput("local_auth",
             label = "Selector",
-            choices = local_authorities,
-            selected = local_authorities
+            choices = NULL,
+            selected = NULL
           )
         ),
 
