@@ -290,7 +290,7 @@ function Heatmap({
           </tr>
         </thead>
         <tbody>
-          <tr className="date-range">
+          <tr>
             <td></td>
             <td></td>
             {dateRangeTableCell()}

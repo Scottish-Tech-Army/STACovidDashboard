@@ -78,7 +78,7 @@ tr.area td {
   padding: 0;
 }
 
-.flex-container {
+.heatmap tr td.flex-container {
   display: flex;
   justify-content: space-between;
 }
