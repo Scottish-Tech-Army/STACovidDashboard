@@ -220,6 +220,7 @@ function Heatmap({
     let startDate = Date.parse(dates[0]);
     let endDate = Date.parse(dates[dates.length - 1]);
 
+    // add 6 days to date to get last day of the w/c... date
     if (VALUETYPE_DEATHS === valueType) {
       endDate = addDays(endDate, 6);
     }
