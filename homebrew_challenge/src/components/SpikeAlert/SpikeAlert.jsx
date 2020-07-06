@@ -14,7 +14,7 @@ const SpikeAlert = () => {
           color="#e30613"
         />
       </span>
-      <span id="message">
+      <span className="message">
         Over the last 24 hours there has been a spike in infections in the Greater Glasgow and Clyde Health Board region. Please follow the latest government advice available at
         <a
           className="advice-link link"

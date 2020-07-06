@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "./InfoBar.css";
+import { getLatestNewsItem } from "../Utils/RssFeedUtils";
 
 const InfoBar = () => {
+
+  const [covidNews, setCovidNews] = useState(null);
+  const rssFeedUrl = "data/newsScotGovRss.xml";
+  useEffect(() => {
+    fetch(rssFeedUrl, {
+      method: "GET",
+    })
+      .then((res) => res.text())
+      .then((rssFeed) => {
+        setCovidNews(getLatestNewsItem(rssFeed));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <div className="info-bar">
       <span id="icon">
@@ -13,21 +30,30 @@ const InfoBar = () => {
           color="#319bd5"
         />
       </span>
-      <span id="message">
-        Provisional dates for the relaxation of travel restrictions,
-        restarting of the hospitality industry and reopening of
-        hairdressers are among further route map measures announced
-        today (Wednesday 24, June) by First Minister Nicola Sturgeon.
-        For more information visit
-        <a
-          className="route-map-link link"
-          target="_blank"
-          href="https://www.gov.scot/news/further-route-map-detail-announced/"
-          rel="noopener noreferrer"
-        >
-          www.gov.scot/news/further-route-map-detail-announced
-        </a>
-        .
+      <span>
+        <p className="message">
+          The latest news from
+            <a className="scot-gov-link link"
+                target="_blank"
+                href="https://news.gov.scot/news"
+                rel="noopener noreferrer">
+                news.gov.scot
+            </a>
+        </p>
+        <p className="news-item">
+          <a
+             className="news-item-link"
+             target="_blank"
+             href={covidNews? covidNews.link : "#"}
+             rel="noopener noreferrer"
+          >
+            {covidNews? covidNews.title : "no news yet"}
+          </a>
+          {" - "}
+          {covidNews? covidNews.description : "no news yet"}
+          {" "}
+          {covidNews? covidNews.timestamp : "no news yet"}
+        </p>
       </span>
     </div>
   );
