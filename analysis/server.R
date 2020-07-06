@@ -13,9 +13,7 @@ local_authorities <- unique(scotland_covid$local_authority) %>%
 
 
 #shape file and reducing the polygons to increase render speed
-scotland <- st_read("clean_data/scotland.shp", quiet = TRUE) %>%
-  ms_simplify(keep = 0.025)
-
+scotland <- st_read("clean_data/scotland.shp", quiet = TRUE)
 
 ##################################################################
 ##                          Server                              ##
