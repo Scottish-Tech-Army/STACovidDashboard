@@ -5,46 +5,6 @@ library(sf)
 library(rmapshaper)
 
 
-## ----------------------------------------------------------------
-##                          Covid Management                     --
-## ----------------------------------------------------------------
-
-## Most or all of this to be done when pulling data
-
-
-# management <- read_csv("covid19_scot_map/raw_data/covid19_management.csv") %>%
-#   clean_names()
-# 
-# management_clean <- management %>%
-#   filter(
-#     variable %in% c("Testing - Cumulative people tested for COVID-19 - Positive",
-#                     "COVID-19 patients in hospital - Confirmed",
-#                     "COVID-19 patients in hospital - Suspected",
-#                     "COVID-19 patients in ICU - Total"
-#                     ),
-#     official_name != "Scotland"
-#   ) %>%
-#   select(-c(
-#     feature_code,
-#     measurement,
-#     units
-#   )) %>%
-#   mutate(
-#     value = str_replace_all(value, "\\*", "0"),
-#     value = as.numeric(value),
-#     date_code = as_date(date_code)
-#   )
-# 
-# # save clean file
-# write_csv(management_clean, "covid19_scot_map/clean_data/management_clean.csv")
-
-
-## ----------------------------------------------------------------
-##                    Intermediate Zone Data                     --
-## ----------------------------------------------------------------
-
- # need to join in server
- # left_join(covid, by = c("Name" = "name_of_intermediate_zone"))
 
 ## ----------------------------------------------------------------
 ##                    Cardiovascular Medication                  --
