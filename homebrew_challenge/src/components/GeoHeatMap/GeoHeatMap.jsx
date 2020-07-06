@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
-import {
-  Map as LeafletMap,
-  Circle,
-  TileLayer,
-  Popup,
-  GeoJSON,
-} from "react-leaflet";
-import { HEALTH_BOARD_LOCATIONS, COUNCIL_AREA_LOCATIONS } from "./Locations";
+import L from "leaflet";
+import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
-  AREATYPE_HEALTH_BOARDS,
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
@@ -57,6 +50,7 @@ const GeoHeatMap = ({
   toggleFullscreen,
   fullscreenEnabled = false,
 }) => {
+
   const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
   const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
     null
@@ -64,11 +58,20 @@ const GeoHeatMap = ({
   const [totalDeathsByCouncilArea, setTotalDeathsByCouncilArea] = useState(
     null
   );
+  const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
+    null
+  );
+  const [healthBoardBoundariesLayer, setHealthBoardBoundariesLayer] = useState(
+    null
+  );
 
-  const calculateRadius = (totalCases) => {
-    return Math.sqrt(totalCases) * 500;
-  };
+  const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
+  const [currentHeatLevels, setCurrentHeatLevels] = useState(null);
 
+  const mapRef = useRef();
+  const currentDatasetRef = useRef(null);
+
+  // Load and parse datasets (lazy initialisation)
   useEffect(() => {
     const totalCasesByHealthBoardCsv = "totalHealthBoardsCases.csv";
     const totalDeathsByCouncilAreaCsv = "annualCouncilAreasDeaths.csv";
@@ -116,60 +119,164 @@ const GeoHeatMap = ({
     totalDeathsByHealthBoard,
   ]);
 
-  const regionCircles = () => {
-    var dataset = null;
-    var locations = null;
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      locations = COUNCIL_AREA_LOCATIONS;
+  // Set current dataset and heatlevels
+  useEffect(() => {
+    const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
+    const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
 
-      if (VALUETYPE_DEATHS === valueType) {
-        dataset = totalDeathsByCouncilArea;
+    if (VALUETYPE_DEATHS === valueType) {
+      setCurrentHeatLevels(deathsHeatLevels);
+      if (AREATYPE_COUNCIL_AREAS === areaType) {
+        currentDatasetRef.current = totalDeathsByCouncilArea;
       } else {
-        // VALUETYPE_CASES === valueType
-        // No dataset here
+        // AREATYPE_HEALTH_BOARDS == areaType
+        currentDatasetRef.current = totalDeathsByHealthBoard;
       }
     } else {
-      // AREATYPE_HEALTH_BOARDS == areaType
-      locations = HEALTH_BOARD_LOCATIONS;
-
-      if (VALUETYPE_DEATHS === valueType) {
-        dataset = totalDeathsByHealthBoard;
+      setCurrentHeatLevels(casesHeatLevels);
+      if (AREATYPE_COUNCIL_AREAS === areaType) {
+        // No dataset available
+        currentDatasetRef.current = null;
       } else {
-        // VALUETYPE_CASES === valueType
-        dataset = totalCasesByHealthBoard;
+        // AREATYPE_HEALTH_BOARDS == areaType
+        currentDatasetRef.current = totalCasesByHealthBoard;
       }
     }
+  }, [
+    valueType,
+    areaType,
+    totalDeathsByHealthBoard,
+    totalCasesByHealthBoard,
+    totalDeathsByCouncilArea,
+  ]);
 
-    if (dataset === null || locations === null) {
-      return <></>;
+  // Setup map boundaries layer
+  useEffect(() => {
+    const INVISIBLE_LAYER_STYLE = {
+      opacity: 0,
+      fillOpacity: 0,
+    };
+
+    const handleRegionClick = (layer, latlng, regionName) => {
+      const map = mapRef.current.leafletElement;
+      const value = currentDatasetRef.current.get(regionName);
+      L.popup()
+        .setLatLng(latlng)
+        .setContent("<p>" + regionName + "<br />" + value + "</p>")
+        .openOn(map);
+    };
+
+    const handleCouncilAreasRegionClick = (e) => {
+      var layer = e.target;
+      handleRegionClick(layer, e.latlng, layer.feature.properties.NAME);
+    };
+
+    const handleHealthBoardsRegionClick = (e) => {
+      var layer = e.target;
+      handleRegionClick(layer, e.latlng, layer.feature.properties.HBName);
+    };
+
+    setCouncilAreaBoundariesLayer(
+      L.geoJSON(councilAreaBoundaries, {
+        style: INVISIBLE_LAYER_STYLE,
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            click: handleCouncilAreasRegionClick,
+          });
+        },
+      })
+    );
+    setHealthBoardBoundariesLayer(
+      L.geoJSON(healthBoardBoundaries, {
+        style: INVISIBLE_LAYER_STYLE,
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            click: handleHealthBoardsRegionClick,
+          });
+        },
+      })
+    );
+  }, []);
+
+  // Update active map boundaries layer
+  useEffect(() => {
+    if (mapRef.current && mapRef.current.leafletElement) {
+      const map = mapRef.current.leafletElement;
+      if (AREATYPE_COUNCIL_AREAS === areaType) {
+        if (healthBoardBoundariesLayer) {
+          healthBoardBoundariesLayer.removeFrom(map);
+        }
+        if (councilAreaBoundariesLayer) {
+          councilAreaBoundariesLayer.addTo(map);
+        }
+        setCurrentBoundariesLayer(councilAreaBoundariesLayer);
+      } else {
+        if (councilAreaBoundariesLayer) {
+          councilAreaBoundariesLayer.removeFrom(map);
+        }
+        if (healthBoardBoundariesLayer) {
+          healthBoardBoundariesLayer.addTo(map);
+        }
+        setCurrentBoundariesLayer(healthBoardBoundariesLayer);
+      }
+    }
+  }, [areaType, councilAreaBoundariesLayer, healthBoardBoundariesLayer]);
+
+  // Update counts to use to style map boundaries layer
+  useEffect(() => {
+      const heatcolours = [
+        "#e0e0e0",
+        "#fef0d9",
+        "#fdcc8a",
+        "#fc8d59",
+        "#e34a33",
+        "#b30000",
+      ];
+
+    function getHeatLevel(count) {
+      var i;
+      for (i = currentHeatLevels.length - 1; i >= 0; i--) {
+        if (currentHeatLevels[i] <= count) {
+          return i;
+        }
+      }
+      return 0;
     }
 
-    const popupUnit =
-      VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
+    function getRegionColour(count) {
+      return heatcolours[getHeatLevel(count)];
+    }
 
-    return locations.map(({ area, lat, lng }) => {
-      if (dataset.has(area)) {
-        const value = dataset.get(area);
-        const colour = value === 0 ? "green" : "red";
+    function getRegionStyle(regionName) {
+      const count = currentDatasetRef.current.get(regionName);
 
-        return (
-          <Circle
-            key={area}
-            center={[lat, lng]}
-            fillColor={colour}
-            color={colour}
-            fillOpacity={0.5}
-            radius={calculateRadius(value)}
-          >
-            <Popup key={area}>{area + " - " + popupUnit + ": " + value}</Popup>
-          </Circle>
-        );
-      } else {
-        console.error("Can't find " + area);
-        return <></>;
+      return {
+        color: getRegionColour(count),
+        opacity: 0.65,
+        fillOpacity: 0.5,
+        weight: 1,
+      };
+    }
+
+    // TODO update GEOJson metadata to make this unnecessary
+    function getRegionName(feature) {
+      if ("HBName" in feature.properties) {
+        return feature.properties.HBName;
       }
-    });
-  };
+      return feature.properties.NAME;
+    }
+
+    if (currentBoundariesLayer && currentDatasetRef.current) {
+      currentBoundariesLayer.setStyle((feature) =>
+        getRegionStyle(getRegionName(feature))
+      );
+    }
+  }, [
+    currentBoundariesLayer,
+    currentHeatLevels,
+    currentDatasetRef,
+  ]);
+
   /*    zoomDelta={false}
         doubleClickZoom={false}
         dragging={false}
@@ -178,88 +285,48 @@ const GeoHeatMap = ({
         scrollWheelZoom={false}
 */
 
+  // Create legend
+  useEffect(() => {
+    if (mapRef.current && mapRef.current.leafletElement) {
+      const map = mapRef.current.leafletElement;
+      var legend = L.control({ position: "bottomright" });
+      const heatcolours = [
+        "#e0e0e0",
+        "#fef0d9",
+        "#fdcc8a",
+        "#fc8d59",
+        "#e34a33",
+        "#b30000",
+      ];
+      legend.onAdd = function (map) {
+        var div = L.DomUtil.create("div", "info legend"),
+          grades = [0, 10, 20, 50, 100, 200],
+          labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+            '<i style="background:' +
+            heatcolours[i] +
+            '"></i> ' +
+            grades[i] +
+            (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+        }
+
+        return div;
+      };
+
+      legend.addTo(map);
+    }
+  }, []);
+
   const tilesStadiaAlidadeSmooth =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
 
-  const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
-  const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
-
-  function getHeatLevel(count) {
-    const heatLevels =
-      VALUETYPE_DEATHS === valueType ? deathsHeatLevels : casesHeatLevels;
-
-    var i;
-    for (i = heatLevels.length - 1; i >= 0; i--) {
-      if (heatLevels[i] <= count) {
-        return i;
-      }
-    }
-    return 0;
-  }
-
-  const heatcolours = [
-    "#e0e0e0",
-    "#fef0d9",
-    "#fdcc8a",
-    "#fc8d59",
-    "#e34a33",
-    "#b30000",
-  ];
-
-  function getDataset() {
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      if (VALUETYPE_DEATHS === valueType) {
-        return totalDeathsByCouncilArea;
-      }
-      // VALUETYPE_CASES === valueType
-      // No dataset here
-      throw new Error("Dataset not available");
-    }
-    if (VALUETYPE_DEATHS === valueType) {
-      return totalDeathsByHealthBoard;
-    }
-    // VALUETYPE_CASES === valueType
-    return totalCasesByHealthBoard;
-  }
-
-  function getRegionColour(regionName) {
-    console.log(regionName);
-    const dataset = getDataset();
-    if (!dataset) {
-      return "red";
-    }
-
-    const value = dataset.get(regionName);
-    return heatcolours[getHeatLevel(value)];
-  }
-
-  function getRegionName(feature) {
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      return feature.properties.NAME;
-    }
-    return feature.properties.HBName;
-  }
-
-  const INVISIBLE_LAYER_STYLE = {
-    opacity: 0,
-    fillOpacity: 0,
-  };
-
-  function getRegionStyle(feature, featureAreaType) {
-    if (areaType !== featureAreaType) {
-      return INVISIBLE_LAYER_STYLE;
-    }
-
-    return {
-      color: getRegionColour(getRegionName(feature)),
-      opacity: 0.65,
-      fillOpacity: 0.5,
-      weight: 1,
-    };
-  }
   return (
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
       <LeafletMap
+        ref={mapRef}
         center={[56.5814, -4.0545]}
         id="map"
         zoom={6.4}
@@ -270,24 +337,6 @@ const GeoHeatMap = ({
           url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
-
-        <GeoJSON
-          data={councilAreaBoundaries}
-          style={(feature) => getRegionStyle(feature, AREATYPE_COUNCIL_AREAS)}
-          onEachFeature={(feature, layer) => {
-            console.log("Binding popup");
-            layer.bindPopup("council area test");
-          }}
-        ></GeoJSON>
-        <GeoJSON
-          data={healthBoardBoundaries}
-          style={(feature) => getRegionStyle(feature, AREATYPE_HEALTH_BOARDS)}
-          onEachFeature={(feature, layer) => {
-            console.log("Binding popup");
-            layer.bindPopup("health board test");
-          }}
-        ></GeoJSON>
-
         <FullscreenControl
           toggleFullscreen={toggleFullscreen}
           fullscreenEnabled={fullscreenEnabled}
