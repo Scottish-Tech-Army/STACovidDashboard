@@ -25,8 +25,9 @@ library(shinycssloaders)
 management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/dailyHealthBoardsCasesAndPatients.csv")) %>% 
   mutate(
     value = str_replace_all(value, "\\*", "0"),
-    value = as.numeric(value),
-    date = lubridate::as_date(date)
+    value = as.numeric(value)
+    # ,
+    # date = lubridate::as_date(date)
   )
 
 
