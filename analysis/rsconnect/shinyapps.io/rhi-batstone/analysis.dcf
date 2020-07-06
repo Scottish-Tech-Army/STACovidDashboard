@@ -1,0 +1,10 @@
+name: analysis
+title:
+username:
+account: rhi-batstone
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2541213
+bundleId: 3358499
+url: https://rhi-batstone.shinyapps.io/analysis/
+when: 1594050957.68492
