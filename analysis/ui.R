@@ -6,10 +6,7 @@ ui <- fluidPage(
   navbarPage(
     # Page title
     # Displayed to the left of the navigation bar
-    title = div(img(
-      src = "tt_sq.png",
-      height = "40px"
-    ),
+    title = div(
     HTML(paste0(
       "<a href=", shQuote(paste0("https://www.scottishtecharmy.org/")),
       target = "_blank", ">",
@@ -160,11 +157,11 @@ ui <- fluidPage(
     tabPanel(
       title = "About Us",
 
-      # App title
-      titlePanel(div(img(
-        src = "tt_text.jpg",
-        width = "100%"
-      ))),
+      # # App title
+      # titlePanel(div(img(
+      #   src = "sta.png",
+      #   width = "100%"
+      # ))),
 
 
       fluidRow(
