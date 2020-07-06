@@ -13,27 +13,51 @@ library(leaflet)
 library(shiny)
 library(shinydashboard)
 library(shinythemes)
-library(rmapshaper)
 library(plotly)
 library(shinycssloaders)
 
 
-##################################################################
-##                        Data Wrangling                        ##
-##################################################################
 
-management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/dailyHealthBoardsCasesAndPatients.csv")) %>% 
-  mutate(
-    value = str_replace_all(value, "\\*", "0"),
-    value = as.numeric(value)
-  )
+local_authorities <- c("Aberdeen City", 
+                          "Glasgow City", 
+                          "Aberdeenshire", 
+                          "West Lothian",
+                          "Angus",
+                          "Argyll and Bute",
+                          "Clackmannanshire",
+                          "Dumfries and Galloway",
+                          "Dundee City",
+                          "Stirling",
+                          "South Lanarkshire",
+                          "Perth and Kinross",
+                          "East Ayrshire",
+                          "East Dunbartonshire",
+                          "East Lothian",
+                          "West Dunbartonshire",
+                          "East Renfrewshire",
+                          "City of Edinburgh",
+                          "North Lanarkshire",
+                          "Na h-Eileanan Siar",
+                          "Falkirk",
+                          "Fife",
+                          "Highland",
+                          "Inverclyde",
+                          "Midlothian",
+                          "Moray",
+                          "North Ayrshire",
+                          "Orkney Islands",
+                          "Renfrewshire",
+                          "Scottish Borders",
+                          "Shetland Islands",      
+                          "South Ayrshire")
 
 
-#shape file and reducing the polygons to increase render speed
-#scotland <- st_read("clean_data/scotland.shp", quiet = TRUE) %>%
-  #ms_simplify(keep = 0.025)
+
+# Health board shape file 
+scotland <- st_read("clean_data/scotland.shp", quiet = TRUE)
 
 
+# Intermediate shapefile
 
-
+### When available 
 

@@ -1,38 +1,49 @@
 
-##################################################################
-##                            Global                            ##
-##################################################################
-
-cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
-
-
-scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
-
-local_authorities <- unique(scotland_covid$local_authority) %>% 
-  sort()
-
-
-#shape file and reducing the polygons to increase render speed
-scotland <- st_read("clean_data/scotland.shp", quiet = TRUE)
-
-##################################################################
-##                          Server                              ##
-##################################################################
-
-
-
 server <- function(input, output, session) {
  
   
   # Create reactive dataset
   management_reactive <- reactive({
-    
-      management %>%
-        filter(variable == input$data) %>%
-        filter(date == input$date)
-    
+    read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/dailyHealthBoardsCasesAndPatients.csv")) %>% 
+      mutate(
+        value = str_replace_all(value, "\\*", "0"),
+        value = as.numeric(value),
+        date = as.Date(date))
   })
-
+  
+  observe({
+    updateSliderInput(
+      session,
+      inputId = "date",
+      min = min(management_reactive()$date),
+      max = max(management_reactive()$date),
+      value = max(management_reactive()$date)
+    )
+  })
+  
+  management_leaflet_reactive <- reactive({
+    management_reactive() %>% 
+      filter(variable == input$data,
+             date == input$date)
+  })
+  
+  management_plotly_reactive <- reactive({
+    management_reactive() %>% 
+      filter(variable == input$data,
+             date <= input$date)
+  })
+  
+  scotland_covid_reactive <- reactive({
+    read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv")) 
+  })
+  
+  
+ 
+  
+  cardio_prescriptions_reactive <- reactive({
+  read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv")) %>% 
+      filter(area_name %in% input$local_auth)
+  })
   ## ----------------------------------------------------------------
   ##                         Leaflet Plot                         --
   ## ----------------------------------------------------------------
@@ -41,7 +52,7 @@ server <- function(input, output, session) {
 
     # Join counts onto bondary geographical shape data
     scotland_count <- scotland %>%
-      left_join(management_reactive(), by = c("HBName" = "areaname"))
+      left_join(management_leaflet_reactive(), by = c("HBName" = "areaname"))
 
     # creates bins and palette for leaflet plot
     #bins <- seq(0, max(management_reactive()$total), length.out = 6)
@@ -99,9 +110,7 @@ server <- function(input, output, session) {
   output$eg_plot <- renderPlotly({
     
     
-    ggplotly(management %>%
-      filter(variable == input$data) %>%
-      filter(date <= input$date) %>%
+    ggplotly(management_plotly_reactive() %>%
       ggplot(aes(x = date, y = value, col = areaname
                  )) +
       geom_line() +
@@ -128,17 +137,17 @@ server <- function(input, output, session) {
     # this needs to be reactive i think
     labels2 <- labels <- sprintf(
       "<strong>%s</strong><br/>%g",
-      scotland_covid$Name,
-      scotland_covid$number_of_deaths
+      scotland_covid_reactive()$Name,
+      scotland_covid_reactive()$number_of_deaths
     ) %>% lapply(htmltools::HTML)
     
-    bins = c(0, 10, 20, max(scotland_covid$number_of_deaths))
+    bins = c(0, 10, 20, max(scotland_covid_reactive()$number_of_deaths))
     
     pal2 <- colorBin(c("#f1ed0e", "orange", "#FF0000"), 
-                  domain = scotland_covid$number_of_deaths, 
+                  domain = scotland_covid_reactive()$number_of_deaths, 
                   bin = bins)
   
-  scotland_covid %>%
+  scotland_covid_reactive() %>%
     filter(local_authority %in% input$local_auth) %>% 
     leaflet() %>%
     addProviderTiles(
@@ -168,8 +177,7 @@ server <- function(input, output, session) {
   output$prescriptions <- renderPlot({
     
    
-  cardio_prescriptions %>% 
-    filter(area_name %in% input$local_auth) %>% 
+    cardio_prescriptions_reactive() %>% 
     group_by(week_ending) %>%
     mutate(avg = mean(variation)) %>% 
     ggplot(aes(x = week_ending, y = avg)) +

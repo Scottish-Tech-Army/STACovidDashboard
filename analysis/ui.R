@@ -1,23 +1,4 @@
 
-##################################################################
-##                            Global                            ##
-##################################################################
-
-cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
-
-scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
-
-local_authorities <- unique(scotland_covid$local_authority) %>% 
-  sort()
-
-
-
-##################################################################
-##                              ui                              ##
-##################################################################
-
-
-
 ui <- fluidPage(
   theme = shinytheme("flatly"),
 
@@ -41,7 +22,12 @@ ui <- fluidPage(
 
     windowTitle = "Tidyverse Troopers",
 
-
+    
+    #################################################################
+    ##                        Health Boards                        ##
+    #################################################################
+    
+    
     # Contains the MVP and a broad overview of the data
     tabPanel(
       title = "Health Boards",
@@ -61,9 +47,9 @@ ui <- fluidPage(
           sliderInput(
             "date",
             "Date:",
-            min = min(management$date),
-            max = max(management$date),
-            value = max(management$date)
+            min = as.Date("2020-03-07"),
+            max = as.Date("2020-06-05"),
+            value = as.Date("2020-06-05")
           )
         ),
 
@@ -109,6 +95,13 @@ ui <- fluidPage(
     
   ),
 
+  
+  #################################################################
+  ##                      Local Authorities                      ##
+  #################################################################
+  
+  
+  
     tabPanel(
       title = "Local Authorities",
 
@@ -160,6 +153,13 @@ ui <- fluidPage(
         ) # main panel
       )# sidebar
     ), # close local authorities
+  
+  
+  ##################################################################
+  ##                         About us tab                         ##
+  ##################################################################
+  
+  
     tabPanel(
       title = "About Us",
 
