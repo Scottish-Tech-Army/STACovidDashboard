@@ -1,3 +1,15 @@
 .route-map-rules {
   border: 2px solid #2A84BB;
+  font-size: 14px;
+}
+
+.headline {
+  display: block;
+}
+
+svg.fa-circle {
+  display: block;
+  margin: 20px auto;
+  float: none;
+  position: relative;
 }

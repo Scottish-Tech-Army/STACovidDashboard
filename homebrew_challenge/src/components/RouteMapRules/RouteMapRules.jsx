@@ -24,7 +24,7 @@ const RouteMapRules = () => {
     <Container fluid className="route-map-rules">
     <Row>
       <Col md="1" className="dropdown-col">
-      <DropdownButton id="dropdown-basic-button" title={phase}>
+      <DropdownButton id="dropdown-basic" size="sm" title={phase}>
         <Dropdown.Item onSelect={selectPhase} eventKey="Lockdown">Lockdown</Dropdown.Item>
         <Dropdown.Item onSelect={selectPhase}  eventKey="Phase 1">Phase 1</Dropdown.Item>
         <Dropdown.Item onSelect={selectPhase}  eventKey="Phase 2">Phase 2</Dropdown.Item>
@@ -34,63 +34,60 @@ const RouteMapRules = () => {
       </Col>
       <Col>
         <Row md="11">
-          <Col className="category-col">
-          <span className="intro-text">
+          <Col>
+          <span className="headline">
             Scotland moved to Phase 2 of the routemap on 19 June 2020.
           </span>
           </Col>
-          <Col className="category-col">
+          <Col>
             <FontAwesomeIcon
               icon={faCircle}
-              size="3x"
+              size="4x"
               color="#319bd5"
               aria-hidden="true"
             />
-          <span>
-            Maintain social distancing, keeping 2m from people not in your household.
-          </span>
+            <span className="headline">
+              Maintain social distancing, keeping 2m from people not in your household.
+            </span>
           </Col>
-          <Col className="category-col">
+          <Col>
             <FontAwesomeIcon
-              className="category-icon"
               icon={faCircle}
-              size="3x"
+              size="4x"
               color="#319bd5"
               aria-hidden="true"
             />
-            <span>
+            <span className="headline">
               You can meet up with people from another two households outside.
             </span>
           </Col>
-          <Col className="category-col">
+          <Col>
             <FontAwesomeIcon
-              className="category-icon"
               icon={faCircle}
-              size="3x"
+              size="4x"
               color="#319bd5"
               aria-hidden="true"
             />
-            <span>
+            <span className="headline">
               You must wear a face covering when using Public Transport or in Shops.
             </span>
           </Col>
-          <Col className="category-col">
+          <Col>
             <FontAwesomeIcon
-              className="category-icon"
               icon={faCircle}
-              size="3x"
+              size="4x"
               color="#319bd5"
               aria-hidden="true"
             />
-            <span>
+            <span className="headline">
               Non Essential retail can open with safeguards in place.
             </span>
           </Col>
-          <Col className="category-col">
-            <span>
+          <Col>
+            <span className="headline">
               For more information on Phase 2 guidelines view the latest Scottish Government guidance.
             </span>
-            <span>
+            <span className="headline">
               More Info
             </span>
           </Col>
