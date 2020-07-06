@@ -4,7 +4,7 @@
 ##################################################################
 
 cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
-management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
+
 
 scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
 
@@ -31,7 +31,7 @@ server <- function(input, output, session) {
     
       management %>%
         filter(variable == input$data) %>%
-        filter(date_code == input$date)
+        filter(date == input$date)
     
   })
 
@@ -43,7 +43,7 @@ server <- function(input, output, session) {
 
     # Join counts onto bondary geographical shape data
     scotland_count <- scotland %>%
-      left_join(management_reactive(), by = c("HBName" = "official_name"))
+      left_join(management_reactive(), by = c("HBName" = "areaname"))
 
     # creates bins and palette for leaflet plot
     #bins <- seq(0, max(management_reactive()$total), length.out = 6)
@@ -103,8 +103,8 @@ server <- function(input, output, session) {
     
     ggplotly(management %>%
       filter(variable == input$data) %>%
-      filter(date_code <= input$date) %>%
-      ggplot(aes(x = date_code, y = value, col = official_name
+      filter(date <= input$date) %>%
+      ggplot(aes(x = date, y = value, col = areaname
                  )) +
       geom_line() +
       scale_fill_viridis_b() +

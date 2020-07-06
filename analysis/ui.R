@@ -4,7 +4,7 @@
 ##################################################################
 
 cardio_prescriptions <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv"))
-management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/management_clean.csv"))
+
 scotland_covid <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
 
 local_authorities <- unique(scotland_covid$local_authority) %>% 
@@ -61,9 +61,9 @@ ui <- fluidPage(
           sliderInput(
             "date",
             "Date:",
-            min = min(management$date_code),
-            max = max(management$date_code),
-            value = max(management$date_code)
+            min = min(management$date),
+            max = max(management$date),
+            value = max(management$date)
           )
         ),
 
@@ -73,12 +73,12 @@ ui <- fluidPage(
             "data",
             label = "Data type:",
             choices = list(
-              "COVID-19 positive cases" = "Testing - Cumulative people tested for COVID-19 - Positive",
-              "COVID-19 patients in ICU - Total",
-              "COVID-19 patients in hospital - Suspected",
-              "COVID-19 patients in hospital - Confirmed"
+              "COVID-19 Positive cases" = "cumulativeTestedPositive",
+              "COVID-19 Patients in ICU" = "ICUCasesTotal",
+              "COVID-19 Patients in hospital - Suspected" = "hospitalCasesSuspected",
+              "COVID-19 Patients in hospital - Confirmed" = "hospitalCasesConfirmed"
             ),
-            selected = "Testing - Cumulative people tested for COVID-19 - Positive"
+            selected = "cumulativeTestedPositive"
           ),
         ),
         column(

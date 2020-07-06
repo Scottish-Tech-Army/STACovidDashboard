@@ -17,10 +17,17 @@ library(rmapshaper)
 library(plotly)
 library(shinycssloaders)
 
+
 ##################################################################
 ##                        Data Wrangling                        ##
 ##################################################################
 
+management <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/dailyHealthBoardsCasesAndPatients.csv")) %>% 
+  mutate(
+    value = str_replace_all(value, "\\*", "0"),
+    value = as.numeric(value),
+    date = lubridate::as_date(date)
+  )
 
 
 #shape file and reducing the polygons to increase render speed
