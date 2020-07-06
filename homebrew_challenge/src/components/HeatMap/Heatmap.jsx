@@ -215,7 +215,7 @@ function Heatmap({
       return format(date, "dd MMM yyyy");
 
     }
-
+    const dataset = getDataSet();
     const dates = dataset["dates"];
     let startDate = Date.parse(dates[0]);
     let endDate = Date.parse(dates[dates.length - 1]);
@@ -272,8 +272,6 @@ function Heatmap({
       </div>
     );
   }
-
-  const dataset = getDataSet();
 
   return (
     <div className="heatmap">
