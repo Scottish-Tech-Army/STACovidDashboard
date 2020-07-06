@@ -9,15 +9,15 @@
   text-align: center;
   overflow-y: auto;
 }
+
 .heatmap table th {
   vertical-align: middle;
-}
-.heatmap table th {
   position: sticky;
   top: 0;
   z-index: 2;
   background-color: white;
 }
+
 .heatmap table td:first-child,
 .heatmap table th:first-child {
   text-align: left;
@@ -76,4 +76,9 @@ tr.area td.heatbarCell {
 tr.area td {
   border: 0;
   padding: 0;
+}
+
+.heatmap td.flex-container {
+  display: flex;
+  justify-content: space-between;
 }

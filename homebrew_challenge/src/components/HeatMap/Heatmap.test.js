@@ -82,10 +82,11 @@ it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
   );
 
   const dataRows = rows();
-  expect(dataRows).toHaveLength(3);
-  checkRow(dataRows[0], "Aberdeen City", "15", [1, 0, 1, 3]);
-  checkRow(dataRows[1], "Glasgow City", "151", [1, 2, 3, 3]);
-  checkRow(dataRows[2], "Orkney Islands", "2", [0, 0, 0, 1]);
+  expect(dataRows).toHaveLength(4);
+  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020")
+  checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
+  checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
+  checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
 });
 
 it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
@@ -103,10 +104,11 @@ it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
   );
 
   const dataRows = rows();
-  expect(dataRows).toHaveLength(3);
-  checkRow(dataRows[0], "Aberdeen City", "15", [1, 0, 1, 3]);
-  checkRow(dataRows[1], "Glasgow City", "151", [1, 2, 3, 3]);
-  checkRow(dataRows[2], "Orkney Islands", "2", [0, 0, 0, 1]);
+  expect(dataRows).toHaveLength(4);
+  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020")
+  checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
+  checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
+  checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
 });
 
 it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
@@ -124,10 +126,11 @@ it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
   );
 
   const dataRows = rows();
-  expect(dataRows).toHaveLength(3);
-  checkRow(dataRows[0], "Grampian", "-8", [1, 0, 3, 0]);
-  checkRow(dataRows[1], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
-  checkRow(dataRows[2], "Highland", "300", [1, 0, 5, 3]);
+  expect(dataRows).toHaveLength(4);
+  checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020")
+  checkRow(dataRows[1], "Grampian", "-8", [1, 0, 3, 0]);
+  checkRow(dataRows[2], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
+  checkRow(dataRows[3], "Highland", "300", [1, 0, 5, 3]);
 });
 
 const table = () => container.querySelector(".heatmap table");
@@ -137,10 +140,10 @@ const rows = () => table().querySelectorAll("tbody tr");
 it("parseCsvData", () => {
   const expectedResult = {
     dates: [
-      "w/c 2020-03-16",
-      "w/c 2020-03-23",
-      "w/c 2020-03-30",
-      "w/c 2020-04-06",
+      "2020-03-16",
+      "2020-03-23",
+      "2020-03-30",
+      "2020-04-06",
     ],
     regions: [
       {
@@ -196,6 +199,14 @@ function checkHeaderRow(row, areaName, areaCount, heatLevels) {
   expect(headers[0].textContent).toEqual(areaName);
   expect(headers[1].textContent).toEqual(areaCount);
   expect(headers[2].textContent).toEqual(heatLevels);
+}
+
+function checkDateRangeRow(row, dateRange) {
+  const cells = row.querySelectorAll("td");
+  expect(cells).toHaveLength(3);
+  expect(cells[0].textContent).toEqual("");
+  expect(cells[1].textContent).toEqual("");
+  expect(cells[2].textContent).toEqual(dateRange);
 }
 
 function checkRow(row, areaName, areaCount, heatLevels) {
