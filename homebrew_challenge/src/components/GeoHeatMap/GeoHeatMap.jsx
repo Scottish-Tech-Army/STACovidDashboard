@@ -50,7 +50,6 @@ const GeoHeatMap = ({
   toggleFullscreen,
   fullscreenEnabled = false,
 }) => {
-
   const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
   const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
     null
@@ -66,10 +65,25 @@ const GeoHeatMap = ({
   );
 
   const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
-  const [currentHeatLevels, setCurrentHeatLevels] = useState(null);
+  const [currentHeatLevels, _setCurrentHeatLevels] = useState(null);
+  const [currentDataset, _setCurrentDataset] = useState(null);
 
   const mapRef = useRef();
+  const legendRef = useRef(null);
   const currentDatasetRef = useRef(null);
+  const currentHeatLevelsRef = useRef(null);
+
+  // Need both state and ref
+  function setCurrentHeatLevels(value) {
+    currentHeatLevelsRef.current = value;
+    _setCurrentHeatLevels(value);
+  }
+
+  // Need both state and ref
+  function setCurrentDataset(value) {
+    currentDatasetRef.current = value;
+    _setCurrentDataset(value);
+  }
 
   // Load and parse datasets (lazy initialisation)
   useEffect(() => {
@@ -127,19 +141,19 @@ const GeoHeatMap = ({
     if (VALUETYPE_DEATHS === valueType) {
       setCurrentHeatLevels(deathsHeatLevels);
       if (AREATYPE_COUNCIL_AREAS === areaType) {
-        currentDatasetRef.current = totalDeathsByCouncilArea;
+        setCurrentDataset(totalDeathsByCouncilArea);
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        currentDatasetRef.current = totalDeathsByHealthBoard;
+        setCurrentDataset(totalDeathsByHealthBoard);
       }
     } else {
       setCurrentHeatLevels(casesHeatLevels);
       if (AREATYPE_COUNCIL_AREAS === areaType) {
         // No dataset available
-        currentDatasetRef.current = null;
+        setCurrentDataset(null);
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
-        currentDatasetRef.current = totalCasesByHealthBoard;
+        setCurrentDataset(totalCasesByHealthBoard);
       }
     }
   }, [
@@ -224,19 +238,20 @@ const GeoHeatMap = ({
 
   // Update counts to use to style map boundaries layer
   useEffect(() => {
-      const heatcolours = [
-        "#e0e0e0",
-        "#fef0d9",
-        "#fdcc8a",
-        "#fc8d59",
-        "#e34a33",
-        "#b30000",
-      ];
+    const heatcolours = [
+      "#e0e0e0",
+      "#fef0d9",
+      "#fdcc8a",
+      "#fc8d59",
+      "#e34a33",
+      "#b30000",
+    ];
 
     function getHeatLevel(count) {
+      const heatLevels = currentHeatLevels;
       var i;
-      for (i = currentHeatLevels.length - 1; i >= 0; i--) {
-        if (currentHeatLevels[i] <= count) {
+      for (i = heatLevels.length - 1; i >= 0; i--) {
+        if (heatLevels[i] <= count) {
           return i;
         }
       }
@@ -248,7 +263,7 @@ const GeoHeatMap = ({
     }
 
     function getRegionStyle(regionName) {
-      const count = currentDatasetRef.current.get(regionName);
+      const count = currentDataset.get(regionName);
 
       return {
         color: getRegionColour(count),
@@ -266,16 +281,12 @@ const GeoHeatMap = ({
       return feature.properties.NAME;
     }
 
-    if (currentBoundariesLayer && currentDatasetRef.current) {
+    if (currentBoundariesLayer && currentDataset) {
       currentBoundariesLayer.setStyle((feature) =>
         getRegionStyle(getRegionName(feature))
       );
     }
-  }, [
-    currentBoundariesLayer,
-    currentHeatLevels,
-    currentDatasetRef,
-  ]);
+  }, [currentBoundariesLayer, currentHeatLevels, currentDataset]);
 
   /*    zoomDelta={false}
         doubleClickZoom={false}
@@ -289,36 +300,38 @@ const GeoHeatMap = ({
   useEffect(() => {
     if (mapRef.current && mapRef.current.leafletElement) {
       const map = mapRef.current.leafletElement;
-      var legend = L.control({ position: "bottomright" });
-      const heatcolours = [
-        "#e0e0e0",
-        "#fef0d9",
-        "#fdcc8a",
-        "#fc8d59",
-        "#e34a33",
-        "#b30000",
-      ];
-      legend.onAdd = function (map) {
-        var div = L.DomUtil.create("div", "info legend"),
-          grades = [0, 10, 20, 50, 100, 200],
-          labels = [];
+      if (!legendRef.current) {
+        legendRef.current = L.control({ position: "bottomright" });
+        const heatcolours = [
+          "#e0e0e0",
+          "#fef0d9",
+          "#fdcc8a",
+          "#fc8d59",
+          "#e34a33",
+          "#b30000",
+        ];
+        legendRef.current.onAdd = function (map) {
+          const div = L.DomUtil.create("div", "info legend");
+          const grades = currentHeatLevelsRef.current;
 
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-          div.innerHTML +=
-            '<i style="background:' +
-            heatcolours[i] +
-            '"></i> ' +
-            grades[i] +
-            (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
-        }
+          // loop through our density intervals and generate a label with a colored square for each interval
+          for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+              '<i style="background:' +
+              heatcolours[i] +
+              '"></i> ' +
+              grades[i] +
+              (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+          }
 
-        return div;
-      };
-
-      legend.addTo(map);
+          return div;
+        };
+      } else {
+        legendRef.current.remove();
+      }
+      legendRef.current.addTo(map);
     }
-  }, []);
+  }, [currentHeatLevels]);
 
   const tilesStadiaAlidadeSmooth =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
