@@ -200,8 +200,8 @@ server <- function(input, output, session) {
   observe({
     updateCheckboxGroupInput(
       session, "local_auth",
-      choices = local_authorities,
-      selected = if (input$bar) local_authorities
+      choices = unique(scotland_covid_reactive()$local_authority),
+      selected = if (input$bar) unique(scotland_covid_reactive()$local_authority)
     )
   })
 
