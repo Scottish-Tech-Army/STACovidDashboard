@@ -128,7 +128,7 @@ ui <- fluidPage(
               "Deaths",
               h4("Total COVID-19 related deaths March-May"),
               # column(6,
-              leafletOutput("scot_covid_plot", width = 400, height = 700)
+              leafletOutput("scot_covid_plot", width = 500, height = 700)
               %>% withSpinner(color = "#0dc5c1"),
               tags$a(href = "https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/vital-events/general-publications/weekly-and-monthly-data-on-births-and-deaths/deaths-involving-coronavirus-covid-19-in-scotland/archive", target = "_blank", "Data Source"),
               br(),
