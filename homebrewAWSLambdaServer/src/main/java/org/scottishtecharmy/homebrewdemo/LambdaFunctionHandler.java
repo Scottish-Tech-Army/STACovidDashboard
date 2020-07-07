@@ -10,7 +10,9 @@ import java.util.Date;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -66,6 +68,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                     OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_COUNCIL_AREAS_DEATHS.replace(LAST_2_YEARS, last2Years),
                     OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS, context);
+            
+            storeRssNewsFeed(context);
+            
             context.getLogger().log("end");
         }
         catch (SdkClientException | IOException e) {
@@ -76,6 +81,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
         return "Success";
     }
+    
+    private static final String RSS_NEWS_FEED_URL = "https://news.gov.scot/feed/rss";
 
     // Replaced in unit tests
     CloseableHttpClient createHttpClient() {
@@ -91,10 +98,18 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         HttpEntity multipart = builder.build();
         httpPost.setEntity(multipart);
 
+        getAndStoreObject(context, httpPost, targetObjectKeyName);
+    }
+
+    private void storeRssNewsFeed(Context context) throws UnsupportedOperationException, IOException {
+        getAndStoreObject(context, new HttpGet(RSS_NEWS_FEED_URL), OBJECTKEY_RSS_NEWS_FEED);
+    }
+
+    private void getAndStoreObject(Context context, HttpUriRequest request, String targetObjectKeyName) throws UnsupportedOperationException, IOException {
         context.getLogger().log("Call request\n");
 
         CloseableHttpClient client = createHttpClient();
-        try (CloseableHttpResponse response = client.execute(httpPost)) {
+        try (CloseableHttpResponse response = client.execute(request)) {
             context.getLogger().log("Response received\n");
 
             // Pipe straight to S3
@@ -114,7 +129,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         }
 
         context.getLogger().log("Response stored in S3 at " + targetObjectKeyName + "\n");
+
     }
+
 
     // Last 2 years
     private static String getYearsDateValueClause() {
@@ -156,6 +173,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "dailyHealthBoardsCases.csv";
     private static final String OBJECTKEY_TOTAL_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "totalHealthBoardsCases.csv";
     private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS = OBJECT_FOLDER + "analysis/dailyHealthBoardsCasesAndPatients.csv";
+    
+    private static final String OBJECTKEY_RSS_NEWS_FEED = OBJECT_FOLDER + "newsScotGovRss.xml";
+
     
     // // Last 4 days
     // + "( <http://reference.data.gov.uk/id/day/2020-07-01> \"2020-07-01\" )"
