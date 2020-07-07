@@ -1,6 +1,6 @@
 ## code for deploying to shiny.io
 # library(rsconnect)
-# ddeeployApp("covid19_scot_map/")
+# deployApp()
 
 #################################################################
 ##                          Libraries                          ##
