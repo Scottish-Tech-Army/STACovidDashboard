@@ -114,7 +114,7 @@ const App = () => {
               <InfoBar/>
             </Col>
           </Row>
-          <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
+          <Row className="pt-3 d-sm-flex justify-content-center align-items-center">
             <Col>
               <RouteMapRules />
             </Col>
