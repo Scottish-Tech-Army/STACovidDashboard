@@ -11,7 +11,6 @@ library(tidyverse)
 library(sf)
 library(leaflet)
 library(shiny)
-#library(shinydashboard)
 library(shinythemes)
 library(plotly)
 library(shinycssloaders)
@@ -23,6 +22,6 @@ scotland <- st_read("clean_data/scotland.shp", quiet = TRUE)
 
 
 # Intermediate shapefile
+scotland_deaths <- read_rds("clean_data/scotland_deaths.rds")
 
-### When available 
 

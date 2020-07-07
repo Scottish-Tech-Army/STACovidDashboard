@@ -141,44 +141,75 @@ server <- function(input, output, session) {
 
   output$scot_covid_plot <- renderLeaflet({
 
-
-    # this needs to be reactive i think
-    labels2 <- labels <- sprintf(
+    
+    pal2 <- colorBin("Blues", domain = scotland_deaths$rate_per_100_000_population, bins = 8)
+    
+    # creates hover over labels
+    labels <- sprintf(
       "<strong>%s</strong><br/>%g",
-      scotland_covid_reactive()$Name,
-      scotland_covid_reactive()$number_of_deaths
+      scotland_deaths$Name,
+      scotland_deaths$rate_per_100_000_population
     ) %>% lapply(htmltools::HTML)
-
-    bins <- c(0, 10, 20, max(scotland_covid_reactive()$number_of_deaths))
-
-    pal2 <- colorBin(c("#f1ed0e", "orange", "#FF0000"),
-      domain = scotland_covid_reactive()$number_of_deaths,
-      bin = bins
-    )
-
-    scotland_covid_reactive() %>%
-      filter(local_authority %in% input$local_auth) %>%
-      leaflet() %>%
-      addProviderTiles(
-        providers$CartoDB.Positron
-      ) %>%
-      addCircleMarkers(
-        lng = ~long,
-        lat = ~lat,
-        fillOpacity = 0.5,
-        stroke = F,
-        radius = ~ population_2018_based / 1000,
-        color = ~ pal2(number_of_deaths),
-        popup = ~labels2
-      ) %>%
-      addLegend(
-        pal = pal2,
-        values = ~number_of_deaths,
-        opacity = 0.7,
-        title = "Number of deaths",
-        position = "topleft"
-      )
+    
+    scotland_deaths %>% 
+    filter(local_authority %in% input$local_auth) %>%
+    leaflet() %>%
+      addPolygons(color = "#515151", weight = 1, smoothFactor = 0.5,
+                  opacity = 0.5, fillOpacity = 0.5,
+                  fillColor = ~ pal2(rate_per_100_000_population),
+                  highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                      bringToFront = TRUE),
+                  label = labels,
+                  labelOptions = labelOptions(
+                    style = list("font-weight" = "normal",
+                                 padding = "3px 8px"),
+                    textsize = "15px",
+                    direction = "auto")) %>%
+      addLegend(pal = pal2,
+                values = ~rate_per_100_000_population,
+                opacity = 0.7,
+                title = "# deaths",
+                position = "topleft")
+    
   })
+    
+  #   # this needs to be reactive i think
+  #   labels2 <- labels <- sprintf(
+  #     "<strong>%s</strong><br/>%g",
+  #     scotland_covid_reactive()$Name,
+  #     scotland_covid_reactive()$number_of_deaths
+  #   ) %>% lapply(htmltools::HTML)
+  # 
+  #   bins <- c(0, 10, 20, max(scotland_covid_reactive()$number_of_deaths))
+  # 
+  #   pal2 <- colorBin(c("#f1ed0e", "orange", "#FF0000"),
+  #     domain = scotland_covid_reactive()$number_of_deaths,
+  #     bin = bins
+  #   )
+  # 
+  #   scotland_covid_reactive() %>%
+  #     filter(local_authority %in% input$local_auth) %>%
+  #     leaflet() %>%
+  #     addProviderTiles(
+  #       providers$CartoDB.Positron
+  #     ) %>%
+  #     addCircleMarkers(
+  #       lng = ~long,
+  #       lat = ~lat,
+  #       fillOpacity = 0.5,
+  #       stroke = F,
+  #       radius = ~ population_2018_based / 1000,
+  #       color = ~ pal2(number_of_deaths),
+  #       popup = ~labels2
+  #     ) %>%
+  #     addLegend(
+  #       pal = pal2,
+  #       values = ~number_of_deaths,
+  #       opacity = 0.7,
+  #       title = "Number of deaths",
+  #       position = "topleft"
+  #     )
+  # })
 
   ##################################################################
   ##                  plot for prescription meds                  ##
