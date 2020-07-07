@@ -190,11 +190,17 @@ const GeoHeatMap = ({
       fillOpacity: 0,
     };
 
-    const handleRegionClick = (layer, latlng, regionName) => {
+    const handleRegionClick = (e) => {
       const map = mapRef.current.leafletElement;
-      const value = currentDatasetRef.current.get(regionName);
+      const layer = e.target;
+      const regionName = layer.feature.properties.RegionName;
+      var value = currentDatasetRef.current.get(regionName);
+      if (value === undefined) {
+          value = 0;
+      }
+
       L.popup()
-        .setLatLng(latlng)
+        .setLatLng(e.latlng)
         .setContent(
           "<p class='region-popup'><strong>" +
             regionName +
@@ -205,35 +211,20 @@ const GeoHeatMap = ({
         .openOn(map);
     };
 
-    const handleCouncilAreasRegionClick = (e) => {
-      var layer = e.target;
-      handleRegionClick(layer, e.latlng, layer.feature.properties.NAME);
-    };
-
-    const handleHealthBoardsRegionClick = (e) => {
-      var layer = e.target;
-      handleRegionClick(layer, e.latlng, layer.feature.properties.HBName);
+    const regionLayerOptions = {
+      style: INVISIBLE_LAYER_STYLE,
+      onEachFeature: (feature, layer) => {
+        layer.on({
+          click: handleRegionClick,
+        });
+      },
     };
 
     setCouncilAreaBoundariesLayer(
-      L.geoJSON(councilAreaBoundaries, {
-        style: INVISIBLE_LAYER_STYLE,
-        onEachFeature: (feature, layer) => {
-          layer.on({
-            click: handleCouncilAreasRegionClick,
-          });
-        },
-      })
+      L.geoJSON(councilAreaBoundaries, regionLayerOptions)
     );
     setHealthBoardBoundariesLayer(
-      L.geoJSON(healthBoardBoundaries, {
-        style: INVISIBLE_LAYER_STYLE,
-        onEachFeature: (feature, layer) => {
-          layer.on({
-            click: handleHealthBoardsRegionClick,
-          });
-        },
-      })
+      L.geoJSON(healthBoardBoundaries, regionLayerOptions)
     );
   }, []);
 
@@ -279,7 +270,10 @@ const GeoHeatMap = ({
     }
 
     function getRegionStyle(regionName) {
-      const count = currentDataset.get(regionName);
+      var count = currentDataset.get(regionName);
+      if (count === undefined) {
+          count = 0;
+      }
 
       return {
         color: getRegionColour(count),
@@ -289,21 +283,13 @@ const GeoHeatMap = ({
       };
     }
 
-    // TODO update GEOJson metadata to make this unnecessary
-    function getRegionName(feature) {
-      if ("HBName" in feature.properties) {
-        return feature.properties.HBName;
-      }
-      return feature.properties.NAME;
-    }
-
     if (mapRef.current && mapRef.current.leafletElement) {
       mapRef.current.leafletElement.closePopup();
     }
 
     if (currentBoundariesLayer && currentDataset) {
       currentBoundariesLayer.setStyle((feature) =>
-        getRegionStyle(getRegionName(feature))
+        getRegionStyle(feature.properties.RegionName)
       );
     }
   }, [currentBoundariesLayer, currentHeatLevels, currentDataset]);
