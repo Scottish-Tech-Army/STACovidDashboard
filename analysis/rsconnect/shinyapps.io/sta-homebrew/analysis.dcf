@@ -5,6 +5,6 @@ account: sta-homebrew
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2541638
-bundleId: 3361954
+bundleId: 3362692
 url: https://sta-homebrew.shinyapps.io/analysis/
-when: 1594119128.34924
+when: 1594131463.038
