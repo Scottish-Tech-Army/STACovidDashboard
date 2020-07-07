@@ -195,7 +195,13 @@ const GeoHeatMap = ({
       const value = currentDatasetRef.current.get(regionName);
       L.popup()
         .setLatLng(latlng)
-        .setContent("<p>" + regionName + "<br />" + value + "</p>")
+        .setContent(
+          "<p class='region-popup'><strong>" +
+            regionName +
+            "</strong><br />Count: " +
+            value +
+            "</p>"
+        )
         .openOn(map);
     };
 
@@ -291,6 +297,10 @@ const GeoHeatMap = ({
       return feature.properties.NAME;
     }
 
+    if (mapRef.current && mapRef.current.leafletElement) {
+      mapRef.current.leafletElement.closePopup();
+    }
+
     if (currentBoundariesLayer && currentDataset) {
       currentBoundariesLayer.setStyle((feature) =>
         getRegionStyle(getRegionName(feature))
@@ -308,7 +318,7 @@ const GeoHeatMap = ({
         legendRef.current.onAdd = function (map) {
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
-
+          div.innerHTML += "<div class='legend-title'>Region Counts</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
