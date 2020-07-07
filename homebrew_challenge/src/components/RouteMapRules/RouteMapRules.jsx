@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./RouteMapRules.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -153,14 +152,14 @@ const RouteMapRules = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
+        <FontAwesomeIcon className="d-sm-block"
+          icon={faCircle}
+          size="5x"
+          color="#319bd5"
+          alt="link to Scottish Government further guidance"
+      />
           <span className="headline">
             For more information on Phase 2 guidelines view the latest Scottish Government guidance.
-            <FontAwesomeIcon className="d-sm-block"
-              icon={faExternalLinkAlt}
-              size="2x"
-              color="#319bd5"
-              alt="link to Scottish Government further guidance"
-          />
           </span>
         </a>
         </Col>
