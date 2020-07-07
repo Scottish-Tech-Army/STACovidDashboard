@@ -220,6 +220,12 @@ const GeoHeatMap = ({
       },
     };
 
+    // Restrict the panning
+    if (mapRef.current && mapRef.current.leafletElement) {
+        const map = mapRef.current.leafletElement;
+        map.setMaxBounds(map.getBounds());
+    }
+
     setCouncilAreaBoundariesLayer(
       L.geoJSON(councilAreaBoundaries, regionLayerOptions)
     );
@@ -331,11 +337,12 @@ const GeoHeatMap = ({
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
       <LeafletMap
         ref={mapRef}
-        center={[56.5814, -4.0545]}
+        center={[55.5814, -4.0545]}
         id="map"
-        zoom={6.4}
+        zoom={6.1}
         zoomSnap={0.1}
-        maxZoom={20}
+        maxZoom={10}
+        minZoom={6}
       >
         <TileLayer
           url={tilesStadiaAlidadeSmooth}
