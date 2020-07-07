@@ -44,6 +44,28 @@ function parseCsvData(csvData) {
   return regions;
 }
 
+const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
+const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
+
+const heatcolours = [
+  "#e0e0e0",
+  "#fef0d9",
+  "#fdcc8a",
+  "#fc8d59",
+  "#e34a33",
+  "#b30000",
+];
+
+/*
+ Getting Leaflet and React to play nice when the underlying datasets are changing (there are 3 datasets and 2 region
+ boundary types) was challenging. Straightforward react-leaflet wasn't enough. The code below uses react-leaflet
+ components for the static parts of the map, and drops to pure Leaflet for dynamic components - the legend, the geoJSON
+ layers and their associated styles and popups.
+
+ There is a cascade of useEffect blocks to handle user selection of dataset, and lazy loading of those datasets. The
+ dependences of the useEffect blocks should clarify what gets triggered when.
+*/
+
 const GeoHeatMap = ({
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
@@ -73,13 +95,13 @@ const GeoHeatMap = ({
   const currentDatasetRef = useRef(null);
   const currentHeatLevelsRef = useRef(null);
 
-  // Need both state and ref
+  // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
   function setCurrentHeatLevels(value) {
     currentHeatLevelsRef.current = value;
     _setCurrentHeatLevels(value);
   }
 
-  // Need both state and ref
+  // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
   function setCurrentDataset(value) {
     currentDatasetRef.current = value;
     _setCurrentDataset(value);
@@ -135,9 +157,6 @@ const GeoHeatMap = ({
 
   // Set current dataset and heatlevels
   useEffect(() => {
-    const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
-    const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
-
     if (VALUETYPE_DEATHS === valueType) {
       setCurrentHeatLevels(deathsHeatLevels);
       if (AREATYPE_COUNCIL_AREAS === areaType) {
@@ -238,15 +257,6 @@ const GeoHeatMap = ({
 
   // Update counts to use to style map boundaries layer
   useEffect(() => {
-    const heatcolours = [
-      "#e0e0e0",
-      "#fef0d9",
-      "#fdcc8a",
-      "#fc8d59",
-      "#e34a33",
-      "#b30000",
-    ];
-
     function getHeatLevel(count) {
       const heatLevels = currentHeatLevels;
       var i;
@@ -288,28 +298,13 @@ const GeoHeatMap = ({
     }
   }, [currentBoundariesLayer, currentHeatLevels, currentDataset]);
 
-  /*    zoomDelta={false}
-        doubleClickZoom={false}
-        dragging={false}
-        trackResize={false}
-        touchZoom={false}
-        scrollWheelZoom={false}
-*/
-
   // Create legend
   useEffect(() => {
     if (mapRef.current && mapRef.current.leafletElement) {
       const map = mapRef.current.leafletElement;
       if (!legendRef.current) {
         legendRef.current = L.control({ position: "bottomright" });
-        const heatcolours = [
-          "#e0e0e0",
-          "#fef0d9",
-          "#fdcc8a",
-          "#fc8d59",
-          "#e34a33",
-          "#b30000",
-        ];
+
         legendRef.current.onAdd = function (map) {
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
@@ -358,5 +353,14 @@ const GeoHeatMap = ({
     </div>
   );
 };
-//<Popup key={area}>{area + " - " + popupUnit + ": " + value}</Popup>
+/*
+ LeafletMap options to lock down the user interaction
+    zoomDelta={false}
+    doubleClickZoom={false}
+    dragging={false}
+    trackResize={false}
+    touchZoom={false}
+    scrollWheelZoom={false}
+*/
+
 export default GeoHeatMap;
