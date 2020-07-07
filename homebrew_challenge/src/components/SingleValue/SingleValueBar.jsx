@@ -5,7 +5,7 @@ import { differenceInDays, format, subDays } from "date-fns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ReactToolTip from 'react-tooltip';
+import '../ToolTips/ToolTips';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -164,6 +164,15 @@ function SingleValueBar() {
         <Col xs={12} lg={4}>
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="These are the Total Cases from today and reset after 11.59pm (Can be delayed because of data fetching)">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="dailyCases"
                 title={"Cases " + getRelativeDate(dailyCases.date)}
@@ -171,6 +180,15 @@ function SingleValueBar() {
               />
             </Col>
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="totalCases"
                 title="Total Cases"
@@ -183,15 +201,13 @@ function SingleValueBar() {
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <div className="icon">
-                <FontAwesomeIcon
-                  icon={faQuestionCircle}
-                  size="1x"
-                  color="#319bd5"
-                  title="Test"
-                />
-                <div className="tooltip callout" title="Test">
-                  <span>Test</span>
-                </div>
+                <a href="#" data-toggle="tooltip" title="These are the fatalities from today and reset after 11.59pm (Can be delayed because of data fetching)">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
               </div>
               <SingleValue
                 id="dailyFatalities"
@@ -200,6 +216,15 @@ function SingleValueBar() {
               />
             </Col>
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="These are the Total Fatalities since the COVID-19 Pandemic began">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="totalFatalities"
                 title="Total Deaths"
@@ -207,6 +232,15 @@ function SingleValueBar() {
               />
             </Col>
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="This shows the Ratio of Total Fatalities to Total Cases of COVID-19">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="fatalityCaseRatio"
                 title="Death / Case Ratio"
@@ -218,6 +252,15 @@ function SingleValueBar() {
         <Col xs={12} lg={4}>
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="This is how many tests were completed today and resets after 11.59pm (Can be delayed because of data fetching)">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="dailyTestsCompleted"
                 title="Daily Tests Completed"
@@ -225,6 +268,15 @@ function SingleValueBar() {
               />
             </Col>
             <Col className="single-value-bar-col">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="This shows how many COVID-19 Tests have been completed since the beginning of the COVID-19 Pandemic">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
               <SingleValue
                 id="totalTestsCompleted"
                 title="Total Tests Completed"
