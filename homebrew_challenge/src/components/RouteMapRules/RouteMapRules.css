@@ -27,3 +27,7 @@ svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
   text-decoration: none;
   color: Black;
 }
+
+.category-icon {
+  height: 100px;
+}
