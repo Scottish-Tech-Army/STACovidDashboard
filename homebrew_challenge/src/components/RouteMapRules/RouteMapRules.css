@@ -1,5 +1,5 @@
 .route-map-rules {
-  border: 2px solid #2A84BB;
+  /* border: 2px solid #2A84BB; */
 }
 
 svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
@@ -9,17 +9,12 @@ svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
   position: relative;
 }
 
-.category {
-  margin: 10px;
-  padding: 10px;
-}
-
 .headline {
   padding: 0 10px;
   text-align: center;
 }
 
-.select-phase, .more-info {
+.more-info {
   padding: 20px;
 }
 
@@ -29,5 +24,65 @@ svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
 }
 
 .category-icon {
-  height: 100px;
+  width: 45px;
+  margin: 20px auto;
+}
+
+.phase-select {
+  border-radius: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#lockdown {
+
+  background-color: White;
+  border: 3px solid #e34a33;
+}
+
+#phase-1 {
+
+  background-color: White;
+  border: 3px solid #fc8d59;
+}
+
+#phase-2 {
+
+  background-color: #fdcc8a;
+  border: 3px solid #fdcc8a;
+}
+
+#phase-3 {
+
+  background-color: White;
+  border: 3px solid #009999;
+}
+
+#phase-4 {
+
+  background-color: White;
+  border: 3px solid #2A84BB;
+}
+
+.phase, .category {
+  text-align: center;
+}
+
+.category {
+  border: 3px solid #fdcc8a;
+  margin: 5px;
+}
+
+.phase {
+  height: 20%;
+}
+
+.phase-bar {
+  padding-top:5px;
+  padding-right: 5px;
+}
+
+.intro-text {
+  /* border-bottom: 2px solid #2A84BB; */
+  padding: 5px;
 }
