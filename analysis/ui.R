@@ -126,7 +126,7 @@ ui <- fluidPage(
             type = "tabs",
             tabPanel(
               "Deaths",
-              h4("Total COVID-19 related deaths March-May"),
+              h4("Death rates per 100,000 population: March through May"),
               # column(6,
               leafletOutput("scot_covid_plot", width = 500, height = 700)
               %>% withSpinner(color = "#0dc5c1"),
