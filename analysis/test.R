@@ -21,7 +21,7 @@ joined <- scot_i_zones %>%
 # creates bins and palette for leaflet plot
 # bins <- seq(0, max(management_reactive()$total), length.out = 6)
 
-pal <- colorBin("plasma", domain = joined$rate_per_100_000_population, bins = 5)
+pal <- colorBin("Blues", domain = joined$rate_per_100_000_population, bins = 5)
 
 # creates hover over labels
 labels <- sprintf(
@@ -33,9 +33,9 @@ labels <- sprintf(
 
 
 leaflet(joined) %>%
-  addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.5,
-              fillColor = ~colorQuantile(c("green", "yellow", "Red"), rate_per_100_000_population)(rate_per_100_000_population),
+  addPolygons(color = "#515151", weight = 1, smoothFactor = 0.5,
+              opacity = 0.5, fillOpacity = 0.5,
+              fillColor = ~pal,
               highlightOptions = highlightOptions(color = "white", weight = 2,
                                                   bringToFront = TRUE),
               label = labels,
@@ -43,37 +43,48 @@ leaflet(joined) %>%
                 style = list("font-weight" = "normal",
                              padding = "3px 8px"),
                 textsize = "15px",
-                direction = "auto"))
+                direction = "auto")) %>%
+    addLegend(pal = ~pal,
+              values = ~rate_per_100_000_population,
+              opacity = 0.7,
+              title = "# deaths",
+              position = "topleft")
+  
+# %>%
+#     addLegend(pal = ~pal,
+#               values = ~rate_per_100_000_population,
+#               title = "Rate per 100k Pop",
+#               position = "topleft")
 
 
 
-joined %>%
-  leaflet() %>%
-  addProviderTiles("MapBox", options = providerTileOptions(
-    id = "mapbox.light",
-    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
-  addPolygons(
-    fillColor = ~pal(rate_per_100_000_population),
-    weight = 2,
-    opacity = 1,
-    color = "white",
-    dashArray = "1",
-    fillOpacity = 0.7,
-    highlight = highlightOptions(
-      weight = 2,
-      color = "white",
-      bringToFront = TRUE),
-    label = labels,
-    labelOptions = labelOptions(
-      style = list("font-weight" = "normal",
-                   padding = "3px 8px"),
-      textsize = "15px",
-      direction = "auto")) %>%
-  addLegend(pal = pal, 
-            values = ~rate_per_100_000_population, 
-            opacity = 0.7, 
-            title = "# deaths",
-            position = "topleft")
-
-
-
+# joined %>%
+#   leaflet() %>%
+#   addProviderTiles("MapBox", options = providerTileOptions(
+#     id = "mapbox.light",
+#     accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
+#   addPolygons(
+#     fillColor = ~pal(rate_per_100_000_population),
+#     weight = 2,
+#     opacity = 1,
+#     color = "white",
+#     dashArray = "1",
+#     fillOpacity = 0.7,
+#     highlight = highlightOptions(
+#       weight = 2,
+#       color = "white",
+#       bringToFront = TRUE),
+#     label = labels,
+#     labelOptions = labelOptions(
+#       style = list("font-weight" = "normal",
+#                    padding = "3px 8px"),
+#       textsize = "15px",
+#       direction = "auto")) %>%
+#   addLegend(pal = pal, 
+#             values = ~rate_per_100_000_population, 
+#             opacity = 0.7, 
+#             title = "# deaths",
+#             position = "topleft")
+# 
+# 
+# 
