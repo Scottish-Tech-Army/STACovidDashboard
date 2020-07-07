@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
@@ -58,7 +60,7 @@ public class LambdaFunctionHandlerTest {
     @Captor
     private ArgumentCaptor<GetObjectRequest> getObjectRequest;
 
-    ArgumentCaptor<HttpPost> postRequestCaptor = ArgumentCaptor.forClass(HttpPost.class);
+    ArgumentCaptor<HttpUriRequest> httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
     ArgumentCaptor<PutObjectRequest> s3RequestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
 
     @Before
@@ -69,11 +71,11 @@ public class LambdaFunctionHandlerTest {
 
         when(s3Client.putObject(s3RequestCaptor.capture())).thenReturn(putObjectResult);
         when(subject.createHttpClient()).thenReturn(httpClient);
-        when(httpClient.execute(postRequestCaptor.capture())).thenReturn(httpResponse);
+        when(httpClient.execute(httpRequestCaptor.capture())).thenReturn(httpResponse);
         when(httpResponse.getEntity()).thenReturn(new StringEntity("testoutput1"), new StringEntity("testoutput2"),
                 new StringEntity("testoutput3"), new StringEntity("testoutput4"), new StringEntity("testoutput5"),
                 new StringEntity("testoutput6"), new StringEntity("testoutput7"), new StringEntity("testoutput8"),
-                new StringEntity("testoutput9"), new StringEntity("unexpected"));
+                new StringEntity("testoutput9"), new StringEntity("testoutput10"), new StringEntity("unexpected"));
     }
 
     private Context createContext() {
@@ -87,33 +89,39 @@ public class LambdaFunctionHandlerTest {
         String output = subject.handleRequest(event, ctx);
 
         assertEquals("Success", output);
-        List<HttpPost> postRequests = postRequestCaptor.getAllValues();
-        assertEquals(9, postRequests.size());
-        for (HttpPost postRequest : postRequests) {
-            checkPostRequest(postRequest);
+        List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
+        assertEquals(10, httpRequests.size());
+        // The first 9 are requests to statistics.gov.scot
+        for (int i=0; i< 9; i++) {
+            checkSparQLPostRequest((HttpPost) httpRequests.get(i));
         }
+        // The last is a request to news.gov.scot rss feed
+        checkRssFeedGetRequest((HttpGet) httpRequests.get(9));
 
         List<PutObjectRequest> s3Requests = s3RequestCaptor.getAllValues();
-        assertEquals(9, s3Requests.size());
+        assertEquals(10, s3Requests.size());
 
         String[] expectedKeys = new String[] { "data/weeklyHealthBoardsDeaths.csv",
                 "data/dailyScottishCasesAndDeaths.csv", "data/weeklyCouncilAreasDeaths.csv",
                 "data/dailyHealthBoardsCases.csv", "data/analysis/dailyHealthBoardsCasesAndPatients.csv",
                 "data/summaryCounts.csv", "data/totalHealthBoardsCases.csv", "data/annualHealthBoardsDeaths.csv",
-                "data/annualCouncilAreasDeaths.csv", };
+                "data/annualCouncilAreasDeaths.csv", "data/newsScotGovRss.xml"};
         assertArrayEquals(expectedKeys, s3Requests.stream().map(PutObjectRequest::getKey).toArray());
 
         String[] expectedContents = new String[] { "testoutput1", "testoutput2", "testoutput3", "testoutput4",
-                "testoutput5", "testoutput6", "testoutput7", "testoutput8", "testoutput9", };
+                "testoutput5", "testoutput6", "testoutput7", "testoutput8", "testoutput9", "testoutput10", };
         assertArrayEquals(expectedContents,
                 s3Requests.stream().map(PutObjectRequest::getInputStream).map(this::readInputStream).toArray());
     }
 
-    private void checkPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {
+    private void checkSparQLPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {
         assertEquals("https://statistics.gov.scot/sparql.csv", postRequest.getURI().toString());
         String text = readInputStream(postRequest.getEntity().getContent());
-        System.out.println(text);
         assertTrue(text.contains("SELECT"));
+    }
+
+    private void checkRssFeedGetRequest(HttpGet getRequest) throws UnsupportedOperationException {
+        assertEquals("https://news.gov.scot/feed/rss", getRequest.getURI().toString());
     }
 
     private String readInputStream(InputStream inputStream) {
