@@ -32,13 +32,13 @@ it("SingleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases on 01/01/1999", "0");
-  checkSingleValue("totalCases", "Total Cases", "0");
-  checkSingleValue("dailyFatalities", "Deaths on 01/01/1999", "0");
-  checkSingleValue("totalFatalities", "Total Deaths", "0");
+  checkSingleValue("dailyCases", "01/01/1999", "0");
+  checkSingleValue("totalCases", "Total", "0");
+  checkSingleValue("dailyFatalities", "01/01/1999", "0");
+  checkSingleValue("totalFatalities", "Total", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
-  checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "0");
-  checkSingleValue("totalTestsCompleted", "Total Tests Completed", "0");
+  checkSingleValue("dailyTestsCompleted", "Daily", "0");
+  checkSingleValue("totalTestsCompleted", "Total", "0");
 });
 
 it("SingleValueBar renders dynamic fetched data for today", async () => {
@@ -51,13 +51,13 @@ it("SingleValueBar renders dynamic fetched data for today", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases Today", "26");
-  checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Deaths Today", "-1");
-  checkSingleValue("totalFatalities", "Total Deaths", "2472");
+  checkSingleValue("dailyCases", "Today", "26");
+  checkSingleValue("totalCases", "Total", "18156");
+  checkSingleValue("dailyFatalities", "Today", "-1");
+  checkSingleValue("totalFatalities", "Total" , "2472");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
-  checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
-  checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
+  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
+  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
@@ -70,13 +70,13 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Cases Yesterday", "26");
-  checkSingleValue("totalCases", "Total Cases", "18156");
-  checkSingleValue("dailyFatalities", "Deaths Yesterday", "-1");
-  checkSingleValue("totalFatalities", "Total Deaths", "2472");
+  checkSingleValue("dailyCases", "Yesterday", "26");
+  checkSingleValue("totalCases", "Total" , "18156");
+  checkSingleValue("dailyFatalities", "Yesterday", "-1");
+  checkSingleValue("totalFatalities", "Total" , "2472");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
-  checkSingleValue("dailyTestsCompleted", "Daily Tests Completed", "3442");
-  checkSingleValue("totalTestsCompleted", "Total Tests Completed", "231525");
+  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
+  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 it("getDateValueClause", () => {
@@ -102,7 +102,7 @@ it("getRelativeDate", () => {
   expect(getRelativeDate(Date.parse("2020-06-18"))).toBe("last Thursday");
   expect(getRelativeDate(Date.parse("2020-06-17"))).toBe("last Wednesday");
   expect(getRelativeDate(Date.parse("2020-06-16"))).toBe("last Tuesday");
-  expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("on 15/06/2020");
+  expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("15/06/2020");
 });
 
 it("parseCsvData", () => {
