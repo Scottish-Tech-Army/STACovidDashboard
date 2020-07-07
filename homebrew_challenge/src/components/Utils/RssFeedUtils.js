@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import moment from 'moment';
 
 function xml2json(srcDOM) {
   let children = [...srcDOM.children];
@@ -43,12 +43,12 @@ export const getLatestNewsItem = strxml => {
   const inputDom = parser.parseFromString(trimStrxml, "application/xml");
   const json = xml2json(inputDom);
   const item = json.rss.channel.item[0];
-  const pubDate = Date.parse(item.pubDate);
+  const pubDate = moment(item.pubDate);
   const result = {
     title: item.title,
     description: getText(item.description),
     link: item.link,
-    timestamp: format(pubDate, "dd MMM yyyy HH:mm")
+    timestamp: pubDate.format("DD MMM YYYY HH:mm")
   };
   return result;
 };
