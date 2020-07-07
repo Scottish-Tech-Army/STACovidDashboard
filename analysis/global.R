@@ -1,6 +1,6 @@
 ## code for deploying to shiny.io
 # library(rsconnect)
-# deployApp("covid19_scot_map/")
+# ddeeployApp("covid19_scot_map/")
 
 #################################################################
 ##                          Libraries                          ##
@@ -11,7 +11,7 @@ library(tidyverse)
 library(sf)
 library(leaflet)
 library(shiny)
-library(shinydashboard)
+#library(shinydashboard)
 library(shinythemes)
 library(plotly)
 library(shinycssloaders)
