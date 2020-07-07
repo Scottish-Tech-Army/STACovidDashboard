@@ -2,7 +2,7 @@
   border: 2px solid #2A84BB;
 }
 
-svg.fa-circle, .headline, .btn {
+svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
   display: block;
   margin: 20px auto;
   float: none;
@@ -21,4 +21,9 @@ svg.fa-circle, .headline, .btn {
 
 .select-phase, .more-info {
   padding: 20px;
+}
+
+.route-map-link {
+  text-decoration: none;
+  color: Black;
 }

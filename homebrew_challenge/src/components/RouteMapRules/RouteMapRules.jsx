@@ -147,6 +147,12 @@ const RouteMapRules = () => {
           </span>
         </Col>
         <Col xs="12" md="2" className="more-info">
+        <a
+          className="route-map-link"
+          href="https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <span className="headline">
             For more information on Phase 2 guidelines view the latest Scottish Government guidance.
             <FontAwesomeIcon className="d-sm-block"
@@ -156,6 +162,7 @@ const RouteMapRules = () => {
               alt="link to Scottish Government further guidance"
           />
           </span>
+        </a>
         </Col>
       </Row>
     </Container>
