@@ -33,6 +33,16 @@ const defaultEvents = [
       "Testing in Scotland available for everyone who is symptomatic over 5",
   },
   { date: "2020-05-21", text: "Scottish Covid-19 Roadmap published" },
+
+  { date: "2020-06-20", text: "Scottish Government publishes guidance to support the Tourism and Hospitality sector to prepare for opening on 15th July" },
+  { date: "2020-06-24", text: "Updated Covid-19 routemap published with indicative Phase 2 dates" },
+  { date: "2020-06-29", text: "Scottish Government announces transition to Phase 2" },
+  { date: "2020-06-29", text: "Non-essential retail with street access can open" },
+  { date: "2020-07-03", text: "5 mile travel distance is relaxed" },
+  { date: "2020-07-03", text: "Self-contained accomodation can open" },
+  { date: "2020-07-06", text: "Outdoor hospitality (such as beer gardens) permitted to reopen" },
+  { date: "2020-07-10", text: "Face coverings to be mandatory in shops" },
+
 ];
 
 // Override the events for testing
@@ -41,20 +51,21 @@ const TimeLine = ({ events = defaultEvents }) => {
   const nbsp = String.fromCharCode(160);
   const dateFormatString = "d" + nbsp + "MMM";
 
-  function getEventTableRow(date, text) {
+  function getEventTableRow(date, texts) {
     const dateString = format(new Date(date), dateFormatString);
+
     return (
       <tr key={date}>
         <td className="date">{dateString}</td>
         <td className="text">
-          <span>{text}</span>
+          {texts.map((t,i) => (<div key={i}>{t}</div>))}
         </td>
       </tr>
     );
   }
 
-  function getYearTableRows(year, dateEventMap) {
-    const sortedDates = [...dateEventMap.keys()].sort().reverse();
+  function getYearTableRows(year, dateEventsMap) {
+    const sortedDates = [...dateEventsMap.keys()].sort().reverse();
 
     // Need to write the fragment longhand to avoid the missing key warnings
     return (
@@ -64,13 +75,13 @@ const TimeLine = ({ events = defaultEvents }) => {
           <td className="text"></td>
         </tr>
         {sortedDates.map((date) =>
-          getEventTableRow(date, dateEventMap.get(date))
+          getEventTableRow(date, dateEventsMap.get(date))
         )}
       </React.Fragment>
     );
   }
 
-  function getYearDateEventMap() {
+  function getYearDateEventsMap() {
     const result = new Map();
 
     events.forEach(({ date, text }, i) => {
@@ -79,21 +90,25 @@ const TimeLine = ({ events = defaultEvents }) => {
       if (!result.has(year)) {
         result.set(year, new Map());
       }
-      var dateEventMap = result.get(year);
-      dateEventMap.set(date, text);
+      var dateEventsMap = result.get(year);
+      if (!dateEventsMap.has(date)) {
+        dateEventsMap.set(date, []);
+      }
+      const events = dateEventsMap.get(date)
+      events.push(text);
     });
 
     return result;
   }
 
   function getTableRows() {
-    const yearDateEventMap = getYearDateEventMap();
-    const sortedYears = [...yearDateEventMap.keys()].sort().reverse();
+    const yearDateEventsMap = getYearDateEventsMap();
+    const sortedYears = [...yearDateEventsMap.keys()].sort().reverse();
 
     return (
       <>
         {sortedYears.map((year) =>
-          getYearTableRows(year, yearDateEventMap.get(year))
+          getYearTableRows(year, yearDateEventsMap.get(year))
         )}
       </>
     );
