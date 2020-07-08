@@ -298,7 +298,7 @@ ui <- fluidPage(
         column(2,
                align = "center",
                tags$a(
-                 href = "linkedin.com/in/craig-climie", target = "_blank",
+                 href = "https://www.linkedin.com/in/craig-climie", target = "_blank",
                  img(
                    src = "cc.png",
                    width = "85%"
@@ -327,7 +327,7 @@ ui <- fluidPage(
         column(2,
           align = "center",
           tags$a(
-            href = "linkedin.com/in/colin-lyman", target = "_blank",
+            href = "https://www.linkedin.com/in/colin-lyman", target = "_blank",
             img(
               src = "cl.png",
               width = "85%"
@@ -339,7 +339,7 @@ ui <- fluidPage(
         column(2,
           align = "center",
           tags$a(
-            href = "linkedin.com/in/cristina-perez-11229846", target = "_blank",
+            href = "https://www.linkedin.com/in/cristina-perez-11229846", target = "_blank",
             img(
               src = "cp.png",
               width = "85%"
@@ -351,7 +351,7 @@ ui <- fluidPage(
         column(2,
                align = "center",
                tags$a(
-                 href = "linkedin.com/in/lukepritchardwoollett", target = "_blank",
+                 href = "https://www.linkedin.com/in/lukepritchardwoollett", target = "_blank",
                  img(
                    src = "lpw.png",
                    width = "85%"
@@ -392,7 +392,7 @@ ui <- fluidPage(
         column(2,
                align = "center",
                tags$a(
-                 href = "linkedin.com/in/donalstewart", target = "_blank",
+                 href = "https://www.linkedin.com/in/donalstewart", target = "_blank",
                  img(
                    src = "ds.png",
                    width = "85%"
@@ -404,7 +404,7 @@ ui <- fluidPage(
         column(2,
                align = "center",
                tags$a(
-                 href = "linkedin.com/in/rebeccastill1", target = "_blank",
+                 href = "https://www.linkedin.com/in/rebeccastill1", target = "_blank",
                  img(
                    src = "bs.png",
                    width = "85%"
