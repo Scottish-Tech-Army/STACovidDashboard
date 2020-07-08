@@ -1,6 +1,6 @@
 
 ui <- fluidPage(
-  theme = shinytheme("flatly"),
+  theme = "app.css",
 
 
   navbarPage(
