@@ -123,7 +123,11 @@ const RouteMapRules = () => {
     <Container fluid className="route-map-rules">
       <Row>
         <Col xs="12" className="current-phase">
-          <span>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap</span>
+          <h3>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.</h3>
+          <br/>
+          <span className="disclaimer">
+            <i>(The description of the phases below is summary rather than comprehensive: it will not include every aspect of the restrictions that is of concern.)</i>
+          </span>
         </Col>
       </Row>
       <Row>
