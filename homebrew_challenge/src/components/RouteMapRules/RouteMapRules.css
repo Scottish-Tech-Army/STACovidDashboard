@@ -30,8 +30,9 @@
 
 .category-image {
   height: 90px;
+  width: 20%;
 }
-/* 
+/*
 .category-card {
   border-left: 0.01rem solid LightGray;
 } */
