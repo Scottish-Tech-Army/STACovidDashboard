@@ -1,88 +1,37 @@
 .route-map-rules {
-  /* border: 2px solid #2A84BB; */
-}
-
-svg.fa-circle, .headline, .btn, svg.fa-external-link-alt {
-  display: block;
-  margin: 20px auto;
-  float: none;
-  position: relative;
-}
-
-.headline {
-  padding: 0 10px;
-  text-align: center;
-}
-
-.more-info {
-  padding: 20px;
+  color: #133a53;
 }
 
 .route-map-link {
   text-decoration: none;
-  color: Black;
+  color: #133a53;
 }
 
-.category-icon {
-  width: 45px;
-  margin: 20px auto;
-}
-
-.phase-select {
+#lockdown.active,
+#phase-1.active,
+#phase-2.active,
+#phase-3.active,
+#phase-4.active {
+  background-color: #319bd5;
+  border: none;
   border-radius: 0;
-  margin: 0;
-  width: 100%;
 }
 
-#lockdown {
-
-  background-color: White;
-  border: 3px solid #e34a33;
-}
-
-#phase-1 {
-
-  background-color: White;
-  border: 3px solid #fc8d59;
-}
-
-#phase-2 {
-
-  background-color: #fdcc8a;
-  border: 3px solid #fdcc8a;
-}
-
-#phase-3 {
-
-  background-color: White;
-  border: 3px solid #009999;
-}
-
+#lockdown,
+#phase-1,
+#phase-2,
+#phase-3,
 #phase-4 {
-
-  background-color: White;
-  border: 3px solid #2A84BB;
+  background-color: #fff;
+  color: #133a53;
+  border:none;
+  border-radius: 0;
 }
 
-.phase, .category {
-  text-align: center;
+.category-image {
+  height: 90px;
 }
-
-.category {
-  border: 3px solid #fdcc8a;
-  margin: 5px;
-}
-
-.phase {
-  height: 20%;
-}
-
-.phase-bar {
-  padding-top:5px;
-  padding-right: 5px;
-}
-
-.intro-text {
-  /* border-bottom: 2px solid #2A84BB; */
-  padding: 5px;
-}
+/* 
+.category-card {
+  border-left: 0.01rem solid LightGray;
+} */

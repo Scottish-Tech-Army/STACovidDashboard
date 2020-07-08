@@ -1,163 +1,154 @@
 import React, { useState, useEffect } from "react";
 import "./RouteMapRules.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import PhaseRules from "./PhaseRules";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ListGroup from "react-bootstrap/ListGroup";
 
 const RouteMapRules = () => {
   // set default phase here
-  const [phase, setPhase] = useState("phase1");
-
+  const [phase, setPhase] = useState("phase2");
 
   const phaseText = {
     lockdown: {
       introText: "l-intro",
-      cat1: "l1",
-      cat2: "l2",
-      cat3: "l3",
-      cat4: "l4"
+      cat1: [
+        "Maintain strict social distancing, keeping 2m from people not from your household.",
+        "./assets/social_distancing.png"
+      ],
+      cat2: [
+        "Shielding of high risk individuals in line with public health advice.",
+        "./assets/public_health_advice.png"
+      ],
+      cat3: [
+        "Frequent handwashing and hygiene measures for all.",
+        "./assets/washing_hands_alt.png"
+      ],
+      cat4: [
+        "Schools and childcare services closed.",
+        "./assets/school_roof_alt.png"
+      ]
     },
     phase1: {
       introText: "p1-intro",
-      cat1:
+      cat1: [
         "Maintain social distancing, keeping 2m from people not in your household.",
-      cat2: "You can meet one other household outdoors.",
-      cat3: "Unrestricted trips outdoors for exercise.",
-      cat4: "Frequent handwashing and hygiene measures for al (Call me Al :) )."
+        "./assets/social_distancing.png"
+      ],
+      cat2: [
+        "You can meet one other household outdoors.",
+        "./assets/households_outdoor.png"
+      ],
+      cat3: [
+        "Unrestricted trips outdoors for exercise.",
+        "./assets/exercising.png"
+      ],
+      cat4: [
+        "Frequent handwashing and hygiene measures for all.",
+        "./assets/washing_hands_alt.png"
+      ]
     },
     phase2: {
       introText: "Scotland moved to Phase 2 of the routemap on 19 June 2020.",
-      cat1:
-        "Maintain social distancing, keeping 2m from people not in your household",
-      cat2: "You can meet with people from another two households inside.",
-      cat3:
+      cat1: [
+        "Maintain social distancing, keeping 2m from people not in your household.",
+        "./assets/social_distancing.png"
+      ],
+      cat2: [
+        "You can meet with people from another two households inside.",
+        "./assets/household_meeting_alt.png"
+      ],
+      cat3: [
         "You must wear a face covering when using public transport or in shops.",
-      cat4: "Non-essential retail can open with safeguards in place."
+        "./assets/face_covering_alt.png"
+      ],
+      cat4: [
+        "Non-essential retail can open with safeguards in place.",
+        "./assets/shopping_centre.png"
+      ]
     },
     phase3: {
       introText: "",
-      cat1:
-        "Maintain social distancing, keeping 2m from people not in your household",
-      cat2:
-        "Able to meet with people from more than one household indoors with physical distancing and hygiene measure ",
-      cat3:
+      cat1: [
+        "Maintain social distancing, keeping 2m from people not in your household.",
+        "./assets/social_distancing.png"
+      ],
+      cat2: [
+        "Able to meet with people from more than one household indoors with physical distancing and hygiene measures still in place. ",
+        "./assets/household_meeting_alt.png"
+      ],
+      cat3: [
         "Museums, galleries, libraries, cinemas open, subject to physical distancing and hygience measures.",
-      cat4: "Hotels, campsites, B&Bs can open with safeguards in place."
+        "./assets/cinema_museum.png"
+      ],
+      cat4: [
+        "Hotels, campsites, B&Bs can open with safeguards in place.",
+        "./assets/hotels_campsites.png"
+      ]
     },
     phase4: {
       introText: "",
-      cat1: "Frequent handwashing and hygiene measures for al (call me Al :) )",
-      cat2: "Further relaxation on restrictions on gathering.",
-      cat3:
+      cat1: [
+        "Maintain social distancing, keeping 2m from people not in your household.",
+        "./assets/social_distancing.png"
+      ],
+      cat2: [
+        "Further relaxation on restrictions on gathering.",
+        "./assets/larger_gatherings.png"
+      ],
+      cat3: [
         "Schools and childcare provision, operating with any necessary precaution.",
-      cat4:
-        "Further relaxation of restrictions on live events in line with public health advice."
+        "./assets/school_roof_alt.png"
+      ],
+      cat4: [
+        "Further relaxation of restrictions on live events in line with public health advice.",
+        "./assets/larger_gatherings_alt.png"
+      ]
     }
   };
 
-  // onSelect (eventKey: any, event: Object) => any
-  function selectPhase(phase, evt) {
-    evt.preventDefault();
+  function selectPhase(phase) {
     setPhase(phase);
   }
 
   return (
     <Container fluid className="route-map-rules">
-      <Row
-        className="d-flex justify-content-center intro-text"
-      >
-        Scotland moved to Phase 2 of the routemap on 19 June 2020.
-      </Row>
-      <Row
-        className="d-flex flex-row"
-      >
-        <Col sm="12" md="2">
-          <Row
-            className="d-flex flex-column phase-bar"
+      <Row>
+        <Col xs="12" lg="2">
+          <ToggleButtonGroup
+            className="d-flex flex-column"
+            name="phase"
+            type="radio"
+            value={phase}
+            onChange={val => setPhase(val)}
           >
-            <Col
-              className="phase"
-              id="lockdown"
-            >
+            <ToggleButton id="lockdown" value={"lockdown"}>
               Lockdown
-            </Col>
-            <Col
-              className="phase"
-              id="phase-1"
-            >
+            </ToggleButton>
+            <ToggleButton id="phase-1" value={"phase1"}>
               Phase 1
-            </Col>
-            <Col
-              className="phase"
-              id="phase-2"
-            >
+            </ToggleButton>
+            <ToggleButton id="phase-2" value={"phase2"}>
               Phase 2
-            </Col>
-            <Col
-              className="phase"
-              id="phase-3"
-            >
+            </ToggleButton>
+            <ToggleButton id="phase-3" value={"phase3"}>
               Phase 3
-            </Col>
-            <Col
-              className="phase"
-              id="phase-4"
-            >
+            </ToggleButton>
+            <ToggleButton id="phase-4" value={"phase4"}>
               Phase 4
-            </Col>
-          </Row>
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Col>
-        <Col sm="12" md="10">
-          <Row>
-            <Col
-              className="category d-flex flex-column"
-            >
-              <img className="category-icon" src="./larger_crowd.png" />
-              <span>Maintain social distancing, keeping 2m from people not in your household.
-              </span>
-            </Col>
-            <Col
-              className="category d-flex flex-column"
-            >
-              <img className="category-icon" src="./meet_other_households_outdoors.png" />
-              <span>You can meet with people from another two households inside.</span>
-            </Col>
-            <Col
-              className="category d-flex flex-column"
-            >
-              <img className="category-icon" src="./museum.png" />
-              <span>You must wear a face covering when using public transport or in shops.</span>
-            </Col>
-            <Col
-              className="category d-flex flex-column"
-            >
-              <img className="category-icon" src="./outdoor_sports.png" />
-              <span>Further relaxation of restrictions on live events in line with public health advice.</span>
-            </Col>
-            <Col
-              className="category d-flex flex-column"
-            >
-              <a
-                className="route-map-link"
-                href="https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon
-                  className="d-sm-block"
-                  icon={faCircle}
-                  size="3x"
-                  color="#319bd5"
-                  alt="link to Scottish Government further guidance"
-                />
-                <span className="headline">
-                  View the full Scottish Government guidance here.
-                </span>
-              </a>
-            </Col>
-          </Row>
+        <Col xs="12" lg="10" className="d-flex flex-row">
+          <PhaseRules
+            category1={phaseText[phase].cat1}
+            category2={phaseText[phase].cat2}
+            category3={phaseText[phase].cat3}
+            category4={phaseText[phase].cat4}
+          />
         </Col>
       </Row>
     </Container>
