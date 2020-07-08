@@ -7,15 +7,15 @@ ui <- fluidPage(
     # Page title
     # Displayed to the left of the navigation bar
     title = div(
-    HTML(paste0(
-      "<a href=", shQuote(paste0("https://www.scottishtecharmy.org/")),
-      target = "_blank", ">",
-      img(
-        src = "sta.png",
-        height = "40px"
-      ), "</a>"
-    )),
-    style = "position: relative; top: -10px"
+      HTML(paste0(
+        "<a href=", shQuote(paste0("https://www.scottishtecharmy.org/")),
+        target = "_blank", ">",
+        img(
+          src = "sta.png",
+          height = "40px"
+        ), "</a>"
+      )),
+      style = "position: relative; top: -10px"
     ),
 
     windowTitle = "Tidyverse Troopers",
@@ -89,47 +89,59 @@ ui <- fluidPage(
           plotlyOutput("eg_plot", height = 550) %>% withSpinner(color = "#0dc5c1")
         )
       ),
-      
+
       fluidRow(
         class = "footer",
-        fluidRow(align="center",
-                 column(3,
-                        "Unless otherwise stated, this webpage contains public sector information licensed under", 
-                        a("the Open Government Licence 3.0.", href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/", 
-                          tags$img(src="ScottishGovernmentLogo.svg", 
-                                   title="ScottishGovernmentLogo", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.scottishtecharmy.org/", 
-                          tags$img(src="STABanner.png", 
-                                   title="STABanner", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19", 
-                          tags$img(src="NHSInformLogo.png", 
-                                   title="NHSInformLogo", 
-                                   width="180",
-                                   height="83"), 
-                          target = "_blank"
-                        )
-                 )
+        fluidRow(
+          align = "center",
+          column(
+            3,
+            "Unless otherwise stated, this webpage contains public sector information licensed under",
+            a("the Open Government Licence 3.0.", href = "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.gov.scot/collections/coronavirus-covid-19-guidance/",
+              tags$img(
+                src = "ScottishGovernmentLogo.svg",
+                title = "ScottishGovernmentLogo",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.scottishtecharmy.org/",
+              tags$img(
+                src = "STABanner.png",
+                title = "STABanner",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19",
+              tags$img(
+                src = "NHSInformLogo.png",
+                title = "NHSInformLogo",
+                width = "180",
+                height = "83"
+              ),
+              target = "_blank"
+            )
+          )
         ),
-        fluidRow(align="center",
-                 "© 2020 Copyright:", a("ScottishTechArmy.org", href="ScottishTechArmy.org")
+        fluidRow(
+          align = "center",
+          "© 2020 Copyright:", a("ScottishTechArmy.org", href = "ScottishTechArmy.org")
         )
       )
     ),
@@ -189,47 +201,59 @@ ui <- fluidPage(
           )
         ) # main panel
       ),
-      
+
       fluidRow(
         class = "footer",
-        fluidRow(align="center",
-                 column(3,
-                        "Unless otherwise stated, this webpage contains public sector information licensed under", 
-                        a("the Open Government Licence 3.0.", href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/", 
-                          tags$img(src="ScottishGovernmentLogo.svg", 
-                                   title="ScottishGovernmentLogo", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.scottishtecharmy.org/", 
-                          tags$img(src="STABanner.png", 
-                                   title="STABanner", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19", 
-                          tags$img(src="NHSInformLogo.png", 
-                                   title="NHSInformLogo", 
-                                   width="180",
-                                   height="83"), 
-                          target = "_blank"
-                        )
-                 )
+        fluidRow(
+          align = "center",
+          column(
+            3,
+            "Unless otherwise stated, this webpage contains public sector information licensed under",
+            a("the Open Government Licence 3.0.", href = "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.gov.scot/collections/coronavirus-covid-19-guidance/",
+              tags$img(
+                src = "ScottishGovernmentLogo.svg",
+                title = "ScottishGovernmentLogo",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.scottishtecharmy.org/",
+              tags$img(
+                src = "STABanner.png",
+                title = "STABanner",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19",
+              tags$img(
+                src = "NHSInformLogo.png",
+                title = "NHSInformLogo",
+                width = "180",
+                height = "83"
+              ),
+              target = "_blank"
+            )
+          )
         ),
-        fluidRow(align="center",
-                 "© 2020 Copyright:", a("ScottishTechArmy.org", href="ScottishTechArmy.org")
+        fluidRow(
+          align = "center",
+          "© 2020 Copyright:", a("ScottishTechArmy.org", href = "ScottishTechArmy.org")
         )
       ) # sidebar
     ), # close local authorities
@@ -315,47 +339,59 @@ ui <- fluidPage(
 
         column(1)
       ),
-      
+
       fluidRow(
         class = "footer",
-        fluidRow(align="center",
-                 column(3,
-                        "Unless otherwise stated, this webpage contains public sector information licensed under", 
-                        a("the Open Government Licence 3.0.", href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/", 
-                          tags$img(src="ScottishGovernmentLogo.svg", 
-                                   title="ScottishGovernmentLogo", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.scottishtecharmy.org/", 
-                          tags$img(src="STABanner.png", 
-                                   title="STABanner", 
-                                   width="270",
-                                   height="50"), 
-                          target = "_blank"
-                        )
-                 ),
-                 column(3,
-                        tags$a(
-                          href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19", 
-                          tags$img(src="NHSInformLogo.png", 
-                                   title="NHSInformLogo", 
-                                   width="180",
-                                   height="83"), 
-                          target = "_blank"
-                        )
-                 )
+        fluidRow(
+          align = "center",
+          column(
+            3,
+            "Unless otherwise stated, this webpage contains public sector information licensed under",
+            a("the Open Government Licence 3.0.", href = "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.gov.scot/collections/coronavirus-covid-19-guidance/",
+              tags$img(
+                src = "ScottishGovernmentLogo.svg",
+                title = "ScottishGovernmentLogo",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.scottishtecharmy.org/",
+              tags$img(
+                src = "STABanner.png",
+                title = "STABanner",
+                width = "270",
+                height = "50"
+              ),
+              target = "_blank"
+            )
+          ),
+          column(
+            3,
+            tags$a(
+              href = "https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19",
+              tags$img(
+                src = "NHSInformLogo.png",
+                title = "NHSInformLogo",
+                width = "180",
+                height = "83"
+              ),
+              target = "_blank"
+            )
+          )
         ),
-        fluidRow(align="center",
-                 "© 2020 Copyright:", a("ScottishTechArmy.org", href="ScottishTechArmy.org")
+        fluidRow(
+          align = "center",
+          "© 2020 Copyright:", a("ScottishTechArmy.org", href = "ScottishTechArmy.org")
         )
       ) # about us
     ) # about us
