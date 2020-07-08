@@ -44,7 +44,7 @@ ui <- fluidPage(
           4,
           sliderInput(
             "date",
-            "Date:",
+            "Select Date:",
             min = as.Date("2020-03-07"),
             max = as.Date("2020-06-05"),
             value = as.Date("2020-06-05")
@@ -55,7 +55,7 @@ ui <- fluidPage(
           4,
           selectInput(
             "data",
-            label = "Data type:",
+            label = "Select Measure:",
             choices = list(
               "COVID-19 Positive cases" = "cumulativeTestedPositive",
               "COVID-19 Patients in ICU" = "ICUCasesTotal",
