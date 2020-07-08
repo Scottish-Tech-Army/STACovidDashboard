@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
+import moment from "moment";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   PERCENTAGE_CASES,
@@ -16,16 +17,17 @@ const dataUrl = "data/dailyScottishCasesAndDeaths.csv";
 export function parseCsvData(csvData) {
   var lines = readCsvData(csvData);
 
-  const positiveCasesMap = new Map();
-  const totalsCasesMap = new Map();
+  const positiveTestsMap = new Map();
+  const totalTestsMap = new Map();
   const totalsDeathsMap = new Map();
   const dateSet = new Set();
 
-  lines.forEach(([date, countType, count], i) => {
+  lines.forEach(([dateString, countType, count], i) => {
+    const date = Date.parse(dateString);
     if ("positiveCases" === countType) {
-      positiveCasesMap.set(date, Number(count));
+      positiveTestsMap.set(date, Number(count));
     } else if ("totalCases" === countType) {
-      totalsCasesMap.set(date, Number(count));
+      totalTestsMap.set(date, Number(count));
     } else if ("totalDeaths" === countType) {
       totalsDeathsMap.set(date, Number(count));
     } else {
@@ -40,15 +42,30 @@ export function parseCsvData(csvData) {
   const totalCasesPoints = [];
   const totalDeathsPoints = [];
 
-  dates.forEach((dateString) => {
-    const totalCases = totalsCasesMap.get(dateString);
-    const positiveCases = positiveCasesMap.get(dateString);
-    const totalDeaths = totalsDeathsMap.get(dateString);
-    const date = Date.parse(dateString);
+  function get5DayDiff(valueMap, endDate, dateSet) {
+    const maximumStartDate = moment(endDate).subtract(5, "days");
+    for (let i = dateSet.length - 1; i >= 0; i--) {
+      if (maximumStartDate.isSameOrAfter(dateSet[i])) {
+        const startDate = dateSet[i];
+        return valueMap.get(endDate) - valueMap.get(startDate);
+      }
+    }
+    // Entire dataset is withing the 5 day window - just return the end cumulative total
+    return valueMap.get(endDate);
+  }
+
+  dates.forEach((date) => {
+    const totalCases5DayWindow = get5DayDiff(totalTestsMap, date, dates);
+    const positiveCases5DayWindow = get5DayDiff(positiveTestsMap, date, dates);
+    const positiveCases = positiveTestsMap.get(date);
+    const totalDeaths = totalsDeathsMap.get(date);
 
     percentageCasesPoints.push({
       t: date,
-      y: totalCases === 0 ? 0 : (positiveCases * 100) / totalCases,
+      y:
+        totalCases5DayWindow === 0
+          ? 0
+          : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
     });
     totalCasesPoints.push({
       t: date,
@@ -81,7 +98,7 @@ const DataCharts = ({
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
 
-  const percentageCasesDatasetLabel = "% of Positive Tests";
+  const percentageCasesDatasetLabel = "% of Positive Tests (5 day moving average)";
   const totalCasesDatasetLabel = "Total Cases";
   const totalDeathsDatasetLabel = "Total Deaths";
 

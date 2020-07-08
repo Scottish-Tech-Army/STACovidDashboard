@@ -45,6 +45,8 @@ it("DataCharts renders dynamic fetched data", async () => {
 });
 
 it("parseCsvData", () => {
+
+    // We expect to see a 5 day moving window over the percentageCases
   const expectedResult = {
     percentageCases: [
       { t: Date.parse("2020-03-02"), y: 0 },
@@ -52,6 +54,9 @@ it("parseCsvData", () => {
       { t: Date.parse("2020-03-04"), y: 300 / 1046 },
       { t: Date.parse("2020-03-05"), y: 600 / 1256 },
       { t: Date.parse("2020-03-06"), y: 1100 / 1525 },
+      { t: Date.parse("2020-03-07"), y: (500 -100)/ 1625 },
+      { t: Date.parse("2020-03-08"), y: (5000 - 100) / ( 1725 - 915) },
+      { t: Date.parse("2020-03-09"), y: (50000 - 300) / (1800 - 1046) },
     ],
     totalCases: [
       { t: Date.parse("2020-03-02"), y: 1 },
@@ -59,6 +64,9 @@ it("parseCsvData", () => {
       { t: Date.parse("2020-03-04"), y: 3 },
       { t: Date.parse("2020-03-05"), y: 6 },
       { t: Date.parse("2020-03-06"), y: 11 },
+      { t: Date.parse("2020-03-07"), y: 5 },
+      { t: Date.parse("2020-03-08"), y: 50 },
+      { t: Date.parse("2020-03-09"), y: 500 },
     ],
     totalDeaths: [
       { t: Date.parse("2020-03-02"), y: 0 },
@@ -66,6 +74,9 @@ it("parseCsvData", () => {
       { t: Date.parse("2020-03-04"), y: 2 },
       { t: Date.parse("2020-03-05"), y: 3 },
       { t: Date.parse("2020-03-06"), y: 4 },
+      { t: Date.parse("2020-03-07"), y: 4 },
+      { t: Date.parse("2020-03-08"), y: 2 },
+      { t: Date.parse("2020-03-09"), y: 4 },
     ],
   };
 
@@ -99,13 +110,13 @@ const csvData = `date,shortValue,count
 2020-03-04,totalDeaths,2
 2020-03-06,positiveCases,11
 2020-03-06,totalDeaths,4
-2020-03-06,totalCases,1525`;
-
-const defaultSeriesData = [
-  { t: Date.parse("2020-04-06"), y: 5 },
-  { t: Date.parse("2020-04-07"), y: 7 },
-  { t: Date.parse("2020-04-08"), y: 12 },
-  { t: Date.parse("2020-04-09"), y: 16 },
-  { t: Date.parse("2020-04-10"), y: 25 },
-  { t: Date.parse("2020-04-11"), y: 22 },
-];
+2020-03-06,totalCases,1525
+2020-03-07,positiveCases,5
+2020-03-07,totalDeaths,4
+2020-03-07,totalCases,1625
+2020-03-08,totalDeaths,2
+2020-03-08,positiveCases,50
+2020-03-08,totalCases,1725
+2020-03-09,totalDeaths,4
+2020-03-09,positiveCases,500
+2020-03-09,totalCases,1800`;
