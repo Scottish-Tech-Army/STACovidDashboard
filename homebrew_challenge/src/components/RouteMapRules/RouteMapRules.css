@@ -29,14 +29,23 @@
 }
 
 .category-image {
-  height: 90px;
+  margin-top: 15px;
+  height: 80px;
 }
 
 .category-card {
   width: 20%;
+  border: 1px solid LightGray;
+  padding: 10px;
+  margin: 0 5px;
 }
 
 .category-text {
   padding:10px;
   text-align: center;
+}
+
+.select-phase {
+  margin: 0;
+  border: 1px solid LightGray;
 }

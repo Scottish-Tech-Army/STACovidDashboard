@@ -25,7 +25,7 @@ const RouteMapRules = () => {
       ],
       cat3: [
         "Frequent handwashing and hygiene measures for all.",
-        "./assets/washing_hands_alt.png"
+        "./assets/washing_hands_dark.png"
       ],
       cat4: [
         "Schools and childcare services closed.",
@@ -48,7 +48,7 @@ const RouteMapRules = () => {
       ],
       cat4: [
         "Frequent handwashing and hygiene measures for all.",
-        "./assets/washing_hands_alt.png"
+        "./assets/washing_hands_dark.png"
       ]
     },
     phase2: {
@@ -117,7 +117,7 @@ const RouteMapRules = () => {
   return (
     <Container fluid className="route-map-rules">
       <Row>
-        <Col xs="12" lg="2">
+        <Col xs="12" lg="2" className="select-phase">
           <ToggleButtonGroup
             className="d-flex flex-column"
             name="phase"
