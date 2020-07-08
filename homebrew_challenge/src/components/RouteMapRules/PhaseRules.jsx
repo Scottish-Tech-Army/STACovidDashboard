@@ -42,12 +42,19 @@ const PhaseRules = ({categories}) => {
       </div>
 
       <div className="category-card">
-        <div className="d-flex justify-content-center">
-          <img className="category-image" src="./assets/more_info.png"/>
-        </div>
-        <div className="category-text">
-          <span>View the full Scottish Government guidance for {categories["title"]} here.</span>
-        </div>
+        <a
+          className="route-map-link"
+          href="https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div className="d-flex justify-content-center">
+            <img className="category-image" src="./assets/more_info.png"/>
+          </div>
+          <div className="category-text">
+            <span>View the full Scottish Government guidance for {categories["title"]} here.</span>
+          </div>
+        </a>
       </div>
     </>
   );
