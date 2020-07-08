@@ -281,7 +281,7 @@ ui <- fluidPage(
           tags$a(
             href = "https://www.linkedin.com/in/rhiannon-batstone-076191120", target = "_blank",
             img(
-              src = "rb.jpg",
+              src = "rb.png",
               width = "85%"
             ),
           ),
@@ -294,7 +294,7 @@ ui <- fluidPage(
           tags$a(
             href = "https://www.linkedin.com/in/richard--clark", target = "_blank",
             img(
-              src = "rc.jpg",
+              src = "rc.png",
               width = "85%"
             )
           ),
@@ -306,7 +306,7 @@ ui <- fluidPage(
           tags$a(
             href = "https://www.linkedin.com/in/jonathancylau", target = "_blank",
             img(
-              src = "jl.jpg",
+              src = "jl.png",
               width = "85%"
             )
           ),
@@ -318,7 +318,7 @@ ui <- fluidPage(
           tags$a(
             href = "https://www.linkedin.com/in/euan-robertson-5845582", target = "_blank",
             img(
-              src = "er.jpg",
+              src = "er.png",
               width = "85%"
             )
           ),
@@ -330,7 +330,7 @@ ui <- fluidPage(
           tags$a(
             href = "https://www.linkedin.com/in/alstev", target = "_blank",
             img(
-              src = "as.jpg",
+              src = "as.png",
               width = "85%"
             )
           ),
