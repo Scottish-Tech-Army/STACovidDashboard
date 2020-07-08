@@ -161,7 +161,7 @@ const RouteMapRules = () => {
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col xs="12" lg="10" className="d-flex flex-row">
+        <Col xs="12" lg="10" className="d-flex flex-row p-0 m-0">
           <PhaseRules
             categories={phaseText[phase]}
           />
