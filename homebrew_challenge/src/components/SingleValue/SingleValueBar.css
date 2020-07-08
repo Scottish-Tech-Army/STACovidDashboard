@@ -1,9 +1,28 @@
 .single-value-bar {
-  /*margin-top: 2rem;*/
+  padding: 0;
 }
 
-.single-value-bar .row {
-  height: 100%;
+.title-row {
+  margin-right: -5px;
+  margin-left: -5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.title-col {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.title {
+  background-color: white;
+  color: #2a84bb;
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid #2a84bb;
 }
 
 .single-value-bar-row {
@@ -20,9 +39,8 @@
 
 .single-value {
   color: White;
-  background-color: #2A84BB;
+  background-color: #2a84bb;
   text-align: center;
-  height: 100%;
   width: 100%;
 }
 
@@ -30,11 +48,11 @@
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
-  height: 50%;
+  height: 4.5rem;
 }
 
 .single-value-total {
-  padding: 0.2rem 1rem 2rem 1rem;
+  padding: 0.2rem 1rem 1rem 1rem;
   font-size: 1.5rem;
   font-weight: bolder;
 }

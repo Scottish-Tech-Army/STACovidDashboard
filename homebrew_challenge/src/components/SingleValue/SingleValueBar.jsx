@@ -106,7 +106,7 @@ export function getRelativeDate(date) {
   if (daysDifference > 1 && daysDifference < 7) {
     return "last " + format(date, "EEEE");
   }
-  return "on " + format(date, "dd/MM/yyyy");
+  return format(date, "dd/MM/yyyy");
 }
 
 function SingleValueBar() {
@@ -155,40 +155,52 @@ function SingleValueBar() {
     }
   }, [dataFetched]);
 
+  function blockTitleRow(title) {
+    return (
+      <Row className="title-row">
+        <Col className="title-col">
+          <div className="title">{title}</div>
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <Container fluid className="single-value-bar">
       <Row>
         <Col xs={12} lg={4}>
+          {blockTitleRow("Cases")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyCases"
-                title={"Cases " + getRelativeDate(dailyCases.date)}
+                title={getRelativeDate(dailyCases.date)}
                 value={dailyCases.value}
               />
             </Col>
             <Col className="single-value-bar-col">
               <SingleValue
                 id="totalCases"
-                title="Total Cases"
+                title="Total"
                 value={totalCases.value}
               />
             </Col>
           </Row>
         </Col>
         <Col xs={12} lg={4}>
+          {blockTitleRow("Deaths")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyFatalities"
-                title={"Deaths " + getRelativeDate(dailyFatalities.date)}
+                title={getRelativeDate(dailyFatalities.date)}
                 value={dailyFatalities.value}
               />
             </Col>
             <Col className="single-value-bar-col">
               <SingleValue
                 id="totalFatalities"
-                title="Total Deaths"
+                title="Total"
                 value={totalFatalities.value}
               />
             </Col>
@@ -202,18 +214,19 @@ function SingleValueBar() {
           </Row>
         </Col>
         <Col xs={12} lg={4}>
+          {blockTitleRow("Tests Completed")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyTestsCompleted"
-                title="Daily Tests Completed"
+                title="Daily"
                 value={dailyTestsCompleted.value}
               />
             </Col>
             <Col className="single-value-bar-col">
               <SingleValue
                 id="totalTestsCompleted"
-                title="Total Tests Completed"
+                title="Total"
                 value={totalTestsCompleted.value}
               />
             </Col>

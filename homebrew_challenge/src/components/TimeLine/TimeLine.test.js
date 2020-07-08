@@ -23,7 +23,8 @@ const testEvents = [
   { date: "2020-05-29", text: "Event 1" },
   { date: "2021-03-11", text: "Event 4" },
   { date: "2020-06-19", text: "Event 2" },
-  { date: "2020-03-01", text: "Event 3" },
+  { date: "2020-03-01", text: "Event 3a" },
+  { date: "2020-03-01", text: "Event 3b" },
 ];
 
 it("TimeLine rendering text and order", async () => {
@@ -40,5 +41,5 @@ it("TimeLine rendering text and order", async () => {
   expect(tableRows[2].textContent).toBe("2020");
   expect(tableRows[3].textContent).toBe("19 JunEvent 2");
   expect(tableRows[4].textContent).toBe("29 MayEvent 1");
-  expect(tableRows[5].textContent).toBe("1 MarEvent 3");
+  expect(tableRows[5].textContent).toBe("1 MarEvent 3aEvent 3b");
 });
