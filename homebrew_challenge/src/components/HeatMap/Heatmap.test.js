@@ -47,7 +47,7 @@ const dailyCasesCsvData = `date,areaname,count
 2020-03-07,Highland,-1
 2020-03-07,Grampian,-1`;
 
-it("Heatmap renders no data when fetch fails", async () => {
+it("Heatmap renders no data when fetch fails, shows loadingComponent", async () => {
   fetch.mockReject(new Error("fetch failed"));
   // Suppress console error message
   spyOn(console, "error");
@@ -56,15 +56,8 @@ it("Heatmap renders no data when fetch fails", async () => {
     render(<Heatmap />, container);
   });
 
-  checkHeaderRow(
-    headers(),
-    "Council Areas",
-    "Total Deaths",
-    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
-  );
-
-  const dataRows = rows();
-  expect(dataRows).toHaveLength(0);
+  expect(loadingComponent()).not.toBeNull();
+  expect(table()).toBeNull();
 });
 
 it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
@@ -74,6 +67,7 @@ it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
     render(<Heatmap valueType="deaths" areaType="council-areas" />, container);
   });
 
+  expect(loadingComponent()).toBeNull();
   checkHeaderRow(
     headers(),
     "Council Areas",
@@ -83,7 +77,7 @@ it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020")
+  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
   checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
   checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
   checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
@@ -96,6 +90,7 @@ it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
     render(<Heatmap valueType="deaths" areaType="health-boards" />, container);
   });
 
+  expect(loadingComponent()).toBeNull();
   checkHeaderRow(
     headers(),
     "Health Boards",
@@ -105,7 +100,7 @@ it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020")
+  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
   checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
   checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
   checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
@@ -118,6 +113,7 @@ it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
     render(<Heatmap valueType="cases" areaType="health-boards" />, container);
   });
 
+  expect(loadingComponent()).toBeNull();
   checkHeaderRow(
     headers(),
     "Health Boards",
@@ -127,24 +123,20 @@ it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
 
   const dataRows = rows();
   expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020")
+  checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
   checkRow(dataRows[1], "Grampian", "-8", [1, 0, 3, 0]);
   checkRow(dataRows[2], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
   checkRow(dataRows[3], "Highland", "300", [1, 0, 5, 3]);
 });
 
+const loadingComponent = () => container.querySelector(".loading-component");
 const table = () => container.querySelector(".heatmap table");
 const headers = () => table().querySelector("thead tr");
 const rows = () => table().querySelectorAll("tbody tr");
 
 it("parseCsvData", () => {
   const expectedResult = {
-    dates: [
-      "2020-03-16",
-      "2020-03-23",
-      "2020-03-30",
-      "2020-04-06",
-    ],
+    dates: ["2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06"],
     regions: [
       {
         counts: [1, 0, 2, 12],
