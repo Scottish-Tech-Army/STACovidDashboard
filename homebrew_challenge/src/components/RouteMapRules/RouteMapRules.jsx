@@ -14,7 +14,7 @@ const RouteMapRules = () => {
 
   const phaseText = {
     lockdown: {
-      introText: "l-intro",
+      introText: "UK wide lockdown in place from 24th March 2020.",
       cat1: [
         "Maintain strict social distancing, keeping 2m from people not from your household.",
         "./assets/social_distancing.png"
@@ -33,7 +33,7 @@ const RouteMapRules = () => {
       ]
     },
     phase1: {
-      introText: "p1-intro",
+      introText: "Scotland moved to Phase 1 of the routemap on 29 May 2020.",
       cat1: [
         "Maintain social distancing, keeping 2m from people not in your household.",
         "./assets/social_distancing.png"
@@ -71,7 +71,7 @@ const RouteMapRules = () => {
       ]
     },
     phase3: {
-      introText: "",
+      introText: "[Disclaimer]",
       cat1: [
         "Maintain social distancing, keeping 2m from people not in your household.",
         "./assets/social_distancing.png"
@@ -90,7 +90,7 @@ const RouteMapRules = () => {
       ]
     },
     phase4: {
-      introText: "",
+      introText: "[Disclaimer]",
       cat1: [
         "Maintain social distancing, keeping 2m from people not in your household.",
         "./assets/social_distancing.png"
