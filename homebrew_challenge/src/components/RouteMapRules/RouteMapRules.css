@@ -30,9 +30,13 @@
 
 .category-image {
   height: 90px;
+}
+
+.category-card {
   width: 20%;
 }
-/*
-.category-card {
-  border-left: 0.01rem solid LightGray;
-} */
+
+.category-text {
+  padding:10px;
+  text-align: center;
+}
