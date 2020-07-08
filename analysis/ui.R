@@ -267,21 +267,14 @@ ui <- fluidPage(
     tabPanel(
       title = "About Us",
 
-      # # App title
-      # titlePanel(div(img(
-      #   src = "sta.png",
-      #   width = "100%"
-      # ))),
-
-
       fluidRow(
-        column(1),
+        column(2),
         column(2,
           align = "center",
           tags$a(
             href = "https://www.linkedin.com/in/rhiannon-batstone-076191120", target = "_blank",
             img(
-              src = "rb.png",
+              src = "rb..png",
               width = "85%"
             ),
           ),
@@ -300,6 +293,19 @@ ui <- fluidPage(
           ),
           h3("Ric Clark")
         ),
+        
+        
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "linkedin.com/in/craig-climie", target = "_blank",
+                 img(
+                   src = "cc.png",
+                   width = "85%"
+                 )
+               ),
+               h3("Craig Climie")
+        ),
 
         column(2,
           align = "center",
@@ -312,34 +318,111 @@ ui <- fluidPage(
           ),
           h3("Jonathan Lau")
         ),
+        column(2)
+        ),
+      
+      fluidRow(
+        column(3),
 
         column(2,
           align = "center",
           tags$a(
-            href = "https://www.linkedin.com/in/euan-robertson-5845582", target = "_blank",
+            href = "linkedin.com/in/colin-lyman", target = "_blank",
             img(
-              src = "er.png",
+              src = "cl.png",
               width = "85%"
             )
           ),
-          h3("Euan Robertson")
+          h3("Colin Lyman")
         ),
 
         column(2,
           align = "center",
           tags$a(
-            href = "https://www.linkedin.com/in/alstev", target = "_blank",
+            href = "linkedin.com/in/cristina-perez-11229846", target = "_blank",
             img(
-              src = "as.png",
+              src = "cp.png",
               width = "85%"
             )
           ),
-          h3("Allan Stevenson")
+          h3("Cristina Perez")
         ),
-
-        column(1)
+      
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "linkedin.com/in/lukepritchardwoollett", target = "_blank",
+                 img(
+                   src = "lpw.png",
+                   width = "85%"
+                 ),
+               ),
+               h3("Luke Pritchard-Woollett")
+        ),
+        column(3)
       ),
+      fluidRow(
+        
+        column(2),
+        
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "https://www.linkedin.com/in/euan-robertson-5845582", target = "_blank",
+                 img(
+                   src = "er.png",
+                   width = "85%"
+                 )
+               ),
+               h3("Euan Robertson")
+        ),
+        
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "https://www.linkedin.com/in/alstev", target = "_blank",
+                 img(
+                   src = "as.png",
+                   width = "85%"
+                 )
+               ),
+               h3("Allan Stevenson")
+        ),
+        
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "linkedin.com/in/donalstewart", target = "_blank",
+                 img(
+                   src = "ds.png",
+                   width = "85%"
+                 )
+               ),
+               h3("Donal Stewart")
+        ),
+        
+        column(2,
+               align = "center",
+               tags$a(
+                 href = "linkedin.com/in/rebeccastill1", target = "_blank",
+                 img(
+                   src = "bs.png",
+                   width = "85%"
+                 )
+               ),
+               h3("Becky Still")
+        ),
+        column(2)
+      ),
+      
 
+      
+      ##################################################################
+      ##                            Footer                            ##
+      ##################################################################
+      
+      
+      
       fluidRow(
         class = "footer",
         fluidRow(
