@@ -49,3 +49,18 @@
   margin: 0;
   border: 1px solid LightGray;
 }
+
+.current-phase {
+  text-align: center;
+  font-weight: bold;
+  padding: 20px;
+  background-color: #133a53;
+  color: #fff;
+}
+.intro-text {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: LightGray;
+  color: #133a53;
+}

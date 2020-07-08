@@ -117,10 +117,20 @@ const RouteMapRules = () => {
 
   function selectPhase(phase) {
     setPhase(phase);
-  }
+  };
 
   return (
     <Container fluid className="route-map-rules">
+      <Row>
+        <Col xs="12" className="current-phase">
+          <span>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap</span>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs="12" className="intro-text">
+          {phaseText[phase].introText}
+        </Col>
+      </Row>
       <Row>
         <Col xs="12" lg="2" className="select-phase">
           <ToggleButtonGroup
