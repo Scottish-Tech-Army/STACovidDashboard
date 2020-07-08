@@ -13,9 +13,6 @@ import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
 import SpikeAlert from "./components/SpikeAlert/SpikeAlert";
 import InfoBar from "./components/InfoBar/InfoBar";
-// import ReactToolTip from 'react-tooltip';
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -170,14 +167,14 @@ const App = () => {
                 <hr className="underHeatmapSelector" />
               </Col>
               <Col xs={12} md={zoomGeoMap ? 12 : 6}>
-                  <GeoHeatMap
-                      areaType={areaType}
-                      valueType={valueType}
-                      toggleFullscreen={() =>
-                        toggleFullscreen(zoomableMap, setZoomGeoMap)
-                      }
-                      fullscreenEnabled={zoomGeoMap}
-                  />
+                <GeoHeatMap
+                  areaType={areaType}
+                  valueType={valueType}
+                  toggleFullscreen={() =>
+                    toggleFullscreen(zoomableMap, setZoomGeoMap)
+                  }
+                  fullscreenEnabled={zoomGeoMap}
+                />
               </Col>
             </Row>
             <Row>

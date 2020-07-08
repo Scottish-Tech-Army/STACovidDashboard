@@ -2,12 +2,12 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { differenceInDays, format, subDays } from "date-fns";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import '../ToolTips/ToolTips';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -109,7 +109,7 @@ export function getRelativeDate(date) {
   if (daysDifference > 1 && daysDifference < 7) {
     return "last " + format(date, "EEEE");
   }
-  return "on " + format(date, "dd/MM/yyyy");
+  return format(date, "dd/MM/yyyy");
 }
 
 function SingleValueBar() {
@@ -158,10 +158,30 @@ function SingleValueBar() {
     }
   }, [dataFetched]);
 
+  function blockTitleRow(title) {
+    return (
+      <Row className="title-row">
+        <Col className="title-col">
+          <div className="title">{title}</div>
+        </Col>
+      </Row>
+    );
+  }
+
   return (
     <Container fluid className="single-value-bar">
       <Row>
         <Col xs={12} lg={4}>
+          <div className="icon2">
+            <a href="#" data-toggle="tooltip" title="Test">
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="1x"
+                  color="#319bd5"
+                />
+              </a>
+            </div>
+          {blockTitleRow("Cases")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <div className="icon">
@@ -175,7 +195,7 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="dailyCases"
-                title={"Cases " + getRelativeDate(dailyCases.date)}
+                title={getRelativeDate(dailyCases.date)}
                 value={dailyCases.value}
               />
             </Col>
@@ -191,13 +211,23 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="totalCases"
-                title="Total Cases"
+                title="Total"
                 value={totalCases.value}
               />
             </Col>
           </Row>
         </Col>
         <Col xs={12} lg={4}>
+          <div className="icon2">
+            <a href="#" data-toggle="tooltip" title="Test">
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="1x"
+                  color="#319bd5"
+                />
+              </a>
+            </div>
+          {blockTitleRow("Deaths")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <div className="icon">
@@ -211,7 +241,7 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="dailyFatalities"
-                title={"Deaths " + getRelativeDate(dailyFatalities.date)}
+                title={getRelativeDate(dailyFatalities.date)}
                 value={dailyFatalities.value}
               />
             </Col>
@@ -227,7 +257,7 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="totalFatalities"
-                title="Total Deaths"
+                title="Total"
                 value={totalFatalities.value}
               />
             </Col>
@@ -250,6 +280,16 @@ function SingleValueBar() {
           </Row>
         </Col>
         <Col xs={12} lg={4}>
+          <div className="icon2">
+            <a href="#" data-toggle="tooltip" title="Test">
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  size="1x"
+                  color="#319bd5"
+                />
+              </a>
+            </div>
+          {blockTitleRow("Tests Completed")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
               <div className="icon">
@@ -263,7 +303,7 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="dailyTestsCompleted"
-                title="Daily Tests Completed"
+                title="Daily"
                 value={dailyTestsCompleted.value}
               />
             </Col>
@@ -279,7 +319,7 @@ function SingleValueBar() {
               </div>
               <SingleValue
                 id="totalTestsCompleted"
-                title="Total Tests Completed"
+                title="Total"
                 value={totalTestsCompleted.value}
               />
             </Col>
