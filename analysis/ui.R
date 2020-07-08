@@ -18,7 +18,7 @@ ui <- fluidPage(
       style = "position: relative; top: -10px"
     ),
 
-    windowTitle = "Tidyverse Troopers",
+    windowTitle = "Data STAr",
 
 
     #################################################################
