@@ -234,7 +234,7 @@ const App = () => {
           </Row>
           <Row className="d-none d-sm-flex">
             <Col>
-              <hr className="full-width-hr" />
+              <hr className="full-width-hr"/>
             </Col>
           </Row>
         </Container>
@@ -444,7 +444,7 @@ const App = () => {
       <footer>
         <Container className="text-center font-small blue pt-4">
           <Row className="align-items-center">
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
                 target="_blank"
@@ -459,7 +459,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.scottishtecharmy.org/"
                 target="_blank"
@@ -473,7 +473,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
                 target="_blank"
@@ -488,8 +488,10 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
-              <div className="sitemap">
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <div className="sitemap p-2">
                 <div className="title">Sitemap</div>
                 {sitemapEntry(PAGE_PUBLIC_DASHBOARD, "Public Dashboard")}
                 {sitemapEntry(PAGE_ANALYTICS_DASHBOARD, "Analytics Dashboard")}
