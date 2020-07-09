@@ -258,47 +258,81 @@ const App = () => {
   function pageAboutUs() {
     function person(name, mugshot, linkedInRef) {
       return (
-        <Col>
+        <Col className="person pt-3  d-flex justify-content-center" xs={12} md={2}>
           <a
             href={linkedInRef}
             target="_blank"
             rel="noopener noreferrer"
-            className="link"
+            className="link "
           >
-            <img src={mugshot} alt={name} width="85%" />
-            <div>{name}</div>
+            <img src={mugshot} alt={name} className="mugshot" />
+            <div className="name">{name}</div>
           </a>
         </Col>
       );
     }
 
     return (
-      <Container fluid>
-        <Row className="pt-3">
+      <Container fluid className="about-us">
+        <Row className="pt-3 d-flex justify-content-center">
           {person(
             "Rhi Batstone",
-            "rb.jpg",
+            "rb.png",
             "https://www.linkedin.com/in/rhiannon-batstone-076191120"
           )}
           {person(
             "Ric Clark",
-            "rc.jpg",
+            "rc.png",
             "https://www.linkedin.com/in/richard--clark"
           )}
           {person(
-            "Jonathan Lau",
-            "jl.jpg",
-            "https://www.linkedin.com/in/jonathancylau"
+            "Craig Climie",
+            "cc.png",
+            "https://www.linkedin.com/in/craig-climie"
           )}
           {person(
+            "Jonathan Lau",
+            "jl.png",
+            "https://www.linkedin.com/in/jonathancylau"
+          )}
+        </Row>
+        <Row className="pt-3 d-flex justify-content-center">
+          {person(
+            "Colin Lyman",
+            "cl.png",
+            "https://www.linkedin.com/in/colin-lyman"
+          )}
+          {person(
+            "Cristina Perez",
+            "cp.png",
+            "https://www.linkedin.com/in/cristina-perez-11229846"
+          )}
+          {person(
+            "Luke Pritchard-Woollett",
+            "lpw.png",
+            "https://www.linkedin.com/in/lukepritchardwoollett"
+          )}
+        </Row>
+        <Row className="pt-3 d-flex justify-content-center">
+          {person(
             "Euan Robertson",
-            "er.jpg",
+            "er.png",
             "https://www.linkedin.com/in/euan-robertson-5845582"
           )}
           {person(
             "Allan Stevenson",
-            "as.jpg",
+            "as.png",
             "https://www.linkedin.com/in/alstev"
+          )}
+          {person(
+            "Donal Stewart",
+            "ds.png",
+            "https://www.linkedin.com/in/donalstewart"
+          )}
+          {person(
+            "Becky Still",
+            "bs.png",
+            "https://www.linkedin.com/in/rebeccastill1"
           )}
         </Row>
       </Container>
