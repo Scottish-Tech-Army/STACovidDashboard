@@ -97,7 +97,7 @@ const RouteMapRules = () => {
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "Further relaxation on restrictions on gathering.",
+        text: "Further relaxation on restrictions for gathering.",
         icon: "./assets/larger_gatherings.png"
       },
       cat3: {
