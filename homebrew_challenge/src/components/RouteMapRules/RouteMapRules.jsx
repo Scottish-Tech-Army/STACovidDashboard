@@ -11,7 +11,7 @@ import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 const RouteMapRules = () => {
   // set default phase here
-  const [phase, setPhase] = useState("phase2");
+  const [phase, setPhase] = useState("phase3");
 
   const phaseText = {
     lockdown: {
