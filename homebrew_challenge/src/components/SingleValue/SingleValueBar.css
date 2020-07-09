@@ -2,19 +2,19 @@
   padding: 0;
 }
 
-.title-row {
+.single-value-bar .title-row {
   margin-right: -5px;
   margin-left: -5px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
-.title-col {
+.single-value-bar .title-col {
   margin-right: 5px;
   margin-left: 5px;
   padding: 0;
 }
 
-.title {
+.single-value-bar .title {
   background-color: white;
   color: #2a84bb;
   text-align: center;

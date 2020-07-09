@@ -22,3 +22,11 @@ img#logo {
   font-weight: bold;
   text-decoration: underline;
 }
+
+.sitemap .title {
+    font-weight: bold;
+}
+
+.sitemap .entry:hover, .sitemap .entry:active {
+    text-decoration: underline;
+}
