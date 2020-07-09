@@ -305,17 +305,6 @@ const App = () => {
     );
   }
 
-  function pageAnalyticsDashboard() {
-    return (
-      <iframe
-        id="anaytics-frame"
-        src="http://127.0.0.1:7136/"
-        style={{ border: "none", width: "100%", height: "850px" }}
-        frameborder="0"
-      ></iframe>
-    );
-  }
-
   return (
     <div className="App">
       <header>
