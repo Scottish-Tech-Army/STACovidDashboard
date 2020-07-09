@@ -15,7 +15,6 @@ const RouteMapRules = () => {
   const phaseText = {
     lockdown: {
       title: "Lockdown",
-      introText: "UK wide lockdown in place from 24th March 2020.",
       cat1: {
         text: "Maintain strict social distancing, keeping 2m from people not from your household.",
         icon: "./assets/social_distancing.png",
@@ -35,7 +34,6 @@ const RouteMapRules = () => {
     },
     phase1: {
       title: "Phase 1",
-      introText: "Scotland moved to Phase 1 of the routemap on 29 May 2020.",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -55,7 +53,6 @@ const RouteMapRules = () => {
     },
     phase2: {
       title: "Phase 2",
-      introText: "Scotland moved to Phase 2 of the routemap on 19 June 2020.",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -75,7 +72,6 @@ const RouteMapRules = () => {
     },
     phase3: {
       title: "Phase 3",
-      introText: "[Disclaimer]",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -95,7 +91,6 @@ const RouteMapRules = () => {
     },
     phase4: {
       title: "Phase 4",
-      introText: "[Disclaimer]",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -124,11 +119,6 @@ const RouteMapRules = () => {
       <Row>
         <Col xs="12" className="current-phase">
           <h3>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.</h3>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" className="intro-text">
-          {phaseText[phase].introText}
         </Col>
       </Row>
       <Row>

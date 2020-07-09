@@ -109,11 +109,6 @@ const App = () => {
               </h1>
             </Col>
           </Row>
-          <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
-            <Col>
-              <InfoBar/>
-            </Col>
-          </Row>
           <Row className="pt-3 justify-content-center align-items-center">
             <Col>
               <RouteMapRules />
@@ -226,6 +221,11 @@ const App = () => {
         <Row>
           <Col>
             <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
+          <Col>
+            <InfoBar/>
           </Col>
         </Row>
       </Container>
