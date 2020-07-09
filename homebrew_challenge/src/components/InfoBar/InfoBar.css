@@ -5,6 +5,10 @@
   padding: 30px 10px 30px 30px;
 }
 
+.more-info-icon {
+  height: 60px;
+}
+
 #icon {
   padding-right: 30px;
   height: 100%;
