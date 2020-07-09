@@ -18,7 +18,7 @@ const PhaseRules = ({ categories }) => {
         <div className="d-flex justify-content-center">
           <img className="category-image" src={icon} />
         </div>
-        <div className="category-text d-flex p-4 text-lg-center align-items-center">
+        <div className="d-flex p-4 text-lg-center align-items-center">
           <span>{text}</span>
         </div>
       </>
@@ -50,7 +50,7 @@ const PhaseRules = ({ categories }) => {
   }
 
   return (
-    <div className="d-flex flex-column flex-lg-row phase-rules">
+    <div className="d-flex flex-column flex-lg-row">
       {addPhaseRules("cat1")}
       {addPhaseRules("cat2")}
       {addPhaseRules("cat3")}
