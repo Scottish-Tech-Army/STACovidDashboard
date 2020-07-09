@@ -93,7 +93,7 @@ const RouteMapRules = () => {
     phase4: {
       title: "Phase 4",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Physical distancing requirements to be updated on scientific advice.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
