@@ -65,10 +65,13 @@ server <- function(input, output, session) {
     scotland_count <- scotland %>%
       left_join(management_leaflet_reactive(), by = c("HBName" = "areaname"))
 
-    # creates bins and palette for leaflet plot
-    # bins <- seq(0, max(management_reactive()$total), length.out = 6)
 
-    pal <- colorBin("plasma", domain = scotland_count$value, bins = 5)
+    pal <- colorBin(c("#E0E0E0",
+                      "#FEF0D9",
+                      "#FDCC8A",
+                      "#FC8D59",
+                      "#E34A33",
+                      "#B30000"), domain = scotland_count$value, bins = 6)
 
     # creates hover over labels
     labels <- sprintf(
@@ -80,17 +83,16 @@ server <- function(input, output, session) {
 
     scotland_count %>%
       leaflet() %>%
+      addTiles("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png") %>%
       addPolygons(
         fillColor = ~ pal(value),
-        weight = 2,
-        opacity = 1,
-        color = "white",
-        dashArray = "3",
+        weight = 1,
+        opacity = 0.5,
+        color = "black",
         fillOpacity = 0.5,
         highlight = highlightOptions(
-          weight = 5,
-          color = "#666",
-          dashArray = "",
+          weight = 1,
+          color = "grey",
           fillOpacity = 0.7,
           bringToFront = TRUE
         ),
@@ -153,7 +155,12 @@ server <- function(input, output, session) {
   output$scot_covid_plot <- renderLeaflet({
 
     
-    pal2 <- colorBin("Reds", domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
+    pal2 <- colorBin(c("#E0E0E0",
+                       "#FEF0D9",
+                       "#FDCC8A",
+                       "#FC8D59",
+                       "#E34A33",
+                       "#B30000"), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
     
     # creates hover over labels
     
@@ -173,8 +180,7 @@ server <- function(input, output, session) {
   
     scotland_deaths_reactive() %>% 
     leaflet() %>%
-      addProviderTiles(
-        providers$CartoDB.Positron) %>%
+      addTiles("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png") %>%
       addPolygons(color = "#515151", weight = 1, smoothFactor = 0.5,
                   opacity = 0.5, fillOpacity = 0.5,
                   fillColor = ~ pal2(rate_per_100_000_population),
