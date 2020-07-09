@@ -30,14 +30,14 @@ deaths <- read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/da
 
 scot_i_zones_raw <- st_read("raw_data/SG_IntermediateZoneBdry_2011/SG_IntermediateZone_Bdry_2011.shp")
 scot_i_zones <- scot_i_zones_raw %>%
-  group_by(Name) %>%
+  group_by(InterZone) %>%
   summarise(geometry = sf::st_union(geometry)) %>%
   st_transform("+proj=longlat +datum=WGS84") %>%
   ms_simplify()
 
 
 joined <- scot_i_zones %>%
-  left_join(deaths, by = "Name")
+  left_join(deaths, by = c("InterZone" ="intermediate_zone_code"))
 
 
 write_rds(joined, path = "clean_data/scotland_deaths.rds", compress = "none")
