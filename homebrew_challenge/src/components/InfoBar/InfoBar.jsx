@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import "./InfoBar.css";
 import { getLatestNewsItem } from "../Utils/RssFeedUtils";
 
 const InfoBar = () => {
