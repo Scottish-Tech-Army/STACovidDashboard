@@ -113,11 +113,6 @@ const App = () => {
       <>
         <header>
           <Container fluid className="header">
-            <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
-              <Col>
-                <InfoBar />
-              </Col>
-            </Row>
             <Row className="pt-3 justify-content-center align-items-center">
               <Col>
                 <RouteMapRules />
@@ -228,6 +223,16 @@ const App = () => {
             </Col>
           </Row>
           <Row>
+            <Col>
+              <hr className="full-width-hr" />
+            </Col>
+          </Row>
+          <Row className="d-none d-sm-flex justify-content-center align-items-center">
+            <Col>
+              <InfoBar />
+            </Col>
+          </Row>
+          <Row className="d-none d-sm-flex">
             <Col>
               <hr className="full-width-hr" />
             </Col>

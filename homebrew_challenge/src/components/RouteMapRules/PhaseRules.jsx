@@ -6,8 +6,7 @@ const PhaseRules = ({ categories }) => {
   function getGuidanceText() {
     return (
       <>
-        View the full Scottish Government guidance for {categories["title"]}{" "}
-        here.
+        View the full Scottish Government guidance for all of the phases here.
       </>
     );
   }
@@ -15,10 +14,10 @@ const PhaseRules = ({ categories }) => {
   function phaseRuleFormatting(icon, text, anchor) {
     const content = (
       <>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center p-4">
           <img className="category-image" src={icon} />
         </div>
-        <div className="d-flex p-4 text-lg-center align-items-center">
+        <div className="d-flex text-lg-center justify-content-lg-center align-items-center p-4">
           <span>{text}</span>
         </div>
       </>
@@ -28,7 +27,7 @@ const PhaseRules = ({ categories }) => {
       <div className="category-card d-flex flex-row flex-lg-column">
         {anchor ? (
           <a
-            className="route-map-link"
+            className="route-map-link d-flex flex-row flex-lg-column"
             href={anchor}
             target="_blank"
             rel="noopener noreferrer"

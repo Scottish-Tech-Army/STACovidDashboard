@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./RouteMapRules.css";
 import PhaseRules from "./PhaseRules";
 import Container from "react-bootstrap/Container";
@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import ListGroup from "react-bootstrap/ListGroup";
 
 const RouteMapRules = () => {
   // set default phase here
@@ -15,7 +14,6 @@ const RouteMapRules = () => {
   const phaseText = {
     lockdown: {
       title: "Lockdown",
-      introText: "UK wide lockdown in place from 24th March 2020.",
       cat1: {
         text: "Maintain strict social distancing, keeping 2m from people not from your household.",
         icon: "./assets/social_distancing.png",
@@ -35,7 +33,6 @@ const RouteMapRules = () => {
     },
     phase1: {
       title: "Phase 1",
-      introText: "Scotland moved to Phase 1 of the routemap on 29 May 2020.",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -55,7 +52,6 @@ const RouteMapRules = () => {
     },
     phase2: {
       title: "Phase 2",
-      introText: "Scotland moved to Phase 2 of the routemap on 19 June 2020.",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -75,7 +71,6 @@ const RouteMapRules = () => {
     },
     phase3: {
       title: "Phase 3",
-      introText: "[Disclaimer]",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -95,7 +90,6 @@ const RouteMapRules = () => {
     },
     phase4: {
       title: "Phase 4",
-      introText: "[Disclaimer]",
       cat1: {
         text: "Maintain social distancing, keeping 2m from people not in your household.",
         icon: "./assets/social_distancing.png"
@@ -123,27 +117,21 @@ const RouteMapRules = () => {
     <Container fluid className="route-map-rules">
       <Row>
         <Col xs="12" className="current-phase">
-          <h3>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.</h3>
-          <br/>
-          <span className="disclaimer">
-            <i>(The description of the phases below is summary rather than comprehensive: it will not include every aspect of the restrictions that is of concern.)</i>
-          </span>
+          <h3>
+            We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.
+          </h3>
         </Col>
       </Row>
       <Row>
-        <Col xs="12" className="intro-text">
-          {phaseText[phase].introText}
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" lg="2" className="select-phase">
-          <ToggleButtonGroup
-            className="d-flex flex-column"
-            name="phase"
-            type="radio"
-            value={phase}
-            onChange={val => setPhase(val)}
-          >
+        <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center">
+        <ToggleButtonGroup
+          className="d-flex flex-column phase-toggle-buttons"
+          name="phase"
+          type="radio"
+          value={phase}
+          onChange={val => setPhase(val)
+          }
+        >
             <ToggleButton id="lockdown" value={"lockdown"}>
               Lockdown
             </ToggleButton>
@@ -161,7 +149,7 @@ const RouteMapRules = () => {
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col xs="12" lg="10" className="d-flex flex-row p-0 m-0">
+        <Col xs="12" lg="10" className="d-flex flex-row p-0">
           <PhaseRules
             categories={phaseText[phase]}
           />
