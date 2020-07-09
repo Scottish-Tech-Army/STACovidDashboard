@@ -59,21 +59,56 @@ server <- function(input, output, session) {
   ##                         Leaflet Plot                         --
   ## ----------------------------------------------------------------
 
+  
   output$scot_plot <- renderLeaflet({
-
-    # Join counts onto bondary geographical shape data
+    
     scotland_count <- scotland %>%
       left_join(management_leaflet_reactive(), by = c("HBName" = "areaname"))
-
-
-    pal <- colorBin(c(
-      "#E0E0E0",
-      "#FEF0D9",
-      "#FDCC8A",
-      "#FC8D59",
-      "#E34A33",
-      "#B30000"
-    ), domain = scotland_count$value, bins = 6)
+    
+    pal <- if (input$data == "cumulativeTestedPositive") {
+      colorBin(c(
+        "#E0E0E0",
+        "#FEF0D9",
+        "#FDCC8A",
+        "#FC8D59",
+        "#E34A33",
+        "#B30000"), 
+        domain = scotland_count$value, 
+        bins = c(0, 1, 10, 100, 1000, 3000, Inf))
+      
+    } else if (input$data == "hospitalCasesConfirmed") {
+      colorBin(c(
+        "#E0E0E0",
+        "#FEF0D9",
+        "#FDCC8A",
+        "#FC8D59",
+        "#E34A33",
+        "#B30000"), 
+        domain = scotland_count$value, 
+        bins = c(0, 10, 20, 40, 60, 80, 100, Inf))
+      
+    } else if (input$data == "hospitalCasesSuspected") {
+      colorBin(c(
+        "#E0E0E0",
+        "#FEF0D9",
+        "#FDCC8A",
+        "#FC8D59",
+        "#E34A33",
+        "#B30000"), 
+        domain = scotland_count$value, 
+        bins = c(0, 10, 20, 40, 60, 80, 100, Inf))
+      
+    } else if(input$data == "ICUCasesTotal") {
+      colorBin(c(
+        "#E0E0E0",
+        "#FEF0D9",
+        "#FDCC8A",
+        "#FC8D59",
+        "#E34A33",
+        "#B30000"), 
+        domain = scotland_count$value, 
+        bins = c(0, 2, 4, 6, 8, 10, Inf))
+    }
 
     # creates hover over labels
     labels <- sprintf(
@@ -162,7 +197,7 @@ server <- function(input, output, session) {
       "#FC8D59",
       "#E34A33",
       "#B30000"
-    ), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
+    ), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = c(0, 1, 100, 300, 500, 800, Inf))
 
     # creates hover over labels
 
