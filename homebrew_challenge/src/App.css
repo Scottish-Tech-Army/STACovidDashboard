@@ -22,3 +22,31 @@ img#logo {
   font-weight: bold;
   text-decoration: underline;
 }
+
+.sitemap .title {
+    font-weight: bold;
+}
+
+.sitemap .entry:hover, .sitemap .entry:active {
+    text-decoration: underline;
+}
+
+.about-us .person a {
+    width: 85%;
+}
+
+.about-us .person .mugshot {
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-us .name {
+    color: #3c3c3b;
+    text-align: center;
+    font-size: 16pt;
+}
+.about-us .person {
+    text-align: center;
+}
