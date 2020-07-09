@@ -4,11 +4,7 @@ ui <- fluidPage(
 
 
   navbarPage(
-    title = div(
-      HTML(paste0(
-      )),
-      style = "position: relative; top: -10px"
-    ),
+  title = NULL,
 
     windowTitle = "Data STAr",
 
