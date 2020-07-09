@@ -30,3 +30,7 @@
 .news-item-link, .news-item-link:hover {
   color: Black;
 }
+
+.more-info-icon {
+  height: 60px;
+}

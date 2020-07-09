@@ -119,15 +119,18 @@ const RouteMapRules = () => {
     <Container fluid className="route-map-rules">
       <Row>
         <Col xs="12" className="current-phase mb-2">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="The description of the phases is summary rather than comprehensive: it will not include every aspect of the restrictions
+                that is of concern.">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
           <h3>
             We are currently in Phase 3 of the Scottish Government's Covid-19 Routemap.
-            <FontAwesomeIcon
-                className="ml-2"
-                icon={faQuestionCircle}
-                size="1x"
-                color="#fff"
-                alt="link to Scottish Government further guidance"
-              />
           </h3>
 
         </Col>
