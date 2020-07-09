@@ -116,14 +116,14 @@ const RouteMapRules = () => {
   return (
     <Container fluid className="route-map-rules">
       <Row>
-        <Col xs="12" className="current-phase">
+        <Col xs="12" className="current-phase mb-2">
           <h3>
             We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.
           </h3>
         </Col>
       </Row>
       <Row>
-        <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center">
+        <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center mt-lg-1 mb-lg-1">
         <ToggleButtonGroup
           className="d-flex flex-column phase-toggle-buttons"
           name="phase"
