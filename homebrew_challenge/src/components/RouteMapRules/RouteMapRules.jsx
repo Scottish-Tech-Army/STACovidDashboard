@@ -132,24 +132,24 @@ const RouteMapRules = () => {
             onChange={val => setPhase(val)
             }
           >
-            <ToggleButton id="lockdown" value={"lockdown"} size="sm">
+            <ToggleButton id="lockdown" value={"lockdown"}>
               Lockdown
             </ToggleButton>
-            <ToggleButton id="phase-1" value={"phase1"} size="sm">
+            <ToggleButton id="phase-1" value={"phase1"}>
               Phase 1
             </ToggleButton>
-            <ToggleButton id="phase-2" value={"phase2"} size="sm">
+            <ToggleButton id="phase-2" value={"phase2"}>
               Phase 2
             </ToggleButton>
-            <ToggleButton id="phase-3" value={"phase3"} size="sm">
+            <ToggleButton id="phase-3" value={"phase3"}>
               Phase 3
             </ToggleButton>
-            <ToggleButton id="phase-4" value={"phase4"} size="sm">
+            <ToggleButton id="phase-4" value={"phase4"}>
               Phase 4
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col xs="12" lg="10" className="d-flex flex-row" size="sm">
+        <Col xs="12" lg="10" className="d-flex flex-row p-0">
           <PhaseRules
             categories={phaseText[phase]}
           />

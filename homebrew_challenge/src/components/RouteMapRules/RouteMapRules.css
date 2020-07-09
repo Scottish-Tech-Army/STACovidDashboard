@@ -16,7 +16,7 @@
   border: none;
   border-radius: 0;
   margin: 0;
-  padding: 1rem 13rem;
+  padding: 1rem;
 }
 
 #lockdown,
@@ -29,7 +29,7 @@
   border-radius: 0;
   border: none;
   margin: 0;
-  padding: 1rem 13rem;
+  padding: 1rem;
 }
 
 .category-image {
@@ -39,11 +39,11 @@
 .category-card {
   border: 1px solid LightGray;
   padding: 10px;
-  margin: 10px 5px;
+  margin: 5px;
 }
 
 .select-phase {
-  margin: 10px 0;
+  margin: 5px 0;
   padding: 10px;
   border: 1px solid LightGray;
 }
@@ -51,8 +51,6 @@
 .current-phase {
   text-align: center;
   font-weight: bold;
-  padding: 20px;
-  margin-bottom: 10px;
   background-color: #133a53;
   color: #fff;
 }
