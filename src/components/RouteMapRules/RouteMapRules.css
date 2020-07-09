@@ -1,0 +1,115 @@
+.route-map-rules {
+  color: #133a53;
+}
+
+.route-map-link {
+  text-decoration: none;
+  color: #133a53;
+}
+
+#lockdown.active,
+#phase-1.active,
+#phase-2.active,
+#phase-3.active,
+#phase-4.active {
+  background-color: #319bd5;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 1rem;
+}
+
+#lockdown,
+#phase-1,
+#phase-2,
+#phase-3,
+#phase-4 {
+  background-color: #fff;
+  color: #133a53;
+  border-radius: 0;
+  border: none;
+  margin: 0;
+  padding: 1rem;
+}
+
+.category-image {
+  height: 80px;
+}
+
+.category-card {
+  border: 1px solid LightGray;
+  padding: 10px;
+  margin: 0;
+}
+
+.select-phase {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid LightGray;
+}
+
+.current-phase {
+  text-align: center;
+  font-weight: bold;
+  background-color: #133a53;
+  color: #fff;
+  padding: 2rem;
+}
+
+.phase-toggle-buttons {
+  width: 100%;
+}
+
+.icon2 {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+.fa-question-circle {
+  color: #fff;
+}
+
+.tooltip:hover {
+  text-decoration: none;
+}
+
+.tooltip span {
+  z-index: 10;
+  display: none;
+  padding: 14px 20px;
+  margin-top: -30px;
+  margin-left: 28px;
+  width: 240px;
+  line-height: 16px;
+}
+
+.tooltip:hover span {
+  display: inline;
+  position: absolute;
+  color: #111;
+  border: 1px solid #DCA;
+  background: #fffAF0;
+}
+
+.callout {
+  z-index: 20;
+  position: absolute;
+  top: 30px;
+  border: 0;
+  left: -12px;
+}
+
+/*CSS3 extras*/
+
+.tooltip span {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-box-shadow: 5px 5px 8px #CCC;
+  -webkit-box-shadow: 5px 5px 8px #CCC;
+  box-shadow: 5px 5px 8px #CCC;
+}

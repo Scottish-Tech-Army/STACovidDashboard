@@ -1,0 +1,32 @@
+.info-bar {
+  display: flex;
+  align-items: center;
+  background-color: #c1def1;
+  padding: 30px 10px 30px 30px;
+}
+
+#icon {
+  padding-right: 30px;
+  height: 100%;
+  float: left;
+}
+
+.scot-gov-link:before {
+  content: "\00a0 ";
+}
+
+.info-bar .message {
+  font-weight: bold;
+}
+
+.info-bar .news-item {
+  margin: 0;
+}
+
+.news-item-link, .news-item-link:hover {
+  color: Black;
+}
+
+.more-info-icon {
+  height: 60px;
+}

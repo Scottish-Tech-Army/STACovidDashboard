@@ -1,0 +1,143 @@
+.single-value-bar {
+  padding: 0;
+}
+
+.single-value-bar .title-row {
+  margin-right: -5px;
+  margin-left: -5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.single-value-bar .title-col {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.single-value-bar .title {
+  background-color: white;
+  color: #2a84bb;
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid #2a84bb;
+}
+
+.single-value-bar-row {
+  margin-right: -5px;
+  margin-left: -5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.single-value-bar-col {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.single-value {
+  color: White;
+  background-color: #2a84bb;
+  text-align: center;
+  width: 100%;
+}
+
+.single-value-header {
+  padding: 1rem 0.75rem 0 0.5rem;
+  margin-top: 0;
+  font-weight: bold;
+  height: 3rem;
+  font-size: 0.75rem;
+}
+
+.single-value-total {
+  padding: 0 1rem 2rem 1rem;
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+.icon {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+.fa-question-circle {
+  color: #fff;
+}
+
+.tooltip:hover {
+  text-decoration: none;
+}
+
+.tooltip span {
+  z-index: 10;
+  display: none;
+  padding: 14px 20px;
+  margin-top: -30px;
+  margin-left: 28px;
+  width: 240px;
+  line-height: 16px;
+}
+
+.tooltip:hover span {
+  display: inline;
+  position: absolute;
+  color: #111;
+  border: 1px solid #DCA;
+  background: #fffAF0;
+}
+
+.callout {
+  z-index: 20;
+  position: absolute;
+  top: 30px;
+  border: 0;
+  left: -12px;
+}
+
+/*CSS3 extras*/
+
+.tooltip span {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-box-shadow: 5px 5px 8px #CCC;
+  -webkit-box-shadow: 5px 5px 8px #CCC;
+  box-shadow: 5px 5px 8px #CCC;
+}
+
+@include media-breakpoint-up(xs) {
+  .single-value-total {
+    font-size: 0.5rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .single-value-total {
+    font-size: 0.75rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .single-value-total {
+    font-size: 1.25rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .single-value-total {
+    font-size: 1.75rem;
+  }
+}
+@include media-breakpoint-up(xl) {
+  .single-value-total {
+    font-size: 2rem;
+  }
+}
