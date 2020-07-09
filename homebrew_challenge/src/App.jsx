@@ -375,7 +375,7 @@ const App = () => {
       <footer>
         <Container className="text-center font-small blue pt-4">
           <Row className="align-items-center">
-            <Col xs={12} md={4}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
                 target="_blank"
@@ -390,7 +390,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.scottishtecharmy.org/"
                 target="_blank"
@@ -404,7 +404,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
                 target="_blank"
