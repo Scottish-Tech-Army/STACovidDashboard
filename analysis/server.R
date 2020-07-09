@@ -66,12 +66,14 @@ server <- function(input, output, session) {
       left_join(management_leaflet_reactive(), by = c("HBName" = "areaname"))
 
 
-    pal <- colorBin(c("#E0E0E0",
-                      "#FEF0D9",
-                      "#FDCC8A",
-                      "#FC8D59",
-                      "#E34A33",
-                      "#B30000"), domain = scotland_count$value, bins = 6)
+    pal <- colorBin(c(
+      "#E0E0E0",
+      "#FEF0D9",
+      "#FDCC8A",
+      "#FC8D59",
+      "#E34A33",
+      "#B30000"
+    ), domain = scotland_count$value, bins = 6)
 
     # creates hover over labels
     labels <- sprintf(
@@ -140,66 +142,78 @@ server <- function(input, output, session) {
       add_trace(colors = "Dark2")
   })
 
-  
+
   ##################################################################
   ##                       Covid deaths map                       ##
   ##################################################################
-  
-  
-  
+
+
+
   scotland_deaths_reactive <- reactive({
-    scotland_deaths %>% 
-    filter(local_authority %in% input$local_auth) 
-    })
+    scotland_deaths %>%
+      filter(local_authority %in% input$local_auth)
+  })
 
   output$scot_covid_plot <- renderLeaflet({
+    pal2 <- colorBin(c(
+      "#E0E0E0",
+      "#FEF0D9",
+      "#FDCC8A",
+      "#FC8D59",
+      "#E34A33",
+      "#B30000"
+    ), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
 
-    
-    pal2 <- colorBin(c("#E0E0E0",
-                       "#FEF0D9",
-                       "#FDCC8A",
-                       "#FC8D59",
-                       "#E34A33",
-                       "#B30000"), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
-    
     # creates hover over labels
-    
-    labels2 <- sprintf("<strong>%s</strong><br>
-                       %s<br>
-                       <strong>Death rate: </strong>%g<br>
-                       <strong>Pop: </strong>%g<br>
-                       <strong>Tests: </strong>--<br> 
-                       <strong>Result wait time: </strong>--<br>
-                       <strong>Daily new cases: </strong>--<br>
-                       <strong>NHS 111 calls: </strong>--<br>", 
-                     scotland_deaths_reactive()$Name, 
-                     scotland_deaths_reactive()$local_authority, 
-                     scotland_deaths_reactive()$rate_per_100_000_population, 
-                     scotland_deaths_reactive()$population_2018_based
-                     ) %>% lapply(htmltools::HTML)
-  
-    scotland_deaths_reactive() %>% 
-    leaflet() %>%
+
+    labels2 <- sprintf(
+      "<strong>%s</strong><br>%s<br>
+        <strong>Death rate: </strong>%g<br>
+        <strong>Pop: </strong>%g<br>
+        <strong>Tests: </strong>--<br> 
+        <strong>Result wait time: </strong>--<br>
+        <strong>Daily new cases: </strong>--<br>
+        <strong>NHS 111 calls: </strong>--<br>",
+      scotland_deaths_reactive()$Name,
+      scotland_deaths_reactive()$local_authority,
+      scotland_deaths_reactive()$rate_per_100_000_population,
+      scotland_deaths_reactive()$population_2018_based
+    ) %>% lapply(htmltools::HTML)
+
+    scotland_deaths_reactive() %>%
+      leaflet() %>%
       addTiles("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png") %>%
-      addPolygons(color = "#515151", weight = 1, smoothFactor = 0.5,
-                  opacity = 0.5, fillOpacity = 0.5,
-                  fillColor = ~ pal2(rate_per_100_000_population),
-                  highlightOptions = highlightOptions(color = "white", weight = 2,
-                                                      bringToFront = TRUE),
-                  label = labels2,
-                  labelOptions = labelOptions(
-                    style = list("font-weight" = "normal",
-                                 padding = "3px 8px"),
-                    textsize = "15px",
-                    direction = "auto")) %>%
-      addLegend(pal = pal2,
-                values = ~rate_per_100_000_population,
-                opacity = 0.7,
-                title = "Death Rate",
-                position = "topleft")
-    
+      addPolygons(
+        color = "#515151",
+        weight = 1,
+        smoothFactor = 0.5,
+        opacity = 0.5,
+        fillOpacity = 0.5,
+        fillColor = ~ pal2(rate_per_100_000_population),
+        highlightOptions = highlightOptions(
+          color = "white",
+          weight = 2,
+          bringToFront = TRUE
+        ),
+        label = labels2,
+        labelOptions = labelOptions(
+          style = list(
+            "font-weight" = "normal",
+            padding = "3px 8px"
+          ),
+          textsize = "15px",
+          direction = "auto"
+        )
+      ) %>%
+      addLegend(
+        pal = pal2,
+        values = ~rate_per_100_000_population,
+        opacity = 0.7,
+        title = "Death Rate",
+        position = "topleft"
+      )
   })
-    
+
   ##################################################################
   ##                  plot for prescription meds                  ##
   ##################################################################
