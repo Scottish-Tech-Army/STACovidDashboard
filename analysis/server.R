@@ -150,10 +150,10 @@ server <- function(input, output, session) {
                        %s<br>
                        <strong>Death rate: </strong>%g<br>
                        <strong>Pop: </strong>%g<br>
-                       <strong>Tests: </strong>Missing<br> 
-                       <strong>Result wait time: </strong>Missing<br>
-                       <strong>Daily new cases: </strong>Missing<br>
-                       <strong>NHS 111 calls: </strong>Missing<br>", 
+                       <strong>Tests: </strong>--<br> 
+                       <strong>Result wait time: </strong>--<br>
+                       <strong>Daily new cases: </strong>--<br>
+                       <strong>NHS 111 calls: </strong>--<br>", 
                      scotland_deaths$Name, 
                      scotland_deaths$local_authority, 
                      scotland_deaths$rate_per_100_000_population, 
