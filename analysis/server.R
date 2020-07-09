@@ -203,6 +203,7 @@ server <- function(input, output, session) {
 
     labels2 <- sprintf(
       "<strong>%s</strong><br>%s<br>
+        <strong>Death count: </strong>%g<br>
         <strong>Death rate: </strong>%g<br>
         <strong>Pop: </strong>%g<br>
         <strong>Tests: </strong>--<br> 
@@ -211,6 +212,7 @@ server <- function(input, output, session) {
         <strong>NHS 111 calls: </strong>--<br>",
       scotland_deaths_reactive()$Name,
       scotland_deaths_reactive()$local_authority,
+      scotland_deaths_reactive()$number_of_deaths,
       scotland_deaths_reactive()$rate_per_100_000_population,
       scotland_deaths_reactive()$population_2018_based
     ) %>% lapply(htmltools::HTML)
