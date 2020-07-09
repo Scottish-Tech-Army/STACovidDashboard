@@ -1,24 +1,16 @@
 
 ui <- fluidPage(
-  theme = shinytheme("flatly"),
+  theme = "app.css",
 
 
   navbarPage(
-    # Page title
-    # Displayed to the left of the navigation bar
     title = div(
-    HTML(paste0(
-      "<a href=", shQuote(paste0("https://www.scottishtecharmy.org/")),
-      target = "_blank", ">",
-      img(
-        src = "sta.png",
-        height = "40px"
-      ), "</a>"
-    )),
-    style = "position: relative; top: -10px"
+      HTML(paste0(
+      )),
+      style = "position: relative; top: -10px"
     ),
 
-    windowTitle = "Tidyverse Troopers",
+    windowTitle = "Data STAr",
 
 
     #################################################################
@@ -44,7 +36,7 @@ ui <- fluidPage(
           4,
           sliderInput(
             "date",
-            "Date:",
+            "Select Date:",
             min = as.Date("2020-03-07"),
             max = as.Date("2020-06-05"),
             value = as.Date("2020-06-05")
@@ -55,7 +47,7 @@ ui <- fluidPage(
           4,
           selectInput(
             "data",
-            label = "Data type:",
+            label = "Select Measure:",
             choices = list(
               "COVID-19 Positive cases" = "cumulativeTestedPositive",
               "COVID-19 Patients in ICU" = "ICUCasesTotal",
@@ -88,7 +80,8 @@ ui <- fluidPage(
           # textOutput("title2"),
           plotlyOutput("eg_plot", height = 550) %>% withSpinner(color = "#0dc5c1")
         )
-      ),
+      )
+
     ),
 
 
@@ -146,89 +139,7 @@ ui <- fluidPage(
           )
         ) # main panel
       ) # sidebar
-    ), # close local authorities
+    ) # close local authorities
 
-
-    ##################################################################
-    ##                         About us tab                         ##
-    ##################################################################
-
-
-    tabPanel(
-      title = "About Us",
-
-      # # App title
-      # titlePanel(div(img(
-      #   src = "sta.png",
-      #   width = "100%"
-      # ))),
-
-
-      fluidRow(
-        column(1),
-        column(2,
-          align = "center",
-          tags$a(
-            href = "https://www.linkedin.com/in/rhiannon-batstone-076191120", target = "_blank",
-            img(
-              src = "rb.jpg",
-              width = "85%"
-            ),
-          ),
-          h3("Rhi Batstone")
-        ),
-
-
-        column(2,
-          align = "center",
-          tags$a(
-            href = "https://www.linkedin.com/in/richard--clark", target = "_blank",
-            img(
-              src = "rc.jpg",
-              width = "85%"
-            )
-          ),
-          h3("Ric Clark")
-        ),
-
-        column(2,
-          align = "center",
-          tags$a(
-            href = "https://www.linkedin.com/in/jonathancylau", target = "_blank",
-            img(
-              src = "jl.jpg",
-              width = "85%"
-            )
-          ),
-          h3("Jonathan Lau")
-        ),
-
-        column(2,
-          align = "center",
-          tags$a(
-            href = "https://www.linkedin.com/in/euan-robertson-5845582", target = "_blank",
-            img(
-              src = "er.jpg",
-              width = "85%"
-            )
-          ),
-          h3("Euan Robertson")
-        ),
-
-        column(2,
-          align = "center",
-          tags$a(
-            href = "https://www.linkedin.com/in/alstev", target = "_blank",
-            img(
-              src = "as.jpg",
-              width = "85%"
-            )
-          ),
-          h3("Allan Stevenson")
-        ),
-
-        column(1)
-      ) # about us
-    ) # about us
   ) # Nav bar
 ) # fluid Row
