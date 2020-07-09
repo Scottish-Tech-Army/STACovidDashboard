@@ -6,10 +6,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 const RouteMapRules = () => {
   // set default phase here
-  const [phase, setPhase] = useState("phase2");
+  const [phase, setPhase] = useState("phase3");
 
   const phaseText = {
     lockdown: {
@@ -118,8 +120,16 @@ const RouteMapRules = () => {
       <Row>
         <Col xs="12" className="current-phase mb-2">
           <h3>
-            We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.
+            We are currently in Phase 3 of the Scottish Government's Covid-19 Routemap.
+            <FontAwesomeIcon
+                className="ml-2"
+                icon={faQuestionCircle}
+                size="1x"
+                color="#fff"
+                alt="link to Scottish Government further guidance"
+              />
           </h3>
+
         </Col>
       </Row>
       <Row>
