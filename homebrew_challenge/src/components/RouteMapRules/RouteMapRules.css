@@ -15,6 +15,8 @@
   background-color: #319bd5;
   border: none;
   border-radius: 0;
+  margin: 0;
+  padding: 1rem 13rem;
 }
 
 #lockdown,
@@ -24,8 +26,10 @@
 #phase-4 {
   background-color: #fff;
   color: #133a53;
-  border:none;
   border-radius: 0;
+  border: none;
+  margin: 0;
+  padding: 1rem 13rem;
 }
 
 .category-image {
@@ -33,14 +37,14 @@
 }
 
 .category-card {
-  width: 100%;
   border: 1px solid LightGray;
   padding: 10px;
-  margin: 0;
+  margin: 10px 5px;
 }
 
 .select-phase {
-  margin: 0;
+  margin: 10px 0;
+  padding: 10px;
   border: 1px solid LightGray;
 }
 

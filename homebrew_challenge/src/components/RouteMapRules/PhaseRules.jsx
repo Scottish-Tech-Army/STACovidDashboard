@@ -6,8 +6,7 @@ const PhaseRules = ({ categories }) => {
   function getGuidanceText() {
     return (
       <>
-        View the full Scottish Government guidance for {categories["title"]}{" "}
-        here.
+        View the full Scottish Government guidance for all of the phases here.
       </>
     );
   }
@@ -18,7 +17,7 @@ const PhaseRules = ({ categories }) => {
         <div className="d-flex justify-content-center p-4">
           <img className="category-image" src={icon} />
         </div>
-        <div className="d-flex p-4 text-lg-center align-items-center">
+        <div className="d-flex text-lg-center justify-content-lg-center align-items-center p-4">
           <span>{text}</span>
         </div>
       </>

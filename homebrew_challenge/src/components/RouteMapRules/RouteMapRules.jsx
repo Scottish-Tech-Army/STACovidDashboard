@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./RouteMapRules.css";
 import PhaseRules from "./PhaseRules";
 import Container from "react-bootstrap/Container";
@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import ListGroup from "react-bootstrap/ListGroup";
 
 const RouteMapRules = () => {
   // set default phase here
@@ -118,36 +117,39 @@ const RouteMapRules = () => {
     <Container fluid className="route-map-rules">
       <Row>
         <Col xs="12" className="current-phase">
-          <h3>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.</h3>
+          <h3>
+            We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.
+          </h3>
         </Col>
       </Row>
       <Row>
-        <Col xs="12" lg="2" className="select-phase">
+        <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center">
           <ToggleButtonGroup
             className="d-flex flex-column"
             name="phase"
             type="radio"
             value={phase}
-            onChange={val => setPhase(val)}
+            onChange={val => setPhase(val)
+            }
           >
-            <ToggleButton id="lockdown" value={"lockdown"}>
+            <ToggleButton id="lockdown" value={"lockdown"} size="sm">
               Lockdown
             </ToggleButton>
-            <ToggleButton id="phase-1" value={"phase1"}>
+            <ToggleButton id="phase-1" value={"phase1"} size="sm">
               Phase 1
             </ToggleButton>
-            <ToggleButton id="phase-2" value={"phase2"}>
+            <ToggleButton id="phase-2" value={"phase2"} size="sm">
               Phase 2
             </ToggleButton>
-            <ToggleButton id="phase-3" value={"phase3"}>
+            <ToggleButton id="phase-3" value={"phase3"} size="sm">
               Phase 3
             </ToggleButton>
-            <ToggleButton id="phase-4" value={"phase4"}>
+            <ToggleButton id="phase-4" value={"phase4"} size="sm">
               Phase 4
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col xs="12" lg="10" className="d-flex flex-row p-0 m-0">
+        <Col xs="12" lg="10" className="d-flex flex-row" size="sm">
           <PhaseRules
             categories={phaseText[phase]}
           />
