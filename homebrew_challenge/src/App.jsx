@@ -11,8 +11,8 @@ import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
-import SpikeAlert from "./components/SpikeAlert/SpikeAlert";
 import InfoBar from "./components/InfoBar/InfoBar";
+import RouteMapRules from "./components/RouteMapRules/RouteMapRules";
 
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
@@ -115,12 +115,12 @@ const App = () => {
           <Container fluid className="header">
             <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
               <Col>
-                <SpikeAlert />
+                <InfoBar />
               </Col>
             </Row>
-            <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
+            <Row className="pt-3 justify-content-center align-items-center">
               <Col>
-                <InfoBar />
+                <RouteMapRules />
               </Col>
             </Row>
           </Container>
@@ -238,8 +238,8 @@ const App = () => {
   }
 
   function pageAnalyticsDashboard() {
-      // const analyticsUrl = "http://127.0.0.1:7136/";
-      const analyticsUrl = "https://sta-homebrew.shinyapps.io/analysis/";
+    // const analyticsUrl = "http://127.0.0.1:7136/";
+    const analyticsUrl = "https://sta-homebrew.shinyapps.io/analysis/";
 
     return (
       <iframe

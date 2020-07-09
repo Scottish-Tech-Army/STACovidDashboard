@@ -31,6 +31,7 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
 .single-value-bar-col {
   margin-right: 5px;
   margin-left: 5px;
@@ -45,14 +46,44 @@
 }
 
 .single-value-header {
-  padding: 0.5rem;
-  font-size: 1rem;
+  padding: 1rem 0.75rem 0 0.5rem;
+  margin-top: 0;
   font-weight: bold;
-  height: 4.5rem;
+  height: 3rem;
+  font-size: 0.75rem;
 }
 
 .single-value-total {
-  padding: 0.2rem 1rem 1rem 1rem;
-  font-size: 1.5rem;
+  padding: 0 1rem 2rem 1rem;
   font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+@include media-breakpoint-up(xs) {
+  .single-value-total {
+    font-size: 0.5rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .single-value-total {
+    font-size: 0.75rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .single-value-total {
+    font-size: 1.25rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .single-value-total {
+    font-size: 1.75rem;
+  }
+}
+@include media-breakpoint-up(xl) {
+  .single-value-total {
+    font-size: 2rem;
+  }
 }
