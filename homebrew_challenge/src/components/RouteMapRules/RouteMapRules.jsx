@@ -124,14 +124,14 @@ const RouteMapRules = () => {
       </Row>
       <Row>
         <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center">
-          <ToggleButtonGroup
-            className="d-flex flex-column"
-            name="phase"
-            type="radio"
-            value={phase}
-            onChange={val => setPhase(val)
-            }
-          >
+        <ToggleButtonGroup
+          className="d-flex flex-column phase-toggle-buttons"
+          name="phase"
+          type="radio"
+          value={phase}
+          onChange={val => setPhase(val)
+          }
+        >
             <ToggleButton id="lockdown" value={"lockdown"}>
               Lockdown
             </ToggleButton>
