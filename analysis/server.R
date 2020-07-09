@@ -138,11 +138,22 @@ server <- function(input, output, session) {
       add_trace(colors = "Dark2")
   })
 
+  
+  ##################################################################
+  ##                       Covid deaths map                       ##
+  ##################################################################
+  
+  
+  
+  scotland_deaths_reactive <- reactive({
+    scotland_deaths %>% 
+    filter(local_authority %in% input$local_auth) 
+    })
 
   output$scot_covid_plot <- renderLeaflet({
 
     
-    pal2 <- colorBin("Reds", domain = scotland_deaths$rate_per_100_000_population, bins = 6)
+    pal2 <- colorBin("Reds", domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = 6)
     
     # creates hover over labels
     
@@ -150,18 +161,17 @@ server <- function(input, output, session) {
                        %s<br>
                        <strong>Death rate: </strong>%g<br>
                        <strong>Pop: </strong>%g<br>
-                       <strong>Tests: </strong>Missing<br> 
-                       <strong>Result wait time: </strong>Missing<br>
-                       <strong>Daily new cases: </strong>Missing<br>
-                       <strong>NHS 111 calls: </strong>Missing<br>", 
-                     scotland_deaths$Name, 
-                     scotland_deaths$local_authority, 
-                     scotland_deaths$rate_per_100_000_population, 
-                     scotland_deaths$population_2018_based
+                       <strong>Tests: </strong>--<br> 
+                       <strong>Result wait time: </strong>--<br>
+                       <strong>Daily new cases: </strong>--<br>
+                       <strong>NHS 111 calls: </strong>--<br>", 
+                     scotland_deaths_reactive()$Name, 
+                     scotland_deaths_reactive()$local_authority, 
+                     scotland_deaths_reactive()$rate_per_100_000_population, 
+                     scotland_deaths_reactive()$population_2018_based
                      ) %>% lapply(htmltools::HTML)
   
-    scotland_deaths %>% 
-    filter(local_authority %in% input$local_auth) %>%
+    scotland_deaths_reactive() %>% 
     leaflet() %>%
       addProviderTiles(
         providers$CartoDB.Positron) %>%
@@ -184,44 +194,6 @@ server <- function(input, output, session) {
     
   })
     
-  #   # this needs to be reactive i think
-  #   labels2 <- labels <- sprintf(
-  #     "<strong>%s</strong><br/>%g",
-  #     scotland_covid_reactive()$Name,
-  #     scotland_covid_reactive()$number_of_deaths
-  #   ) %>% lapply(htmltools::HTML)
-  # 
-  #   bins <- c(0, 10, 20, max(scotland_covid_reactive()$number_of_deaths))
-  # 
-  #   pal2 <- colorBin(c("#f1ed0e", "orange", "#FF0000"),
-  #     domain = scotland_covid_reactive()$number_of_deaths,
-  #     bin = bins
-  #   )
-  # 
-  #   scotland_covid_reactive() %>%
-  #     filter(local_authority %in% input$local_auth) %>%
-  #     leaflet() %>%
-  #     addProviderTiles(
-  #       providers$CartoDB.Positron
-  #     ) %>%
-  #     addCircleMarkers(
-  #       lng = ~long,
-  #       lat = ~lat,
-  #       fillOpacity = 0.5,
-  #       stroke = F,
-  #       radius = ~ population_2018_based / 1000,
-  #       color = ~ pal2(number_of_deaths),
-  #       popup = ~labels2
-  #     ) %>%
-  #     addLegend(
-  #       pal = pal2,
-  #       values = ~number_of_deaths,
-  #       opacity = 0.7,
-  #       title = "Number of deaths",
-  #       position = "topleft"
-  #     )
-  # })
-
   ##################################################################
   ##                  plot for prescription meds                  ##
   ##################################################################
