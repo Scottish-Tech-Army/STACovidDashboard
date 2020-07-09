@@ -234,7 +234,7 @@ const App = () => {
           </Row>
           <Row className="d-none d-sm-flex">
             <Col>
-              <hr className="full-width-hr" />
+              <hr className="full-width-hr"/>
             </Col>
           </Row>
         </Container>

@@ -120,7 +120,7 @@ const RouteMapRules = () => {
       <Row>
         <Col xs="12" className="current-phase mb-2">
           <h3>
-            We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.
+            We are currently in Phase 3 of the Scottish Government's Covid-19 Routemap.
             <FontAwesomeIcon
                 className="ml-2"
                 icon={faQuestionCircle}
