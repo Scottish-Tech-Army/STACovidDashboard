@@ -15,7 +15,7 @@ const PhaseRules = ({ categories }) => {
   function phaseRuleFormatting(icon, text, anchor) {
     const content = (
       <>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center p-4">
           <img className="category-image" src={icon} />
         </div>
         <div className="d-flex p-4 text-lg-center align-items-center">
@@ -25,10 +25,10 @@ const PhaseRules = ({ categories }) => {
     );
 
     return (
-      <div className="category-card d-flex flex-row flex-lg-column">
+      <div className="category-card d-flex flex-row flex-lg-column w-100">
         {anchor ? (
           <a
-            className="route-map-link d-flex flex-xs-row flex-lg-column"
+            className="route-map-link d-flex flex-row flex-lg-column"
             href={anchor}
             target="_blank"
             rel="noopener noreferrer"
