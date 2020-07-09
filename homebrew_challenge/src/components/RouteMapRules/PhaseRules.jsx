@@ -28,7 +28,7 @@ const PhaseRules = ({ categories }) => {
       <div className="category-card d-flex flex-row flex-lg-column">
         {anchor ? (
           <a
-            className="route-map-link"
+            className="route-map-link d-flex flex-xs-row flex-lg-column"
             href={anchor}
             target="_blank"
             rel="noopener noreferrer"
