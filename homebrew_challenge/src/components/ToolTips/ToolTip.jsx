@@ -2,21 +2,16 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ToolTip.css";
-import 'popper.js';
-import $ from 'jquery';
-import 'bootstrap';
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import {Tooltip as ReactBootstrapTooltip} from "react-bootstrap";
 
-$(function(){
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-function ToolTip({ tooltip }) {
+function ToolTip({ id, tooltip }) {
   return (
-    <div className="tooltip-icon">
-      <a href="#" data-toggle="tooltip" title={tooltip}>
-        <FontAwesomeIcon icon={faQuestionCircle} size="1x" color="#319bd5" />
-      </a>
-    </div>
+    <OverlayTrigger overlay={<ReactBootstrapTooltip>{tooltip}</ReactBootstrapTooltip>}>
+      <div className="tooltip-icon">
+        <FontAwesomeIcon icon={faQuestionCircle} size="1x" />
+      </div>
+    </OverlayTrigger>
   );
 }
 
