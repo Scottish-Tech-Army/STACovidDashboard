@@ -248,10 +248,11 @@ const App = () => {
 
     return (
       <iframe
-        id="anaytics-frame"
+        id="analytics-frame"
         src={analyticsUrl}
         style={{ border: "none", width: "100%", height: "850px" }}
         frameborder="0"
+        title="COVID-19 Analytics"
       ></iframe>
     );
   }
