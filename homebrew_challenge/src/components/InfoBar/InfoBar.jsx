@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getLatestNewsItem } from "../Utils/RssFeedUtils";
+import "./InfoBar.css";
 
 const InfoBar = () => {
 
