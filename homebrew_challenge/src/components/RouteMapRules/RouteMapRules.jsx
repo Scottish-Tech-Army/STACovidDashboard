@@ -21,7 +21,7 @@ const RouteMapRules = () => {
         icon: "./assets/social_distancing.png",
       },
       cat2: {
-        text: "Shielding of high risk individuals in line with public health advice.",
+        text: "High risk individuals must shield in line with public health advice.",
         icon: "./assets/public_health_advice.png"
       },
       cat3: {
@@ -36,30 +36,30 @@ const RouteMapRules = () => {
     phase1: {
       title: "Phase 1",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "You can meet one other household outdoors.",
+        text: "You can meet with one other household outdoors.",
         icon: "./assets/households_outdoor.png"
       },
       cat3: {
-        text: "Unrestricted trips outdoors for exercise.",
-        icon: "./assets/exercising.png"
-      },
-      cat4: {
         text: "Frequent handwashing and hygiene measures for all.",
         icon: "./assets/washing_hands_dark.png"
+      },
+      cat4: {
+        text: "You can have unrestricted trips outdoors for exercise.",
+        icon: "./assets/exercising.png"
       }
     },
     phase2: {
       title: "Phase 2",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "You can meet with people from another two households inside.",
+        text: "You can meet with people from another household inside.",
         icon: "./assets/household_meeting_alt.png"
       },
       cat3: {
@@ -74,15 +74,15 @@ const RouteMapRules = () => {
     phase3: {
       title: "Phase 3",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "Able to meet with people from more than one household indoors with physical distancing and hygiene measures still in place. ",
+        text: "Able to meet with people from more than one household indoors with physical distancing and hygiene measures in place.",
         icon: "./assets/household_meeting_alt.png"
       },
       cat3: {
-        text: "Museums, galleries, libraries, cinemas open, subject to physical distancing and hygience measures.",
+        text: "Museums, galleries, libraries, cinemas open, subject to physical distancing and hygiene measures.",
         icon: "./assets/cinema_museum.png"
       },
       cat4: {
@@ -93,11 +93,11 @@ const RouteMapRules = () => {
     phase4: {
       title: "Phase 4",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Physical distancing requirements to be updated on scientific advice.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "Further relaxation on restrictions on gathering.",
+        text: "Further relaxation on restrictions for gathering.",
         icon: "./assets/larger_gatherings.png"
       },
       cat3: {
@@ -132,7 +132,6 @@ const RouteMapRules = () => {
           <h3>
             We are currently in Phase 3 of the Scottish Government's Covid-19 Routemap.
           </h3>
-
         </Col>
       </Row>
       <Row>
