@@ -9,11 +9,11 @@ const PhaseRules = ({ categories }) => {
     );
   }
 
-  function phaseRuleFormatting(icon, text, anchor) {
+  function phaseRuleFormatting(image, imageAltText, text, anchor) {
     const content = (
       <>
         <div className="d-flex justify-content-center p-4">
-          <img className="category-image" src={icon} />
+          <img className="category-image" src={image} alt={imageAltText} />
         </div>
         <div className="d-flex text-lg-center justify-content-lg-center align-items-center p-4">
           <span>{text}</span>
@@ -22,7 +22,7 @@ const PhaseRules = ({ categories }) => {
     );
 
     return (
-      <div className="category-card d-flex flex-row flex-lg-column w-100 m-lg-1" >
+      <div className="category-card d-flex flex-row flex-lg-column w-100 m-lg-1">
         {anchor ? (
           <a
             className="route-map-link d-flex flex-row flex-lg-column"
@@ -33,7 +33,7 @@ const PhaseRules = ({ categories }) => {
             {content}
           </a>
         ) : (
-           content
+          content
         )}
       </div>
     );
@@ -41,7 +41,8 @@ const PhaseRules = ({ categories }) => {
 
   function addPhaseRules(category) {
     return phaseRuleFormatting(
-      categories[category]["icon"],
+      categories[category]["icon"].image,
+      categories[category]["icon"].altText,
       categories[category]["text"]
     );
   }
@@ -52,7 +53,12 @@ const PhaseRules = ({ categories }) => {
       {addPhaseRules("cat2")}
       {addPhaseRules("cat3")}
       {addPhaseRules("cat4")}
-      {phaseRuleFormatting("./assets/more_info.png", getGuidanceText(), "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/")}
+      {phaseRuleFormatting(
+        "./assets/more_info.png",
+        "more information",
+        getGuidanceText(),
+        "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
+      )}
     </div>
   );
 };
