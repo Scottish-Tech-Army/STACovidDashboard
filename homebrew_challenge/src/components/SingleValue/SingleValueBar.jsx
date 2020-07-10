@@ -2,9 +2,6 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { differenceInDays, format, subDays } from "date-fns";
-import '../ToolTips/ToolTips';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -175,35 +172,19 @@ function SingleValueBar() {
           {blockTitleRow("Cases")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="These are the Total Cases from today and reset after 11.59pm (Can be delayed because of data fetching)">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="dailyCases"
                 title={getRelativeDate(dailyCases.date)}
                 value={dailyCases.value}
+                tooltip="These are the Total Cases from today and reset after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="totalCases"
                 title="Total"
                 value={totalCases.value}
+                tooltip="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began"
               />
             </Col>
           </Row>
@@ -212,51 +193,27 @@ function SingleValueBar() {
           {blockTitleRow("Deaths")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="These are the fatalities from today and reset after 11.59pm (Can be delayed because of data fetching)">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="dailyFatalities"
                 title={getRelativeDate(dailyFatalities.date)}
                 value={dailyFatalities.value}
+                tooltip="These are the fatalities from today and reset after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="These are the Total Fatalities since the COVID-19 Pandemic began">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="totalFatalities"
                 title="Total"
                 value={totalFatalities.value}
+                tooltip="These are the Total Fatalities since the COVID-19 Pandemic began"
               />
             </Col>
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="This shows the Ratio of Total Fatalities to Total Cases of COVID-19">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="fatalityCaseRatio"
                 title="Death / Case Ratio"
                 value={fatalityCaseRatio}
+                tooltip="This shows the Ratio of Total Fatalities to Total Cases of COVID-19"
               />
             </Col>
           </Row>
@@ -265,35 +222,19 @@ function SingleValueBar() {
           {blockTitleRow("Tests Completed")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="This is how many tests were completed today and resets after 11.59pm (Can be delayed because of data fetching)">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="dailyTestsCompleted"
                 title="Daily"
                 value={dailyTestsCompleted.value}
+                tooltip="This is how many tests were completed today and resets after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
-              <div className="icon">
-                <a href="#" data-toggle="tooltip" title="This shows how many COVID-19 Tests have been completed since the beginning of the COVID-19 Pandemic">
-                  <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    size="1x"
-                    color="#319bd5"
-                  />
-                </a>
-              </div>
               <SingleValue
                 id="totalTestsCompleted"
                 title="Total"
                 value={totalTestsCompleted.value}
+                tooltip="This shows how many COVID-19 Tests have been completed since the beginning of the COVID-19 Pandemic"
               />
             </Col>
           </Row>
