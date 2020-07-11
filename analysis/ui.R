@@ -25,7 +25,7 @@ window.LeafletWidget.methods.setRegionStyleAndTooltips = function(layerId, regio
     
     // Update the style for each feature - could have used geoJSONLayer.setStyle but we are iterating over features already
     const colour = (regionData) ? regionData.colour : naColour;
-    regionLayer.setStyle({ fillColor: colour, color: colour });
+    regionLayer.setStyle({ fillColor: colour });
     
     // Update the tooltips for each feature
     const value = (regionData) ? regionData.value : "NA";
@@ -45,11 +45,7 @@ ui <- fluidPage(
 
 
   navbarPage(
-    title = div(
-      HTML(paste0(
-      )),
-      style = "position: relative; top: -10px"
-    ),
+    title = NULL,
 
     windowTitle = "Data STAr",
 
