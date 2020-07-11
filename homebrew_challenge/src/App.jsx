@@ -113,11 +113,6 @@ const App = () => {
       <>
         <header>
           <Container fluid className="header">
-            <Row className="pt-3 d-none d-sm-flex justify-content-center align-items-center">
-              <Col>
-                <InfoBar />
-              </Col>
-            </Row>
             <Row className="pt-3 justify-content-center align-items-center">
               <Col>
                 <RouteMapRules />
@@ -232,6 +227,16 @@ const App = () => {
               <hr className="full-width-hr" />
             </Col>
           </Row>
+          <Row className="d-none d-sm-flex justify-content-center align-items-center">
+            <Col>
+              <InfoBar />
+            </Col>
+          </Row>
+          <Row className="d-none d-sm-flex">
+            <Col>
+              <hr className="full-width-hr"/>
+            </Col>
+          </Row>
         </Container>
       </>
     );
@@ -252,13 +257,82 @@ const App = () => {
   }
 
   function pageDataSources() {
-    return "Data sources";
+    return (
+      <div className="data-sources">
+        <h2>Data sources and attributions</h2>
+        <ul>
+          <li>
+            Routemap information:
+            <a
+              href={"https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link "
+            >https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/</a>
+            <br/>Disclaimer: The description of the phases is summary rather than
+            comprehensive: it will not include every aspect of the restrictions
+            that is of concern.
+          </li>
+          <li>Management Data: <a
+            href={"https://statistics.gov.scot/data/coronavirus-covid-19-management-information"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://statistics.gov.scot/data/coronavirus-covid-19-management-information</a></li>
+          <li>Health Board Shapefile: <a
+            href={"https://data.gov.uk/dataset/27d0fe5f-79bb-4116-aec9-a8e565ff756a/nhs-health-boards"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://data.gov.uk/dataset/27d0fe5f-79bb-4116-aec9-a8e565ff756a/nhs-health-boards</a></li>
+          <li>Intermediate Deaths: <a
+            href={"https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/vital-events/general-publications/weekly-and-monthly-data-on-births-and-deaths/deaths-involving-coronavirus-covid-19-in-scotland/archive"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/vital-events/general-publications/weekly-and-monthly-data-on-births-and-deaths/deaths-involving-coronavirus-covid-19-in-scotland/archive</a></li>
+          <li>Intermediate Zone Shapefile: <a
+            href={"https://data.gov.uk/dataset/133d4983-c57d-4ded-bc59-390c962ea280/intermediate-zone-boundaries-2011"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://data.gov.uk/dataset/133d4983-c57d-4ded-bc59-390c962ea280/intermediate-zone-boundaries-2011</a></li>
+          <li>Explanation of the IZ coded zones: <a
+            href={"https://www2.gov.scot/Topics/Statistics/sns/SNSRef/DZresponseplan"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://www2.gov.scot/Topics/Statistics/sns/SNSRef/DZresponseplan</a></li>
+          <li>Cardiovascular Prescriptions: <a
+            href={"https://scotland.shinyapps.io/phs-covid-wider-impact/"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link "
+          >https://scotland.shinyapps.io/phs-covid-wider-impact/</a></li>
+
+        </ul>
+
+      </div>
+    );
   }
+
+  /*
+  <li>TITLE: <a
+    href={"HREF"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="link "
+  >LINK</a></li>
+*/
 
   function pageAboutUs() {
     function person(name, mugshot, linkedInRef) {
       return (
-        <Col className="person pt-3  d-flex justify-content-center" xs={12} md={2}>
+        <Col
+          className="person pt-3  d-flex justify-content-center"
+          xs={12}
+          md={2}
+        >
           <a
             href={linkedInRef}
             target="_blank"
@@ -370,7 +444,7 @@ const App = () => {
       <footer>
         <Container className="text-center font-small blue pt-4">
           <Row className="align-items-center">
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
                 target="_blank"
@@ -385,7 +459,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.scottishtecharmy.org/"
                 target="_blank"
@@ -399,7 +473,7 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
+            <Col xs={12} md={4} className="p-2">
               <a
                 href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
                 target="_blank"
@@ -414,8 +488,10 @@ const App = () => {
                 />
               </a>
             </Col>
-            <Col xs={12} md={3}>
-              <div className="sitemap">
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <div className="sitemap p-2">
                 <div className="title">Sitemap</div>
                 {sitemapEntry(PAGE_PUBLIC_DASHBOARD, "Public Dashboard")}
                 {sitemapEntry(PAGE_ANALYTICS_DASHBOARD, "Analytics Dashboard")}

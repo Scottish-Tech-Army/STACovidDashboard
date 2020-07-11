@@ -32,7 +32,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
-    private static final String BUCKET_NAME = "sta-homebrew-iteam";
+    private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
     private AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_2).build();
 

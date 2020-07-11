@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import "./InfoBar.css";
 import { getLatestNewsItem } from "../Utils/RssFeedUtils";
+import "./InfoBar.css";
 
 const InfoBar = () => {
 
@@ -24,11 +22,7 @@ const InfoBar = () => {
   return (
     <div className="info-bar">
       <span id="icon">
-        <FontAwesomeIcon
-          icon={faInfoCircle}
-          size="3x"
-          color="#319bd5"
-        />
+        <img className="more-info-icon" src="./assets/more_info.png" alt=""/>
       </span>
       <span>
         <p className="message">
@@ -51,7 +45,7 @@ const InfoBar = () => {
           </a>
           {" - "}
           {covidNews? covidNews.description : "no news yet"}
-          {" "}
+          {" | "}
           {covidNews? covidNews.timestamp : "no news yet"}
         </p>
       </span>

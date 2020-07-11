@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./RouteMapRules.css";
 import PhaseRules from "./PhaseRules";
 import Container from "react-bootstrap/Container";
@@ -6,22 +6,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import ListGroup from "react-bootstrap/ListGroup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 const RouteMapRules = () => {
   // set default phase here
-  const [phase, setPhase] = useState("phase2");
+  const [phase, setPhase] = useState("phase3");
 
   const phaseText = {
     lockdown: {
       title: "Lockdown",
-      introText: "UK wide lockdown in place from 24th March 2020.",
       cat1: {
         text: "Maintain strict social distancing, keeping 2m from people not from your household.",
         icon: "./assets/social_distancing.png",
       },
       cat2: {
-        text: "Shielding of high risk individuals in line with public health advice.",
+        text: "High risk individuals must shield in line with public health advice.",
         icon: "./assets/public_health_advice.png"
       },
       cat3: {
@@ -35,33 +35,31 @@ const RouteMapRules = () => {
     },
     phase1: {
       title: "Phase 1",
-      introText: "Scotland moved to Phase 1 of the routemap on 29 May 2020.",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "You can meet one other household outdoors.",
+        text: "You can meet with one other household outdoors.",
         icon: "./assets/households_outdoor.png"
       },
       cat3: {
-        text: "Unrestricted trips outdoors for exercise.",
-        icon: "./assets/exercising.png"
-      },
-      cat4: {
         text: "Frequent handwashing and hygiene measures for all.",
         icon: "./assets/washing_hands_dark.png"
+      },
+      cat4: {
+        text: "You can have unrestricted trips outdoors for exercise.",
+        icon: "./assets/exercising.png"
       }
     },
     phase2: {
       title: "Phase 2",
-      introText: "Scotland moved to Phase 2 of the routemap on 19 June 2020.",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "You can meet with people from another two households inside.",
+        text: "You can meet with people from another household inside.",
         icon: "./assets/household_meeting_alt.png"
       },
       cat3: {
@@ -75,17 +73,16 @@ const RouteMapRules = () => {
     },
     phase3: {
       title: "Phase 3",
-      introText: "[Disclaimer]",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Maintain social distancing, keeping 2m from people that are not from your household.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "Able to meet with people from more than one household indoors with physical distancing and hygiene measures still in place. ",
+        text: "Able to meet with people from more than one household indoors with physical distancing and hygiene measures in place.",
         icon: "./assets/household_meeting_alt.png"
       },
       cat3: {
-        text: "Museums, galleries, libraries, cinemas open, subject to physical distancing and hygience measures.",
+        text: "Museums, galleries, libraries, cinemas open, subject to physical distancing and hygiene measures.",
         icon: "./assets/cinema_museum.png"
       },
       cat4: {
@@ -95,13 +92,12 @@ const RouteMapRules = () => {
     },
     phase4: {
       title: "Phase 4",
-      introText: "[Disclaimer]",
       cat1: {
-        text: "Maintain social distancing, keeping 2m from people not in your household.",
+        text: "Physical distancing requirements to be updated on scientific advice.",
         icon: "./assets/social_distancing.png"
       },
       cat2: {
-        text: "Further relaxation on restrictions on gathering.",
+        text: "Further relaxation on restrictions for gathering.",
         icon: "./assets/larger_gatherings.png"
       },
       cat3: {
@@ -122,28 +118,32 @@ const RouteMapRules = () => {
   return (
     <Container fluid className="route-map-rules">
       <Row>
-        <Col xs="12" className="current-phase">
-          <h3>We are currently in Phase 2 of the Scottish Government's Covid-19 Routemap.</h3>
-          <br/>
-          <span className="disclaimer">
-            <i>(The description of the phases below is summary rather than comprehensive: it will not include every aspect of the restrictions that is of concern.)</i>
-          </span>
+        <Col xs="12" className="current-phase mb-2">
+              <div className="icon">
+                <a href="#" data-toggle="tooltip" title="The description of the phases is summary rather than comprehensive: it will not include every aspect of the restrictions
+                that is of concern.">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="1x"
+                    color="#319bd5"
+                  />
+                </a>
+              </div>
+          <h3>
+            We are currently in Phase 3 of the Scottish Government's Covid-19 Routemap.
+          </h3>
         </Col>
       </Row>
       <Row>
-        <Col xs="12" className="intro-text">
-          {phaseText[phase].introText}
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" lg="2" className="select-phase">
-          <ToggleButtonGroup
-            className="d-flex flex-column"
-            name="phase"
-            type="radio"
-            value={phase}
-            onChange={val => setPhase(val)}
-          >
+        <Col xs="12" lg="2" className="select-phase d-flex align-content-center justify-content-center mt-lg-1 mb-lg-1">
+        <ToggleButtonGroup
+          className="d-flex flex-column phase-toggle-buttons"
+          name="phase"
+          type="radio"
+          value={phase}
+          onChange={val => setPhase(val)
+          }
+        >
             <ToggleButton id="lockdown" value={"lockdown"}>
               Lockdown
             </ToggleButton>
@@ -161,7 +161,7 @@ const RouteMapRules = () => {
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col xs="12" lg="10" className="d-flex flex-row p-0 m-0">
+        <Col xs="12" lg="10" className="d-flex flex-row p-0">
           <PhaseRules
             categories={phaseText[phase]}
           />
