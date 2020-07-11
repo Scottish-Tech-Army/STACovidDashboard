@@ -1,17 +1,27 @@
 
+palette_colours <-
+  c("#E0E0E0",
+    "#FEF0D9",
+    "#FDCC8A",
+    "#FC8D59",
+    "#E34A33",
+    "#B30000")
+
 server <- function(input, output, session) {
-
-
   # Create reactive dataset
   management_reactive <- reactive({
-    read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/dailyHealthBoardsCasesAndPatients.csv")) %>%
+    read_csv(
+      url(
+        "https://dashboard.aws.scottishtecharmy.org/data/analysis/dailyHealthBoardsCasesAndPatients.csv"
+      )
+    ) %>%
       mutate(
         value = str_replace_all(value, "\\*", "0"),
         value = as.numeric(value),
         date = as.Date(date)
       )
   })
-
+  
   observe({
     updateSliderInput(
       session,
@@ -21,27 +31,23 @@ server <- function(input, output, session) {
       value = max(management_reactive()$date)
     )
   })
-
-  management_leaflet_reactive <- reactive({
+  
+  # The palette depends on the chosen measure
+  management_by_variable_reactive <- reactive({
     management_reactive() %>%
-      filter(
-        variable == input$data,
-        date == input$date
-      )
+      filter(variable == input$managementMeasure)
   })
-
-  management_plotly_reactive <- reactive({
-    management_reactive() %>%
-      filter(
-        variable == input$data,
-        date <= input$date
-      )
+  
+  # The current styling of the regions also depends on the chosen date
+  management_by_variable_and_date_reactive <- reactive({
+    management_by_variable_reactive() %>%
+      filter(date == input$date)
   })
-
+  
   scotland_covid_reactive <- reactive({
-    read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/scotland_covid.csv"))
+    read_csv("clean_data/scotland_covid.csv")
   })
-
+  
   observe({
     updateCheckboxGroupInput(
       session,
@@ -50,127 +56,129 @@ server <- function(input, output, session) {
       selected = unique(scotland_covid_reactive()$local_authority)
     )
   })
-
+  
+  
   cardio_prescriptions_reactive <- reactive({
-    read_csv(url("https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com/data/analysis/cardio_prescriptions.csv")) %>%
+    read_csv("clean_data/cardio_prescriptions.csv") %>%
       filter(area_name %in% input$local_auth)
   })
-  ## ----------------------------------------------------------------
-  ##                         Leaflet Plot                         --
-  ## ----------------------------------------------------------------
-
   
-  output$scot_plot <- renderLeaflet({
-    
-    scotland_count <- scotland %>%
-      left_join(management_leaflet_reactive(), by = c("HBName" = "areaname"))
-    
-    pal <- if (input$data == "cumulativeTestedPositive") {
-      colorBin(c(
-        "#E0E0E0",
-        "#FEF0D9",
-        "#FDCC8A",
-        "#FC8D59",
-        "#E34A33",
-        "#B30000"), 
-        domain = scotland_count$value, 
-        bins = c(0, 1, 10, 100, 1000, 3000, Inf))
-      
-    } else if (input$data == "hospitalCasesConfirmed") {
-      colorBin(c(
-        "#E0E0E0",
-        "#FEF0D9",
-        "#FDCC8A",
-        "#FC8D59",
-        "#E34A33",
-        "#B30000"), 
-        domain = scotland_count$value, 
-        bins = c(0, 10, 20, 40, 60, 80, 100, Inf))
-      
-    } else if (input$data == "hospitalCasesSuspected") {
-      colorBin(c(
-        "#E0E0E0",
-        "#FEF0D9",
-        "#FDCC8A",
-        "#FC8D59",
-        "#E34A33",
-        "#B30000"), 
-        domain = scotland_count$value, 
-        bins = c(0, 10, 20, 40, 60, 80, 100, Inf))
-      
-    } else if(input$data == "ICUCasesTotal") {
-      colorBin(c(
-        "#E0E0E0",
-        "#FEF0D9",
-        "#FDCC8A",
-        "#FC8D59",
-        "#E34A33",
-        "#B30000"), 
-        domain = scotland_count$value, 
-        bins = c(0, 2, 4, 6, 8, 10, Inf))
-    }
-
-    # creates hover over labels
-    labels <- sprintf(
-      "<strong>%s</strong><br/>%g",
-      scotland_count$HBName,
-      scotland_count$value
-    ) %>% lapply(htmltools::HTML)
-
-
-    scotland_count %>%
-      leaflet() %>%
-      addTiles("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png") %>%
-      addPolygons(
-        fillColor = ~ pal(value),
-        weight = 1,
-        opacity = 0.5,
-        color = "black",
-        fillOpacity = 0.5,
-        highlight = highlightOptions(
+  
+  # ----------------------------------------------------------------
+  #               Management Leaflet Plot                         --
+  # ----------------------------------------------------------------
+  
+  # Create base leaflet plot with geoJSON region boundaries
+  scot_plot_reactive <- reactive({
+    renderLeaflet({
+      # Apply default styling to all features (colours will be overridden later)
+      leaflet(scotland) %>%
+        addTiles("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png") %>%
+        addGeoJSONv2(
+          layerId = "healthBoardGeoJSON",
+          geojson_health_boards,
           weight = 1,
-          color = "grey",
-          fillOpacity = 0.7,
-          bringToFront = TRUE
-        ),
-        label = labels,
-        labelOptions = labelOptions(
-          style = list(
-            "font-weight" = "normal",
-            padding = "3px 8px"
-          ),
-          textsize = "15px",
-          direction = "auto"
-        )
-      ) %>%
+          color = "black",
+          fillColor = "red",
+          opacity = 0.5,
+          fillOpacity = 0.5,
+          highlight = highlightOptions(
+            weight = 1,
+            opacity = 0.2,
+            fillOpacity = 0.7,
+            bringToFront = TRUE
+          )
+        ) %>%
+        fitBounds(-7.5, 54.6, -0.4, 61.0)
+    })
+  })
+  
+  observe({
+    output$scot_plot <- scot_plot_reactive()
+  })
+  
+  # Fixed palette for variable = cumulativeTestedPositive
+  scot_plot_pal_cumulativeTestedPositive_reactive <- reactive({
+    colorBin(palette_colours,
+             domain = management_reactive()$value,
+             bins = c(0, 1, 10, 100, 1000, 3000, Inf))
+  })
+  
+  # Fixed palette for variable = hospitalCases (Confirmed or Suspected)
+  scot_plot_pal_hospitalCases_reactive <- reactive({
+    colorBin(palette_colours,
+             domain = management_reactive()$value,
+             bins = c(0, 10, 20, 40, 60, 80, 100, Inf))
+  })
+  
+  # Fixed palette for variable = ICUCasesTotal
+  scot_plot_pal_ICUCasesTotal_reactive <- reactive({
+    colorBin(palette_colours,
+             domain = management_reactive()$value,
+             bins = c(0, 2, 4, 6, 8, 10, Inf))
+  })
+  
+  # Update palette when management variable changes
+  scot_plot_pal_reactive <- reactive({
+    if (input$managementMeasure == "cumulativeTestedPositive") {
+      scot_plot_pal_cumulativeTestedPositive_reactive()
+      
+    } else if (input$managementMeasure == "hospitalCasesConfirmed" ||
+               input$managementMeasure == "hospitalCasesSuspected") {
+      scot_plot_pal_hospitalCases_reactive()
+      
+    } else if (input$managementMeasure == "ICUCasesTotal") {
+      scot_plot_pal_ICUCasesTotal_reactive()
+    }
+  })
+  # Update legend when management variable changes
+  observe({
+    leafletProxy("scot_plot", data =  scotland) %>%
       addLegend(
-        pal = pal,
-        values = ~value,
+        layerId = "managementLegend",
+        pal = scot_plot_pal_reactive(),
+        values = management_by_variable_reactive()$value,
         opacity = 0.7,
         title = "Count",
         position = "topleft"
       )
   })
-
+  
+  # Update region colours and tooltips when management variable or date change
+  observe({
+    pal <- scot_plot_pal_reactive()
+    featureData <-
+      management_by_variable_and_date_reactive() %>% select(areaname, value)
+    featureData$colour <- pal(featureData$value)
+    
+    leafletProxy("scot_plot", data =  scotland) %>%
+      leaflet::invokeMethod(
+        scotland,
+        "setRegionStyleAndTooltips",
+        "healthBoardGeoJSON",
+        featureData,
+        pal(NA)
+      )
+  })
+  
+  
   ##################################################################
   ##                  plot for management values                  ##
   ##################################################################
-
-
+  
+  
   output$eg_plot <- renderPlotly({
     ggplotly(
-      management_plotly_reactive() %>%
-        ggplot(aes(x = date, y = value, col = areaname)) +
+      management_by_variable_reactive() %>%
+        ggplot(aes(
+          x = date, y = value, col = areaname
+        )) +
         geom_line() +
         scale_fill_viridis_b() +
-        labs(
-          x = "Date",
-          y = "Count",
-          col = "Region"
-        ) +
-        theme(
-          legend.text = element_text(size = 5)
-        ) +
+        labs(x = "Date",
+             y = "Count",
+             col = "Region") +
+        theme(legend.text = element_text(size = 5)) +
         theme_classic() #+
       # theme(legend.position = 'none')
     ) %>%
@@ -190,15 +198,13 @@ server <- function(input, output, session) {
   })
 
   output$scot_covid_plot <- renderLeaflet({
-    pal2 <- colorBin(c(
-      "#E0E0E0",
-      "#FEF0D9",
-      "#FDCC8A",
-      "#FC8D59",
-      "#E34A33",
-      "#B30000"
-    ), domain = scotland_deaths_reactive()$rate_per_100_000_population, bins = c(0, 1, 100, 300, 500, 800, Inf))
-
+    pal2 <-
+      colorBin(
+        palette_colours,
+        domain = scotland_deaths_reactive()$rate_per_100_000_population,
+        bins = c(0, 1, 100, 300, 500, 800, Inf)
+      )
+    
     # creates hover over labels
 
     labels2 <- sprintf(
@@ -254,7 +260,7 @@ server <- function(input, output, session) {
   ##################################################################
   ##                  plot for prescription meds                  ##
   ##################################################################
-
+  
   output$prescriptions <- renderPlot({
     cardio_prescriptions_reactive() %>%
       group_by(week_ending) %>%
@@ -262,32 +268,32 @@ server <- function(input, output, session) {
       ggplot(aes(x = week_ending, y = avg)) +
       geom_line() +
       theme_classic() +
-      labs(
-        x = "Date",
-        y = "Number of Prescriptions"
-      )
+      labs(x = "Date",
+           y = "Number of Prescriptions")
   })
-
+  
   observe({
     updateCheckboxGroupInput(
-      session, "local_auth",
+      session,
+      "local_auth",
       choices = unique(scotland_covid_reactive()$local_authority),
-      selected = if (input$bar) unique(scotland_covid_reactive()$local_authority)
+      selected = if (input$bar)
+        unique(scotland_covid_reactive()$local_authority)
     )
   })
-
-
+  
+  
   output$title1 <- renderText({
-    paste(input$data)
+    paste(input$managementMeasure)
   })
-
+  
   output$title2 <- renderText({
-    paste(input$data)
+    paste(input$managementMeasure)
   })
-
-
+  
+  
   output$note <- renderText({
-    if (input$data == "Testing - Cumulative people tested for COVID-19 - Positive") {
+    if (input$managementMeasure == "Testing - Cumulative people tested for COVID-19 - Positive") {
       print("Note: Count is cumulative")
     } else {
       " "
