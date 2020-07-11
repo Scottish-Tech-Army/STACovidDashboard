@@ -1,5 +1,46 @@
 
+### JS method to handle geoJSON colour and tooltip  changes
+# layerId - the layerId assigned in the addGeoJSON call
+# regionColourTable - a datatable containing the columns areaname, colour, value
+# naColour - a colour for NA, for example the output of pal(NA)
+#
+# Based on https://github.com/rstudio/leaflet/issues/496
+leafletjs <-  tags$head(
+  tags$script(HTML(
+    '
+window.LeafletWidget.methods.setRegionStyleAndTooltips = function(layerId, regionColourTable, naColour) {
+  var map = this;
+  regionColourTable = HTMLWidgets.dataframeToD3(regionColourTable);
+  var geoJSONLayer = map.layerManager.getLayer("geojson", layerId);
+  
+  const tooltipOptions = {
+    style: "font-weight: normal; padding : 3px 8px;",
+    textsize: "15px",
+    direction: "auto"
+  };
+  
+  geoJSONLayer.eachLayer((regionLayer) => {
+    // Find matching region data
+    const regionData = regionColourTable.find(element => element.areaname === regionLayer.feature.properties.RegionName);
+    
+    // Update the style for each feature - could have used geoJSONLayer.setStyle but we are iterating over features already
+    const colour = (regionData) ? regionData.colour : naColour;
+    regionLayer.setStyle({ fillColor: colour, color: colour });
+    
+    // Update the tooltips for each feature
+    const value = (regionData) ? regionData.value : "NA";
+    const content = "<strong>" + regionLayer.feature.properties.RegionName + "</strong><br/>" + value;
+    regionLayer.unbindTooltip();
+    regionLayer.bindTooltip(content, tooltipOptions);
+  });
+};
+'
+  ))
+)
+
+
 ui <- fluidPage(
+  leafletjs,
   theme = "app.css",
 
 
@@ -12,26 +53,21 @@ ui <- fluidPage(
 
     windowTitle = "Data STAr",
 
-
     #################################################################
     ##                        Health Boards                        ##
     #################################################################
-
-
+    
     # Contains the MVP and a broad overview of the data
     tabPanel(
       title = "Health Boards",
 
-
-
       # App title
       titlePanel(h3("COVID-19 Management in Scotland")),
-
-
+      
       fluidRow(
         class = "controls",
-        # Sidebar with a slider input for date and selector for data
-
+        # Sidebar with a slider input for date and selector for management measure
+        
         column(
           4,
           sliderInput(
@@ -42,11 +78,11 @@ ui <- fluidPage(
             value = as.Date("2020-06-05")
           )
         ),
-
+        
         column(
           4,
           selectInput(
-            "data",
+            "managementMeasure",
             label = "Select Measure:",
             choices = list(
               "COVID-19 Positive cases" = "cumulativeTestedPositive",
@@ -65,9 +101,7 @@ ui <- fluidPage(
           tags$a(href = "https://statistics.gov.scot/data/coronavirus-covid-19-management-information", target = "_blank", "Data Source")
         )
       ),
-
-
-
+      
       # main body
       fluidRow(
         column(
@@ -111,9 +145,7 @@ ui <- fluidPage(
           )
         ),
 
-
-
-        mainPanel(
+                mainPanel(
           width = 9,
           tabsetPanel(
             type = "tabs",
