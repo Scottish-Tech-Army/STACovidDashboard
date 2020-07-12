@@ -46,6 +46,14 @@ function parseCsvData(csvData) {
 
 const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
 const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
+const scotlandBounds = [
+  [54.6, -7.5],
+  [61.0, -0.4],
+];
+const scotlandMaxBounds = [
+  [52.0, -10.0],
+  [63.5, 2.0],
+];
 
 const heatcolours = [
   "#e0e0e0",
@@ -196,7 +204,7 @@ const GeoHeatMap = ({
       const regionName = layer.feature.properties.RegionName;
       var value = currentDatasetRef.current.get(regionName);
       if (value === undefined) {
-          value = 0;
+        value = 0;
       }
 
       L.popup()
@@ -220,18 +228,42 @@ const GeoHeatMap = ({
       },
     };
 
-    // Restrict the panning
-    if (mapRef.current && mapRef.current.leafletElement) {
-        const map = mapRef.current.leafletElement;
-        map.setMaxBounds(map.getBounds());
-    }
-
     setCouncilAreaBoundariesLayer(
       L.geoJSON(councilAreaBoundaries, regionLayerOptions)
     );
     setHealthBoardBoundariesLayer(
       L.geoJSON(healthBoardBoundaries, regionLayerOptions)
     );
+  }, []);
+
+  // Fit bounds and restrict the panning
+  useEffect(() => {
+    // There is a known issue in leaflet where map sizing is not updated on all container size events.
+    // This causes fitBounds() to fit to an incorrectly sized map. The workaround is to observe document resize
+    // events if available or trigger a recalculation of the map size after a delay. Ugly, but currently necessary
+    // https://github.com/Leaflet/Leaflet/issues/4835
+    if (window.ResizeObserver) {
+      const ro = new window.ResizeObserver((entries, observer) => {
+        if (mapRef.current && mapRef.current.leafletElement) {
+          const map = mapRef.current.leafletElement;
+          map.invalidateSize();
+          map.setMaxBounds(scotlandMaxBounds);
+          map.fitBounds(scotlandBounds, { maxZoom: 10, animate: false });
+        }
+      });
+      ro.observe(document.body);
+    } else {
+      // ResizeObserver not available - fall back on delayed bounds setting
+      setTimeout(function () {
+        console.log("ResizeObserver not available");
+        if (mapRef.current && mapRef.current.leafletElement) {
+          const map = mapRef.current.leafletElement;
+          map.invalidateSize();
+          map.setMaxBounds(scotlandMaxBounds);
+          map.fitBounds(scotlandBounds, { maxZoom: 10, animate: false });
+        }
+      }, 3000);
+    }
   }, []);
 
   // Update active map boundaries layer
@@ -278,7 +310,7 @@ const GeoHeatMap = ({
     function getRegionStyle(regionName) {
       var count = currentDataset.get(regionName);
       if (count === undefined) {
-          count = 0;
+        count = 0;
       }
 
       return {
@@ -319,7 +351,7 @@ const GeoHeatMap = ({
               '"></i> ' +
               grades[i] +
               (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
-              '</div>';
+              "</div>";
           }
 
           return div;
@@ -336,15 +368,7 @@ const GeoHeatMap = ({
 
   return (
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
-      <LeafletMap
-        ref={mapRef}
-        center={[55.5814, -4.0545]}
-        id="map"
-        zoom={6.1}
-        zoomSnap={0.1}
-        maxZoom={10}
-        minZoom={6}
-      >
+      <LeafletMap ref={mapRef} id="map" maxZoom={10} minZoom={6}>
         <TileLayer
           url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
@@ -357,14 +381,5 @@ const GeoHeatMap = ({
     </div>
   );
 };
-/*
- LeafletMap options to lock down the user interaction
-    zoomDelta={false}
-    doubleClickZoom={false}
-    dragging={false}
-    trackResize={false}
-    touchZoom={false}
-    scrollWheelZoom={false}
-*/
 
 export default GeoHeatMap;
