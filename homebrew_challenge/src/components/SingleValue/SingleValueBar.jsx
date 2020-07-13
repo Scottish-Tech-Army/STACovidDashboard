@@ -1,7 +1,7 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import { differenceInDays, format, subDays } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,6 +10,9 @@ import Col from "react-bootstrap/Col";
 export function parseCsvData(csvData) {
   function getLatestValue(dateValueMap) {
     const lastDate = [...dateValueMap.keys()].sort().pop();
+    if (!lastDate) {
+      return { date: undefined, value: undefined };
+    }
     const lastValue = dateValueMap.get(lastDate);
     return { date: Date.parse(lastDate), value: lastValue };
   }
@@ -18,6 +21,9 @@ export function parseCsvData(csvData) {
     const dates = [...dateValueMap.keys()].sort();
     const lastDate = dates.pop();
     const secondLastDate = dates.pop();
+    if (!lastDate || !secondLastDate) {
+      return { date: undefined, value: undefined };
+    }
     const lastValue = dateValueMap.get(lastDate);
     const secondLastValue = dateValueMap.get(secondLastDate);
     return { date: Date.parse(lastDate), value: lastValue - secondLastValue };
@@ -54,14 +60,17 @@ export function parseCsvData(csvData) {
 
   const totalCases = getLatestValue(cumulativePositiveTestsMap);
   const totalFatalities = getLatestValue(cumulativeDeathsMap);
+  const fatalityCaseRatio =
+    totalCases.value !== undefined && totalFatalities.value !== undefined
+      ? ((totalFatalities.value * 100) / totalCases.value).toFixed(1) + "%"
+      : undefined;
 
   return {
     dailyCases: getLatestValue(dailyPositiveTestsMap),
     totalCases: totalCases,
     dailyFatalities: getLatestDiff(cumulativeDeathsMap),
     totalFatalities: totalFatalities,
-    fatalityCaseRatio:
-      ((totalFatalities.value * 100) / totalCases.value).toFixed(1) + "%",
+    fatalityCaseRatio: fatalityCaseRatio,
     dailyTestsCompleted: getLatestDiff(cumulativeTotalTestsMap),
     totalTestsCompleted: getLatestValue(cumulativeTotalTestsMap),
   };
@@ -69,33 +78,10 @@ export function parseCsvData(csvData) {
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
 
 // Exported for tests
-export function getDateValueClause() {
-  const today = Date.now();
-  const yesterday = subDays(Date.now(), 1);
-  const dayBefore = subDays(Date.now(), 2);
-  const twoDaysBefore = subDays(Date.now(), 3);
-
-  const singleLine = (date) => {
-    const dateString = format(date, "yyyy-MM-dd");
-    return (
-      "( <http://reference.data.gov.uk/id/day/" +
-      dateString +
-      '> "' +
-      dateString +
-      '" )'
-    );
-  };
-
-  return (
-    singleLine(today) +
-    singleLine(yesterday) +
-    singleLine(dayBefore) +
-    singleLine(twoDaysBefore)
-  );
-}
-
-// Exported for tests
 export function getRelativeDate(date) {
+  if (!date) {
+    return undefined;
+  }
   const daysDifference = differenceInDays(Date.now(), date);
   if (daysDifference === 0) {
     return "Today";
@@ -121,6 +107,12 @@ function SingleValueBar() {
 
   // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
   const dataUrl = "data/summaryCounts.csv";
+
+  const missingData = "Not available";
+
+  function guardMissingData(input) {
+    return input === undefined ? missingData : input;
+  }
 
   useEffect(() => {
     // Only attempt to fetch data once
@@ -174,8 +166,8 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyCases"
-                title={getRelativeDate(dailyCases.date)}
-                value={dailyCases.value}
+                title={guardMissingData(getRelativeDate(dailyCases.date))}
+                value={guardMissingData(dailyCases.value)}
                 tooltip="These are the Total Cases from today and reset after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
@@ -183,7 +175,7 @@ function SingleValueBar() {
               <SingleValue
                 id="totalCases"
                 title="Total"
-                value={totalCases.value}
+                value={guardMissingData(totalCases.value)}
                 tooltip="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began"
               />
             </Col>
@@ -195,8 +187,8 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyFatalities"
-                title={getRelativeDate(dailyFatalities.date)}
-                value={dailyFatalities.value}
+                title={guardMissingData(getRelativeDate(dailyFatalities.date))}
+                value={guardMissingData(dailyFatalities.value)}
                 tooltip="These are the fatalities from today and reset after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
@@ -204,7 +196,7 @@ function SingleValueBar() {
               <SingleValue
                 id="totalFatalities"
                 title="Total"
-                value={totalFatalities.value}
+                value={guardMissingData(totalFatalities.value)}
                 tooltip="These are the Total Fatalities since the COVID-19 Pandemic began"
               />
             </Col>
@@ -212,7 +204,7 @@ function SingleValueBar() {
               <SingleValue
                 id="fatalityCaseRatio"
                 title="Death / Case Ratio"
-                value={fatalityCaseRatio}
+                value={guardMissingData(fatalityCaseRatio)}
                 tooltip="This shows the Ratio of Total Fatalities to Total Cases of COVID-19"
               />
             </Col>
@@ -225,7 +217,7 @@ function SingleValueBar() {
               <SingleValue
                 id="dailyTestsCompleted"
                 title="Daily"
-                value={dailyTestsCompleted.value}
+                value={guardMissingData(dailyTestsCompleted.value)}
                 tooltip="This is how many tests were completed today and resets after 11.59pm (Can be delayed because of data fetching)"
               />
             </Col>
@@ -233,7 +225,7 @@ function SingleValueBar() {
               <SingleValue
                 id="totalTestsCompleted"
                 title="Total"
-                value={totalTestsCompleted.value}
+                value={guardMissingData(totalTestsCompleted.value)}
                 tooltip="This shows how many COVID-19 Tests have been completed since the beginning of the COVID-19 Pandemic"
               />
             </Col>

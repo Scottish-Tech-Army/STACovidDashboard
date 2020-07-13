@@ -57,12 +57,12 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES, context);
             storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, context);
 
-            String last4Days = getDaysDateValueClause();
+            String last7Days = getDaysDateValueClause();
             String last2Years = getYearsDateValueClause();
 
-            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_4_DAYS, last4Days), OBJECTKEY_SUMMARY_COUNTS,
+            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_4_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
                     context);
-            storeStatsQuery(QUERYTEMPLATE_TOTAL_HEALTH_BOARDS_CASES.replace(LAST_4_DAYS, last4Days),
+            storeStatsQuery(QUERYTEMPLATE_TOTAL_HEALTH_BOARDS_CASES.replace(LAST_4_DAYS, last7Days),
                     OBJECTKEY_TOTAL_HEALTH_BOARDS_CASES, context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_HEALTH_BOARDS_DEATHS.replace(LAST_2_YEARS, last2Years),
                     OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
@@ -139,15 +139,16 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         return singleYearLine(thisYear) + singleYearLine(thisYear - 1);
     }
 
-    // Last 4 days
+    // Last 7 days
     private static String getDaysDateValueClause() {
         Instant today = Instant.now();
-        Instant yesterday = today.minus(1, ChronoUnit.DAYS);
-        Instant dayBefore = today.minus(2, ChronoUnit.DAYS);
-        Instant twoDaysBefore = today.minus(3, ChronoUnit.DAYS);
+        StringBuilder result = new StringBuilder(singleDayLine(today));
 
-        return singleDayLine(today) + singleDayLine(yesterday) + singleDayLine(dayBefore)
-                + singleDayLine(twoDaysBefore);
+        for (int i=1; i<7; i++) {
+            Instant nextDay = today.minus(i, ChronoUnit.DAYS);
+            result.append(singleDayLine(nextDay));
+        }
+        return result.toString();
     }
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
