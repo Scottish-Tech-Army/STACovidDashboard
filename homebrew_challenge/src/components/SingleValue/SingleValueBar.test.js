@@ -79,16 +79,42 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
   checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
-it("getDateValueClause", () => {
+it("SingleValueBar renders dynamic fetched data with incomplete diff data", async () => {
+  fetch.mockResponse(incompleteDiffCsvData);
+
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
 
-  expect(getDateValueClause()).toBe(
-    '( <http://reference.data.gov.uk/id/day/2020-06-22> "2020-06-22" )' +
-      '( <http://reference.data.gov.uk/id/day/2020-06-21> "2020-06-21" )' +
-      '( <http://reference.data.gov.uk/id/day/2020-06-20> "2020-06-20" )' +
-      '( <http://reference.data.gov.uk/id/day/2020-06-19> "2020-06-19" )'
-  );
+  await act(async () => {
+    render(<SingleValueBar />, container);
+  });
+
+  checkSingleValue("dailyCases", "Yesterday", "26");
+  checkSingleValue("totalCases", "Total" , "18156");
+  checkSingleValue("dailyFatalities", "Not available", "Not available");
+  checkSingleValue("totalFatalities", "Total" , "2472");
+  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
+  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
+  checkSingleValue("totalTestsCompleted", "Total", "231525");
+});
+
+it("SingleValueBar renders dynamic fetched data with missing data", async () => {
+  fetch.mockResponse(missingCsvData);
+
+  // Set today to be 2020-06-22
+  setMockDate("2020-06-22");
+
+  await act(async () => {
+    render(<SingleValueBar />, container);
+  });
+
+  checkSingleValue("dailyCases", "Not available", "Not available");
+  checkSingleValue("totalCases", "Total" , "Not available");
+  checkSingleValue("dailyFatalities", "Not available", "Not available");
+  checkSingleValue("totalFatalities", "Total" , "Not available");
+  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
+  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
+  checkSingleValue("totalTestsCompleted", "Total", "Not available");
 });
 
 it("getRelativeDate", () => {
@@ -103,6 +129,8 @@ it("getRelativeDate", () => {
   expect(getRelativeDate(Date.parse("2020-06-17"))).toBe("last Wednesday");
   expect(getRelativeDate(Date.parse("2020-06-16"))).toBe("last Tuesday");
   expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("15/06/2020");
+  expect(getRelativeDate(undefined)).toBe(undefined);
+  expect(getRelativeDate(null)).toBe(undefined);
 });
 
 it("parseCsvData", () => {
@@ -162,3 +190,13 @@ const csvData = `date,shortValue,count
 2020-06-21,cumulativeTotalTests,231525
 2020-06-21,dailyPositiveTests,26
 2020-06-21,cumulativeDeaths,2472`;
+
+// On the cases where there isn't enough data to do diffs of cumulative values
+const incompleteDiffCsvData = `date,shortValue,count
+2020-06-21,cumulativePositiveTests,18156
+2020-06-21,cumulativeTotalTests,231525
+2020-06-21,dailyPositiveTests,26
+2020-06-21,cumulativeDeaths,2472`;
+
+// On the cases where there isn't data available
+const missingCsvData = `date,shortValue,count`;
