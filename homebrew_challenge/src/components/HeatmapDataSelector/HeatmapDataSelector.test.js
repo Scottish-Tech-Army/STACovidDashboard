@@ -192,8 +192,8 @@ it("default render", async () => {
   checkButtonText(
     "Health Boards",
     "Council Areas",
-    "Total Deaths",
-    "Total Cases"
+    "Deaths",
+    "Cases"
   );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
@@ -202,8 +202,8 @@ it("default render", async () => {
   checkButtonText(
     "Health Boards",
     "Council Areas",
-    "Total Deaths",
-    "Total Cases [Data not available]"
+    "Deaths",
+    "Cases [Data not available]"
   );
   checkButtonsDisabled(true, false);
   checkStoredValues("council-areas", "deaths");
@@ -212,8 +212,8 @@ it("default render", async () => {
   checkButtonText(
     "Health Boards",
     "Council Areas",
-    "Total Deaths",
-    "Total Cases"
+    "Deaths",
+    "Cases"
   );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
@@ -222,8 +222,8 @@ it("default render", async () => {
   checkButtonText(
     "Health Boards",
     "Council Areas [Data not available]",
-    "Total Deaths",
-    "Total Cases"
+    "Deaths",
+    "Cases"
   );
   checkButtonsDisabled(false, true);
   checkStoredValues("health-boards", "cases");
@@ -232,8 +232,8 @@ it("default render", async () => {
   checkButtonText(
     "Health Boards",
     "Council Areas",
-    "Total Deaths",
-    "Total Cases"
+    "Deaths",
+    "Cases"
   );
   checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");

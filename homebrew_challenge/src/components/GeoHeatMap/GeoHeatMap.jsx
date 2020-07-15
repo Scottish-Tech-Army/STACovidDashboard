@@ -15,6 +15,7 @@ import {
 import FullscreenControl from "./FullscreenControl";
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
+import moment from "moment";
 
 /*
   geoJSONHealthBoards data from
@@ -26,12 +27,11 @@ import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
   Additionally, the non Scotland features of the council areas data were removed.
 */
 
-function parseCsvData(csvData) {
-  function getLatestValue(dateValueMap) {
-    const lastDate = [...dateValueMap.keys()].sort().pop();
-    return dateValueMap.get(lastDate);
-  }
+function getLatestDate(dates) {
+  return dates.sort().pop();
+}
 
+export function parseWeeklyCsvData(csvData) {
   var lines = readCsvData(csvData);
 
   const { placeDateValueMap } = createPlaceDateValueMap(lines);
@@ -39,13 +39,63 @@ function parseCsvData(csvData) {
   const regions = new Map();
 
   placeDateValueMap.forEach((dateValueMap, areaname) => {
-    regions.set(areaname, getLatestValue(dateValueMap));
+    const startDate = getLatestDate([...dateValueMap.keys()]);
+    const count = dateValueMap.get(startDate);
+    const endDate = moment(startDate).add(6, "days").valueOf();
+    const total = [...dateValueMap.values()].reduce(
+      (accumulator, current) => accumulator + current
+    );
+    regions.set(areaname, {
+      count: count,
+      fromDate: startDate,
+      toDate: endDate,
+      totalDeaths: total,
+    });
   });
   return regions;
 }
 
-const deathsHeatLevels = [0, 1, 10, 100, 200, 500];
-const casesHeatLevels = [0, 1, 10, 100, 1000, 3000];
+export function parse7DayDiffCsvData(csvData) {
+  function getLatestDateBefore(dates, testDate) {
+    return dates
+      .filter((date) => moment(date).isSameOrBefore(testDate))
+      .sort()
+      .pop();
+  }
+  function getEarliestDate(dates) {
+    return dates.sort().shift();
+  }
+
+  var lines = readCsvData(csvData);
+  const { placeDateValueMap } = createPlaceDateValueMap(lines);
+
+  const regions = new Map();
+
+  placeDateValueMap.forEach((dateValueMap, areaname) => {
+    const dates = [...dateValueMap.keys()];
+    const endDate = getLatestDate(dates);
+    const endValue = dateValueMap.get(endDate);
+    const dataStartDate = getLatestDateBefore(
+      dates,
+      moment(endDate).subtract(7, "days")
+    );
+    const windowStartDate = dataStartDate
+      ? moment(dataStartDate).add(1, "days").valueOf()
+      : getEarliestDate(dates);
+    const startValue = dataStartDate ? dateValueMap.get(dataStartDate) : 0;
+
+    regions.set(areaname, {
+      count: endValue - startValue,
+      fromDate: windowStartDate,
+      toDate: endDate,
+      totalCases: endValue,
+    });
+  });
+  return regions;
+}
+
+const deathsHeatLevels = [0, 1, 2, 5, 10, 20];
+const casesHeatLevels = [0, 1, 5, 10, 20, 50];
 const scotlandBounds = [
   [54.6, -7.5],
   [61.0, -0.4],
@@ -117,26 +167,26 @@ const GeoHeatMap = ({
 
   // Load and parse datasets (lazy initialisation)
   useEffect(() => {
-    const totalCasesByHealthBoardCsv = "totalHealthBoardsCases.csv";
-    const totalDeathsByCouncilAreaCsv = "annualCouncilAreasDeaths.csv";
-    const totalDeathsByHealthBoardCsv = "annualHealthBoardsDeaths.csv";
+    const dailyCasesByHealthBoardCsv = "dailyHealthBoardsCases.csv";
+    const weeklyDeathsByCouncilAreaCsv = "weeklyCouncilAreasDeaths.csv";
+    const weeklyDeathsByHealthBoardCsv = "weeklyHealthBoardsDeaths.csv";
 
     if (VALUETYPE_DEATHS === valueType) {
       if (AREATYPE_COUNCIL_AREAS === areaType) {
         if (null === totalDeathsByCouncilArea) {
           fetchAndStore(
-            totalDeathsByCouncilAreaCsv,
+            weeklyDeathsByCouncilAreaCsv,
             setTotalDeathsByCouncilArea,
-            parseCsvData
+            parseWeeklyCsvData
           );
         }
       } else {
         // AREATYPE_HEALTH_BOARDS == areaType
         if (null === totalDeathsByHealthBoard) {
           fetchAndStore(
-            totalDeathsByHealthBoardCsv,
+            weeklyDeathsByHealthBoardCsv,
             setTotalDeathsByHealthBoard,
-            parseCsvData
+            parseWeeklyCsvData
           );
         }
       }
@@ -148,9 +198,9 @@ const GeoHeatMap = ({
         // AREATYPE_HEALTH_BOARDS == areaType
         if (null === totalCasesByHealthBoard) {
           fetchAndStore(
-            totalCasesByHealthBoardCsv,
+            dailyCasesByHealthBoardCsv,
             setTotalCasesByHealthBoard,
-            parseCsvData
+            parse7DayDiffCsvData
           );
         }
       }
@@ -202,21 +252,26 @@ const GeoHeatMap = ({
       const map = mapRef.current.leafletElement;
       const layer = e.target;
       const regionName = layer.feature.properties.RegionName;
-      var value = currentDatasetRef.current.get(regionName);
-      if (value === undefined) {
-        value = 0;
+      const regionData = currentDatasetRef.current.get(regionName);
+      var content =
+        "<p class='region-popup'><strong>" +
+        regionName +
+        "</strong><br />Not available</p>";
+
+      if (regionData) {
+        content =
+          "<p class='region-popup'><strong>" +
+          regionName +
+          "</strong><br />Count: " +
+          regionData.count +
+          "<br />(" +
+          moment(regionData.fromDate).format("DD MMM") +
+          " - " +
+          moment(regionData.toDate).format("DD MMM") +
+          ")</p>";
       }
 
-      L.popup()
-        .setLatLng(e.latlng)
-        .setContent(
-          "<p class='region-popup'><strong>" +
-            regionName +
-            "</strong><br />Count: " +
-            value +
-            "</p>"
-        )
-        .openOn(map);
+      L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
     };
 
     const regionLayerOptions = {
@@ -308,14 +363,16 @@ const GeoHeatMap = ({
     }
 
     function getRegionStyle(regionName) {
-      var count = currentDataset.get(regionName);
-      if (count === undefined) {
-        count = 0;
+      const regionData = currentDataset.get(regionName);
+      var count = 0;
+      if (regionData) {
+        count = regionData.count;
       }
 
       return {
-        color: getRegionColour(count),
-        opacity: 0.65,
+        color: "black",
+        fillColor: getRegionColour(count),
+        opacity: 0.5,
         fillOpacity: 0.5,
         weight: 1,
       };
@@ -342,7 +399,8 @@ const GeoHeatMap = ({
         legendRef.current.onAdd = function (map) {
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
-          div.innerHTML += "<div class='legend-title'>Region Counts</div>";
+          div.innerHTML +=
+            "<div class='legend-title'>Region Counts<br/>(last 7 days)</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=

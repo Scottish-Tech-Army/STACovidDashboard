@@ -75,7 +75,7 @@ public class LambdaFunctionHandlerTest {
         when(httpResponse.getEntity()).thenReturn(new StringEntity("testoutput1"), new StringEntity("testoutput2"),
                 new StringEntity("testoutput3"), new StringEntity("testoutput4"), new StringEntity("testoutput5"),
                 new StringEntity("testoutput6"), new StringEntity("testoutput7"), new StringEntity("testoutput8"),
-                new StringEntity("testoutput9"), new StringEntity("testoutput10"), new StringEntity("unexpected"));
+                new StringEntity("testoutput9"), new StringEntity("unexpected"));
     }
 
     private Context createContext() {
@@ -90,26 +90,26 @@ public class LambdaFunctionHandlerTest {
 
         assertEquals("Success", output);
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        assertEquals(10, httpRequests.size());
-        // The first 9 are requests to statistics.gov.scot
-        for (int i=0; i< 9; i++) {
+        assertEquals(9, httpRequests.size());
+        // The first 8 are requests to statistics.gov.scot
+        for (int i=0; i< 8; i++) {
             checkSparQLPostRequest((HttpPost) httpRequests.get(i));
         }
         // The last is a request to news.gov.scot rss feed
-        checkRssFeedGetRequest((HttpGet) httpRequests.get(9));
+        checkRssFeedGetRequest((HttpGet) httpRequests.get(8));
 
         List<PutObjectRequest> s3Requests = s3RequestCaptor.getAllValues();
-        assertEquals(10, s3Requests.size());
+        assertEquals(9, s3Requests.size());
 
         String[] expectedKeys = new String[] { "data/weeklyHealthBoardsDeaths.csv",
                 "data/dailyScottishCasesAndDeaths.csv", "data/weeklyCouncilAreasDeaths.csv",
                 "data/dailyHealthBoardsCases.csv", "data/analysis/dailyHealthBoardsCasesAndPatients.csv",
-                "data/summaryCounts.csv", "data/totalHealthBoardsCases.csv", "data/annualHealthBoardsDeaths.csv",
+                "data/summaryCounts.csv", "data/annualHealthBoardsDeaths.csv",
                 "data/annualCouncilAreasDeaths.csv", "data/newsScotGovRss.xml"};
         assertArrayEquals(expectedKeys, s3Requests.stream().map(PutObjectRequest::getKey).toArray());
 
         String[] expectedContents = new String[] { "testoutput1", "testoutput2", "testoutput3", "testoutput4",
-                "testoutput5", "testoutput6", "testoutput7", "testoutput8", "testoutput9", "testoutput10", };
+                "testoutput5", "testoutput6", "testoutput7", "testoutput8", "testoutput9", };
         assertArrayEquals(expectedContents,
                 s3Requests.stream().map(PutObjectRequest::getInputStream).map(this::readInputStream).toArray());
     }
