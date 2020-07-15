@@ -3,7 +3,7 @@ export function readCsvData(csvData) {
   var lines = [];
 
   allTextLines.forEach((line) => {
-    if (line.length > 0) {
+    if (line.trim().length > 0) {
       lines.push(line.split(",").map((s) => s.trim()));
     }
   });
@@ -18,7 +18,11 @@ export function createPlaceDateValueMap(lines) {
   const placeDateValueMap = new Map();
   const dateSet = new Set();
 
-  lines.forEach(([date, place, count], i) => {
+  lines.forEach(([dateString, place, count], i) => {
+    // weekly dates start with "w/c "
+    dateString = dateString.replace("w/c ", "");
+    const date = Date.parse(dateString);
+
     if (!placeDateValueMap.has(place)) {
       placeDateValueMap.set(place, new Map());
     }

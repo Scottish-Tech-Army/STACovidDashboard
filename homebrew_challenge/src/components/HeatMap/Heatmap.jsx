@@ -8,7 +8,7 @@ import {
 import {
   readCsvData,
   createPlaceDateValueMap,
-  fetchAndStore
+  fetchAndStore,
 } from "../Utils/CsvUtils";
 import { format, addDays } from "date-fns";
 import Table from "react-bootstrap/Table";
@@ -27,7 +27,7 @@ export function parseCsvData(csvData) {
   placeDateValueMap.forEach((dateValueMap, place) => {
     const values = [];
     var total = 0;
-    dates.forEach(date => {
+    dates.forEach((date) => {
       const value = dateValueMap.get(date);
       values.push(value);
       total += value;
@@ -35,7 +35,7 @@ export function parseCsvData(csvData) {
     regions.push({ name: place, totalDeaths: total, counts: values });
   });
 
-  return { dates: dates.map((d) => d.replace("w/c ", "")), regions: regions };
+  return { dates: dates, regions: regions };
 }
 
 // Exported for tests
@@ -61,7 +61,7 @@ export function parseDiffCsvData(csvData) {
   placeDateValueDiffMap.forEach((dateValueMap, place) => {
     const values = [];
     var total = 0;
-    dates.forEach(date => {
+    dates.forEach((date) => {
       const value = dateValueMap.get(date);
       values.push(value);
       total += value;
@@ -73,7 +73,7 @@ export function parseDiffCsvData(csvData) {
 
 function Heatmap({
   valueType = VALUETYPE_DEATHS,
-  areaType = AREATYPE_COUNCIL_AREAS
+  areaType = AREATYPE_COUNCIL_AREAS,
 }) {
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 1, 5, 10, 100, 200];
@@ -187,7 +187,7 @@ function Heatmap({
     areaType,
     councilAreasDeathsDataset,
     healthBoardsDeathsDataset,
-    healthBoardsCasesDataset
+    healthBoardsCasesDataset,
   ]);
 
   function getDataSet() {
@@ -210,15 +210,13 @@ function Heatmap({
   }
 
   function dateRangeTableCell() {
-
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
-
     }
     const dataset = getDataSet();
     const dates = dataset["dates"];
-    let startDate = Date.parse(dates[0]);
-    let endDate = Date.parse(dates[dates.length - 1]);
+    let startDate = dates[0];
+    let endDate = dates[dates.length - 1];
 
     // add 6 days to date to get last day of the w/c... date
     if (VALUETYPE_DEATHS === valueType) {
