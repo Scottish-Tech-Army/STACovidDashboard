@@ -60,10 +60,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             String last7Days = getDaysDateValueClause();
             String last2Years = getYearsDateValueClause();
 
-            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_4_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
+            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_7_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
                     context);
-            storeStatsQuery(QUERYTEMPLATE_TOTAL_HEALTH_BOARDS_CASES.replace(LAST_4_DAYS, last7Days),
-                    OBJECTKEY_TOTAL_HEALTH_BOARDS_CASES, context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_HEALTH_BOARDS_DEATHS.replace(LAST_2_YEARS, last2Years),
                     OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_COUNCIL_AREAS_DEATHS.replace(LAST_2_YEARS, last2Years),
@@ -172,23 +170,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String OBJECTKEY_WEEKLY_COUNCIL_AREAS_DEATHS = OBJECT_FOLDER + "weeklyCouncilAreasDeaths.csv";
     private static final String OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS = OBJECT_FOLDER + "annualCouncilAreasDeaths.csv";
     private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "dailyHealthBoardsCases.csv";
-    private static final String OBJECTKEY_TOTAL_HEALTH_BOARDS_CASES = OBJECT_FOLDER + "totalHealthBoardsCases.csv";
     private static final String OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS = OBJECT_FOLDER + "analysis/dailyHealthBoardsCasesAndPatients.csv";
     
     private static final String OBJECTKEY_RSS_NEWS_FEED = OBJECT_FOLDER + "newsScotGovRss.xml";
 
-    
-    // // Last 4 days
-    // + "( <http://reference.data.gov.uk/id/day/2020-07-01> \"2020-07-01\" )"
-    // + "( <http://reference.data.gov.uk/id/day/2020-06-30> \"2020-06-30\" )"
-    // + "( <http://reference.data.gov.uk/id/day/2020-06-29> \"2020-06-29\" )"
-    // + "( <http://reference.data.gov.uk/id/day/2020-06-28> \"2020-06-28\" )"
-    //
-    // // Last 2 years
-    // + "( <http://reference.data.gov.uk/id/year/2020> \"2020\" )"
-    // + "( <http://reference.data.gov.uk/id/year/2019> \"2019\" )"
-
-    private static final String LAST_4_DAYS = "__LAST_4_DAYS__";
+    private static final String LAST_7_DAYS = "__LAST_14_DAYS__";
     private static final String LAST_2_YEARS = "__LAST_2_YEARS__";
 
     private static final String FRAGMENT_COMMON_PREFIXES = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
@@ -207,7 +193,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> \"cumulativePositiveTests\" )\n"
             + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> \"cumulativeTotalTests\")\n"
             + "    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> \"cumulativeDeaths\" )\n"
-            + "  }\n" + "  VALUES (?perioduri ?date) { " + LAST_4_DAYS + " }\n"
+            + "  }\n" + "  VALUES (?perioduri ?date) { " + LAST_7_DAYS + " }\n"
             + "  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .\n"
             + "  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .\n"
             + "  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .\n"
@@ -266,17 +252,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .\n"
             + "?areauri rdfs:label ?areaname.\n" + "?obs dim:refPeriod ?perioduri .\n" + "?perioduri rdfs:label ?date\n"
             + "}";
-
-    private static final String QUERYTEMPLATE_TOTAL_HEALTH_BOARDS_CASES = FRAGMENT_COMMON_PREFIXES
-            + "SELECT ?date ?areaname ?count WHERE {\n" + "  VALUES (?value) {\n"
-            + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> )\n"
-            + "   }\n" + "   VALUES (?perioduri ?date) { " + LAST_4_DAYS + " }\n"
-            + "  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .\n"
-            + "  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .\n"
-            + "  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .\n"
-            + "?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/health-boards> .\n"
-            + "  ?obs dim:refArea ?areauri .\n" + "  ?areauri rdfs:label ?areaname.\n"
-            + "  ?obs dim:refPeriod ?perioduri .\n" + "}";
 
     private static final String QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS = FRAGMENT_COMMON_PREFIXES 
             + "SELECT ?date ?value ?variable ?areaname \n"

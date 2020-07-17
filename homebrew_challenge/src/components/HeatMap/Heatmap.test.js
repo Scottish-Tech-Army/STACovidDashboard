@@ -136,7 +136,12 @@ const rows = () => table().querySelectorAll("tbody tr");
 
 it("parseCsvData", () => {
   const expectedResult = {
-    dates: ["2020-03-16", "2020-03-23", "2020-03-30", "2020-04-06"],
+    dates: [
+      Date.parse("2020-03-16"),
+      Date.parse("2020-03-23"),
+      Date.parse("2020-03-30"),
+      Date.parse("2020-04-06"),
+    ],
     regions: [
       {
         counts: [1, 0, 2, 12],
@@ -162,7 +167,12 @@ it("parseCsvData", () => {
 it("parseDiffCsvData", () => {
   // Remember these are deltas of cumulative figures
   const expectedResult = {
-    dates: ["2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09"],
+    dates: [
+      Date.parse("2020-03-06"),
+      Date.parse("2020-03-07"),
+      Date.parse("2020-03-08"),
+      Date.parse("2020-03-09"),
+    ],
     regions: [
       {
         counts: [1, -2, 27, -34],

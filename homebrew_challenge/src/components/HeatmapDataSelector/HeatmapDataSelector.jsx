@@ -41,7 +41,7 @@ function HeatmapDataSelector({
   }
 
   const casesText =
-    "Total Cases" +
+    "Cases" +
     (AREATYPE_COUNCIL_AREAS === areaType ? " [Data not available]" : "");
   const councilAreasText =
     "Council Areas" +
@@ -77,7 +77,7 @@ function HeatmapDataSelector({
         </Col>
         <Col className="selector-group" xs={12} md={6}>
           <span>
-            <strong>Select measure:</strong>
+            <strong>Select measure (last 7 days):</strong>
           </span>
           <ToggleButtonGroup
             className="toggle-button-group"
@@ -87,7 +87,7 @@ function HeatmapDataSelector({
             onChange={(val) => setValueType(val)}
           >
             <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-              Total Deaths
+              Deaths
             </ToggleButton>
             <ToggleButton
               id="cases"
