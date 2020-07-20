@@ -15,6 +15,7 @@
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-full-screen": "^0.2.4",
+    "react-gtm-module": "^2.0.10",
     "react-leaflet": "^2.7.0"
   },
   "scripts": {
