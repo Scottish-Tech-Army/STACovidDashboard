@@ -265,9 +265,10 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String FRAGMENT_ALL_COVID_DEATHS = "?obs <http://purl.org/linked-data/cube#dataSet> <http://statistics.gov.scot/data/deaths-involving-coronavirus-covid-19> .\n"
             + "?obs <http://statistics.gov.scot/def/dimension/sex> <http://statistics.gov.scot/def/concept/sex/all>.\n"
             + "?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.\n"
-            + "?obs <http://statistics.gov.scot/def/dimension/causeofdeath> <http://statistics.gov.scot/def/concept/causeofdeath/covid-19-related>.\n"
-            + "?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.\n";
+            + "?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.\n"
+            + "?obs <http://statistics.gov.scot/def/dimension/locationOfDeath> <http://statistics.gov.scot/def/concept/location-of-death/all>.\n";
 
+    
     private static final String QUERYTEMPLATE_SUMMARY_COUNTS = FRAGMENT_COMMON_PREFIXES
             + "SELECT ?date ?shortValue ?count WHERE {\n" + "  VALUES (?value ?shortValue) {\n"
             + "    ( <http://statistics.gov.scot/def/concept/variable/testing-daily-people-found-positive> \"dailyPositiveTests\" )\n"
@@ -311,7 +312,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String QUERY_WEEKLY_COUNCIL_AREAS_DEATHS = FRAGMENT_COMMON_PREFIXES
             + "SELECT ?date ?areaname ?count WHERE {\n" + FRAGMENT_ALL_COVID_DEATHS
             + "?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .\n"
-            + "?obs <http://statistics.gov.scot/def/dimension/locationofdeath> <http://statistics.gov.scot/def/concept/locationofdeath/all>.\n"
             + "?obs dim:refArea ?areauri .\n" + "?obs dim:refPeriod ?perioduri .\n"
             + "?areauri <http://publishmydata.com/def/ontology/foi/memberOf> <http://statistics.gov.scot/def/foi/collection/council-areas> .\n"
             + "?areauri rdfs:label ?areaname.\n" + "?perioduri rdfs:label ?date\n" + "FILTER regex(?date, \"^w\")\n"

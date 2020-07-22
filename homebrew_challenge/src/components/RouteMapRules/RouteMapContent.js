@@ -9,8 +9,8 @@ export const PHASE_4 = "phase4";
 export const CURRENT_PHASE = PHASE_3;
 
 const ICON_SOCIAL_DISTANCING = {
-  image: "./assets/social_distancing.png",
-  altText: "social distancing",
+  image: "./assets/physical_distancing.png",
+  altText: "physical distancing",
 };
 const ICON_PUBLIC_HEALTH_ADVICE = {
   image: "./assets/public_health_advice.png",
