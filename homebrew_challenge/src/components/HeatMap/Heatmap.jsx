@@ -218,6 +218,14 @@ function Heatmap({
     let startDate = dates[0];
     let endDate = dates[dates.length - 1];
 
+    if (!startDate || !endDate) {
+        return (
+          <td className="flex-container">
+            Data not available
+          </td>
+        );
+    }
+
     // add 6 days to date to get last day of the w/c... date
     if (VALUETYPE_DEATHS === valueType) {
       endDate = addDays(endDate, 6);

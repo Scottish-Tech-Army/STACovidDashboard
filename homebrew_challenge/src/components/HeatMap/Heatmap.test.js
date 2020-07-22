@@ -18,19 +18,21 @@ afterEach(() => {
   container = null;
 });
 
+const emptyCsvData = `date,areaname,count`;
+
 const weeklyDeathsCsvData = `date,areaname,count
-  w/c 2020-03-16,Orkney Islands,0
-  w/c 2020-03-16,Glasgow City,1
-  w/c 2020-03-16,Aberdeen City,1
-  w/c 2020-03-23,Orkney Islands,0
-  w/c 2020-03-23,Glasgow City,7
-  w/c 2020-03-23,Aberdeen City,0
-  w/c 2020-03-30,Orkney Islands,0
-  w/c 2020-03-30,Glasgow City,46
-  w/c 2020-03-30,Aberdeen City,2
-  w/c 2020-04-06,Orkney Islands,2
-  w/c 2020-04-06,Glasgow City,97
-  w/c 2020-04-06,Aberdeen City,12`;
+    w/c 2020-03-16,Orkney Islands,0
+    w/c 2020-03-16,Glasgow City,1
+    w/c 2020-03-16,Aberdeen City,1
+    w/c 2020-03-23,Orkney Islands,0
+    w/c 2020-03-23,Glasgow City,7
+    w/c 2020-03-23,Aberdeen City,0
+    w/c 2020-03-30,Orkney Islands,0
+    w/c 2020-03-30,Glasgow City,46
+    w/c 2020-03-30,Aberdeen City,2
+    w/c 2020-04-06,Orkney Islands,2
+    w/c 2020-04-06,Glasgow City,97
+    w/c 2020-04-06,Aberdeen City,12`;
 
 // These are cumulative values, the deltas are calculated
 const dailyCasesCsvData = `date,areaname,count
@@ -60,73 +62,149 @@ it("Heatmap renders no data when fetch fails, shows loadingComponent", async () 
   expect(table()).toBeNull();
 });
 
-it("Heatmap renders dynamic fetched data - council areas; deaths", async () => {
-  fetch.mockResponse(weeklyDeathsCsvData);
+describe("Heatmap renders dynamic fetched data", () => {
+  it("Council areas; deaths", async () => {
+    fetch.mockResponse(weeklyDeathsCsvData);
 
-  await act(async () => {
-    render(<Heatmap valueType="deaths" areaType="council-areas" />, container);
+    await act(async () => {
+      render(
+        <Heatmap valueType="deaths" areaType="council-areas" />,
+        container
+      );
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Council Areas",
+      "Total Deaths",
+      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(4);
+    checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
+    checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
+    checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
+    checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
   });
 
-  expect(loadingComponent()).toBeNull();
-  checkHeaderRow(
-    headers(),
-    "Council Areas",
-    "Total Deaths",
-    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
-  );
+  it("Health boards; deaths", async () => {
+    fetch.mockResponse(weeklyDeathsCsvData);
 
-  const dataRows = rows();
-  expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
-  checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
-  checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
-  checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
+    await act(async () => {
+      render(
+        <Heatmap valueType="deaths" areaType="health-boards" />,
+        container
+      );
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Health Boards",
+      "Total Deaths",
+      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(4);
+    checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
+    checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
+    checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
+    checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
+  });
+
+  it("Health boards; cases", async () => {
+    fetch.mockResponse(dailyCasesCsvData);
+
+    await act(async () => {
+      render(<Heatmap valueType="cases" areaType="health-boards" />, container);
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Health Boards",
+      "Total Cases",
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(4);
+    checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
+    checkRow(dataRows[1], "Grampian", "-8", [1, 0, 3, 0]);
+    checkRow(dataRows[2], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
+    checkRow(dataRows[3], "Highland", "300", [1, 0, 5, 3]);
+  });
 });
 
-it("Heatmap renders dynamic fetched data - health boards; deaths", async () => {
-  fetch.mockResponse(weeklyDeathsCsvData);
+describe("Heatmap handles missing data", () => {
+  it("Council areas; deaths", async () => {
+    fetch.mockResponse(emptyCsvData);
 
-  await act(async () => {
-    render(<Heatmap valueType="deaths" areaType="health-boards" />, container);
+    await act(async () => {
+      render(
+        <Heatmap valueType="deaths" areaType="council-areas" />,
+        container
+      );
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Council Areas",
+      "Total Deaths",
+      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(1);
+    checkDateRangeRow(dataRows[0], "Data not available");
   });
 
-  expect(loadingComponent()).toBeNull();
-  checkHeaderRow(
-    headers(),
-    "Health Boards",
-    "Total Deaths",
-    "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
-  );
+  it("Health boards; deaths", async () => {
+    fetch.mockResponse(emptyCsvData);
 
-  const dataRows = rows();
-  expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
-  checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
-  checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
-  checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
-});
+    await act(async () => {
+      render(
+        <Heatmap valueType="deaths" areaType="health-boards" />,
+        container
+      );
+    });
 
-it("Heatmap renders dynamic fetched data - health boards; cases", async () => {
-  fetch.mockResponse(dailyCasesCsvData);
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Health Boards",
+      "Total Deaths",
+      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
 
-  await act(async () => {
-    render(<Heatmap valueType="cases" areaType="health-boards" />, container);
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(1);
+    checkDateRangeRow(dataRows[0], "Data not available");
   });
 
-  expect(loadingComponent()).toBeNull();
-  checkHeaderRow(
-    headers(),
-    "Health Boards",
-    "Total Cases",
-    "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
-  );
+  it("Health boards; cases", async () => {
+    fetch.mockResponse(emptyCsvData);
 
-  const dataRows = rows();
-  expect(dataRows).toHaveLength(4);
-  checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
-  checkRow(dataRows[1], "Grampian", "-8", [1, 0, 3, 0]);
-  checkRow(dataRows[2], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
-  checkRow(dataRows[3], "Highland", "300", [1, 0, 5, 3]);
+    await act(async () => {
+      render(<Heatmap valueType="cases" areaType="health-boards" />, container);
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Health Boards",
+      "Total Cases",
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(1);
+    checkDateRangeRow(dataRows[0], "Data not available");
+  });
 });
 
 const loadingComponent = () => container.querySelector(".loading-component");
