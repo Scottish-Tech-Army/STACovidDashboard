@@ -476,7 +476,7 @@ const App = () => {
                   src="STALogo.png"
                   alt="Scottish Tech Army Logo"
                 />
-                Scotland COVID-19 Dashboard
+                COVID-19 Dashboard for Scotland
               </h1>
             </Col>
           </Row>
