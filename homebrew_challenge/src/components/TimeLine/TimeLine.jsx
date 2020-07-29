@@ -10,7 +10,7 @@ const defaultEvents = [
   },
   {
     date: "2020-06-19",
-    text: "Scotland begins transition to Phase 2 of the Covid-19 roadmap",
+    text: "Scotland begins transition to Phase 2 of the COVID-19 roadmap",
   },
   { date: "2020-03-01", text: "First positive case in Scotland" },
   {
@@ -32,17 +32,20 @@ const defaultEvents = [
     text:
       "Testing in Scotland available for everyone who is symptomatic over 5",
   },
-  { date: "2020-05-21", text: "Scottish Covid-19 Roadmap published" },
+  { date: "2020-05-21", text: "Scottish COVID-19 Roadmap published" },
 
   { date: "2020-06-20", text: "Scottish Government publishes guidance to support the Tourism and Hospitality sector to prepare for opening on 15th July" },
-  { date: "2020-06-24", text: "Updated Covid-19 routemap published with indicative Phase 2 dates" },
+  { date: "2020-06-24", text: "Updated COVID-19 routemap published with indicative Phase 2 dates" },
   { date: "2020-06-29", text: "Scottish Government announces transition to Phase 2" },
   { date: "2020-06-29", text: "Non-essential retail with street access can open" },
   { date: "2020-07-03", text: "5 mile travel distance is relaxed" },
   { date: "2020-07-03", text: "Self-contained accomodation can open" },
   { date: "2020-07-06", text: "Outdoor hospitality (such as beer gardens) permitted to reopen" },
   { date: "2020-07-10", text: "Face coverings to be mandatory in shops" },
-
+  { date: "2020-07-13", text: "Face-to-face youth work resumed outdoors (under relevant guidance)" },
+  { date: "2020-07-15", text: "Hairdressers and barbers re-opened with enhanced hygiene measures" },
+  { date: "2020-07-22", text: "Motorcycle instruction and theory/hazard tests resumed (tractor tests also resumed)" },
+  { date: "2020-07-22", text: "Other personal retail services such as beauticians and tailors re-opened – with enhanced hygiene measures" },
 ];
 
 // Override the events for testing
