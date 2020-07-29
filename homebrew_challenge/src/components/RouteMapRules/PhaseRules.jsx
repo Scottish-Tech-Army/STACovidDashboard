@@ -48,18 +48,22 @@ const PhaseRules = ({ categories }) => {
   }
 
   return (
-    <div className="d-flex flex-column flex-lg-row">
-      {addPhaseRules("cat1")}
-      {addPhaseRules("cat2")}
-      {addPhaseRules("cat3")}
-      {addPhaseRules("cat4")}
-      {phaseRuleFormatting(
-        "./assets/more_info.png",
-        "more information",
-        getGuidanceText(),
-        "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
-      )}
-    </div>
+      <div className="d-flex flex-column">
+        <div className="d-flex flex-column flex-lg-row">
+          {addPhaseRules("cat1")}
+          {addPhaseRules("cat2")}
+          {addPhaseRules("cat3")}
+          {addPhaseRules("cat4")}
+          {phaseRuleFormatting(
+              "./assets/more_info.png",
+              "more information",
+              getGuidanceText(),
+              "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
+          )}
+        </div>
+        <div className="phase-rules-disclaimer justify-content-center m-lg-1 category-card">
+          Updated on 09/07/2020 from Scottish Government route map guidance published. Please check the government guidance for subsequent updates.</div>
+      </div>
   );
 };
 
