@@ -476,7 +476,7 @@ const App = () => {
                   src="STALogo.png"
                   alt="Scottish Tech Army Logo"
                 />
-                Covid-19 Dashboard
+                COVID-19 Dashboard for Scotland
               </h1>
             </Col>
           </Row>
@@ -502,12 +502,7 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-                <img
-                  src="ScottishGovernmentLogo.svg"
-                  alt="Scottish Government guidance"
-                  width="270"
-                  height="50"
-                />
+                Guidance from Scottish Government
               </a>
             </Col>
             <Col xs={12} md={4} className="p-2">
@@ -531,12 +526,7 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-                <img
-                  src="NHSInformLogo.png"
-                  alt="NHS Inform"
-                  width="180"
-                  height="83"
-                />
+                Advice from NHS inform
               </a>
             </Col>
           </Row>
