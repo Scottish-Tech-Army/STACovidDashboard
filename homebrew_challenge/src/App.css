@@ -24,29 +24,25 @@ img#logo {
 }
 
 .sitemap .title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
-.sitemap .entry:hover, .sitemap .entry:active {
-    text-decoration: underline;
+.sitemap .entry:hover,
+.sitemap .entry:active {
+  text-decoration: underline;
 }
 
-.about-us .person a {
-    width: 85%;
+.about-us {
+  text-align: center;
 }
 
-.about-us .person .mugshot {
-    width: 100%;
-    max-width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+.about-us ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .about-us .name {
-    color: #3c3c3b;
-    text-align: center;
-    font-size: 16pt;
-}
-.about-us .person {
-    text-align: center;
+  color: #3c3c3b;
+  font-size: 16pt;
 }
