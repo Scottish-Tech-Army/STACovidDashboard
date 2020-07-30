@@ -2,60 +2,10 @@
   color: #133a53;
 }
 
-.route-map-link {
-  text-decoration: none;
-  color: #133a53;
-}
-
-#lockdown.active,
-#phase-1.active,
-#phase-2.active,
-#phase-3.active,
-#phase-4.active {
-  background-color: #319bd5;
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  padding: 1rem;
-}
-
-#lockdown,
-#phase-1,
-#phase-2,
-#phase-3,
-#phase-4 {
-  background-color: #fff;
-  color: #133a53;
-  border-radius: 0;
-  border: none;
-  margin: 0;
-  padding: 1rem;
-}
-
-.category-image {
-  height: 80px;
-}
-
-.category-card {
-  border: 1px solid LightGray;
-  padding: 10px;
-  margin: 0;
-}
-
-.select-phase {
-  margin: 0;
-  padding: 10px;
-  border: 1px solid LightGray;
-}
-
 .current-phase {
   text-align: center;
   font-weight: bold;
   background-color: #133a53;
   color: #fff;
   padding: 2rem;
-}
-
-.phase-toggle-buttons {
-  width: 100%;
 }
