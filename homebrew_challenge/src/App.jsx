@@ -367,17 +367,8 @@ const App = () => {
     );
   }
 
-  /*
-  <li>TITLE: <a
-    href={"HREF"}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="link "
-  >LINK</a></li>
-*/
-
   function pageAboutUs() {
-    function person(name, mugshot, linkedInRef) {
+    function person(name, linkedInRef) {
       return (
         <li>
           <a
@@ -393,7 +384,7 @@ const App = () => {
     }
 
     return (
-      <Container fluid className="about-us">
+      <div fluid className="about-us">
         <p>
           The COVID-19 Dashboard for Scotland was created by the following STA
           volunteers:
@@ -401,61 +392,29 @@ const App = () => {
         <ul>
           {person(
             "Rhi Batstone",
-            "rb.png",
             "https://www.linkedin.com/in/rhiannon-batstone-076191120"
           )}
-          {person(
-            "Ric Clark",
-            "rc.png",
-            "https://www.linkedin.com/in/richard--clark"
-          )}
-          {person(
-            "Craig Climie",
-            "cc.png",
-            "https://www.linkedin.com/in/craig-climie"
-          )}
-          {person(
-            "Jonathan Lau",
-            "jl.png",
-            "https://www.linkedin.com/in/jonathancylau"
-          )}
-          {person(
-            "Colin Lyman",
-            "cl.png",
-            "https://www.linkedin.com/in/colin-lyman"
-          )}
+          {person("Ric Clark", "https://www.linkedin.com/in/richard--clark")}
+          {person("Craig Climie", "https://www.linkedin.com/in/craig-climie")}
+          {person("Jonathan Lau", "https://www.linkedin.com/in/jonathancylau")}
+          {person("Colin Lyman", "https://www.linkedin.com/in/colin-lyman")}
           {person(
             "Cristina Perez",
-            "cp.png",
             "https://www.linkedin.com/in/cristina-perez-11229846"
           )}
           {person(
             "Luke Pritchard-Woollett",
-            "lpw.png",
             "https://www.linkedin.com/in/lukepritchardwoollett"
           )}
           {person(
             "Euan Robertson",
-            "er.png",
             "https://www.linkedin.com/in/euan-robertson-5845582"
           )}
-          {person(
-            "Allan Stevenson",
-            "as.png",
-            "https://www.linkedin.com/in/alstev"
-          )}
-          {person(
-            "Donal Stewart",
-            "ds.png",
-            "https://www.linkedin.com/in/donalstewart"
-          )}
-          {person(
-            "Becky Still",
-            "bs.png",
-            "https://www.linkedin.com/in/rebeccastill1"
-          )}
+          {person("Allan Stevenson", "https://www.linkedin.com/in/alstev")}
+          {person("Donal Stewart", "https://www.linkedin.com/in/donalstewart")}
+          {person("Becky Still", "https://www.linkedin.com/in/rebeccastill1")}
         </ul>
-      </Container>
+      </div>
     );
   }
 
