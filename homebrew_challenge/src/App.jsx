@@ -379,27 +379,26 @@ const App = () => {
   function pageAboutUs() {
     function person(name, mugshot, linkedInRef) {
       return (
-        <Col
-          className="person pt-3  d-flex justify-content-center"
-          xs={12}
-          md={2}
-        >
+        <li>
           <a
             href={linkedInRef}
             target="_blank"
             rel="noopener noreferrer"
             className="link "
           >
-            <img src={mugshot} alt={name} className="mugshot" />
-            <div className="name">{name}</div>
+            {name}
           </a>
-        </Col>
+        </li>
       );
     }
 
     return (
       <Container fluid className="about-us">
-        <Row className="pt-3 d-flex justify-content-center">
+        <p>
+          The COVID-19 Dashboard for Scotland was created by the following STA
+          volunteers:
+        </p>
+        <ul>
           {person(
             "Rhi Batstone",
             "rb.png",
@@ -420,8 +419,6 @@ const App = () => {
             "jl.png",
             "https://www.linkedin.com/in/jonathancylau"
           )}
-        </Row>
-        <Row className="pt-3 d-flex justify-content-center">
           {person(
             "Colin Lyman",
             "cl.png",
@@ -437,8 +434,6 @@ const App = () => {
             "lpw.png",
             "https://www.linkedin.com/in/lukepritchardwoollett"
           )}
-        </Row>
-        <Row className="pt-3 d-flex justify-content-center">
           {person(
             "Euan Robertson",
             "er.png",
@@ -459,7 +454,7 @@ const App = () => {
             "bs.png",
             "https://www.linkedin.com/in/rebeccastill1"
           )}
-        </Row>
+        </ul>
       </Container>
     );
   }
