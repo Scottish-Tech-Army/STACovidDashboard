@@ -410,6 +410,10 @@ const App = () => {
             "Euan Robertson",
             "https://www.linkedin.com/in/euan-robertson-5845582"
           )}
+          {person(
+            "Gabriela Satrovskaja",
+            "https://www.linkedin.com/in/gabriela-satrovskaja"
+          )}
           {person("Allan Stevenson", "https://www.linkedin.com/in/alstev")}
           {person("Donal Stewart", "https://www.linkedin.com/in/donalstewart")}
           {person("Becky Still", "https://www.linkedin.com/in/rebeccastill1")}
