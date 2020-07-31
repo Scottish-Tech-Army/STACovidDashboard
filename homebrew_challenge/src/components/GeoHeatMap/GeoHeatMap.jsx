@@ -426,7 +426,14 @@ const GeoHeatMap = ({
 
   return (
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
-      <LeafletMap ref={mapRef} id="map" maxZoom={10} minZoom={6}>
+      <LeafletMap
+        ref={mapRef}
+        id="map"
+        maxZoom={10}
+        minZoom={6}
+        dragging={!L.Browser.mobile}
+        tap={!L.Browser.mobile}
+      >
         <TileLayer
           url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
