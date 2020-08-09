@@ -1,11 +1,14 @@
 import React from "react";
 import GeoHeatMap, {
-  parse7DayDiffCsvData,
-  parseWeeklyCsvData,
+  parse7DayWindowCsvData,
+  createPlaceDateValuesMap
 } from "./GeoHeatMap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import moment from "moment";
+import {
+  readCsvData,
+} from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -22,96 +25,106 @@ afterEach(() => {
   container = null;
 });
 
-// These are cumulative values, the deltas are calculated
-const dailyCasesCsvData = `date,areaname,count
-  2020-03-09,Grampian,-8
-  2020-03-08,Grampian,26
-  2020-03-07,Grampian,-1
-  2020-03-06,Grampian,1
-  2020-03-05,Grampian,1
-  2020-03-04,Grampian,1
-  2020-03-03,Grampian,1
-  2020-03-02,Grampian,-6
-  2020-03-01,Grampian,1
-  2020-02-29,Grampian,1
-  2020-03-07,Greater Glasgow and Clyde,*
-  2020-03-06,Greater Glasgow and Clyde,400
-  2020-03-05,Greater Glasgow and Clyde,300
-  2020-03-04,Greater Glasgow and Clyde,200
-  2020-03-03,Greater Glasgow and Clyde,100
-  2020-03-02,Greater Glasgow and Clyde,50
-  2020-03-01,Greater Glasgow and Clyde,20
-  2020-02-25,Greater Glasgow and Clyde,*
-  2020-02-24,Greater Glasgow and Clyde,10
-  2020-03-09,Highland,300
-  2020-03-08,Highland,201
-  2020-03-06,Highland,1
-  2020-03-07,Highland,-1
+// These are daily values
 
+const dailyCasesCsvData = `
+  Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+  20200309,S08000020,-8,0,0,0,-2,0,0,28,7.58068009529998
+  20200308,S08000020,26,0,0,0,0,0,0,28,7.58068009529998
+  20200307,S08000020,-1,0,0,0,-1,0,0,28,7.58068009529998
+  20200306,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200305,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200304,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200303,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200302,S08000020,-6,0,0,0,-2,0,0,28,7.58068009529998
+  20200301,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200229,S08000020,1,0,0,0,1,0,0,28,7.58068009529998
+  20200307,S08000031,0,0,0,0,11,0,0,26,22.5088736905896
+  20200306,S08000031,400,0,0,0,10,0,0,26,22.5088736905896
+  20200305,S08000031,300,0,0,0,9,0,0,26,22.5088736905896
+  20200304,S08000031,200,0,0,0,8,0,0,26,22.5088736905896
+  20200303,S08000031,100,0,0,0,7,0,0,26,22.5088736905896
+  20200302,S08000031,50,0,0,0,6,0,0,26,22.5088736905896
+  20200226,S08000031,20,0,0,0,5,0,0,26,22.5088736905896
+  20200225,S08000031,0,0,0,0,4,0,0,26,22.5088736905896
+  20200224,S08000031,10,0,0,0,3,0,0,26,22.5088736905896
+  20200309,S08000022,300,0,0,0,10,0,0,21,14.1072148327287
+  20200308,S08000022,201,0,0,0,9,0,0,21,14.1072148327287
+  20200306,S08000022,1,0,0,0,8,0,0,21,14.1072148327287
+  20200307,S08000022,-1,0,0,0,7,0,0,21,14.1072148327287
     `;
-
-it("parse7DayDiffCsvData", () => {
-  // Remember these are deltas of cumulative figures
-  // Grampian : 09/03 - 02/03 : 7 day diff
-  // Glasgow : 07/03 - 25/02 : end date 2 days behind, start date missing days till first available date
-  // Highland : 09/03 - ? : no start date available, calc diff from 0 instead
-  // From date is diff start date + 1 day
+it("parse7DayWindowCsvData", () => {
+  // Grampian : 09/03 - 03/03 : 7 days of data
+  // Glasgow : 07/03 - 02/03 : 6 days of data
+  // Highland : 09/03 - 06/03 : 4 days of data
   const expectedResult = new Map()
-    .set("Grampian", {
-      count: -2,
+    .set("S08000020", {
+      cases: 21,
+      deaths: 1,
+      name: "Grampian",
       fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09"),
-      totalCases: -8,
+      toDate: Date.parse("2020-03-09")
     })
-    .set("Greater Glasgow and Clyde", {
-      count: 0,
-      fromDate: Date.parse("2020-02-26"),
-      toDate: Date.parse("2020-03-07"),
-      totalCases: 0,
+    .set("S08000031", {
+      cases: 1050,
+      deaths: 51,
+      name: "Greater Glasgow & Clyde",
+      fromDate: Date.parse("2020-03-02"),
+      toDate: Date.parse("2020-03-07")
     })
-    .set("Highland", {
-      count: 300,
+    .set("S08000022", {
+      cases: 501,
+      deaths: 34,
+      name: "Highland",
       fromDate: Date.parse("2020-03-06"),
-      toDate: Date.parse("2020-03-09"),
-      totalCases: 300,
+      toDate: Date.parse("2020-03-09")
     });
 
-  expect(parse7DayDiffCsvData(dailyCasesCsvData)).toEqual(expectedResult);
+  expect(parse7DayWindowCsvData(dailyCasesCsvData)).toEqual(expectedResult);
 });
-
-const weeklyDeathsCsvData = `date,areaname,count
-    w/c 2020-03-16,Orkney Islands,0
-    w/c 2020-03-16,Glasgow City,1
-    w/c 2020-03-16,Aberdeen City,1
-    w/c 2020-03-23,Orkney Islands,0
-    w/c 2020-03-23,Glasgow City,7
-    w/c 2020-03-23,Aberdeen City,0
-    w/c 2020-03-30,Orkney Islands,0
-    w/c 2020-03-30,Glasgow City,46
-    w/c 2020-03-30,Aberdeen City,2
-    w/c 2020-04-06,Orkney Islands,2
-    w/c 2020-04-06,Aberdeen City,12`;
-
-it("parseWeeklyCsvData", () => {
-  const expectedResult = new Map()
-    .set("Aberdeen City", {
-      count: 12,
-      fromDate: Date.parse("2020-04-06"),
-      toDate: Date.parse("2020-04-12"),
-      totalDeaths: 15,
-    })
-    .set("Glasgow City", {
-      count: 46,
-      fromDate: Date.parse("2020-03-30"),
-      toDate: Date.parse("2020-04-05"),
-      totalDeaths: 54,
-    })
-    .set("Orkney Islands", {
-      count: 2,
-      fromDate: Date.parse("2020-04-06"),
-      toDate: Date.parse("2020-04-12"),
-      totalDeaths: 2,
-    });
-
-  expect(parseWeeklyCsvData(weeklyDeathsCsvData)).toEqual(expectedResult);
+const dailyCasesCsvData_small = `
+  Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+  20200316,S08000020,-8,0,0,0,-2,0,0,28,7.58068009529998
+  20200323,S08000020,26,0,0,0,0,0,0,28,7.58068009529998
+  20200330,S08000020,-1,0,0,0,-1,0,0,28,7.58068009529998
+  20200316,S08000031,0,0,0,0,11,0,0,26,22.5088736905896
+  20200323,S08000031,400,0,0,0,10,0,0,26,22.5088736905896
+  20200330,S08000031,300,0,0,0,9,0,0,26,22.5088736905896
+  20200316,S08000022,300,0,0,0,10,0,0,21,14.1072148327287
+  20200323,S08000022,201,0,0,0,9,0,0,21,14.1072148327287
+  20200330,S08000022,1,0,0,0,8,0,0,21,14.1072148327287
+    `;
+const parsedDailyCasesCsvData_small = readCsvData(dailyCasesCsvData_small);
+const expectedDailyPlaceDateValuesMap = {
+  dates: [
+    Date.parse("2020-03-16"),
+    Date.parse("2020-03-23"),
+    Date.parse("2020-03-30"),
+  ],
+  placeDateValuesMap: new Map()
+    .set(
+      "S08000020",
+      new Map()
+        .set(Date.parse("2020-03-16"), { cases: -8, deaths: -2 })
+        .set(Date.parse("2020-03-23"), { cases: 26, deaths: 0 })
+        .set(Date.parse("2020-03-30"), { cases: -1, deaths: -1 })
+    )
+    .set(
+      "S08000031",
+      new Map()
+        .set(Date.parse("2020-03-16"), { cases: 0, deaths: 11 })
+        .set(Date.parse("2020-03-23"), { cases: 400, deaths: 10 })
+        .set(Date.parse("2020-03-30"), { cases: 300, deaths: 9 })
+    )
+    .set(
+      "S08000022",
+      new Map()
+        .set(Date.parse("2020-03-16"), { cases: 300, deaths: 10 })
+        .set(Date.parse("2020-03-23"), { cases: 201, deaths: 9 })
+        .set(Date.parse("2020-03-30"), { cases: 1, deaths: 8 })
+    )
+};
+it("createPlaceDateValuesMap daily", () => {
+  const result = createPlaceDateValuesMap(parsedDailyCasesCsvData_small);
+  expect(result).toEqual(expectedDailyPlaceDateValuesMap);
 });

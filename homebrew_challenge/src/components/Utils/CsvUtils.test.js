@@ -3,6 +3,7 @@ import {
   createPlaceDateValueMap,
   createPlaceMomentDateValueMap,
   fetchAndStore,
+  getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
 import moment from "moment";
@@ -52,7 +53,7 @@ const parsedWeeklyCsvData = [
   ["w/c 2020-03-30", "Aberdeen City", "2"],
   ["w/c 2020-04-06", "Orkney Islands", "2"],
   ["w/c 2020-04-06", "Glasgow City", "97"],
-  ["w/c 2020-04-06", "Aberdeen City", "12"],
+  ["w/c 2020-04-06", "Aberdeen City", "12"]
 ];
 
 const parsedDailyCsvData = [
@@ -64,7 +65,7 @@ const parsedDailyCsvData = [
   ["2020-03-16", "Glasgow City", "1"],
   ["2020-03-16", "Aberdeen City", "1"],
   ["2020-03-23", "Orkney Islands", "0"],
-  ["2020-03-30", "Aberdeen City", "2"],
+  ["2020-03-30", "Aberdeen City", "2"]
 ];
 
 const expectedWeeklyPlaceDateValueMap = {
@@ -72,7 +73,7 @@ const expectedWeeklyPlaceDateValueMap = {
     Date.parse("2020-03-16"),
     Date.parse("2020-03-23"),
     Date.parse("2020-03-30"),
-    Date.parse("2020-04-06"),
+    Date.parse("2020-04-06")
   ],
   placeDateValueMap: new Map()
     .set(
@@ -98,14 +99,14 @@ const expectedWeeklyPlaceDateValueMap = {
         .set(Date.parse("2020-03-23"), 0)
         .set(Date.parse("2020-03-30"), 0)
         .set(Date.parse("2020-04-06"), 2)
-    ),
+    )
 };
 
 const expectedDailyPlaceDateValueMap = {
   dates: [
     Date.parse("2020-03-16"),
     Date.parse("2020-03-23"),
-    Date.parse("2020-03-30"),
+    Date.parse("2020-03-30")
   ],
   placeDateValueMap: new Map()
     .set(
@@ -128,7 +129,7 @@ const expectedDailyPlaceDateValueMap = {
         .set(Date.parse("2020-03-16"), 0)
         .set(Date.parse("2020-03-23"), 0)
         .set(Date.parse("2020-03-30"), 0)
-    ),
+    )
 };
 
 it("readCsvData", () => {
@@ -144,7 +145,7 @@ it("createPlaceDateValueMap weekly", () => {
   expect([...result.placeDateValueMap.keys()]).toEqual([
     "Aberdeen City",
     "Glasgow City",
-    "Orkney Islands",
+    "Orkney Islands"
   ]);
 });
 
@@ -155,7 +156,7 @@ it("createPlaceDateValueMap daily", () => {
   expect([...result.placeDateValueMap.keys()]).toEqual([
     "Aberdeen City",
     "Glasgow City",
-    "Orkney Islands",
+    "Orkney Islands"
   ]);
 });
 
@@ -169,7 +170,7 @@ it("fetchAndStore when fetch fails", async () => {
     await fetchAndStore(
       "test query",
       readCsvData,
-      (val) => (processedResult = parsedWeeklyCsvData)
+      val => (processedResult = parsedWeeklyCsvData)
     );
   });
 
@@ -185,10 +186,36 @@ it("fetchAndStore when fetch succeeds", async () => {
     await fetchAndStore(
       "test query",
       readCsvData,
-      (val) => (processedResult = parsedWeeklyCsvData)
+      val => (processedResult = parsedWeeklyCsvData)
     );
   });
 
   expect(processedResult).toEqual(parsedWeeklyCsvData);
   expect(fetch.mock.calls.length).toEqual(1);
+});
+
+it("getPlaceNameByFeatureCode", async () => {
+  // Health board
+  expect(getPlaceNameByFeatureCode("S08000031")).toEqual(
+    "Greater Glasgow & Clyde"
+  );
+  expect(getPlaceNameByFeatureCode("S08000017")).toEqual("Dumfries & Galloway");
+  // Council area
+  expect(getPlaceNameByFeatureCode("S12000040")).toEqual("West Lothian");
+  expect(getPlaceNameByFeatureCode("S12000013")).toEqual("Na h-Eileanan Siar");
+  // Country
+  expect(getPlaceNameByFeatureCode("S92000003")).toEqual("Scotland");
+  expect(() => getPlaceNameByFeatureCode("S12345678")).toThrow(
+    "Unknown feature code: S12345678"
+  );
+  expect(() => getPlaceNameByFeatureCode("unknown")).toThrow(
+    "Unknown feature code: unknown"
+  );
+  expect(() => getPlaceNameByFeatureCode("")).toThrow("Unknown feature code: ");
+  expect(() => getPlaceNameByFeatureCode(null)).toThrow(
+    "Unknown feature code: null"
+  );
+  expect(() => getPlaceNameByFeatureCode(undefined)).toThrow(
+    "Unknown feature code: undefined"
+  );
 });

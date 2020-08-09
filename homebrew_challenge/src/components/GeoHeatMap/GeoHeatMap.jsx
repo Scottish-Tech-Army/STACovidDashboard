@@ -11,6 +11,7 @@ import {
   readCsvData,
   createPlaceDateValueMap,
   fetchAndStore,
+  getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import FullscreenControl from "./FullscreenControl";
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
@@ -28,7 +29,7 @@ import moment from "moment";
 */
 
 function getLatestDate(dates) {
-  return dates.sort().pop();
+  return dates.sort()[dates.length-1];
 }
 
 export function parseWeeklyCsvData(csvData) {
@@ -55,7 +56,64 @@ export function parseWeeklyCsvData(csvData) {
   return regions;
 }
 
-export function parse7DayDiffCsvData(csvData) {
+// export function parse7DayDiffCsvData(csvData) {
+//   function getLatestDateBefore(dates, testDate) {
+//     return dates
+//       .filter((date) => moment(date).isSameOrBefore(testDate))
+//       .sort()
+//       .pop();
+//   }
+//   function getEarliestDate(dates) {
+//     return dates.sort().shift();
+//   }
+//
+//   var lines = readCsvData(csvData);
+//   const { placeDateValueMap } = createPlaceDateValueMap(lines);
+//
+//   const regions = new Map();
+//
+//   placeDateValueMap.forEach((dateValueMap, areaname) => {
+//     const dates = [...dateValueMap.keys()];
+//     const endDate = getLatestDate(dates);
+//     const endValue = dateValueMap.get(endDate);
+//     const dataStartDate = getLatestDateBefore(
+//       dates,
+//       moment(endDate).subtract(7, "days")
+//     );
+//     const windowStartDate = dataStartDate
+//       ? moment(dataStartDate).add(1, "days").valueOf()
+//       : getEarliestDate(dates);
+//     const startValue = dataStartDate ? dateValueMap.get(dataStartDate) : 0;
+//
+//     regions.set(areaname, {
+//       count: endValue - startValue,
+//       fromDate: windowStartDate,
+//       toDate: endDate,
+//       totalCases: endValue,
+//     });
+//   });
+//   return regions;
+// }
+
+export function createPlaceDateValuesMap(lines) {
+  const placeDateValuesMap = new Map();
+  const dateSet = new Set();
+
+  lines.forEach(([dateString, place, cases, v1, v2, v3, deaths], i) => {
+    const date = moment.utc(dateString).valueOf();
+    if (!placeDateValuesMap.has(place)) {
+      placeDateValuesMap.set(place, new Map());
+    }
+    var dateValuesMap = placeDateValuesMap.get(place);
+    dateValuesMap.set(date, {cases: Number(cases), deaths: Number(deaths)});
+    dateSet.add(date);
+  });
+
+  const dates = [...dateSet].sort();
+  return { dates: dates, placeDateValuesMap: placeDateValuesMap };
+};
+
+export function parse7DayWindowCsvData(csvData) {
   function getLatestDateBefore(dates, testDate) {
     return dates
       .filter((date) => moment(date).isSameOrBefore(testDate))
@@ -67,28 +125,29 @@ export function parse7DayDiffCsvData(csvData) {
   }
 
   var lines = readCsvData(csvData);
-  const { placeDateValueMap } = createPlaceDateValueMap(lines);
+
+  const { placeDateValuesMap } = createPlaceDateValuesMap(lines);
 
   const regions = new Map();
 
-  placeDateValueMap.forEach((dateValueMap, areaname) => {
-    const dates = [...dateValueMap.keys()];
+  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
+    const dates = [...dateValuesMap.keys()];
     const endDate = getLatestDate(dates);
-    const endValue = dateValueMap.get(endDate);
-    const dataStartDate = getLatestDateBefore(
-      dates,
-      moment(endDate).subtract(7, "days")
-    );
-    const windowStartDate = dataStartDate
-      ? moment(dataStartDate).add(1, "days").valueOf()
-      : getEarliestDate(dates);
-    const startValue = dataStartDate ? dateValueMap.get(dataStartDate) : 0;
-
-    regions.set(areaname, {
-      count: endValue - startValue,
-      fromDate: windowStartDate,
+    const startDate = moment.utc(endDate).subtract(6, "days");
+    const filteredDates = dates.filter(date => moment.utc(date).isSameOrAfter(startDate));
+    let totalCases = 0;
+    let totalDeaths = 0;
+    filteredDates.forEach(date => {
+      const {cases, deaths} = dateValuesMap.get(date);
+      totalCases += cases;
+      totalDeaths += deaths;
+    })
+    regions.set(featureCode, {
+      cases: totalCases,
+      deaths: totalDeaths,
+      fromDate: getEarliestDate(filteredDates),
+      name: getPlaceNameByFeatureCode(featureCode),
       toDate: endDate,
-      totalCases: endValue,
     });
   });
   return regions;
