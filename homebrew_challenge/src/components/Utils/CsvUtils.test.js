@@ -1,34 +1,17 @@
 import {
   readCsvData,
   createPlaceDateValueMap,
-  createPlaceMomentDateValueMap,
+  createPlaceDateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
-import moment from "moment";
 
 beforeEach(() => {
   fetch.resetMocks();
 });
 
-const weeklyCsvData = `date,areaname,count
-  w/c 2020-03-16,Orkney Islands,0
-  w/c 2020-03-23,Glasgow City,7
-  w/c 2020-03-23,Aberdeen City,0
-  w/c 2020-03-30,Orkney Islands,0
-  w/c 2020-03-30,Glasgow City,46
-  w/c 2020-03-16,Glasgow City,1
-  w/c 2020-03-16,Aberdeen City,1
-  w/c 2020-03-23,Orkney Islands,0
-  w/c 2020-03-30,Aberdeen City,2
-  w/c 2020-04-06,Orkney Islands,2
-  w/c 2020-04-06,Glasgow City,97
-  w/c 2020-04-06,Aberdeen City,12
-
-  `;
-
-const dailyCsvData = `date,areaname,count
+const inputCsvData = `date,areaname,count
     2020-03-16,Orkney Islands,0
     2020-03-23,Glasgow City,7
     2020-03-23,Aberdeen City,0
@@ -41,22 +24,7 @@ const dailyCsvData = `date,areaname,count
 
     `;
 
-const parsedWeeklyCsvData = [
-  ["w/c 2020-03-16", "Orkney Islands", "0"],
-  ["w/c 2020-03-23", "Glasgow City", "7"],
-  ["w/c 2020-03-23", "Aberdeen City", "0"],
-  ["w/c 2020-03-30", "Orkney Islands", "0"],
-  ["w/c 2020-03-30", "Glasgow City", "46"],
-  ["w/c 2020-03-16", "Glasgow City", "1"],
-  ["w/c 2020-03-16", "Aberdeen City", "1"],
-  ["w/c 2020-03-23", "Orkney Islands", "0"],
-  ["w/c 2020-03-30", "Aberdeen City", "2"],
-  ["w/c 2020-04-06", "Orkney Islands", "2"],
-  ["w/c 2020-04-06", "Glasgow City", "97"],
-  ["w/c 2020-04-06", "Aberdeen City", "12"]
-];
-
-const parsedDailyCsvData = [
+const parsedCsvData = [
   ["2020-03-16", "Orkney Islands", "0"],
   ["2020-03-23", "Glasgow City", "7"],
   ["2020-03-23", "Aberdeen City", "0"],
@@ -65,99 +33,11 @@ const parsedDailyCsvData = [
   ["2020-03-16", "Glasgow City", "1"],
   ["2020-03-16", "Aberdeen City", "1"],
   ["2020-03-23", "Orkney Islands", "0"],
-  ["2020-03-30", "Aberdeen City", "2"]
+  ["2020-03-30", "Aberdeen City", "2"],
 ];
 
-const expectedWeeklyPlaceDateValueMap = {
-  dates: [
-    Date.parse("2020-03-16"),
-    Date.parse("2020-03-23"),
-    Date.parse("2020-03-30"),
-    Date.parse("2020-04-06")
-  ],
-  placeDateValueMap: new Map()
-    .set(
-      "Aberdeen City",
-      new Map()
-        .set(Date.parse("2020-03-16"), 1)
-        .set(Date.parse("2020-03-23"), 0)
-        .set(Date.parse("2020-03-30"), 2)
-        .set(Date.parse("2020-04-06"), 12)
-    )
-    .set(
-      "Glasgow City",
-      new Map()
-        .set(Date.parse("2020-03-16"), 1)
-        .set(Date.parse("2020-03-23"), 7)
-        .set(Date.parse("2020-03-30"), 46)
-        .set(Date.parse("2020-04-06"), 97)
-    )
-    .set(
-      "Orkney Islands",
-      new Map()
-        .set(Date.parse("2020-03-16"), 0)
-        .set(Date.parse("2020-03-23"), 0)
-        .set(Date.parse("2020-03-30"), 0)
-        .set(Date.parse("2020-04-06"), 2)
-    )
-};
-
-const expectedDailyPlaceDateValueMap = {
-  dates: [
-    Date.parse("2020-03-16"),
-    Date.parse("2020-03-23"),
-    Date.parse("2020-03-30")
-  ],
-  placeDateValueMap: new Map()
-    .set(
-      "Aberdeen City",
-      new Map()
-        .set(Date.parse("2020-03-16"), 1)
-        .set(Date.parse("2020-03-23"), 0)
-        .set(Date.parse("2020-03-30"), 2)
-    )
-    .set(
-      "Glasgow City",
-      new Map()
-        .set(Date.parse("2020-03-16"), 1)
-        .set(Date.parse("2020-03-23"), 7)
-        .set(Date.parse("2020-03-30"), 46)
-    )
-    .set(
-      "Orkney Islands",
-      new Map()
-        .set(Date.parse("2020-03-16"), 0)
-        .set(Date.parse("2020-03-23"), 0)
-        .set(Date.parse("2020-03-30"), 0)
-    )
-};
-
 it("readCsvData", () => {
-  // Parse both types of input date
-  expect(readCsvData(weeklyCsvData)).toEqual(parsedWeeklyCsvData);
-  expect(readCsvData(dailyCsvData)).toEqual(parsedDailyCsvData);
-});
-
-it("createPlaceDateValueMap weekly", () => {
-  const result = createPlaceDateValueMap(parsedWeeklyCsvData);
-  expect(result).toEqual(expectedWeeklyPlaceDateValueMap);
-  // Check place iterator order
-  expect([...result.placeDateValueMap.keys()]).toEqual([
-    "Aberdeen City",
-    "Glasgow City",
-    "Orkney Islands"
-  ]);
-});
-
-it("createPlaceDateValueMap daily", () => {
-  const result = createPlaceDateValueMap(parsedDailyCsvData);
-  expect(result).toEqual(expectedDailyPlaceDateValueMap);
-  // Check place iterator order
-  expect([...result.placeDateValueMap.keys()]).toEqual([
-    "Aberdeen City",
-    "Glasgow City",
-    "Orkney Islands"
-  ]);
+  expect(readCsvData(inputCsvData)).toEqual(parsedCsvData);
 });
 
 it("fetchAndStore when fetch fails", async () => {
@@ -170,7 +50,7 @@ it("fetchAndStore when fetch fails", async () => {
     await fetchAndStore(
       "test query",
       readCsvData,
-      val => (processedResult = parsedWeeklyCsvData)
+      (val) => (processedResult = parsedCsvData)
     );
   });
 
@@ -179,18 +59,18 @@ it("fetchAndStore when fetch fails", async () => {
 });
 
 it("fetchAndStore when fetch succeeds", async () => {
-  fetch.mockResponse(weeklyCsvData);
+  fetch.mockResponse(inputCsvData);
   var processedResult = null;
 
   await act(async () => {
     await fetchAndStore(
       "test query",
       readCsvData,
-      val => (processedResult = parsedWeeklyCsvData)
+      (val) => (processedResult = parsedCsvData)
     );
   });
 
-  expect(processedResult).toEqual(parsedWeeklyCsvData);
+  expect(processedResult).toEqual(parsedCsvData);
   expect(fetch.mock.calls.length).toEqual(1);
 });
 
@@ -218,4 +98,126 @@ it("getPlaceNameByFeatureCode", async () => {
   expect(() => getPlaceNameByFeatureCode(undefined)).toThrow(
     "Unknown feature code: undefined"
   );
+});
+
+// Contains both health board and council area feature codes
+const dailyNHSCsvData = `
+20200306,S08000031,0,0,0,0,1,10,0,0,0
+20200306,S08000022,1,0,0,0,2,20,0,0,0
+20200306,S12000013,1,0,0,0,3,30,0,0,0
+20200309,S08000031,0,0,0,0,4,40,0,0,0
+20200309,S08000022,300,0,0,0,5,50,0,0,0
+20200309,S12000013,-8,0,0,0,6,60,0,0,0
+20200308,S08000031,0,0,0,0,7,70,0,0,0
+20200308,S08000022,201,0,0,0,8,80,0,0,0
+20200308,S12000013,26,0,0,0,9,90,0,0,0
+20200307,S08000031,0,0,0,0,0,0,0,0,0
+20200307,S08000022,-1,0,0,0,-1,-10,0,0,0
+20200307,S12000013,-1,0,0,0,-2,-20,0,0,0
+`;
+
+describe("createPlaceDateValuesMap", () => {
+  const dailyHealthBoardCsvLabels =
+    "Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+  const dailyCouncilAreaCsvLabels =
+    "Date,CA,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+
+  const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
+  const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
+
+  const expectedPlaceDateValuesMap = {
+    dates: [
+      Date.parse("2020-03-06"),
+      Date.parse("2020-03-07"),
+      Date.parse("2020-03-08"),
+      Date.parse("2020-03-09"),
+    ],
+    placeDateValuesMap: new Map()
+      .set(
+        "S08000022",
+        new Map()
+          .set(Date.parse("2020-03-06"), {
+            cases: 1,
+            deaths: 2,
+            cumulativeDeaths: 20,
+          })
+          .set(Date.parse("2020-03-07"), {
+            cases: -1,
+            deaths: -1,
+            cumulativeDeaths: -10,
+          })
+          .set(Date.parse("2020-03-08"), {
+            cases: 201,
+            deaths: 8,
+            cumulativeDeaths: 80,
+          })
+          .set(Date.parse("2020-03-09"), {
+            cases: 300,
+            deaths: 5,
+            cumulativeDeaths: 50,
+          })
+      )
+      .set(
+        "S08000031",
+        new Map()
+          .set(Date.parse("2020-03-06"), {
+            cases: 0,
+            deaths: 1,
+            cumulativeDeaths: 10,
+          })
+          .set(Date.parse("2020-03-07"), {
+            cases: 0,
+            deaths: 0,
+            cumulativeDeaths: 0,
+          })
+          .set(Date.parse("2020-03-08"), {
+            cases: 0,
+            deaths: 7,
+            cumulativeDeaths: 70,
+          })
+          .set(Date.parse("2020-03-09"), {
+            cases: 0,
+            deaths: 4,
+            cumulativeDeaths: 40,
+          })
+      )
+      .set(
+        "S12000013",
+        new Map()
+          .set(Date.parse("2020-03-06"), {
+            cases: 1,
+            deaths: 3,
+            cumulativeDeaths: 30,
+          })
+          .set(Date.parse("2020-03-07"), {
+            cases: -1,
+            deaths: -2,
+            cumulativeDeaths: -20,
+          })
+          .set(Date.parse("2020-03-08"), {
+            cases: 26,
+            deaths: 9,
+            cumulativeDeaths: 90,
+          })
+          .set(Date.parse("2020-03-09"), {
+            cases: -8,
+            deaths: 6,
+            cumulativeDeaths: 60,
+          })
+      ),
+  };
+
+  it("health boards", () => {
+    const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
+    expect(createPlaceDateValuesMap(parsedDailyHealthBoardData)).toEqual(
+      expectedPlaceDateValuesMap
+    );
+  });
+
+  it("council areas", () => {
+    const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
+    expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toEqual(
+      expectedPlaceDateValuesMap
+    );
+  });
 });

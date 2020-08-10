@@ -1,5 +1,5 @@
 import React from "react";
-import Heatmap, { parseCsvData, parseDiffCsvData } from "./Heatmap";
+import Heatmap, { parseCsvData } from "./Heatmap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -18,36 +18,37 @@ afterEach(() => {
   container = null;
 });
 
-const emptyCsvData = `date,areaname,count`;
+const emptyCsvData = `Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative`;
 
-const weeklyDeathsCsvData = `date,areaname,count
-    w/c 2020-03-16,Orkney Islands,0
-    w/c 2020-03-16,Glasgow City,1
-    w/c 2020-03-16,Aberdeen City,1
-    w/c 2020-03-23,Orkney Islands,0
-    w/c 2020-03-23,Glasgow City,7
-    w/c 2020-03-23,Aberdeen City,0
-    w/c 2020-03-30,Orkney Islands,0
-    w/c 2020-03-30,Glasgow City,46
-    w/c 2020-03-30,Aberdeen City,2
-    w/c 2020-04-06,Orkney Islands,2
-    w/c 2020-04-06,Glasgow City,97
-    w/c 2020-04-06,Aberdeen City,12`;
+const dailyHealthBoardCsvData = `Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200306,S08000031,0,0,0,0,1,10,0,0,0
+    20200306,S08000022,1,0,0,0,2,20,0,0,0
+    20200306,S08000020,1,0,0,0,3,30,0,0,0
+    20200309,S08000031,0,0,0,0,4,40,0,0,0
+    20200309,S08000022,300,0,0,0,5,50,0,0,0
+    20200309,S08000020,-8,0,0,0,6,60,0,0,0
+    20200308,S08000031,0,0,0,0,7,70,0,0,0
+    20200308,S08000022,201,0,0,0,8,80,0,0,0
+    20200308,S08000020,26,0,0,0,9,90,0,0,0
+    20200307,S08000031,0,0,0,0,0,0,0,0,0
+    20200307,S08000022,-1,0,0,0,-1,-10,0,0,0
+    20200307,S08000020,-1,0,0,0,-2,-20,0,0,0
+    `;
 
-// These are cumulative values, the deltas are calculated
-const dailyCasesCsvData = `date,areaname,count
-2020-03-06,Greater Glasgow and Clyde,*
-2020-03-06,Highland,1
-2020-03-06,Grampian,1
-2020-03-09,Greater Glasgow and Clyde,*
-2020-03-09,Highland,300
-2020-03-09,Grampian,-8
-2020-03-08,Greater Glasgow and Clyde,*
-2020-03-08,Highland,201
-2020-03-08,Grampian,26
-2020-03-07,Greater Glasgow and Clyde,*
-2020-03-07,Highland,-1
-2020-03-07,Grampian,-1`;
+const dailyCouncilAreaCsvData = `Date,CA,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200306,S12000013,0,0,0,0,1,10,0,0,0
+    20200306,S12000035,1,0,0,0,2,20,0,0,0
+    20200306,S12000019,1,0,0,0,3,30,0,0,0
+    20200309,S12000013,0,0,0,0,4,40,0,0,0
+    20200309,S12000035,300,0,0,0,5,50,0,0,0
+    20200309,S12000019,-8,0,0,0,6,60,0,0,0
+    20200308,S12000013,0,0,0,0,7,70,0,0,0
+    20200308,S12000035,201,0,0,0,8,80,0,0,0
+    20200308,S12000019,26,0,0,0,9,90,0,0,0
+    20200307,S12000013,0,0,0,0,0,0,0,0,0
+    20200307,S12000035,-1,0,0,0,-1,-10,0,0,0
+    20200307,S12000019,-1,0,0,0,-2,-20,0,0,0
+    `;
 
 it("Heatmap renders no data when fetch fails, shows loadingComponent", async () => {
   fetch.mockReject(new Error("fetch failed"));
@@ -64,7 +65,7 @@ it("Heatmap renders no data when fetch fails, shows loadingComponent", async () 
 
 describe("Heatmap renders dynamic fetched data", () => {
   it("Council areas; deaths", async () => {
-    fetch.mockResponse(weeklyDeathsCsvData);
+    fetch.mockResponse(dailyCouncilAreaCsvData);
 
     await act(async () => {
       render(
@@ -78,19 +79,19 @@ describe("Heatmap renders dynamic fetched data", () => {
       headers(),
       "Council Areas",
       "Total Deaths",
-      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
     );
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(4);
-    checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
-    checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
-    checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
-    checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
+    checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
+    checkRow(dataRows[1], "Argyll & Bute", "50", [1, 0, 2, 2]);
+    checkRow(dataRows[2], "Midlothian", "60", [1, 0, 2, 2]);
+    checkRow(dataRows[3], "Na h-Eileanan Siar", "40", [1, 0, 2, 1]);
   });
 
   it("Health boards; deaths", async () => {
-    fetch.mockResponse(weeklyDeathsCsvData);
+    fetch.mockResponse(dailyHealthBoardCsvData);
 
     await act(async () => {
       render(
@@ -104,19 +105,19 @@ describe("Heatmap renders dynamic fetched data", () => {
       headers(),
       "Health Boards",
       "Total Deaths",
-      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
     );
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(4);
-    checkDateRangeRow(dataRows[0], "16 Mar 202012 Apr 2020");
-    checkRow(dataRows[1], "Aberdeen City", "15", [1, 0, 1, 3]);
-    checkRow(dataRows[2], "Glasgow City", "151", [1, 2, 3, 3]);
-    checkRow(dataRows[3], "Orkney Islands", "2", [0, 0, 0, 1]);
+    checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
+    checkRow(dataRows[1], "Grampian", "60", [1, 0, 2, 2]);
+    checkRow(dataRows[2], "Greater Glasgow & Clyde", "40", [1, 0, 2, 1]);
+    checkRow(dataRows[3], "Highland", "50", [1, 0, 2, 2]);
   });
 
   it("Health boards; cases", async () => {
-    fetch.mockResponse(dailyCasesCsvData);
+    fetch.mockResponse(dailyHealthBoardCsvData);
 
     await act(async () => {
       render(<Heatmap valueType="cases" areaType="health-boards" />, container);
@@ -133,9 +134,32 @@ describe("Heatmap renders dynamic fetched data", () => {
     const dataRows = rows();
     expect(dataRows).toHaveLength(4);
     checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
-    checkRow(dataRows[1], "Grampian", "-8", [1, 0, 3, 0]);
-    checkRow(dataRows[2], "Greater Glasgow and Clyde", "0", [0, 0, 0, 0]);
-    checkRow(dataRows[3], "Highland", "300", [1, 0, 5, 3]);
+    checkRow(dataRows[1], "Grampian", "60", [1, 0, 3, 0]);
+    checkRow(dataRows[2], "Greater Glasgow & Clyde", "40", [0, 0, 0, 0]);
+    checkRow(dataRows[3], "Highland", "50", [1, 0, 5, 5]);
+  });
+
+  it("Council areas; cases", async () => {
+    fetch.mockResponse(dailyCouncilAreaCsvData);
+
+    await act(async () => {
+      render(<Heatmap valueType="cases" areaType="council-areas" />, container);
+    });
+
+    expect(loadingComponent()).toBeNull();
+    checkHeaderRow(
+      headers(),
+      "Council Areas",
+      "Total Cases",
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+    );
+
+    const dataRows = rows();
+    expect(dataRows).toHaveLength(4);
+    checkDateRangeRow(dataRows[0], "06 Mar 202009 Mar 2020");
+    checkRow(dataRows[1], "Argyll & Bute", "50", [1, 0, 5, 5]);
+    checkRow(dataRows[2], "Midlothian", "60", [1, 0, 3, 0]);
+    checkRow(dataRows[3], "Na h-Eileanan Siar", "40", [0, 0, 0, 0]);
   });
 });
 
@@ -155,7 +179,7 @@ describe("Heatmap handles missing data", () => {
       headers(),
       "Council Areas",
       "Total Deaths",
-      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
     );
 
     const dataRows = rows();
@@ -178,7 +202,7 @@ describe("Heatmap handles missing data", () => {
       headers(),
       "Health Boards",
       "Total Deaths",
-      "Weekly Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
+      "Daily Count≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200 "
     );
 
     const dataRows = rows();
@@ -212,65 +236,74 @@ const table = () => container.querySelector(".heatmap table");
 const headers = () => table().querySelector("thead tr");
 const rows = () => table().querySelectorAll("tbody tr");
 
-it("parseCsvData", () => {
-  const expectedResult = {
-    dates: [
-      Date.parse("2020-03-16"),
-      Date.parse("2020-03-23"),
-      Date.parse("2020-03-30"),
-      Date.parse("2020-04-06"),
-    ],
-    regions: [
-      {
-        counts: [1, 0, 2, 12],
-        name: "Aberdeen City",
-        totalDeaths: 15,
-      },
-      {
-        counts: [1, 7, 46, 97],
-        name: "Glasgow City",
-        totalDeaths: 151,
-      },
-      {
-        counts: [0, 0, 0, 2],
-        name: "Orkney Islands",
-        totalDeaths: 2,
-      },
-    ],
-  };
+describe("parseCsvData", () => {
+  it("council areas", () => {
+    const expectedResult = {
+      dates: [
+        Date.parse("2020-03-06"),
+        Date.parse("2020-03-07"),
+        Date.parse("2020-03-08"),
+        Date.parse("2020-03-09"),
+      ],
+      regions: [
+        // In alphabetical order of area name
+        {
+          name: "Argyll & Bute",
+          cases: [1, -1, 201, 300],
+          deaths: [2, -1, 8, 5],
+          totalDeaths: 50,
+        },
+        {
+          name: "Midlothian",
+          cases: [1, -1, 26, -8],
+          deaths: [3, -2, 9, 6],
+          totalDeaths: 60,
+        },
+        {
+          name: "Na h-Eileanan Siar",
+          cases: [0, 0, 0, 0],
+          deaths: [1, 0, 7, 4],
+          totalDeaths: 40,
+        },
+      ],
+    };
 
-  expect(parseCsvData(weeklyDeathsCsvData)).toEqual(expectedResult);
-});
+    expect(parseCsvData(dailyCouncilAreaCsvData)).toEqual(expectedResult);
+  });
 
-it("parseDiffCsvData", () => {
-  // Remember these are deltas of cumulative figures
-  const expectedResult = {
-    dates: [
-      Date.parse("2020-03-06"),
-      Date.parse("2020-03-07"),
-      Date.parse("2020-03-08"),
-      Date.parse("2020-03-09"),
-    ],
-    regions: [
-      {
-        counts: [1, -2, 27, -34],
-        name: "Grampian",
-        totalDeaths: -8,
-      },
-      {
-        counts: [0, 0, 0, 0],
-        name: "Greater Glasgow and Clyde",
-        totalDeaths: 0,
-      },
-      {
-        counts: [1, -2, 202, 99],
-        name: "Highland",
-        totalDeaths: 300,
-      },
-    ],
-  };
+  it("health boards", () => {
+    const expectedResult = {
+      dates: [
+        Date.parse("2020-03-06"),
+        Date.parse("2020-03-07"),
+        Date.parse("2020-03-08"),
+        Date.parse("2020-03-09"),
+      ],
+      regions: [
+        // In alphabetical order of area name
+        {
+          name: "Grampian",
+          cases: [1, -1, 26, -8],
+          deaths: [3, -2, 9, 6],
+          totalDeaths: 60,
+        },
+        {
+          name: "Greater Glasgow & Clyde",
+          cases: [0, 0, 0, 0],
+          deaths: [1, 0, 7, 4],
+          totalDeaths: 40,
+        },
+        {
+          name: "Highland",
+          cases: [1, -1, 201, 300],
+          deaths: [2, -1, 8, 5],
+          totalDeaths: 50,
+        },
+      ],
+    };
 
-  expect(parseDiffCsvData(dailyCasesCsvData)).toEqual(expectedResult);
+    expect(parseCsvData(dailyHealthBoardCsvData)).toEqual(expectedResult);
+  });
 });
 
 function checkHeaderRow(row, areaName, areaCount, heatLevels) {
@@ -300,7 +333,6 @@ function checkRow(row, areaName, areaCount, heatLevels) {
 function checkHeatbar(heatbar, heatLevels) {
   const svgs = heatbar.querySelectorAll("svg");
   expect(svgs).toHaveLength(1);
-  const svg = svgs[0];
   const lines = heatbar.querySelectorAll("line");
   expect(lines).toHaveLength(heatLevels.length);
 

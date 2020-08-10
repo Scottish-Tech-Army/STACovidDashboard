@@ -7,67 +7,41 @@ import {
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
   readCsvData,
-  createPlaceDateValueMap,
+  createPlaceDateValuesMap,
   fetchAndStore,
+  getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
-const deathsByCouncilAreaCsv = "weeklyCouncilAreasDeaths.csv";
-const deathsByHealthBoardCsv = "weeklyHealthBoardsDeaths.csv";
-const casesByHealthBoardCsv = "dailyHealthBoardsCases.csv";
+const councilAreaCsv = "dailyCouncilAreas.csv";
+const healthBoardCsv = "dailyHealthBoards.csv";
 
 // Exported for tests
 export function parseCsvData(csvData) {
   var lines = readCsvData(csvData);
 
-  const { dates, placeDateValueMap } = createPlaceDateValueMap(lines);
+  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(lines);
 
-  const regions = [];
-  placeDateValueMap.forEach((dateValueMap, place) => {
-    const values = [];
-    var total = 0;
+  var regions = [];
+  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
+    const allCases = [];
+    const allDeaths = [];
+    var totalDeaths = 0;
     dates.forEach((date) => {
-      const value = dateValueMap.get(date);
-      values.push(value);
-      total += value;
+      const { cases, deaths, cumulativeDeaths } = dateValuesMap.get(date);
+      allCases.push(cases);
+      allDeaths.push(deaths);
+      totalDeaths = cumulativeDeaths;
     });
-    regions.push({ name: place, totalDeaths: total, counts: values });
-  });
-
-  return { dates: dates, regions: regions };
-}
-
-// Exported for tests
-// Extract diffs of cumulative data
-export function parseDiffCsvData(csvData) {
-  var lines = readCsvData(csvData);
-
-  const { dates, placeDateValueMap } = createPlaceDateValueMap(lines);
-
-  const placeDateValueDiffMap = new Map();
-  placeDateValueMap.forEach((dateValueMap, place) => {
-    const dateValueDiffMap = new Map();
-    var previousValue = 0;
-    const sortedDateValueMap = new Map([...dateValueMap].sort());
-    sortedDateValueMap.forEach((value, date) => {
-      dateValueDiffMap.set(date, value - previousValue);
-      previousValue = value;
+    regions.push({
+      name: getPlaceNameByFeatureCode(featureCode),
+      totalDeaths: totalDeaths,
+      cases: allCases,
+      deaths: allDeaths,
     });
-    placeDateValueDiffMap.set(place, dateValueDiffMap);
   });
-
-  const regions = [];
-  placeDateValueDiffMap.forEach((dateValueMap, place) => {
-    const values = [];
-    var total = 0;
-    dates.forEach((date) => {
-      const value = dateValueMap.get(date);
-      values.push(value);
-      total += value;
-    });
-    regions.push({ name: place, totalDeaths: total, counts: values });
-  });
+  regions = regions.sort((a, b) => (a.name < b.name ? -1 : 1));
   return { dates: dates, regions: regions };
 }
 
@@ -78,15 +52,8 @@ function Heatmap({
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 1, 5, 10, 100, 200];
 
-  const [councilAreasDeathsDataset, setCouncilAreasDeathsDataset] = useState(
-    null
-  );
-  const [healthBoardsDeathsDataset, setHealthBoardsDeathsDataset] = useState(
-    null
-  );
-  const [healthBoardsCasesDataset, setHealthBoardsCasesDataset] = useState(
-    null
-  );
+  const [councilAreasDataset, setCouncilAreasDataset] = useState(null);
+  const [healthBoardsDataset, setHealthBoardsDataset] = useState(null);
 
   function createHeatbar(elements) {
     const width = 200;
@@ -133,7 +100,8 @@ function Heatmap({
     return 0;
   }
 
-  function createRegionTableline({ name, totalDeaths, counts }, index) {
+  function createRegionTableline({ name, totalDeaths, cases, deaths }, index) {
+    const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     return (
       <tr className="area" key={index}>
         <td>{name}</td>
@@ -148,64 +116,24 @@ function Heatmap({
   }
 
   useEffect(() => {
-    if (VALUETYPE_DEATHS === valueType) {
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        if (null === councilAreasDeathsDataset) {
-          fetchAndStore(
-            deathsByCouncilAreaCsv,
-            setCouncilAreasDeathsDataset,
-            parseCsvData
-          );
-        }
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        if (null === healthBoardsDeathsDataset) {
-          fetchAndStore(
-            deathsByHealthBoardCsv,
-            setHealthBoardsDeathsDataset,
-            parseCsvData
-          );
-        }
+    if (AREATYPE_COUNCIL_AREAS === areaType) {
+      if (null === councilAreasDataset) {
+        fetchAndStore(councilAreaCsv, setCouncilAreasDataset, parseCsvData);
       }
     } else {
-      // VALUETYPE_CASES === valueType
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        // We don't have a dataset for this case
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        if (null === healthBoardsCasesDataset) {
-          fetchAndStore(
-            casesByHealthBoardCsv,
-            setHealthBoardsCasesDataset,
-            parseDiffCsvData
-          );
-        }
+      // AREATYPE_HEALTH_BOARDS == areaType
+      if (null === healthBoardsDataset) {
+        fetchAndStore(healthBoardCsv, setHealthBoardsDataset, parseCsvData);
       }
     }
-  }, [
-    valueType,
-    areaType,
-    councilAreasDeathsDataset,
-    healthBoardsDeathsDataset,
-    healthBoardsCasesDataset,
-  ]);
+  }, [areaType, councilAreasDataset, healthBoardsDataset]);
 
   function getDataSet() {
-    if (VALUETYPE_DEATHS === valueType) {
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        return councilAreasDeathsDataset;
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        return healthBoardsDeathsDataset;
-      }
+    if (AREATYPE_COUNCIL_AREAS === areaType) {
+      return councilAreasDataset;
     } else {
-      // VALUETYPE_CASES === valueType
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        return null;
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        return healthBoardsCasesDataset;
-      }
+      // AREATYPE_HEALTH_BOARDS == areaType
+      return healthBoardsDataset;
     }
   }
 
@@ -219,16 +147,7 @@ function Heatmap({
     let endDate = dates[dates.length - 1];
 
     if (!startDate || !endDate) {
-        return (
-          <td className="flex-container">
-            Data not available
-          </td>
-        );
-    }
-
-    // add 6 days to date to get last day of the w/c... date
-    if (VALUETYPE_DEATHS === valueType) {
-      endDate = addDays(endDate, 6);
+      return <td className="flex-container">Data not available</td>;
     }
 
     return (
@@ -257,10 +176,6 @@ function Heatmap({
     return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
   }
 
-  function timeRangeTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Weekly Count" : "Daily Count";
-  }
-
   if (getDataSet() === null) {
     return <LoadingComponent />;
   }
@@ -287,7 +202,7 @@ function Heatmap({
             <th>{areaTitle()}</th>
             <th>{valueTitle()}</th>
             <th>
-              {timeRangeTitle()}
+              Daily Count
               <br />
               {heatbarScale()}
             </th>

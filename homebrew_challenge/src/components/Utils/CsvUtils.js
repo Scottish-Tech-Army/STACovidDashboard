@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function readCsvData(csvData) {
   var allTextLines = csvData.toString().split(/\r\n|\n/);
   var lines = [];
@@ -12,28 +14,48 @@ export function readCsvData(csvData) {
   return lines;
 }
 
-// Expects the input CVS columns to be: date, place, value
-// Returns a sorted set of all dates, and a map of places->dates->values in sorted place order
-export function createPlaceDateValueMap(lines) {
-  const placeDateValueMap = new Map();
+// Expects the input CVS columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
+// as returned from :
+// Daily Case Trends By Health Board
+// https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2
+// Daily Case Trends By Council Area
+// https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
+//
+// Returns a sorted set of all dates and a map of places->dates->values
+export function createPlaceDateValuesMap(lines) {
+  const placeDateValuesMap = new Map();
   const dateSet = new Set();
 
-  lines.forEach(([dateString, place, count], i) => {
-    // weekly dates start with "w/c "
-    dateString = dateString.replace("w/c ", "");
-    const date = Date.parse(dateString);
-
-    if (!placeDateValueMap.has(place)) {
-      placeDateValueMap.set(place, new Map());
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        dailyCases,
+        v1,
+        v2,
+        v3,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      const date = moment.utc(dateString).valueOf();
+      if (!placeDateValuesMap.has(place)) {
+        placeDateValuesMap.set(place, new Map());
+      }
+      var dateValuesMap = placeDateValuesMap.get(place);
+      dateValuesMap.set(date, {
+        cases: Number(dailyCases),
+        deaths: Number(dailyDeaths),
+        cumulativeDeaths: Number(cumulativeDeaths),
+      });
+      dateSet.add(date);
     }
-    var dateValueMap = placeDateValueMap.get(place);
-    dateValueMap.set(date, count === "*" ? 0 : Number(count));
-    dateSet.add(date);
-  });
+  );
 
-  const sortedPlaceDateValueMap = new Map([...placeDateValueMap].sort());
   const dates = [...dateSet].sort();
-  return { dates: dates, placeDateValueMap: sortedPlaceDateValueMap };
+  return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
 
 const queryUrl = "data/";
@@ -104,6 +126,7 @@ const FEATURE_CODE_MAP = {
   S12000049: "Glasgow City",
   S12000050: "North Lanarkshire",
 };
+
 export function getPlaceNameByFeatureCode(featureCode) {
   const result = FEATURE_CODE_MAP[featureCode];
   if (result === undefined) {
