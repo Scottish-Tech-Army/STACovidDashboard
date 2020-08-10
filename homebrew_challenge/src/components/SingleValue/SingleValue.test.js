@@ -1,7 +1,6 @@
 import React from "react";
 import SingleValue from "./SingleValue";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
 
 var container = null;
 beforeEach(() => {
