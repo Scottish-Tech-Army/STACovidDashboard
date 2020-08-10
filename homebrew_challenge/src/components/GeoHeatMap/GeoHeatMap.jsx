@@ -9,7 +9,7 @@ import {
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
   readCsvData,
-  createPlaceDateValueMap,
+  createPlaceDateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
@@ -28,124 +28,27 @@ import moment from "moment";
   Additionally, the non Scotland features of the council areas data were removed.
 */
 
-function getLatestDate(dates) {
-  return dates.sort()[dates.length-1];
-}
-
-export function parseWeeklyCsvData(csvData) {
-  var lines = readCsvData(csvData);
-
-  const { placeDateValueMap } = createPlaceDateValueMap(lines);
-
-  const regions = new Map();
-
-  placeDateValueMap.forEach((dateValueMap, areaname) => {
-    const startDate = getLatestDate([...dateValueMap.keys()]);
-    const count = dateValueMap.get(startDate);
-    const endDate = moment(startDate).add(6, "days").valueOf();
-    const total = [...dateValueMap.values()].reduce(
-      (accumulator, current) => accumulator + current
-    );
-    regions.set(areaname, {
-      count: count,
-      fromDate: startDate,
-      toDate: endDate,
-      totalDeaths: total,
-    });
-  });
-  return regions;
-}
-
-// export function parse7DayDiffCsvData(csvData) {
-//   function getLatestDateBefore(dates, testDate) {
-//     return dates
-//       .filter((date) => moment(date).isSameOrBefore(testDate))
-//       .sort()
-//       .pop();
-//   }
-//   function getEarliestDate(dates) {
-//     return dates.sort().shift();
-//   }
-//
-//   var lines = readCsvData(csvData);
-//   const { placeDateValueMap } = createPlaceDateValueMap(lines);
-//
-//   const regions = new Map();
-//
-//   placeDateValueMap.forEach((dateValueMap, areaname) => {
-//     const dates = [...dateValueMap.keys()];
-//     const endDate = getLatestDate(dates);
-//     const endValue = dateValueMap.get(endDate);
-//     const dataStartDate = getLatestDateBefore(
-//       dates,
-//       moment(endDate).subtract(7, "days")
-//     );
-//     const windowStartDate = dataStartDate
-//       ? moment(dataStartDate).add(1, "days").valueOf()
-//       : getEarliestDate(dates);
-//     const startValue = dataStartDate ? dateValueMap.get(dataStartDate) : 0;
-//
-//     regions.set(areaname, {
-//       count: endValue - startValue,
-//       fromDate: windowStartDate,
-//       toDate: endDate,
-//       totalCases: endValue,
-//     });
-//   });
-//   return regions;
-// }
-
-export function createPlaceDateValuesMap(lines) {
-  const placeDateValuesMap = new Map();
-  const dateSet = new Set();
-
-  lines.forEach(([dateString, place, cases, v1, v2, v3, deaths], i) => {
-    const date = moment.utc(dateString).valueOf();
-    if (!placeDateValuesMap.has(place)) {
-      placeDateValuesMap.set(place, new Map());
-    }
-    var dateValuesMap = placeDateValuesMap.get(place);
-    dateValuesMap.set(date, {cases: Number(cases), deaths: Number(deaths)});
-    dateSet.add(date);
-  });
-
-  const dates = [...dateSet].sort();
-  return { dates: dates, placeDateValuesMap: placeDateValuesMap };
-};
-
 export function parse7DayWindowCsvData(csvData) {
-  function getLatestDateBefore(dates, testDate) {
-    return dates
-      .filter((date) => moment(date).isSameOrBefore(testDate))
-      .sort()
-      .pop();
-  }
-  function getEarliestDate(dates) {
-    return dates.sort().shift();
-  }
-
   var lines = readCsvData(csvData);
-
   const { placeDateValuesMap } = createPlaceDateValuesMap(lines);
 
   const regions = new Map();
-
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
-    const dates = [...dateValuesMap.keys()];
-    const endDate = getLatestDate(dates);
-    const startDate = moment.utc(endDate).subtract(6, "days");
-    const filteredDates = dates.filter(date => moment.utc(date).isSameOrAfter(startDate));
+    const dates = [...dateValuesMap.keys()].sort();
+    const endDate = dates[dates.length - 1];
+    const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
+    const filteredDates = dates.filter((date) => date >= startDate);
     let totalCases = 0;
     let totalDeaths = 0;
-    filteredDates.forEach(date => {
-      const {cases, deaths} = dateValuesMap.get(date);
+    filteredDates.forEach((date) => {
+      const { cases, deaths } = dateValuesMap.get(date);
       totalCases += cases;
       totalDeaths += deaths;
-    })
+    });
     regions.set(featureCode, {
       cases: totalCases,
       deaths: totalDeaths,
-      fromDate: getEarliestDate(filteredDates),
+      fromDate: filteredDates[0],
       name: getPlaceNameByFeatureCode(featureCode),
       toDate: endDate,
     });
@@ -189,13 +92,8 @@ const GeoHeatMap = ({
   toggleFullscreen,
   fullscreenEnabled = false,
 }) => {
-  const [totalCasesByHealthBoard, setTotalCasesByHealthBoard] = useState(null);
-  const [totalDeathsByHealthBoard, setTotalDeathsByHealthBoard] = useState(
-    null
-  );
-  const [totalDeathsByCouncilArea, setTotalDeathsByCouncilArea] = useState(
-    null
-  );
+  const [healthBoardDataset, setHealthBoardDataset] = useState(null);
+  const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null
   );
@@ -211,6 +109,7 @@ const GeoHeatMap = ({
   const legendRef = useRef(null);
   const currentDatasetRef = useRef(null);
   const currentHeatLevelsRef = useRef(null);
+  const currentValueTypeRef = useRef(valueType);
 
   // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
   function setCurrentHeatLevels(value) {
@@ -226,79 +125,45 @@ const GeoHeatMap = ({
 
   // Load and parse datasets (lazy initialisation)
   useEffect(() => {
-    const dailyCasesByHealthBoardCsv = "dailyHealthBoardsCases.csv";
-    const weeklyDeathsByCouncilAreaCsv = "weeklyCouncilAreasDeaths.csv";
-    const weeklyDeathsByHealthBoardCsv = "weeklyHealthBoardsDeaths.csv";
+    const councilAreaCsv = "dailyCouncilAreas.csv";
+    const healthBoardCsv = "dailyHealthBoards.csv";
 
-    if (VALUETYPE_DEATHS === valueType) {
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        if (null === totalDeathsByCouncilArea) {
-          fetchAndStore(
-            weeklyDeathsByCouncilAreaCsv,
-            setTotalDeathsByCouncilArea,
-            parseWeeklyCsvData
-          );
-        }
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        if (null === totalDeathsByHealthBoard) {
-          fetchAndStore(
-            weeklyDeathsByHealthBoardCsv,
-            setTotalDeathsByHealthBoard,
-            parseWeeklyCsvData
-          );
-        }
+    if (AREATYPE_COUNCIL_AREAS === areaType) {
+      if (null === councilAreaDataset) {
+        fetchAndStore(
+          councilAreaCsv,
+          setCouncilAreaDataset,
+          parse7DayWindowCsvData
+        );
       }
     } else {
-      // VALUETYPE_CASES === valueType
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        // We don't have a dataset for this case
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        if (null === totalCasesByHealthBoard) {
-          fetchAndStore(
-            dailyCasesByHealthBoardCsv,
-            setTotalCasesByHealthBoard,
-            parse7DayDiffCsvData
-          );
-        }
+      // AREATYPE_HEALTH_BOARDS == areaType
+      if (null === healthBoardDataset) {
+        fetchAndStore(
+          healthBoardCsv,
+          setHealthBoardDataset,
+          parse7DayWindowCsvData
+        );
       }
     }
-  }, [
-    areaType,
-    valueType,
-    totalCasesByHealthBoard,
-    totalDeathsByCouncilArea,
-    totalDeathsByHealthBoard,
-  ]);
+  }, [areaType, healthBoardDataset, councilAreaDataset]);
 
-  // Set current dataset and heatlevels
+  // Set current heatlevels
   useEffect(() => {
-    if (VALUETYPE_DEATHS === valueType) {
-      setCurrentHeatLevels(deathsHeatLevels);
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        setCurrentDataset(totalDeathsByCouncilArea);
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        setCurrentDataset(totalDeathsByHealthBoard);
-      }
-    } else {
-      setCurrentHeatLevels(casesHeatLevels);
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        // No dataset available
-        setCurrentDataset(null);
-      } else {
-        // AREATYPE_HEALTH_BOARDS == areaType
-        setCurrentDataset(totalCasesByHealthBoard);
-      }
-    }
-  }, [
-    valueType,
-    areaType,
-    totalDeathsByHealthBoard,
-    totalCasesByHealthBoard,
-    totalDeathsByCouncilArea,
-  ]);
+    currentValueTypeRef.current = valueType;
+    setCurrentHeatLevels(
+      VALUETYPE_DEATHS === valueType ? deathsHeatLevels : casesHeatLevels
+    );
+  }, [valueType]);
+
+  // Set current dataset
+  useEffect(() => {
+    setCurrentDataset(
+      AREATYPE_COUNCIL_AREAS === areaType
+        ? councilAreaDataset
+        : healthBoardDataset
+    );
+  }, [areaType, healthBoardDataset, councilAreaDataset]);
 
   // Setup map boundaries layer
   useEffect(() => {
@@ -310,19 +175,24 @@ const GeoHeatMap = ({
     const handleRegionClick = (e) => {
       const map = mapRef.current.leafletElement;
       const layer = e.target;
-      const regionName = layer.feature.properties.RegionName;
-      const regionData = currentDatasetRef.current.get(regionName);
+      const featureCode = featureCodeForFeature(layer.feature);
+      const regionData = currentDatasetRef.current.get(featureCode);
       var content =
         "<p class='region-popup'><strong>" +
-        regionName +
+        regionData.name +
         "</strong><br />Not available</p>";
+
+      const count =
+        currentValueTypeRef.current === VALUETYPE_DEATHS
+          ? regionData.deaths
+          : regionData.cases;
 
       if (regionData) {
         content =
           "<p class='region-popup'><strong>" +
-          regionName +
+          regionData.name +
           "</strong><br />Count: " +
-          regionData.count +
+          count +
           "<br />(" +
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
@@ -421,11 +291,12 @@ const GeoHeatMap = ({
       return heatcolours[getHeatLevel(count)];
     }
 
-    function getRegionStyle(regionName) {
-      const regionData = currentDataset.get(regionName);
+    function getRegionStyle(featureCode) {
+      const regionData = currentDataset.get(featureCode);
       var count = 0;
       if (regionData) {
-        count = regionData.count;
+        count =
+          VALUETYPE_DEATHS === valueType ? regionData.deaths : regionData.cases;
       }
 
       return {
@@ -443,10 +314,10 @@ const GeoHeatMap = ({
 
     if (currentBoundariesLayer && currentDataset) {
       currentBoundariesLayer.setStyle((feature) =>
-        getRegionStyle(feature.properties.RegionName)
+        getRegionStyle(featureCodeForFeature(feature))
       );
     }
-  }, [currentBoundariesLayer, currentHeatLevels, currentDataset]);
+  }, [valueType, currentBoundariesLayer, currentHeatLevels, currentDataset]);
 
   // Create legend
   useEffect(() => {
@@ -479,6 +350,14 @@ const GeoHeatMap = ({
       legendRef.current.addTo(map);
     }
   }, [currentHeatLevels]);
+
+  function featureCodeForFeature(feature) {
+    var featureCode = feature.properties.HBCode;
+    if (featureCode === undefined) {
+      featureCode = feature.properties.CODE;
+    }
+    return featureCode;
+  }
 
   const tilesStadiaAlidadeSmooth =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";

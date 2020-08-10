@@ -1,14 +1,12 @@
 import React from "react";
 import GeoHeatMap, {
   parse7DayWindowCsvData,
-  createPlaceDateValuesMap
+  createPlaceDateValuesMap,
 } from "./GeoHeatMap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import moment from "moment";
-import {
-  readCsvData,
-} from "../Utils/CsvUtils";
+import { readCsvData } from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -63,68 +61,22 @@ it("parse7DayWindowCsvData", () => {
       deaths: 1,
       name: "Grampian",
       fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09")
+      toDate: Date.parse("2020-03-09"),
     })
     .set("S08000031", {
       cases: 1050,
       deaths: 51,
       name: "Greater Glasgow & Clyde",
       fromDate: Date.parse("2020-03-02"),
-      toDate: Date.parse("2020-03-07")
+      toDate: Date.parse("2020-03-07"),
     })
     .set("S08000022", {
       cases: 501,
       deaths: 34,
       name: "Highland",
       fromDate: Date.parse("2020-03-06"),
-      toDate: Date.parse("2020-03-09")
+      toDate: Date.parse("2020-03-09"),
     });
 
   expect(parse7DayWindowCsvData(dailyCasesCsvData)).toEqual(expectedResult);
-});
-const dailyCasesCsvData_small = `
-  Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-  20200316,S08000020,-8,0,0,0,-2,0,0,28,7.58068009529998
-  20200323,S08000020,26,0,0,0,0,0,0,28,7.58068009529998
-  20200330,S08000020,-1,0,0,0,-1,0,0,28,7.58068009529998
-  20200316,S08000031,0,0,0,0,11,0,0,26,22.5088736905896
-  20200323,S08000031,400,0,0,0,10,0,0,26,22.5088736905896
-  20200330,S08000031,300,0,0,0,9,0,0,26,22.5088736905896
-  20200316,S08000022,300,0,0,0,10,0,0,21,14.1072148327287
-  20200323,S08000022,201,0,0,0,9,0,0,21,14.1072148327287
-  20200330,S08000022,1,0,0,0,8,0,0,21,14.1072148327287
-    `;
-const parsedDailyCasesCsvData_small = readCsvData(dailyCasesCsvData_small);
-const expectedDailyPlaceDateValuesMap = {
-  dates: [
-    Date.parse("2020-03-16"),
-    Date.parse("2020-03-23"),
-    Date.parse("2020-03-30"),
-  ],
-  placeDateValuesMap: new Map()
-    .set(
-      "S08000020",
-      new Map()
-        .set(Date.parse("2020-03-16"), { cases: -8, deaths: -2 })
-        .set(Date.parse("2020-03-23"), { cases: 26, deaths: 0 })
-        .set(Date.parse("2020-03-30"), { cases: -1, deaths: -1 })
-    )
-    .set(
-      "S08000031",
-      new Map()
-        .set(Date.parse("2020-03-16"), { cases: 0, deaths: 11 })
-        .set(Date.parse("2020-03-23"), { cases: 400, deaths: 10 })
-        .set(Date.parse("2020-03-30"), { cases: 300, deaths: 9 })
-    )
-    .set(
-      "S08000022",
-      new Map()
-        .set(Date.parse("2020-03-16"), { cases: 300, deaths: 10 })
-        .set(Date.parse("2020-03-23"), { cases: 201, deaths: 9 })
-        .set(Date.parse("2020-03-30"), { cases: 1, deaths: 8 })
-    )
-};
-it("createPlaceDateValuesMap daily", () => {
-  const result = createPlaceDateValuesMap(parsedDailyCasesCsvData_small);
-  expect(result).toEqual(expectedDailyPlaceDateValuesMap);
 });
