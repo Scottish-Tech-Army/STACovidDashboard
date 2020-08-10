@@ -27,16 +27,25 @@ export function parseCsvData(csvData) {
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
     const allCases = [];
     const allDeaths = [];
+    var totalCases = 0;
     var totalDeaths = 0;
     dates.forEach((date) => {
-      const { cases, deaths, cumulativeDeaths } = dateValuesMap.get(date);
+      const {
+        cases,
+        deaths,
+        cumulativeCases,
+        cumulativeDeaths,
+      } = dateValuesMap.get(date);
       allCases.push(cases);
       allDeaths.push(deaths);
+      // Only using the last of each of the cumulative values
+      totalCases = cumulativeCases;
       totalDeaths = cumulativeDeaths;
     });
     regions.push({
       name: getPlaceNameByFeatureCode(featureCode),
       totalDeaths: totalDeaths,
+      totalCases: totalCases,
       cases: allCases,
       deaths: allDeaths,
     });
@@ -100,12 +109,16 @@ function Heatmap({
     return 0;
   }
 
-  function createRegionTableline({ name, totalDeaths, cases, deaths }, index) {
+  function createRegionTableline(
+    { name, totalDeaths, totalCases, cases, deaths },
+    index
+  ) {
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
+    const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
       <tr className="area" key={index}>
         <td>{name}</td>
-        <td>{totalDeaths}</td>
+        <td>{total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel))}
@@ -135,6 +148,21 @@ function Heatmap({
       // AREATYPE_HEALTH_BOARDS == areaType
       return healthBoardsDataset;
     }
+  }
+
+  function totalCountTableCell() {
+    const dataset = getDataSet();
+    if (dataset !== null) {
+      const total = dataset.regions.reduce(
+        (acc, { totalDeaths, totalCases }) =>
+          acc + (VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases),
+        0
+      );
+      if (total > 0) {
+        return <td>{total}</td>;
+      }
+    }
+    return <td></td>;
   }
 
   function dateRangeTableCell() {
@@ -211,7 +239,7 @@ function Heatmap({
         <tbody>
           <tr>
             <td></td>
-            <td></td>
+            {totalCountTableCell()}
             {dateRangeTableCell()}
           </tr>
           {renderTableBody()}

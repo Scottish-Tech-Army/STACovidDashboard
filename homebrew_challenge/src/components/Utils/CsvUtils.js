@@ -32,7 +32,7 @@ export function createPlaceDateValuesMap(lines) {
         dateString,
         place,
         dailyCases,
-        v1,
+        cumulativeCases,
         v2,
         v3,
         dailyDeaths,
@@ -48,6 +48,7 @@ export function createPlaceDateValuesMap(lines) {
       dateValuesMap.set(date, {
         cases: Number(dailyCases),
         deaths: Number(dailyDeaths),
+        cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
       });
       dateSet.add(date);

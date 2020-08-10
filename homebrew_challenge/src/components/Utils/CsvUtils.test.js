@@ -102,18 +102,18 @@ it("getPlaceNameByFeatureCode", async () => {
 
 // Contains both health board and council area feature codes
 const dailyNHSCsvData = `
-20200306,S08000031,0,0,0,0,1,10,0,0,0
-20200306,S08000022,1,0,0,0,2,20,0,0,0
-20200306,S12000013,1,0,0,0,3,30,0,0,0
-20200309,S08000031,0,0,0,0,4,40,0,0,0
-20200309,S08000022,300,0,0,0,5,50,0,0,0
-20200309,S12000013,-8,0,0,0,6,60,0,0,0
-20200308,S08000031,0,0,0,0,7,70,0,0,0
-20200308,S08000022,201,0,0,0,8,80,0,0,0
-20200308,S12000013,26,0,0,0,9,90,0,0,0
+20200306,S08000031,0,21,0,0,1,10,0,0,0
+20200306,S08000022,1,22,0,0,2,20,0,0,0
+20200306,S12000013,1,23,0,0,3,30,0,0,0
+20200309,S08000031,0,24,0,0,4,40,0,0,0
+20200309,S08000022,300,25,0,0,5,50,0,0,0
+20200309,S12000013,-8,26,0,0,6,60,0,0,0
+20200308,S08000031,0,27,0,0,7,70,0,0,0
+20200308,S08000022,201,28,0,0,8,80,0,0,0
+20200308,S12000013,26,29,0,0,9,90,0,0,0
 20200307,S08000031,0,0,0,0,0,0,0,0,0
-20200307,S08000022,-1,0,0,0,-1,-10,0,0,0
-20200307,S12000013,-1,0,0,0,-2,-20,0,0,0
+20200307,S08000022,-1,-21,0,0,-1,-10,0,0,0
+20200307,S12000013,-1,-22,0,0,-2,-20,0,0,0
 `;
 
 describe("createPlaceDateValuesMap", () => {
@@ -140,21 +140,25 @@ describe("createPlaceDateValuesMap", () => {
             cases: 1,
             deaths: 2,
             cumulativeDeaths: 20,
+            cumulativeCases: 22,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
             deaths: -1,
             cumulativeDeaths: -10,
+            cumulativeCases: -21,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 201,
             deaths: 8,
             cumulativeDeaths: 80,
+            cumulativeCases: 28,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 300,
             deaths: 5,
             cumulativeDeaths: 50,
+            cumulativeCases: 25,
           })
       )
       .set(
@@ -164,21 +168,25 @@ describe("createPlaceDateValuesMap", () => {
             cases: 0,
             deaths: 1,
             cumulativeDeaths: 10,
+            cumulativeCases: 21,
           })
           .set(Date.parse("2020-03-07"), {
             cases: 0,
             deaths: 0,
             cumulativeDeaths: 0,
+            cumulativeCases: 0,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 0,
             deaths: 7,
             cumulativeDeaths: 70,
+            cumulativeCases: 27,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 0,
             deaths: 4,
             cumulativeDeaths: 40,
+            cumulativeCases: 24,
           })
       )
       .set(
@@ -188,21 +196,25 @@ describe("createPlaceDateValuesMap", () => {
             cases: 1,
             deaths: 3,
             cumulativeDeaths: 30,
+            cumulativeCases: 23,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
             deaths: -2,
             cumulativeDeaths: -20,
+            cumulativeCases: -22,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
             deaths: 9,
             cumulativeDeaths: 90,
+            cumulativeCases: 29,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
             deaths: 6,
             cumulativeDeaths: 60,
+            cumulativeCases: 26,
           })
       ),
   };
