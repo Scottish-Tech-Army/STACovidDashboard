@@ -1,7 +1,4 @@
-import {
-  getLatestNewsItem,
-  getText,
-} from "./RssFeedUtils";
+import { getLatestNewsItem, getText } from "./RssFeedUtils";
 
 const inputXml = `
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
@@ -26,7 +23,7 @@ const inputXml = `
 <guid isPermaLink="false">5efeed31e74ad70920c25969</guid>
 <link>link2</link>
 <category>Scotland</category>
-<title>title2</title>
+<title>title2&nbsp;</title>
 <description>
 <![CDATA[ <p><strong>description2</strong></p> ]]>
 </description>
@@ -38,12 +35,17 @@ const inputXml = `
 
 it("getLatestNewsItem reads feed", () => {
   const result = getLatestNewsItem(inputXml);
-  const expectedResult = {title: "title1", description: "description1", link: "link1", timestamp: "03 Jul 2020 12:54"};
+  const expectedResult = {
+    title: "title1",
+    description: "description1",
+    link: "link1",
+    timestamp: "03 Jul 2020 12:54",
+  };
   expect(result).toEqual(expectedResult);
 });
 
 it("getText", () => {
   expect(getText("string1")).toEqual("string1");
   expect(getText({ p: "string1" })).toEqual("string1");
-  expect(getText({ p: { strong: 'string1' }})).toEqual("string1");
+  expect(getText({ p: { strong: "string1" } })).toEqual("string1");
 });
