@@ -13,7 +13,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -57,36 +59,10 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
         try {
             context.getLogger().log("start");
-            String storedDates = getObject(OBJECTKEY_DATES_MODIFIED);
-            String newDates = getStatsQuery(QUERY_DATES_MODIFIED, context);
-
-            if (isDateModified(storedDates, newDates)) {
-
-                storeStatsQuery(QUERY_WEEKLY_HEALTH_BOARDS_DEATHS, OBJECTKEY_WEEKLY_HEALTH_BOARDS_DEATHS, context);
-                storeStatsQuery(QUERY_DAILY_SCOTTISH_CASES_AND_DEATHS, OBJECTKEY_DAILY_SCOTTISH_CASES_AND_DEATHS,
-                        context);
-                storeStatsQuery(QUERY_WEEKLY_COUNCIL_AREAS_DEATHS, OBJECTKEY_WEEKLY_COUNCIL_AREAS_DEATHS, context);
-                storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES, context);
-                storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS,
-                        OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, context);
-
-                String last7Days = getDaysDateValueClause();
-                String last2Years = getYearsDateValueClause();
-
-                storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_7_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
-                        context);
-                storeStatsQuery(QUERYTEMPLATE_ANNUAL_HEALTH_BOARDS_DEATHS.replace(LAST_2_YEARS, last2Years),
-                        OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
-                storeStatsQuery(QUERYTEMPLATE_ANNUAL_COUNCIL_AREAS_DEATHS.replace(LAST_2_YEARS, last2Years),
-                        OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS, context);
-
-                // Got everything else - store datesModified
-                storeObject(context, newDates, OBJECTKEY_DATES_MODIFIED);
-                context.getLogger().log("datesModified updated\n");
-            } else {
-                context.getLogger().log("datesModified not updated - skipping stats queries\n");
-            }
+            storeStatsGovData(context);
             
+            storeAllNhsScotData(context);
+
             storeRssNewsFeed(context);
 
             context.getLogger().log("end");
@@ -98,6 +74,99 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         }
 
         return "Success";
+    }
+
+    private void storeStatsGovData(Context context) throws IOException, ClientProtocolException {
+        String storedDates = getObject(context, OBJECTKEY_STATS_GOV_DATES_MODIFIED);
+        String newDates = getStatsQuery(QUERY_STATS_GOV_DATES_MODIFIED, context);
+
+        if (isDateModified(storedDates, newDates)) {
+
+            storeStatsQuery(QUERY_WEEKLY_HEALTH_BOARDS_DEATHS, OBJECTKEY_WEEKLY_HEALTH_BOARDS_DEATHS, context);
+            storeStatsQuery(QUERY_DAILY_SCOTTISH_CASES_AND_DEATHS, OBJECTKEY_DAILY_SCOTTISH_CASES_AND_DEATHS, context);
+            storeStatsQuery(QUERY_WEEKLY_COUNCIL_AREAS_DEATHS, OBJECTKEY_WEEKLY_COUNCIL_AREAS_DEATHS, context);
+            storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES, OBJECTKEY_DAILY_HEALTH_BOARDS_CASES, context);
+            storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS,
+                    OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, context);
+
+            String last7Days = getDaysDateValueClause();
+            String last2Years = getYearsDateValueClause();
+
+            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_7_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
+                    context);
+            storeStatsQuery(QUERYTEMPLATE_ANNUAL_HEALTH_BOARDS_DEATHS.replace(LAST_2_YEARS, last2Years),
+                    OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
+            storeStatsQuery(QUERYTEMPLATE_ANNUAL_COUNCIL_AREAS_DEATHS.replace(LAST_2_YEARS, last2Years),
+                    OBJECTKEY_ANNUAL_COUNCIL_AREAS_DEATHS, context);
+
+            // Got everything else - store datesModified
+            storeObject(context, newDates, OBJECTKEY_STATS_GOV_DATES_MODIFIED);
+            context.getLogger().log("datesModified updated\n");
+        }
+        else {
+            context.getLogger().log("datesModified not updated - skipping stats queries\n");
+        }
+    }
+
+    private void storeAllNhsScotData(Context context) throws IOException, ClientProtocolException {
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS,
+                OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_DAILY_COUNCIL_AREAS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS,
+                OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_DAILY_HEALTH_BOARDS_URL);
+    }
+
+    private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
+            String retrievalUrl) throws IOException, ClientProtocolException {
+        String modificationDate = getObject(context, objectKeyModificationDate);
+
+        context.getLogger().log("Call request\n");
+        HttpGet request = new HttpGet(retrievalUrl);
+        if (modificationDate != null) {
+            request.addHeader("If-Modified-Since", modificationDate);
+        }
+
+        CloseableHttpClient client = createHttpClient();
+        try (CloseableHttpResponse response = client.execute(request)) {
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (HttpStatus.SC_NOT_MODIFIED == statusCode) {
+                context.getLogger().log("NHS data not updated - skipping\n");
+                return;
+            }
+            if (HttpStatus.SC_OK != statusCode) {
+                context.getLogger().log("NHS data error response: " + statusCode + "\n");
+                return;
+            }
+
+            context.getLogger().log("Response received\n");
+            Header lastModifiedHeader = response.getFirstHeader("Last-Modified");
+            String newModificationDate = null;
+            if (lastModifiedHeader != null) {
+                newModificationDate = lastModifiedHeader.getValue();
+            }
+
+            // Pipe straight to S3
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("text/plain");
+
+            HttpEntity entity = response.getEntity();
+            if (entity.getContentLength() > 0) {
+                metadata.setContentLength(entity.getContentLength());
+            }
+
+            AccessControlList acl = new AccessControlList();
+            acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
+
+            s3.putObject(new PutObjectRequest(BUCKET_NAME, objectKeyData, entity.getContent(), metadata)
+                    .withAccessControlList(acl));
+
+            context.getLogger().log("Response stored in S3 at " + objectKeyData + "\n");
+
+            if (newModificationDate != null) {
+                storeObject(context, newModificationDate, objectKeyModificationDate);
+                context.getLogger().log("Last updated stored in S3 at " + objectKeyModificationDate + "\n");
+            }
+        }
+
     }
 
     // Replaced in unit tests
@@ -189,13 +258,15 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         context.getLogger().log("Object stored in S3 at " + objectKeyName + "\n");
     }
 
-    private String getObject(String objectKeyName)
+    private String getObject(Context context, String objectKeyName)
             throws UnsupportedOperationException, AmazonServiceException, SdkClientException, IOException {
         if (!s3.doesObjectExist(BUCKET_NAME, objectKeyName)) {
+            context.getLogger().log("Object not found in S3 at " + objectKeyName + "\n");
             return null;
         }
-        
+
         try (S3Object storedDatesModified = s3.getObject(BUCKET_NAME, objectKeyName)) {
+            context.getLogger().log("Object retrieved from in S3 at " + objectKeyName + "\n");
             InputStream contentStream = storedDatesModified.getObjectContent();
             return new BufferedReader(new InputStreamReader(contentStream, StandardCharsets.UTF_8)).lines()
                     .collect(Collectors.joining("\n"));
@@ -236,11 +307,24 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                 || !newModificationData.equals(oldModificationData);
     }
 
+    private static final String OBJECT_FOLDER = "data/";
+
+    private final static String NHS_SCOT_DAILY_HEALTH_BOARDS_URL = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2/download";
+
+    private final static String NHS_SCOT_DAILY_COUNCIL_AREAS_URL = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/427f9a25-db22-4014-a3bc-893b68243055/download";
+
+    private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsDailyHealthBoardLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsDailyCouncilAreaLastModified.txt";
+
+    private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
+    private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
+
     private static final String SPARQL_URL = "https://statistics.gov.scot/sparql.csv";
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
-    private static final String OBJECT_FOLDER = "data/";
-    private static final String OBJECTKEY_DATES_MODIFIED = OBJECT_FOLDER + "datesmodified.csv";
+    private static final String OBJECTKEY_STATS_GOV_DATES_MODIFIED = OBJECT_FOLDER + "datesmodified.csv";
     private static final String OBJECTKEY_SUMMARY_COUNTS = OBJECT_FOLDER + "summaryCounts.csv";
     private static final String OBJECTKEY_WEEKLY_HEALTH_BOARDS_DEATHS = OBJECT_FOLDER + "weeklyHealthBoardsDeaths.csv";
     private static final String OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS = OBJECT_FOLDER + "annualHealthBoardsDeaths.csv";
@@ -268,7 +352,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.\n"
             + "?obs <http://statistics.gov.scot/def/dimension/locationOfDeath> <http://statistics.gov.scot/def/concept/location-of-death/all>.\n";
 
-    
     private static final String QUERYTEMPLATE_SUMMARY_COUNTS = FRAGMENT_COMMON_PREFIXES
             + "SELECT ?date ?shortValue ?count WHERE {\n" + "  VALUES (?value ?shortValue) {\n"
             + "    ( <http://statistics.gov.scot/def/concept/variable/testing-daily-people-found-positive> \"dailyPositiveTests\" )\n"
@@ -349,7 +432,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "  ?areauri rdfs:label ?areaname.\n" + "  ?obs dim:refPeriod ?perioduri .\n"
             + "  ?perioduri rdfs:label ?date\n" + "}";
 
-    private static final String QUERY_DATES_MODIFIED = "SELECT ?datagraph ?dateModified\n" + "WHERE {\n"
+    private static final String QUERY_STATS_GOV_DATES_MODIFIED = "SELECT ?datagraph ?dateModified\n" + "WHERE {\n"
             + "VALUES (?datagraph) {\n"
             + "( <http://statistics.gov.scot/graph/deaths-involving-coronavirus-covid-19> )\n"
             + "( <http://statistics.gov.scot/graph/coronavirus-covid-19-management-information> )\n" + "}\n"

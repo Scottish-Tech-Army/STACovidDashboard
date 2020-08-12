@@ -126,7 +126,7 @@ public class TestContext implements Context {
     /**
      * A simple {@code LambdaLogger} that prints everything to stderr.
      */
-    private static class TestLogger implements LambdaLogger {
+    static class TestLogger implements LambdaLogger {
 
         @Override
         public void log(String message) {
