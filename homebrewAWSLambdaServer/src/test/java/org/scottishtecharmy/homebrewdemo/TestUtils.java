@@ -57,7 +57,7 @@ public class TestUtils {
         dynamodbEventMapper.addMixIn(AttributeValue.class, DynamodbEventMixin.AttributeValueMixIn.class);
     }
 
-    private static final DateTimeFormatter dateTimeFormatter =
+    static final DateTimeFormatter dateTimeFormatter =
             ISODateTimeFormat.dateTime()
                         .withZone(new FixedDateTimeZone("GMT", "GMT", 0, 0));
 
@@ -105,7 +105,7 @@ public class TestUtils {
         }
     }
 
-    private static class DateTimeSerializer extends JsonSerializer<DateTime> {
+    static class DateTimeSerializer extends JsonSerializer<DateTime> {
 
         @Override
         public void serialize(
@@ -117,7 +117,7 @@ public class TestUtils {
         }
     }
 
-    private static class DateTimeDeserializer
+    static class DateTimeDeserializer
             extends JsonDeserializer<DateTime> {
 
         @Override
@@ -129,7 +129,7 @@ public class TestUtils {
         }
     }
 
-    private static class UpperCaseRecordsPropertyNamingStrategy
+    static class UpperCaseRecordsPropertyNamingStrategy
             extends PropertyNamingStrategy.PropertyNamingStrategyBase {
 
         private static final long serialVersionUID = 1L;
