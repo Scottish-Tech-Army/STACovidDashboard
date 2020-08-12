@@ -35,18 +35,6 @@ function HeatmapDataSelector({
     throw new Error("Unrecognised setValueType: " + setValueType);
   }
 
-  // Council areas with cases is a disallowed combination
-  if (areaType === AREATYPE_COUNCIL_AREAS && valueType === VALUETYPE_CASES) {
-    throw new Error("Invalid combination: " + areaType + " and " + valueType);
-  }
-
-  const casesText =
-    "Cases" +
-    (AREATYPE_COUNCIL_AREAS === areaType ? " [Data not available]" : "");
-  const councilAreasText =
-    "Council Areas" +
-    (VALUETYPE_CASES === valueType ? " [Data not available]" : "");
-
   return (
     <Container fluid className="heatmap-selector">
       <Row>
@@ -68,10 +56,8 @@ function HeatmapDataSelector({
             <ToggleButton
               id="councilAreas"
               value={AREATYPE_COUNCIL_AREAS}
-              variant={VALUETYPE_CASES === valueType ? "secondary" : "primary"}
-              disabled={VALUETYPE_CASES === valueType}
             >
-              {councilAreasText}
+              Council Areas
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
@@ -92,12 +78,8 @@ function HeatmapDataSelector({
             <ToggleButton
               id="cases"
               value={VALUETYPE_CASES}
-              variant={
-                AREATYPE_COUNCIL_AREAS === areaType ? "secondary" : "primary"
-              }
-              disabled={AREATYPE_COUNCIL_AREAS === areaType}
             >
-              {casesText}
+              Cases
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>

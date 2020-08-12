@@ -1,7 +1,6 @@
 import React from "react";
 import SingleValueBar, {
   parseCsvData,
-  getDateValueClause,
   getRelativeDate,
 } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";

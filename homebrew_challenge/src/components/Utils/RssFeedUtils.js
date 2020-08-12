@@ -45,8 +45,6 @@ export const getLatestNewsItem = (strxml) => {
   const parser = new DOMParser();
   const inputDom = parser.parseFromString(trimStrxml, "application/xml");
   const json = xml2json(inputDom);
-  console.log(json);
-
   const item = json.rss.channel.item[0];
   const pubDate = moment(item.pubDate);
   const result = {

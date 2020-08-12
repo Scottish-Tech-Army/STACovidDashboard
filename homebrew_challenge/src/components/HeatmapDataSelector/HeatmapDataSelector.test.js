@@ -3,9 +3,7 @@ import HeatmapDataSelector from "./HeatmapDataSelector";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import {
-  AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
-  VALUETYPE_CASES,
   VALUETYPE_DEATHS,
 } from "./HeatmapConsts";
 
@@ -63,15 +61,6 @@ function click(button) {
       container
     );
   });
-}
-
-function checkButtonsDisabled(casesButtonDisabled, councilAreasButtonDisabled) {
-  expect(casesButton().getAttribute("class").indexOf("disabled") > -1).toBe(
-    casesButtonDisabled
-  );
-  expect(
-    councilAreasButton().getAttribute("class").indexOf("disabled") > -1
-  ).toBe(councilAreasButtonDisabled);
 }
 
 it("null/undefined input throws error", async () => {
@@ -159,23 +148,6 @@ it("null/undefined input throws error", async () => {
   }).toThrow("Unrecognised valueType: unknown");
 });
 
-it("invalid council areas cases combination throws error", async () => {
-  // Suppress console error message
-  spyOn(console, "error");
-
-  expect(() => {
-    render(
-      <HeatmapDataSelector
-        areaType="council-areas"
-        valueType="cases"
-        setAreaType={setAreaType}
-        setValueType={setValueType}
-      />,
-      container
-    );
-  }).toThrow("Invalid combination: council-areas and cases");
-});
-
 it("default render", async () => {
   act(() => {
     render(
@@ -195,46 +167,17 @@ it("default render", async () => {
     "Deaths",
     "Cases"
   );
-  checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
 
   click(councilAreasButton());
-  checkButtonText(
-    "Health Boards",
-    "Council Areas",
-    "Deaths",
-    "Cases [Data not available]"
-  );
-  checkButtonsDisabled(true, false);
   checkStoredValues("council-areas", "deaths");
 
-  click(healthBoardsButton());
-  checkButtonText(
-    "Health Boards",
-    "Council Areas",
-    "Deaths",
-    "Cases"
-  );
-  checkButtonsDisabled(false, false);
-  checkStoredValues("health-boards", "deaths");
-
   click(casesButton());
-  checkButtonText(
-    "Health Boards",
-    "Council Areas [Data not available]",
-    "Deaths",
-    "Cases"
-  );
-  checkButtonsDisabled(false, true);
+  checkStoredValues("council-areas", "cases");
+
+  click(healthBoardsButton());
   checkStoredValues("health-boards", "cases");
 
   click(deathsButton());
-  checkButtonText(
-    "Health Boards",
-    "Council Areas",
-    "Deaths",
-    "Cases"
-  );
-  checkButtonsDisabled(false, false);
   checkStoredValues("health-boards", "deaths");
 });

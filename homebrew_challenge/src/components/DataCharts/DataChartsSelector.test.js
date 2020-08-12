@@ -2,11 +2,7 @@ import React from "react";
 import DataChartsSelector from "./DataChartsSelector";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import {
-  PERCENTAGE_CASES,
-  TOTAL_CASES,
-  TOTAL_DEATHS,
-} from "./DataChartsConsts";
+import { PERCENTAGE_CASES } from "./DataChartsConsts";
 
 var storedChartType = PERCENTAGE_CASES;
 const setChartType = (value) => (storedChartType = value);
