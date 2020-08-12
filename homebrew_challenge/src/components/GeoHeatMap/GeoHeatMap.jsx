@@ -321,6 +321,20 @@ const GeoHeatMap = ({
 
   // Create legend
   useEffect(() => {
+    function getRangeText(grades, i) {
+      const start = grades[i];
+      if (grades.length <= i + 1) {
+        // Last range
+        return start + "+";
+      }
+      const end = grades[i + 1] - 1;
+      if (end === start) {
+        // Single value range
+        return start;
+      }
+      return start + "&ndash;" + end;
+    }
+
     if (mapRef.current && mapRef.current.leafletElement) {
       const map = mapRef.current.leafletElement;
       if (!legendRef.current) {
@@ -337,8 +351,7 @@ const GeoHeatMap = ({
               '<div class="legend-line"><i style="background:' +
               heatcolours[i] +
               '"></i> ' +
-              grades[i] +
-              (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
+              getRangeText(grades, i) +
               "</div>";
           }
 
