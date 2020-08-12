@@ -6,22 +6,15 @@ import {
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
-  readCsvData,
   createPlaceDateValuesMap,
-  fetchAndStore,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
-const councilAreaCsv = "dailyCouncilAreas.csv";
-const healthBoardCsv = "dailyHealthBoards.csv";
-
 // Exported for tests
 export function parseCsvData(csvData) {
-  var lines = readCsvData(csvData);
-
-  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(lines);
+  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
   var regions = [];
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
@@ -55,14 +48,20 @@ export function parseCsvData(csvData) {
 }
 
 function Heatmap({
+  councilAreaDataset,
+  healthBoardDataset,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
 }) {
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 1, 5, 10, 100, 200];
 
-  const [councilAreasDataset, setCouncilAreasDataset] = useState(null);
-  const [healthBoardsDataset, setHealthBoardsDataset] = useState(null);
+  const [parsedHealthBoardDataset, setParsedHealthBoardDataset] = useState(
+    null
+  );
+  const [parsedCouncilAreaDataset, setParsedCouncilAreaDataset] = useState(
+    null
+  );
 
   function createHeatbar(elements) {
     const width = 200;
@@ -128,25 +127,27 @@ function Heatmap({
     );
   }
 
+  // Parse datasets
   useEffect(() => {
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      if (null === councilAreasDataset) {
-        fetchAndStore(councilAreaCsv, setCouncilAreasDataset, parseCsvData);
-      }
-    } else {
-      // AREATYPE_HEALTH_BOARDS == areaType
-      if (null === healthBoardsDataset) {
-        fetchAndStore(healthBoardCsv, setHealthBoardsDataset, parseCsvData);
-      }
+    if (null !== councilAreaDataset && null === parsedCouncilAreaDataset) {
+      setParsedCouncilAreaDataset(parseCsvData(councilAreaDataset));
     }
-  }, [areaType, councilAreasDataset, healthBoardsDataset]);
+    if (null !== healthBoardDataset && null === parsedHealthBoardDataset) {
+      setParsedHealthBoardDataset(parseCsvData(healthBoardDataset));
+    }
+  }, [
+    healthBoardDataset,
+    councilAreaDataset,
+    parsedHealthBoardDataset,
+    parsedCouncilAreaDataset,
+  ]);
 
   function getDataSet() {
     if (AREATYPE_COUNCIL_AREAS === areaType) {
-      return councilAreasDataset;
+      return parsedCouncilAreaDataset;
     } else {
       // AREATYPE_HEALTH_BOARDS == areaType
-      return healthBoardsDataset;
+      return parsedHealthBoardDataset;
     }
   }
 

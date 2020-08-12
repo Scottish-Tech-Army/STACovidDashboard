@@ -8,9 +8,7 @@ import {
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
-  readCsvData,
   createPlaceDateValuesMap,
-  fetchAndStore,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import FullscreenControl from "./FullscreenControl";
@@ -29,8 +27,7 @@ import moment from "moment";
 */
 
 export function parse7DayWindowCsvData(csvData) {
-  var lines = readCsvData(csvData);
-  const { placeDateValuesMap } = createPlaceDateValuesMap(lines);
+  const { placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
   const regions = new Map();
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
@@ -87,13 +84,15 @@ const heatcolours = [
 */
 
 const GeoHeatMap = ({
+  councilAreaDataset,
+  healthBoardDataset,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
   fullscreenEnabled = false,
 }) => {
-  const [healthBoardDataset, setHealthBoardDataset] = useState(null);
-  const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
+  const [healthBoard7DayDataset, setHealthBoard7DayDataset] = useState(null);
+  const [councilArea7DayDataset, setCouncilArea7DayDataset] = useState(null);
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null
   );
@@ -103,11 +102,11 @@ const GeoHeatMap = ({
 
   const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
   const [currentHeatLevels, _setCurrentHeatLevels] = useState(null);
-  const [currentDataset, _setCurrentDataset] = useState(null);
+  const [current7DayDataset, _setCurrent7DayDataset] = useState(null);
 
   const mapRef = useRef();
   const legendRef = useRef(null);
-  const currentDatasetRef = useRef(null);
+  const current7DayDatasetRef = useRef(null);
   const currentHeatLevelsRef = useRef(null);
   const currentValueTypeRef = useRef(valueType);
 
@@ -118,35 +117,25 @@ const GeoHeatMap = ({
   }
 
   // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
-  function setCurrentDataset(value) {
-    currentDatasetRef.current = value;
-    _setCurrentDataset(value);
+  function setCurrent7DayDataset(value) {
+    current7DayDatasetRef.current = value;
+    _setCurrent7DayDataset(value);
   }
 
-  // Load and parse datasets (lazy initialisation)
+  // Parse datasets
   useEffect(() => {
-    const councilAreaCsv = "dailyCouncilAreas.csv";
-    const healthBoardCsv = "dailyHealthBoards.csv";
-
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      if (null === councilAreaDataset) {
-        fetchAndStore(
-          councilAreaCsv,
-          setCouncilAreaDataset,
-          parse7DayWindowCsvData
-        );
-      }
-    } else {
-      // AREATYPE_HEALTH_BOARDS == areaType
-      if (null === healthBoardDataset) {
-        fetchAndStore(
-          healthBoardCsv,
-          setHealthBoardDataset,
-          parse7DayWindowCsvData
-        );
-      }
+    if (null !== councilAreaDataset && null === councilArea7DayDataset) {
+      setCouncilArea7DayDataset(parse7DayWindowCsvData(councilAreaDataset));
     }
-  }, [areaType, healthBoardDataset, councilAreaDataset]);
+    if (null !== healthBoardDataset && null === healthBoard7DayDataset) {
+      setHealthBoard7DayDataset(parse7DayWindowCsvData(healthBoardDataset));
+    }
+  }, [
+    healthBoardDataset,
+    councilAreaDataset,
+    healthBoard7DayDataset,
+    councilArea7DayDataset,
+  ]);
 
   // Set current heatlevels
   useEffect(() => {
@@ -158,12 +147,12 @@ const GeoHeatMap = ({
 
   // Set current dataset
   useEffect(() => {
-    setCurrentDataset(
+    setCurrent7DayDataset(
       AREATYPE_COUNCIL_AREAS === areaType
-        ? councilAreaDataset
-        : healthBoardDataset
+        ? councilArea7DayDataset
+        : healthBoard7DayDataset
     );
-  }, [areaType, healthBoardDataset, councilAreaDataset]);
+  }, [areaType, healthBoard7DayDataset, councilArea7DayDataset]);
 
   // Setup map boundaries layer
   useEffect(() => {
@@ -176,7 +165,7 @@ const GeoHeatMap = ({
       const map = mapRef.current.leafletElement;
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
-      const regionData = currentDatasetRef.current.get(featureCode);
+      const regionData = current7DayDatasetRef.current.get(featureCode);
       var content =
         "<p class='region-popup'><strong>" +
         regionData.name +
@@ -292,7 +281,7 @@ const GeoHeatMap = ({
     }
 
     function getRegionStyle(featureCode) {
-      const regionData = currentDataset.get(featureCode);
+      const regionData = current7DayDataset.get(featureCode);
       var count = 0;
       if (regionData) {
         count =
@@ -312,12 +301,17 @@ const GeoHeatMap = ({
       mapRef.current.leafletElement.closePopup();
     }
 
-    if (currentBoundariesLayer && currentDataset) {
+    if (currentBoundariesLayer && current7DayDataset) {
       currentBoundariesLayer.setStyle((feature) =>
         getRegionStyle(featureCodeForFeature(feature))
       );
     }
-  }, [valueType, currentBoundariesLayer, currentHeatLevels, currentDataset]);
+  }, [
+    valueType,
+    currentBoundariesLayer,
+    currentHeatLevels,
+    current7DayDataset,
+  ]);
 
   // Create legend
   useEffect(() => {

@@ -1,6 +1,5 @@
 import {
   readCsvData,
-  createPlaceDateValueMap,
   createPlaceDateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
