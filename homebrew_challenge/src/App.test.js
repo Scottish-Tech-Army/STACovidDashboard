@@ -5,9 +5,8 @@ import App from "./App";
 
 test("renders learn react link", async () => {
   fetch.mockReject(new Error("fetch failed"));
-  // Suppress console error message
-  spyOn(console, "error");
-  
+  global.suppressConsoleErrorLogs();
+
   var result;
   await act(async () => {
     result = render(<App />);

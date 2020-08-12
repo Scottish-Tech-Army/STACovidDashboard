@@ -33,7 +33,7 @@ const inputXml = `
 </rss>
 `;
 
-it("getLatestNewsItem reads feed", () => {
+test("getLatestNewsItem reads feed", () => {
   const result = getLatestNewsItem(inputXml);
   const expectedResult = {
     title: "title1",
@@ -41,11 +41,11 @@ it("getLatestNewsItem reads feed", () => {
     link: "link1",
     timestamp: "03 Jul 2020 12:54",
   };
-  expect(result).toEqual(expectedResult);
+  expect(result).toStrictEqual(expectedResult);
 });
 
-it("getText", () => {
-  expect(getText("string1")).toEqual("string1");
-  expect(getText({ p: "string1" })).toEqual("string1");
-  expect(getText({ p: { strong: "string1" } })).toEqual("string1");
+test("getText", () => {
+  expect(getText("string1")).toStrictEqual("string1");
+  expect(getText({ p: "string1" })).toStrictEqual("string1");
+  expect(getText({ p: { strong: "string1" } })).toStrictEqual("string1");
 });

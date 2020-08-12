@@ -1,3 +1,5 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue"] }] */
+
 import React from "react";
 import SingleValueBar, {
   parseCsvData,
@@ -22,10 +24,9 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-it("SingleValueBar renders default data when fetch fails", async () => {
+test("singleValueBar renders default data when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
-  // Suppress console error message
-  spyOn(console, "error");
+  global.suppressConsoleErrorLogs();
 
   await act(async () => {
     render(<SingleValueBar />, container);
@@ -40,7 +41,7 @@ it("SingleValueBar renders default data when fetch fails", async () => {
   checkSingleValue("totalTestsCompleted", "Total", "0");
 });
 
-it("SingleValueBar renders dynamic fetched data for today", async () => {
+test("singleValueBar renders dynamic fetched data for today", async () => {
   fetch.mockResponse(csvData);
 
   // Set today to be 2020-06-21
@@ -53,13 +54,13 @@ it("SingleValueBar renders dynamic fetched data for today", async () => {
   checkSingleValue("dailyCases", "Today", "26");
   checkSingleValue("totalCases", "Total", "18156");
   checkSingleValue("dailyFatalities", "Today", "-1");
-  checkSingleValue("totalFatalities", "Total" , "2472");
+  checkSingleValue("totalFatalities", "Total", "2472");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily", "3442");
   checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
-it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
+test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   fetch.mockResponse(csvData);
 
   // Set today to be 2020-06-22
@@ -70,15 +71,15 @@ it("SingleValueBar renders dynamic fetched data for yesterday", async () => {
   });
 
   checkSingleValue("dailyCases", "Yesterday", "26");
-  checkSingleValue("totalCases", "Total" , "18156");
+  checkSingleValue("totalCases", "Total", "18156");
   checkSingleValue("dailyFatalities", "Yesterday", "-1");
-  checkSingleValue("totalFatalities", "Total" , "2472");
+  checkSingleValue("totalFatalities", "Total", "2472");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily", "3442");
   checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
-it("SingleValueBar renders dynamic fetched data with incomplete diff data", async () => {
+test("singleValueBar renders dynamic fetched data with incomplete diff data", async () => {
   fetch.mockResponse(incompleteDiffCsvData);
 
   // Set today to be 2020-06-22
@@ -89,15 +90,15 @@ it("SingleValueBar renders dynamic fetched data with incomplete diff data", asyn
   });
 
   checkSingleValue("dailyCases", "Yesterday", "26");
-  checkSingleValue("totalCases", "Total" , "18156");
+  checkSingleValue("totalCases", "Total", "18156");
   checkSingleValue("dailyFatalities", "Not available", "Not available");
-  checkSingleValue("totalFatalities", "Total" , "2472");
+  checkSingleValue("totalFatalities", "Total", "2472");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.6%");
   checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
   checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
-it("SingleValueBar renders dynamic fetched data with missing data", async () => {
+test("singleValueBar renders dynamic fetched data with missing data", async () => {
   fetch.mockResponse(missingCsvData);
 
   // Set today to be 2020-06-22
@@ -108,15 +109,15 @@ it("SingleValueBar renders dynamic fetched data with missing data", async () => 
   });
 
   checkSingleValue("dailyCases", "Not available", "Not available");
-  checkSingleValue("totalCases", "Total" , "Not available");
+  checkSingleValue("totalCases", "Total", "Not available");
   checkSingleValue("dailyFatalities", "Not available", "Not available");
-  checkSingleValue("totalFatalities", "Total" , "Not available");
+  checkSingleValue("totalFatalities", "Total", "Not available");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
   checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
   checkSingleValue("totalTestsCompleted", "Total", "Not available");
 });
 
-it("getRelativeDate", () => {
+test("getRelativeDate", () => {
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
 
@@ -128,11 +129,11 @@ it("getRelativeDate", () => {
   expect(getRelativeDate(Date.parse("2020-06-17"))).toBe("last Wednesday");
   expect(getRelativeDate(Date.parse("2020-06-16"))).toBe("last Tuesday");
   expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("15/06/2020");
-  expect(getRelativeDate(undefined)).toBe(undefined);
-  expect(getRelativeDate(null)).toBe(undefined);
+  expect(getRelativeDate(undefined)).toBeUndefined();
+  expect(getRelativeDate(null)).toBeUndefined();
 });
 
-it("parseCsvData", () => {
+test("parseCsvData", () => {
   const expectedResult = {
     dailyCases: { date: 1592697600000, value: 26 },
     dailyFatalities: { date: 1592697600000, value: -1 },
@@ -143,15 +144,14 @@ it("parseCsvData", () => {
     totalTestsCompleted: { date: 1592697600000, value: 231525 },
   };
 
-  expect(parseCsvData(csvData)).toEqual(expectedResult);
+  expect(parseCsvData(csvData)).toStrictEqual(expectedResult);
 });
 
-it("parseCsvData with bad count type", () => {
+test("parseCsvData with bad count type", () => {
   const badCsvData = `date,shortValue,count
     2020-03-02,unknown,815`;
 
-  // Suppress console error message
-  spyOn(console, "error");
+  global.suppressConsoleErrorLogs();
 
   expect(() => {
     parseCsvData(badCsvData);

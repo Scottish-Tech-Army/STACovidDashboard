@@ -28,7 +28,7 @@ const dailyCasesCsvData = `
   20200307,S08000022,-1,0,0,0,7,0,0,21,14.1072148327287
     `;
 
-it("parse7DayWindowCsvData", () => {
+test("parse7DayWindowCsvData", () => {
   // Grampian : 09/03 - 03/03 : 7 days of data
   // Glasgow : 07/03 - 02/03 : 6 days of data
   // Highland : 09/03 - 06/03 : 4 days of data
@@ -55,7 +55,7 @@ it("parse7DayWindowCsvData", () => {
       toDate: Date.parse("2020-03-09"),
     });
 
-  expect(parse7DayWindowCsvData(readCsvData(dailyCasesCsvData))).toEqual(
+  expect(parse7DayWindowCsvData(readCsvData(dailyCasesCsvData))).toStrictEqual(
     expectedResult
   );
 });

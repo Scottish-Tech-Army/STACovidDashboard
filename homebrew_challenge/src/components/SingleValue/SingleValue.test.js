@@ -1,3 +1,5 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue"] }] */
+
 import React from "react";
 import SingleValue from "./SingleValue";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -17,12 +19,12 @@ afterEach(() => {
   container = null;
 });
 
-it("SingleValue renders correctly", () => {
+test("singleValue renders correctly", () => {
   render(<SingleValue title="Test title" value="Test count" />, container);
   checkSingleValue("Test title", "Test count");
 });
 
-it("SingleValue renders error message when missing props", async () => {
+test("singleValue renders error message when missing props", async () => {
   render(<SingleValue value="Test count" />, container);
   checkSingleValue("Missing title", "Test count");
 

@@ -53,7 +53,7 @@ const dailyCouncilAreaCsvData = readCsvData(`Date,CA,DailyPositive,CumulativePos
     20200307,S12000019,-1,-22,0,0,-2,-20,0,0,0
     `);
 
-it("Heatmap renders no data when fetch fails, shows loadingComponent", async () => {
+test("heatmap renders no data when fetch fails, shows loadingComponent", async () => {
   await act(async () => {
     render(
       <Heatmap councilAreaDataset={null} healthBoardDataset={null} />,
@@ -65,8 +65,8 @@ it("Heatmap renders no data when fetch fails, shows loadingComponent", async () 
   expect(table()).toBeNull();
 });
 
-describe("Heatmap renders dynamic fetched data", () => {
-  it("Council areas; deaths", async () => {
+describe("heatmap renders dynamic fetched data", () => {
+  it("council areas; deaths", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -95,7 +95,7 @@ describe("Heatmap renders dynamic fetched data", () => {
     checkRow(dataRows[3], "Na h-Eileanan Siar", "40", [1, 0, 2, 1]);
   });
 
-  it("Health boards; deaths", async () => {
+  it("health boards; deaths", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -124,7 +124,7 @@ describe("Heatmap renders dynamic fetched data", () => {
     checkRow(dataRows[3], "Highland", "50", [1, 0, 2, 2]);
   });
 
-  it("Health boards; cases", async () => {
+  it("health boards; cases", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -153,7 +153,7 @@ describe("Heatmap renders dynamic fetched data", () => {
     checkRow(dataRows[3], "Highland", "25", [1, 0, 5, 5]);
   });
 
-  it("Council areas; cases", async () => {
+  it("council areas; cases", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -183,8 +183,8 @@ describe("Heatmap renders dynamic fetched data", () => {
   });
 });
 
-describe("Heatmap handles missing data", () => {
-  it("Council areas; deaths", async () => {
+describe("heatmap handles missing data", () => {
+  it("council areas; deaths", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -210,7 +210,7 @@ describe("Heatmap handles missing data", () => {
     checkDateRangeRow(dataRows[0], "", "Data not available");
   });
 
-  it("Health boards; deaths", async () => {
+  it("health boards; deaths", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -236,7 +236,7 @@ describe("Heatmap handles missing data", () => {
     checkDateRangeRow(dataRows[0], "", "Data not available");
   });
 
-  it("Health boards; cases", async () => {
+  it("health boards; cases", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -262,7 +262,7 @@ describe("Heatmap handles missing data", () => {
     checkDateRangeRow(dataRows[0], "", "Data not available");
   });
 
-  it("Council areas; cases", async () => {
+  it("council areas; cases", async () => {
     await act(async () => {
       render(
         <Heatmap
@@ -329,7 +329,7 @@ describe("parseCsvData", () => {
       ],
     };
 
-    expect(parseCsvData(dailyCouncilAreaCsvData)).toEqual(expectedResult);
+    expect(parseCsvData(dailyCouncilAreaCsvData)).toStrictEqual(expectedResult);
   });
 
   it("health boards", () => {
@@ -366,31 +366,31 @@ describe("parseCsvData", () => {
       ],
     };
 
-    expect(parseCsvData(dailyHealthBoardCsvData)).toEqual(expectedResult);
+    expect(parseCsvData(dailyHealthBoardCsvData)).toStrictEqual(expectedResult);
   });
 });
 
 function checkHeaderRow(row, areaName, areaCount, heatLevels) {
   const headers = row.querySelectorAll("th");
   expect(headers).toHaveLength(3);
-  expect(headers[0].textContent).toEqual(areaName);
-  expect(headers[1].textContent).toEqual(areaCount);
-  expect(headers[2].textContent).toEqual(heatLevels);
+  expect(headers[0].textContent).toStrictEqual(areaName);
+  expect(headers[1].textContent).toStrictEqual(areaCount);
+  expect(headers[2].textContent).toStrictEqual(heatLevels);
 }
 
 function checkDateRangeRow(row, total, dateRange) {
   const cells = row.querySelectorAll("td");
   expect(cells).toHaveLength(3);
-  expect(cells[0].textContent).toEqual("");
-  expect(cells[1].textContent).toEqual(total);
-  expect(cells[2].textContent).toEqual(dateRange);
+  expect(cells[0].textContent).toStrictEqual("");
+  expect(cells[1].textContent).toStrictEqual(total);
+  expect(cells[2].textContent).toStrictEqual(dateRange);
 }
 
 function checkRow(row, areaName, areaCount, heatLevels) {
   const cells = row.querySelectorAll("td");
   expect(cells).toHaveLength(3);
-  expect(cells[0].textContent).toEqual(areaName);
-  expect(cells[1].textContent).toEqual(areaCount);
+  expect(cells[0].textContent).toStrictEqual(areaName);
+  expect(cells[1].textContent).toStrictEqual(areaCount);
   checkHeatbar(cells[2], heatLevels);
 }
 
@@ -406,7 +406,7 @@ function checkHeatbar(heatbar, heatLevels) {
     expect(line.getAttribute("class")).toBe("l-" + heatLevels[i]);
     // Check x value is increasing
     var currentX = Number(line.getAttribute("x1"));
-    expect(currentX > lastX).toBeTruthy();
+    expect(currentX > lastX).toBe(true);
     lastX = currentX;
   });
 }

@@ -35,14 +35,13 @@ const parsedCsvData = [
   ["2020-03-30", "Aberdeen City", "2"],
 ];
 
-it("readCsvData", () => {
-  expect(readCsvData(inputCsvData)).toEqual(parsedCsvData);
+test("readCsvData", () => {
+  expect(readCsvData(inputCsvData)).toStrictEqual(parsedCsvData);
 });
 
-it("fetchAndStore when fetch fails", async () => {
+test("fetchAndStore when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
-  // Suppress console error message
-  spyOn(console, "error");
+  global.suppressConsoleErrorLogs();
   var processedResult = null;
 
   await act(async () => {
@@ -54,10 +53,10 @@ it("fetchAndStore when fetch fails", async () => {
   });
 
   expect(processedResult).toBeNull();
-  expect(fetch.mock.calls.length).toEqual(1);
+  expect(fetch.mock.calls).toHaveLength(1);
 });
 
-it("fetchAndStore when fetch succeeds", async () => {
+test("fetchAndStore when fetch succeeds", async () => {
   fetch.mockResponse(inputCsvData);
   var processedResult = null;
 
@@ -69,21 +68,21 @@ it("fetchAndStore when fetch succeeds", async () => {
     );
   });
 
-  expect(processedResult).toEqual(parsedCsvData);
-  expect(fetch.mock.calls.length).toEqual(1);
+  expect(processedResult).toStrictEqual(parsedCsvData);
+  expect(fetch.mock.calls).toHaveLength(1);
 });
 
-it("getPlaceNameByFeatureCode", async () => {
+test("getPlaceNameByFeatureCode", async () => {
   // Health board
-  expect(getPlaceNameByFeatureCode("S08000031")).toEqual(
+  expect(getPlaceNameByFeatureCode("S08000031")).toStrictEqual(
     "Greater Glasgow & Clyde"
   );
-  expect(getPlaceNameByFeatureCode("S08000017")).toEqual("Dumfries & Galloway");
+  expect(getPlaceNameByFeatureCode("S08000017")).toStrictEqual("Dumfries & Galloway");
   // Council area
-  expect(getPlaceNameByFeatureCode("S12000040")).toEqual("West Lothian");
-  expect(getPlaceNameByFeatureCode("S12000013")).toEqual("Na h-Eileanan Siar");
+  expect(getPlaceNameByFeatureCode("S12000040")).toStrictEqual("West Lothian");
+  expect(getPlaceNameByFeatureCode("S12000013")).toStrictEqual("Na h-Eileanan Siar");
   // Country
-  expect(getPlaceNameByFeatureCode("S92000003")).toEqual("Scotland");
+  expect(getPlaceNameByFeatureCode("S92000003")).toStrictEqual("Scotland");
   expect(() => getPlaceNameByFeatureCode("S12345678")).toThrow(
     "Unknown feature code: S12345678"
   );
@@ -220,14 +219,14 @@ describe("createPlaceDateValuesMap", () => {
 
   it("health boards", () => {
     const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
-    expect(createPlaceDateValuesMap(parsedDailyHealthBoardData)).toEqual(
+    expect(createPlaceDateValuesMap(parsedDailyHealthBoardData)).toStrictEqual(
       expectedPlaceDateValuesMap
     );
   });
 
   it("council areas", () => {
     const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
-    expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toEqual(
+    expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toStrictEqual(
       expectedPlaceDateValuesMap
     );
   });

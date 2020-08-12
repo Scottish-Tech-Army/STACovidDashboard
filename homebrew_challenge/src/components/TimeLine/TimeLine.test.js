@@ -27,13 +27,13 @@ const testEvents = [
   { date: "2020-03-01", text: "Event 3b" },
 ];
 
-it("TimeLine rendering text and order", async () => {
+test("timeLine rendering text and order", async () => {
   await act(async () => {
     render(<TimeLine events={testEvents} />, container);
   });
 
   const tableRows = container.querySelectorAll("tr");
-  expect(tableRows.length).toBe(6);
+  expect(tableRows).toHaveLength(6);
 
   // Not too bothered about layout - checking the rows are in the right order
   expect(tableRows[0].textContent).toBe("2021");
