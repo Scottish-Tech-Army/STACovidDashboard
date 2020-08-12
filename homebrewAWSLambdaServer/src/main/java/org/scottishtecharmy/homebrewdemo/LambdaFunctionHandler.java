@@ -129,11 +129,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         try (CloseableHttpResponse response = client.execute(request)) {
             int statusCode = response.getStatusLine().getStatusCode();
             if (HttpStatus.SC_NOT_MODIFIED == statusCode) {
-                context.getLogger().log("NHS health boards data not updated - skipping\n");
+                context.getLogger().log("NHS data not updated - skipping\n");
                 return;
             }
             if (HttpStatus.SC_OK != statusCode) {
-                context.getLogger().log("NHS health boards data error response: " + statusCode + "\n");
+                context.getLogger().log("NHS data error response: " + statusCode + "\n");
                 return;
             }
 
