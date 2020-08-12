@@ -18,10 +18,9 @@ afterEach(() => {
   container = null;
 });
 
-it("DataCharts renders default data when fetch fails", async () => {
+test("dataCharts renders default data when fetch fails", async () => {
   fetch.mockReject(new Error("fetch failed"));
-  // Suppress console error message
-  spyOn(console, "error");
+  global.suppressConsoleErrorLogs();
 
   await act(async () => {
     render(<DataCharts />, container);
@@ -29,10 +28,10 @@ it("DataCharts renders default data when fetch fails", async () => {
 
   const canvas = container.querySelector(".chart-container canvas");
   expect(canvas).not.toBeNull();
-  expect(fetch.mock.calls.length).toEqual(1);
+  expect(fetch.mock.calls).toHaveLength(1);
 });
 
-it("DataCharts renders dynamic fetched data", async () => {
+test("dataCharts renders dynamic fetched data", async () => {
   fetch.mockResponse(csvData);
 
   await act(async () => {
@@ -41,12 +40,11 @@ it("DataCharts renders dynamic fetched data", async () => {
 
   const canvas = container.querySelector(".chart-container canvas");
   expect(canvas).not.toBeNull();
-  expect(fetch.mock.calls.length).toEqual(1);
+  expect(fetch.mock.calls).toHaveLength(1);
 });
 
-it("parseCsvData", () => {
-
-    // We expect to see a 5 day moving window over the percentageCases
+test("parseCsvData", () => {
+  // We expect to see a 5 day moving window over the percentageCases
   const expectedResult = {
     percentageCases: [
       { t: Date.parse("2020-03-02"), y: 0 },
@@ -54,8 +52,8 @@ it("parseCsvData", () => {
       { t: Date.parse("2020-03-04"), y: 300 / 1046 },
       { t: Date.parse("2020-03-05"), y: 600 / 1256 },
       { t: Date.parse("2020-03-06"), y: 1100 / 1525 },
-      { t: Date.parse("2020-03-07"), y: (500 -100)/ 1625 },
-      { t: Date.parse("2020-03-08"), y: (5000 - 100) / ( 1725 - 915) },
+      { t: Date.parse("2020-03-07"), y: (500 - 100) / 1625 },
+      { t: Date.parse("2020-03-08"), y: (5000 - 100) / (1725 - 915) },
       { t: Date.parse("2020-03-09"), y: (50000 - 300) / (1800 - 1046) },
     ],
     totalCases: [
@@ -80,15 +78,14 @@ it("parseCsvData", () => {
     ],
   };
 
-  expect(parseCsvData(csvData)).toEqual(expectedResult);
+  expect(parseCsvData(csvData)).toStrictEqual(expectedResult);
 });
 
-it("parseCsvData with bad count type", () => {
+test("parseCsvData with bad count type", () => {
   const badCsvData = `date,shortValue,count
     2020-03-02,unknown,815`;
 
-  // Suppress console error message
-  spyOn(console, "error");
+  global.suppressConsoleErrorLogs();
 
   expect(() => {
     parseCsvData(badCsvData);

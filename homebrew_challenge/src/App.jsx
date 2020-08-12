@@ -20,6 +20,7 @@ import {
   VALUETYPE_DEATHS,
 } from "./components/HeatmapDataSelector/HeatmapConsts";
 import TagManager from "react-gtm-module";
+import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -40,6 +41,9 @@ const App = () => {
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(PAGE_PUBLIC_DASHBOARD);
+
+  const [healthBoardDataset, setHealthBoardDataset] = useState(null);
+  const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
 
   const zoomableCharts = useRef();
   const zoomableMap = useRef();
@@ -107,6 +111,23 @@ const App = () => {
     );
   }, []);
 
+  // Load and parse datasets
+  useEffect(() => {
+    const councilAreaCsv = "dailyCouncilAreas.csv";
+
+    if (null === councilAreaDataset) {
+      fetchAndStore(councilAreaCsv, setCouncilAreaDataset, readCsvData);
+    }
+  }, [councilAreaDataset]);
+
+  useEffect(() => {
+    const healthBoardCsv = "dailyHealthBoards.csv";
+
+    if (null === healthBoardDataset) {
+      fetchAndStore(healthBoardCsv, setHealthBoardDataset, readCsvData);
+    }
+  }, [healthBoardDataset]);
+
   function sitemapEntry(key, text) {
     return (
       <div className="entry" onClick={() => setCurrentPage(key)}>
@@ -166,7 +187,12 @@ const App = () => {
                   {zoomGeoMap ? (
                     <></>
                   ) : (
-                    <Heatmap areaType={areaType} valueType={valueType} />
+                    <Heatmap
+                      councilAreaDataset={councilAreaDataset}
+                      healthBoardDataset={healthBoardDataset}
+                      areaType={areaType}
+                      valueType={valueType}
+                    />
                   )}
                 </Col>
                 <Col className="d-block d-md-none">
@@ -174,6 +200,8 @@ const App = () => {
                 </Col>
                 <Col xs={12} md={zoomGeoMap ? 12 : 6}>
                   <GeoHeatMap
+                    councilAreaDataset={councilAreaDataset}
+                    healthBoardDataset={healthBoardDataset}
                     areaType={areaType}
                     valueType={valueType}
                     toggleFullscreen={() =>

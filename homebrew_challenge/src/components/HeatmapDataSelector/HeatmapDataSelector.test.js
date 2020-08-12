@@ -1,11 +1,10 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValues"] }] */
+
 import React from "react";
 import HeatmapDataSelector from "./HeatmapDataSelector";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import {
-  AREATYPE_HEALTH_BOARDS,
-  VALUETYPE_DEATHS,
-} from "./HeatmapConsts";
+import { AREATYPE_HEALTH_BOARDS, VALUETYPE_DEATHS } from "./HeatmapConsts";
 
 var storedValueType = VALUETYPE_DEATHS;
 var storedAreaType = AREATYPE_HEALTH_BOARDS;
@@ -63,9 +62,8 @@ function click(button) {
   });
 }
 
-it("null/undefined input throws error", async () => {
-  // Suppress console error message
-  spyOn(console, "error");
+test("null/undefined input throws error", async () => {
+  global.suppressConsoleErrorLogs();
 
   expect(() => {
     render(
@@ -148,7 +146,7 @@ it("null/undefined input throws error", async () => {
   }).toThrow("Unrecognised valueType: unknown");
 });
 
-it("default render", async () => {
+test("default render", async () => {
   act(() => {
     render(
       <HeatmapDataSelector
@@ -161,12 +159,7 @@ it("default render", async () => {
     );
   });
 
-  checkButtonText(
-    "Health Boards",
-    "Council Areas",
-    "Deaths",
-    "Cases"
-  );
+  checkButtonText("Health Boards", "Council Areas", "Deaths", "Cases");
   checkStoredValues("health-boards", "deaths");
 
   click(councilAreasButton());

@@ -25,7 +25,23 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "env": {
+      "jest": true,
+      "jest/globals": true
+    },
+    "extends": [
+      "react-app",
+      "plugin:jest/all"
+    ],
+    "plugins": [
+      "jest"
+    ],
+    "rules": {
+      "jest/require-top-level-describe": "off",
+      "jest/prefer-expect-assertions": "off",
+      "jest/no-hooks": "off",
+      "jest/prefer-spy-on": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -43,6 +59,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "eslint-plugin-jest": "^23.20.0",
     "i": "^0.3.6",
     "jest-canvas-mock": "^2.2.0",
     "jest-fetch-mock": "^3.0.3",

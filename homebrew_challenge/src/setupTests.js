@@ -22,3 +22,6 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
   }
   return createElementNSOrig.apply(this, arguments);
 };
+
+// Suppress console error message
+global.suppressConsoleErrorLogs = () => spyOn(console, "error");

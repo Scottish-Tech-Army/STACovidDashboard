@@ -1,29 +1,5 @@
-import React from "react";
-import GeoHeatMap, {
-  parse7DayWindowCsvData,
-  createPlaceDateValuesMap,
-} from "./GeoHeatMap";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import moment from "moment";
+import { parse7DayWindowCsvData } from "./GeoHeatMap";
 import { readCsvData } from "../Utils/CsvUtils";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-// These are daily values
 
 const dailyCasesCsvData = `
   Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
@@ -51,7 +27,8 @@ const dailyCasesCsvData = `
   20200306,S08000022,1,0,0,0,8,0,0,21,14.1072148327287
   20200307,S08000022,-1,0,0,0,7,0,0,21,14.1072148327287
     `;
-it("parse7DayWindowCsvData", () => {
+
+test("parse7DayWindowCsvData", () => {
   // Grampian : 09/03 - 03/03 : 7 days of data
   // Glasgow : 07/03 - 02/03 : 6 days of data
   // Highland : 09/03 - 06/03 : 4 days of data
@@ -78,5 +55,7 @@ it("parse7DayWindowCsvData", () => {
       toDate: Date.parse("2020-03-09"),
     });
 
-  expect(parse7DayWindowCsvData(dailyCasesCsvData)).toEqual(expectedResult);
+  expect(parse7DayWindowCsvData(readCsvData(dailyCasesCsvData))).toStrictEqual(
+    expectedResult
+  );
 });

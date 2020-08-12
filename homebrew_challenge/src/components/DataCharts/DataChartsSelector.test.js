@@ -1,3 +1,5 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValue"] }] */
+
 import React from "react";
 import DataChartsSelector from "./DataChartsSelector";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -48,9 +50,8 @@ function click(button) {
   });
 }
 
-it("null/undefined input throws error", async () => {
-  // Suppress console error message
-  spyOn(console, "error");
+test("null/undefined input throws error", async () => {
+  global.suppressConsoleErrorLogs();
 
   expect(() => {
     render(
@@ -75,7 +76,7 @@ it("null/undefined input throws error", async () => {
   }).toThrow("Unrecognised chartType: unknown");
 });
 
-it("default render", async () => {
+test("default render", async () => {
   act(() => {
     render(
       <DataChartsSelector
