@@ -75,6 +75,8 @@ export async function fetchAndStore(datasetName, setDataset, processCsvData) {
     });
 }
 
+export const FEATURE_CODE_SCOTLAND = "S92000003";
+
 const FEATURE_CODE_MAP = {
   // Country
   S92000003: "Scotland",

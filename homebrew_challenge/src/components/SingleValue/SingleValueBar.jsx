@@ -5,6 +5,8 @@ import { differenceInDays, format } from "date-fns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
+import moment from "moment";
 
 // Exported for tests
 export function parseCsvData(csvData) {
@@ -29,52 +31,71 @@ export function parseCsvData(csvData) {
     return { date: Date.parse(lastDate), value: lastValue - secondLastValue };
   }
 
-  var allTextLines = csvData.split(/\r\n|\n/);
-  var lines = [];
+  var lines = readCsvData(csvData);
 
-  allTextLines.forEach((line) => {
-    if (line.length > 0) {
-      lines.push(line.split(",").map((s) => s.trim()));
-    }
-  });
-  lines.shift();
-
-  const dailyPositiveTestsMap = new Map();
-  const cumulativePositiveTestsMap = new Map();
   const cumulativeTotalTestsMap = new Map();
-  const cumulativeDeathsMap = new Map();
 
   lines.forEach(([date, countType, count], i) => {
-    if ("dailyPositiveTests" === countType) {
-      dailyPositiveTestsMap.set(date, Number(count));
-    } else if ("cumulativePositiveTests" === countType) {
-      cumulativePositiveTestsMap.set(date, Number(count));
-    } else if ("cumulativeTotalTests" === countType) {
+    if ("cumulativeTotalTests" === countType) {
       cumulativeTotalTestsMap.set(date, Number(count));
-    } else if ("cumulativeDeaths" === countType) {
-      cumulativeDeathsMap.set(date, Number(count));
     } else {
-      throw new Error("Unrecognised input: " + countType);
+      // 2020-08-13 Disabled temporarily while we decide to keep ot bin the tests completed metric
+      // throw new Error("Unrecognised input: " + countType);
     }
   });
 
-  const totalCases = getLatestValue(cumulativePositiveTestsMap);
-  const totalFatalities = getLatestValue(cumulativeDeathsMap);
-  const fatalityCaseRatio =
-    totalCases.value !== undefined && totalFatalities.value !== undefined
-      ? ((totalFatalities.value * 100) / totalCases.value).toFixed(1) + "%"
-      : undefined;
-
   return {
-    dailyCases: getLatestValue(dailyPositiveTestsMap),
-    totalCases: totalCases,
-    dailyFatalities: getLatestDiff(cumulativeDeathsMap),
-    totalFatalities: totalFatalities,
-    fatalityCaseRatio: fatalityCaseRatio,
     dailyTestsCompleted: getLatestDiff(cumulativeTotalTestsMap),
     totalTestsCompleted: getLatestValue(cumulativeTotalTestsMap),
   };
 }
+
+// Exported for tests
+export function parseNhsCsvData(csvData) {
+  var lines = readCsvData(csvData);
+  var result = {
+    cases: { date: undefined, value: undefined },
+    deaths: { date: undefined, value: undefined },
+    cumulativeCases: { date: undefined, value: undefined },
+    cumulativeDeaths: { date: undefined, value: undefined },
+    fatalityCaseRatio: undefined,
+  };
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        v1,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        v3,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      if (FEATURE_CODE_SCOTLAND === place) {
+        const date = moment.utc(dateString).valueOf();
+
+        const fatalityCaseRatio =
+          cumulativeCases !== undefined && cumulativeDeaths !== undefined
+            ? ((cumulativeDeaths * 100) / cumulativeCases).toFixed(1) + "%"
+            : undefined;
+
+        result = {
+          cases: { date: date, value: Number(dailyCases) },
+          deaths: { date: date, value: Number(dailyDeaths) },
+          cumulativeCases: { date: date, value: Number(cumulativeCases) },
+          cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
+          fatalityCaseRatio: fatalityCaseRatio,
+        };
+      }
+    }
+  );
+  return result;
+}
+
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
 
 // Exported for tests
@@ -104,6 +125,7 @@ function SingleValueBar() {
   const [dailyTestsCompleted, setDailyTestsCompleted] = useState(emptyDate);
   const [totalTestsCompleted, setTotalTestsCompleted] = useState(emptyDate);
   const [dataFetched, setDataFetched] = useState(false);
+  const [nhsDataFetched, setNhsDataFetched] = useState(false);
 
   // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
   const dataUrl = "data/summaryCounts.csv";
@@ -123,21 +145,10 @@ function SingleValueBar() {
       })
         .then((res) => res.text())
         .then((csvData) => {
-          const {
-            dailyCases,
-            totalCases,
-            dailyFatalities,
-            totalFatalities,
-            fatalityCaseRatio,
-            dailyTestsCompleted,
-            totalTestsCompleted,
-          } = parseCsvData(csvData);
+          const { dailyTestsCompleted, totalTestsCompleted } = parseCsvData(
+            csvData
+          );
 
-          setDailyCases(dailyCases);
-          setTotalCases(totalCases);
-          setDailyFatalities(dailyFatalities);
-          setTotalFatalities(totalFatalities);
-          setFatalityCaseRatio(fatalityCaseRatio);
           setDailyTestsCompleted(dailyTestsCompleted);
           setTotalTestsCompleted(totalTestsCompleted);
         })
@@ -146,6 +157,32 @@ function SingleValueBar() {
         });
     }
   }, [dataFetched]);
+
+  useEffect(() => {
+    const currentTotalsHealthBoardsCsv = "data/currentTotalsHealthBoards.csv";
+
+    // Only attempt to fetch data once
+    if (!nhsDataFetched) {
+      setNhsDataFetched(true);
+      fetch(currentTotalsHealthBoardsCsv, {
+        method: "GET",
+      })
+        .then((res) => res.text())
+        .then((csvData) => {
+          const results = parseNhsCsvData(csvData);
+          if (results !== null) {
+            setDailyCases(results.cases);
+            setTotalCases(results.cumulativeCases);
+            setDailyFatalities(results.deaths);
+            setTotalFatalities(results.cumulativeDeaths);
+            setFatalityCaseRatio(results.fatalityCaseRatio);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [nhsDataFetched]);
 
   function blockTitleRow(title) {
     return (
