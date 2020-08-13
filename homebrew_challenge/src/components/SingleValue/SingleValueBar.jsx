@@ -205,7 +205,7 @@ function SingleValueBar() {
                 id="dailyCases"
                 title={guardMissingData(getRelativeDate(dailyCases.date))}
                 value={guardMissingData(dailyCases.value)}
-                tooltip="These are the Total Cases from today and reset after 11.59pm (Can be delayed because of data fetching)"
+                tooltip="These are the Total Cases from today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
@@ -226,7 +226,7 @@ function SingleValueBar() {
                 id="dailyFatalities"
                 title={guardMissingData(getRelativeDate(dailyFatalities.date))}
                 value={guardMissingData(dailyFatalities.value)}
-                tooltip="These are the fatalities from today and reset after 11.59pm (Can be delayed because of data fetching)"
+                tooltip="These are the fatalities from today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
