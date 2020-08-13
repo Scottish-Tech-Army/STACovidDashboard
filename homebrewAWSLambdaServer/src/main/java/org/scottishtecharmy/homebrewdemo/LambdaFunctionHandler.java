@@ -60,7 +60,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         try {
             context.getLogger().log("start");
             storeStatsGovData(context);
-            
+
             storeAllNhsScotData(context);
 
             storeRssNewsFeed(context);
@@ -113,6 +113,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                 OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_DAILY_COUNCIL_AREAS_URL);
         storeNhsScotData(context, OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS,
                 OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_DAILY_HEALTH_BOARDS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS,
+                OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TOTAL_HEALTH_BOARDS_URL);
     }
 
     private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
@@ -309,17 +311,25 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
     private static final String OBJECT_FOLDER = "data/";
 
-    private final static String NHS_SCOT_DAILY_HEALTH_BOARDS_URL = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2/download";
-
-    private final static String NHS_SCOT_DAILY_COUNCIL_AREAS_URL = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/427f9a25-db22-4014-a3bc-893b68243055/download";
+    private final static String NHS_SCOT_URL_PREFIX = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/";
+    private final static String NHS_SCOT_DAILY_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
+            + "2dd8534b-0a6f-4744-9253-9565d62f96c2/download";
+    private final static String NHS_SCOT_DAILY_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
+            + "427f9a25-db22-4014-a3bc-893b68243055/download";
+    private final static String NHS_SCOT_TOTAL_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
+            + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
 
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsDailyHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsDailyCouncilAreaLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsTotalHealthBoardLastModified.txt";
 
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
+    private final static String OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS = OBJECT_FOLDER
+            + "currentTotalsHealthBoards.csv";
 
     private static final String SPARQL_URL = "https://statistics.gov.scot/sparql.csv";
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";

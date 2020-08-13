@@ -74,8 +74,9 @@ public class LambdaFunctionHandlerTest {
     ArgumentCaptor<GetObjectRequest> s3ReadCaptor = ArgumentCaptor.forClass(GetObjectRequest.class);
 
     private static final String DATES_MODIFIED_CONTENT = "datesmodified.output";
-    private static final String LAST_MODIFIED_DATE_HB = "Mon, 10 Aug 2020 12:00:28 GMT";
-    private static final String LAST_MODIFIED_DATE_CA = "Mon, 10 Aug 2020 13:00:28 GMT";
+    private static final String LAST_MODIFIED_DATE_DAILY_HB = "Mon, 10 Aug 2020 12:00:28 GMT";
+    private static final String LAST_MODIFIED_DATE_DAILY_CA = "Mon, 10 Aug 2020 13:00:28 GMT";
+    private static final String LAST_MODIFIED_DATE_TOTAL_HB = "Mon, 10 Aug 2020 14:00:28 GMT";
 
     // Flatten an array of arrays into a single array - unfortunately generics
     // don't work here
@@ -98,16 +99,21 @@ public class LambdaFunctionHandlerTest {
             { "data/annualCouncilAreasDeaths.csv", "annualCouncilAreasDeaths.output" },
             { "data/datesmodified.csv", DATES_MODIFIED_CONTENT } };
 
-    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_CA_DATA = {
+    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA = {
             { "data/dailyCouncilAreas.csv", "dailyCouncilAreas.output", },
-            { "data/nhsDailyCouncilAreaLastModified.txt", LAST_MODIFIED_DATE_CA }, };
+            { "data/nhsDailyCouncilAreaLastModified.txt", LAST_MODIFIED_DATE_DAILY_CA }, };
 
-    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_HB_DATA = {
+    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA = {
             { "data/dailyHealthBoards.csv", "dailyHealthBoards.output" },
-            { "data/nhsDailyHealthBoardLastModified.txt", LAST_MODIFIED_DATE_HB }, };
+            { "data/nhsDailyHealthBoardLastModified.txt", LAST_MODIFIED_DATE_DAILY_HB }, };
 
-    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_DATA = flatten(EXPECTED_S3_PUT_OBJECTS_NHS_CA_DATA,
-            EXPECTED_S3_PUT_OBJECTS_NHS_HB_DATA);
+    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA = {
+            { "data/currentTotalsHealthBoards.csv", "currentTotalsHealthBoards.output" },
+            { "data/nhsTotalHealthBoardLastModified.txt", LAST_MODIFIED_DATE_TOTAL_HB }, };
+
+    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NHS_DATA = flatten(
+            EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
+            EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA);
 
     private static final String[][] EXPECTED_S3_PUT_OBJECTS_RSS_DATA = {
             { "data/newsScotGovRss.xml", "newsScotGovRss.output" }, };
@@ -150,8 +156,9 @@ public class LambdaFunctionHandlerTest {
 
     // nhs.scot responses
     private static final CloseableHttpResponse[] HTTP_QUERY_RESPONSES_NHS = {
-            createHttpResponse("dailyCouncilAreas.output", 200, LAST_MODIFIED_DATE_CA),
-            createHttpResponse("dailyHealthBoards.output", 200, LAST_MODIFIED_DATE_HB), };
+            createHttpResponse("dailyCouncilAreas.output", 200, LAST_MODIFIED_DATE_DAILY_CA),
+            createHttpResponse("dailyHealthBoards.output", 200, LAST_MODIFIED_DATE_DAILY_HB),
+            createHttpResponse("currentTotalsHealthBoards.output", 200, LAST_MODIFIED_DATE_TOTAL_HB), };
 
     // rss feed response
     private static final CloseableHttpResponse[] HTTP_QUERY_RESPONSES_RSS = {
@@ -175,9 +182,11 @@ public class LambdaFunctionHandlerTest {
         // Handle S3 gets
         mockStoredS3Object(retrievedDateModifiedObject, "data/datesmodified.csv", "datesoriginal.output");
         mockStoredS3Object(Mockito.mock(S3Object.class), "data/nhsDailyHealthBoardLastModified.txt",
-                LAST_MODIFIED_DATE_HB);
+                LAST_MODIFIED_DATE_DAILY_HB);
         mockStoredS3Object(Mockito.mock(S3Object.class), "data/nhsDailyCouncilAreaLastModified.txt",
-                LAST_MODIFIED_DATE_CA);
+                LAST_MODIFIED_DATE_DAILY_CA);
+        mockStoredS3Object(Mockito.mock(S3Object.class), "data/nhsTotalHealthBoardLastModified.txt",
+                LAST_MODIFIED_DATE_TOTAL_HB);
 
         // Handle external HTTP queries
         when(subject.createHttpClient()).thenReturn(httpClient);
@@ -269,7 +278,7 @@ public class LambdaFunctionHandlerTest {
         checkS3Writes(EXPECTED_S3_PUT_OBJECTS_ALL);
 
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(9), LAST_MODIFIED_DATE_CA);
+        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(9), LAST_MODIFIED_DATE_DAILY_CA);
         checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(10), null);
     }
 
@@ -286,13 +295,14 @@ public class LambdaFunctionHandlerTest {
     }
 
     @Test
-    public void testLambdaFunctionHandler_storedNhsCouncilAreaNotUpdated()
+    public void testLambdaFunctionHandler_storedNhsDailyCouncilAreaNotUpdated()
             throws UnsupportedOperationException, IOException {
 
         CloseableHttpResponse[] httpResponses = flatten(HTTP_QUERY_RESPONSES_SPARQL,
                 new CloseableHttpResponse[] {
-                        createHttpResponse("dailyCouncilAreas.output", 304, LAST_MODIFIED_DATE_CA),
-                        createHttpResponse("dailyHealthBoards.output", 200, LAST_MODIFIED_DATE_HB), },
+                        createHttpResponse("dailyCouncilAreas.output", 304, LAST_MODIFIED_DATE_DAILY_CA),
+                        createHttpResponse("dailyHealthBoards.output", 200, LAST_MODIFIED_DATE_DAILY_HB),
+                        createHttpResponse("currentTotalsHealthBoards.output", 200, LAST_MODIFIED_DATE_TOTAL_HB), },
                 HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
@@ -301,18 +311,19 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", subject.handleRequest(event, context));
 
         checkRequests_allRequestsMade();
-        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_SPARQL_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_HB_DATA,
+        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_SPARQL_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
     }
 
     @Test
-    public void testLambdaFunctionHandler_storedNhsHealthBoardNotUpdated()
+    public void testLambdaFunctionHandler_storedNhsDailyHealthBoardNotUpdated()
             throws UnsupportedOperationException, IOException {
 
         CloseableHttpResponse[] httpResponses = flatten(HTTP_QUERY_RESPONSES_SPARQL,
                 new CloseableHttpResponse[] {
-                        createHttpResponse("dailyCouncilAreas.output", 200, LAST_MODIFIED_DATE_CA),
-                        createHttpResponse("dailyHealthBoards.output", 304, LAST_MODIFIED_DATE_HB), },
+                        createHttpResponse("dailyCouncilAreas.output", 200, LAST_MODIFIED_DATE_DAILY_CA),
+                        createHttpResponse("dailyHealthBoards.output", 304, LAST_MODIFIED_DATE_DAILY_HB),
+                        createHttpResponse("currentTotalsHealthBoards.output", 200, LAST_MODIFIED_DATE_TOTAL_HB), },
                 HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
@@ -322,7 +333,29 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", output);
 
         checkRequests_allRequestsMade();
-        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_SPARQL_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_CA_DATA,
+        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_SPARQL_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
+                EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+    }
+
+    @Test
+    public void testLambdaFunctionHandler_storedNhsTotalHealthBoardNotUpdated()
+            throws UnsupportedOperationException, IOException {
+
+        CloseableHttpResponse[] httpResponses = flatten(HTTP_QUERY_RESPONSES_SPARQL,
+                new CloseableHttpResponse[] {
+                        createHttpResponse("dailyCouncilAreas.output", 200, LAST_MODIFIED_DATE_DAILY_CA),
+                        createHttpResponse("dailyHealthBoards.output", 200, LAST_MODIFIED_DATE_DAILY_HB),
+                        createHttpResponse("currentTotalsHealthBoards.output", 304, LAST_MODIFIED_DATE_TOTAL_HB), },
+                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+
+        httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
+        returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
+
+        String output = subject.handleRequest(event, context);
+        assertEquals("Success", output);
+
+        checkRequests_allRequestsMade();
+        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_SPARQL_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA,EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
     }
 
@@ -331,8 +364,9 @@ public class LambdaFunctionHandlerTest {
 
         CloseableHttpResponse[] httpResponses = flatten(HTTP_QUERY_RESPONSES_SPARQL,
                 new CloseableHttpResponse[] {
-                        createHttpResponse("dailyCouncilAreas.output", 304, LAST_MODIFIED_DATE_CA),
-                        createHttpResponse("dailyHealthBoards.output", 304, LAST_MODIFIED_DATE_HB), },
+                        createHttpResponse("dailyCouncilAreas.output", 304, LAST_MODIFIED_DATE_DAILY_CA),
+                        createHttpResponse("dailyHealthBoards.output", 304, LAST_MODIFIED_DATE_DAILY_HB), 
+                        createHttpResponse("currentTotalsHealthBoards.output", 304, LAST_MODIFIED_DATE_TOTAL_HB),},
                 HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
@@ -346,22 +380,23 @@ public class LambdaFunctionHandlerTest {
 
     private void checkRequests_sparqlDataRequestsNotMade() throws UnsupportedOperationException, IOException {
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        assertEquals(4, httpRequests.size());
+        assertEquals(5, httpRequests.size());
 
         // The first is a request to statistics.gov.scot
         checkSparQLPostRequest((HttpPost) httpRequests.get(0));
 
-        // The next 2 are requests to nhs.scot
+        // The next 3 are requests to nhs.scot
         checkNhsGetRequest((HttpGet) httpRequests.get(1));
         checkNhsGetRequest((HttpGet) httpRequests.get(2));
+        checkNhsGetRequest((HttpGet) httpRequests.get(3));
 
         // The last is a request to news.gov.scot rss feed
-        checkRssFeedGetRequest((HttpGet) httpRequests.get(3));
+        checkRssFeedGetRequest((HttpGet) httpRequests.get(4));
     }
 
     private void checkRequests_allRequestsMade() throws UnsupportedOperationException, IOException {
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        assertEquals(12, httpRequests.size());
+        assertEquals(13, httpRequests.size());
         // The first 9 are requests to statistics.gov.scot
         for (int i = 0; i < 9; i++) {
             checkSparQLPostRequest((HttpPost) httpRequests.get(i));
@@ -370,9 +405,10 @@ public class LambdaFunctionHandlerTest {
         // The next 2 are requests to nhs.scot
         checkNhsGetRequest((HttpGet) httpRequests.get(9));
         checkNhsGetRequest((HttpGet) httpRequests.get(10));
+        checkNhsGetRequest((HttpGet) httpRequests.get(11));
 
         // The last is a request to news.gov.scot rss feed
-        checkRssFeedGetRequest((HttpGet) httpRequests.get(11));
+        checkRssFeedGetRequest((HttpGet) httpRequests.get(12));
     }
 
     private void checkSparQLPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {
