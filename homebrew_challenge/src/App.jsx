@@ -17,7 +17,7 @@ import RouteMapRules from "./components/RouteMapRules/RouteMapRules";
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
-  VALUETYPE_DEATHS,
+  VALUETYPE_CASES,
 } from "./components/HeatmapDataSelector/HeatmapConsts";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
@@ -35,7 +35,7 @@ const App = () => {
   const PAGE_ABOUT_US = "aboutUs";
 
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
-  const [valueType, setValueType] = useState(VALUETYPE_DEATHS);
+  const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(PERCENTAGE_CASES);
   const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
