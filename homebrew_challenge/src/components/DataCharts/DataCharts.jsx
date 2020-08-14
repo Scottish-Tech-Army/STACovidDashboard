@@ -8,57 +8,50 @@ import {
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
-import { readCsvData } from "../Utils/CsvUtils";
+import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
 import "./FullscreenButton";
 
-const dataUrl = "data/dailyScottishCasesAndDeaths.csv";
-
 // Exported for tests
-export function parseCsvData(csvData) {
-  var lines = readCsvData(csvData);
+export function parseNhsCsvData(csvData) {
+  const dateAggregateValuesMap = createDateAggregateValuesMap(csvData);
 
-  const positiveTestsMap = new Map();
-  const totalTestsMap = new Map();
-  const totalsDeathsMap = new Map();
-  const dateSet = new Set();
+  const dates = [...dateAggregateValuesMap.keys()].sort();
 
-  lines.forEach(([dateString, countType, count], i) => {
-    const date = Date.parse(dateString);
-    if ("positiveCases" === countType) {
-      positiveTestsMap.set(date, Number(count));
-    } else if ("totalCases" === countType) {
-      totalTestsMap.set(date, Number(count));
-    } else if ("totalDeaths" === countType) {
-      totalsDeathsMap.set(date, Number(count));
-    } else {
-      throw new Error("Unrecognised input: " + countType);
-    }
-
-    dateSet.add(date);
-  });
-
-  const dates = [...dateSet].sort();
   const percentageCasesPoints = [];
   const totalCasesPoints = [];
   const totalDeathsPoints = [];
 
-  function get5DayDiff(valueMap, endDate, dateSet) {
+  function get5DayDiff(valueMap, key, endDate, dateSet) {
     const maximumStartDate = moment(endDate).subtract(5, "days");
     for (let i = dateSet.length - 1; i >= 0; i--) {
       if (maximumStartDate.isSameOrAfter(dateSet[i])) {
         const startDate = dateSet[i];
-        return valueMap.get(endDate) - valueMap.get(startDate);
+        return valueMap.get(endDate)[key] - valueMap.get(startDate)[key];
       }
     }
     // Entire dataset is withing the 5 day window - just return the end cumulative total
-    return valueMap.get(endDate);
+    return valueMap.get(endDate)[key];
   }
 
   dates.forEach((date) => {
-    const totalCases5DayWindow = get5DayDiff(totalTestsMap, date, dates);
-    const positiveCases5DayWindow = get5DayDiff(positiveTestsMap, date, dates);
-    const positiveCases = positiveTestsMap.get(date);
-    const totalDeaths = totalsDeathsMap.get(date);
+    const { cumulativeCases, cumulativeDeaths } = dateAggregateValuesMap.get(
+      date
+    );
+
+    const positiveCases5DayWindow = get5DayDiff(
+      dateAggregateValuesMap,
+      "cumulativeCases",
+      date,
+      dates
+    );
+    const negativeCases5DayWindow = get5DayDiff(
+      dateAggregateValuesMap,
+      "cumulativeNegativeTests",
+      date,
+      dates
+    );
+    const totalCases5DayWindow =
+      positiveCases5DayWindow + negativeCases5DayWindow;
 
     percentageCasesPoints.push({
       t: date,
@@ -69,11 +62,11 @@ export function parseCsvData(csvData) {
     });
     totalCasesPoints.push({
       t: date,
-      y: positiveCases,
+      y: cumulativeCases,
     });
     totalDeathsPoints.push({
       t: date,
-      y: totalDeaths,
+      y: cumulativeDeaths,
     });
   });
 
@@ -86,6 +79,7 @@ export function parseCsvData(csvData) {
 
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
+  healthBoardDataset = null,
   fullscreenEnabled = false,
   toggleFullscreen,
 }) => {
@@ -96,11 +90,23 @@ const DataCharts = ({
   );
   const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(null);
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
-  const [dataFetched, setDataFetched] = useState(false);
 
-  const percentageCasesDatasetLabel = "% of Positive Tests (5 day moving average)";
+  const percentageCasesDatasetLabel =
+    "% of Positive Tests (5 day moving average)";
   const totalCasesDatasetLabel = "Total Cases";
   const totalDeathsDatasetLabel = "Total Deaths";
+
+  useEffect(() => {
+    // Only attempt to fetch data once
+    if (healthBoardDataset != null) {
+      const { percentageCases, totalCases, totalDeaths } = parseNhsCsvData(
+        healthBoardDataset
+      );
+      setPercentageCasesSeriesData(percentageCases);
+      setTotalCasesSeriesData(totalCases);
+      setTotalDeathsSeriesData(totalDeaths);
+    }
+  }, [healthBoardDataset]);
 
   useEffect(() => {
     function commonChartConfiguration(datasetLabel, seriesData) {
@@ -200,26 +206,6 @@ const DataCharts = ({
       );
     }
 
-    // Only attempt to fetch data once
-    if (!dataFetched) {
-      setDataFetched(true);
-      fetch(dataUrl, {
-        method: "GET",
-      })
-        .then((res) => res.text())
-        .then((csvData) => {
-          const { percentageCases, totalCases, totalDeaths } = parseCsvData(
-            csvData
-          );
-          setPercentageCasesSeriesData(percentageCases);
-          setTotalCasesSeriesData(totalCases);
-          setTotalDeathsSeriesData(totalDeaths);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-
     if (chartInstance.current !== null) {
       chartInstance.current.destroy();
     }
@@ -244,7 +230,6 @@ const DataCharts = ({
       );
     }
   }, [
-    dataFetched,
     percentageCasesSeriesData,
     totalCasesSeriesData,
     totalDeathsSeriesData,

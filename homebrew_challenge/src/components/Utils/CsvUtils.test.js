@@ -1,6 +1,7 @@
 import {
   readCsvData,
   createPlaceDateValuesMap,
+  createDateAggregateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
@@ -100,29 +101,30 @@ test("getPlaceNameByFeatureCode", async () => {
 
 // Contains both health board and council area feature codes
 const dailyNHSCsvData = `
-20200306,S08000031,0,21,0,0,1,10,0,0,0
-20200306,S08000022,1,22,0,0,2,20,0,0,0
-20200306,S12000013,1,23,0,0,3,30,0,0,0
-20200309,S08000031,0,24,0,0,4,40,0,0,0
-20200309,S08000022,300,25,0,0,5,50,0,0,0
-20200309,S12000013,-8,26,0,0,6,60,0,0,0
-20200308,S08000031,0,27,0,0,7,70,0,0,0
-20200308,S08000022,201,28,0,0,8,80,0,0,0
-20200308,S12000013,26,29,0,0,9,90,0,0,0
+20200306,S08000031,0,21,0,0,1,10,0,31,0
+20200306,S08000022,1,22,0,0,2,20,0,32,0
+20200306,S12000013,1,23,0,0,3,30,0,33,0
+20200309,S08000031,0,24,0,0,4,40,0,34,0
+20200309,S08000022,300,25,0,0,5,50,0,35,0
+20200309,S12000013,-8,26,0,0,6,60,0,36,0
+20200308,S08000031,0,27,0,0,7,70,0,37,0
+20200308,S08000022,201,28,0,0,8,80,0,38,0
+20200308,S12000013,26,29,0,0,9,90,0,39,0
 20200307,S08000031,0,0,0,0,0,0,0,0,0
-20200307,S08000022,-1,-21,0,0,-1,-10,0,0,0
-20200307,S12000013,-1,-22,0,0,-2,-20,0,0,0
+20200307,S08000022,-1,-21,0,0,-1,-10,0,-31,0
+20200307,S12000013,-1,-22,0,0,-2,-20,0,-32,0
 `;
 
+const dailyHealthBoardCsvLabels =
+  "Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+const dailyCouncilAreaCsvLabels =
+  "Date,CA,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+
+const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
+const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
+
+
 describe("createPlaceDateValuesMap", () => {
-  const dailyHealthBoardCsvLabels =
-    "Date,HB,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
-  const dailyCouncilAreaCsvLabels =
-    "Date,CA,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
-
-  const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
-  const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
-
   const expectedPlaceDateValuesMap = {
     dates: [
       Date.parse("2020-03-06"),
@@ -228,6 +230,53 @@ describe("createPlaceDateValuesMap", () => {
     const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
     expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toStrictEqual(
       expectedPlaceDateValuesMap
+    );
+  });
+});
+
+describe("createDateAggregateValuesMap", () => {
+  const expectedDateAggregateValuesMap =
+        new Map()
+          .set(Date.parse("2020-03-06"), {
+            cases: 2,
+            deaths: 6,
+            cumulativeCases: 66,
+            cumulativeDeaths: 60,
+            cumulativeNegativeTests: 96,
+          })
+          .set(Date.parse("2020-03-07"), {
+            cases: -2,
+            deaths: -3,
+            cumulativeCases: -43,
+            cumulativeDeaths: -30,
+            cumulativeNegativeTests: -63,
+          })
+          .set(Date.parse("2020-03-08"), {
+            cases: 227,
+            deaths: 24,
+            cumulativeCases: 84,
+            cumulativeDeaths: 240,
+            cumulativeNegativeTests: 114,
+          })
+          .set(Date.parse("2020-03-09"), {
+            cases: 292,
+            deaths: 15,
+            cumulativeCases: 75,
+            cumulativeDeaths: 150,
+            cumulativeNegativeTests: 105,
+        });
+
+  it("health boards", () => {
+    const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
+    expect(createDateAggregateValuesMap(parsedDailyHealthBoardData)).toStrictEqual(
+      expectedDateAggregateValuesMap
+    );
+  });
+
+  it("council areas", () => {
+    const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
+    expect(createDateAggregateValuesMap(parsedDailyCouncilAreaData)).toStrictEqual(
+      expectedDateAggregateValuesMap
     );
   });
 });

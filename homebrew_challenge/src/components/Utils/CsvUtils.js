@@ -59,6 +59,57 @@ export function createPlaceDateValuesMap(lines) {
   return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
 
+// Expects the input CVS columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
+// as returned from :
+// Daily Case Trends By Health Board
+// https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2
+// Daily Case Trends By Council Area
+// https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
+//
+// Returns a map of dates->summed values over all places
+export function createDateAggregateValuesMap(lines) {
+  const result = new Map();
+
+  lines.forEach(
+    (
+      [
+        dateString,
+        v1,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        v3,
+        dailyDeaths,
+        cumulativeDeaths,
+        v4,
+        cumulativeNegativeTests,
+      ],
+      i
+    ) => {
+      const date = moment.utc(dateString).valueOf();
+      if (!result.has(date)) {
+        result.set(date, {
+          cases: 0,
+          deaths: 0,
+          cumulativeCases: 0,
+          cumulativeDeaths: 0,
+          cumulativeNegativeTests: 0,
+        });
+      }
+      var values = result.get(date);
+      result.set(date, {
+        cases: values.cases + Number(dailyCases),
+        deaths: values.deaths + Number(dailyDeaths),
+        cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
+        cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
+        cumulativeNegativeTests: values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
+      });
+    }
+  );
+
+  return result;
+}
+
 const queryUrl = "data/";
 
 // Retrieve a cached csv response, do some processing on it, then store the processed result
