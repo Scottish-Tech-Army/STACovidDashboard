@@ -53,10 +53,7 @@ function HeatmapDataSelector({
             <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
               Health Boards
             </ToggleButton>
-            <ToggleButton
-              id="councilAreas"
-              value={AREATYPE_COUNCIL_AREAS}
-            >
+            <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
               Council Areas
             </ToggleButton>
           </ToggleButtonGroup>
@@ -72,14 +69,11 @@ function HeatmapDataSelector({
             value={valueType}
             onChange={(val) => setValueType(val)}
           >
+            <ToggleButton id="cases" value={VALUETYPE_CASES}>
+              Cases
+            </ToggleButton>
             <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
               Deaths
-            </ToggleButton>
-            <ToggleButton
-              id="cases"
-              value={VALUETYPE_CASES}
-            >
-              Cases
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
