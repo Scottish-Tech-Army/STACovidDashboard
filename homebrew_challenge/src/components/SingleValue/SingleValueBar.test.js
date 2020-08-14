@@ -172,7 +172,7 @@ test("parseCsvData", () => {
   expect(parseCsvData(csvData)).toStrictEqual(expectedResult);
 });
 
-test("parseCsvData", () => {
+test("parseNhsCsvData", () => {
   const expectedResult = {
     cases: { date: 1592697600000, value: 47 },
     deaths: { date: 1592697600000, value: 0 },

@@ -240,6 +240,7 @@ const App = () => {
                 <Col>
                   <DataCharts
                     chartType={chartType}
+                    healthBoardDataset={healthBoardDataset}
                     fullscreenEnabled={zoomDataCharts}
                     toggleFullscreen={() =>
                       toggleFullscreen(zoomableCharts, setZoomDataCharts)
