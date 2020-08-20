@@ -310,10 +310,6 @@ const App = () => {
             >
               https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/
             </a>
-            <br />
-            Disclaimer: The description of the phases is summary rather than
-            comprehensive: it will not include every aspect of the restrictions
-            that is of concern.
           </li>
           <li>
             Management Data:{" "}
