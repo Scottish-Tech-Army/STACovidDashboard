@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getLatestNewsItem } from "../Utils/RssFeedUtils";
+import { getLatestFiveNewsItems } from "../Utils/RssFeedUtils";
 import "./InfoBar.css";
 
 const InfoBar = () => {
@@ -12,7 +12,7 @@ const InfoBar = () => {
     })
       .then((res) => res.text())
       .then((rssFeed) => {
-        setCovidNews(getLatestNewsItem(rssFeed));
+        setCovidNews(getLatestFiveNewsItems(rssFeed));
       })
       .catch((error) => {
         console.error(error);
