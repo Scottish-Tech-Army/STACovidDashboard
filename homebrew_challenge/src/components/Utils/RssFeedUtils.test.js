@@ -157,18 +157,6 @@ test("getLatestFiveNewsItems reads feed", () => {
       description: "description5",
       link: "link5",
       timestamp: "19 Aug 2020 14:20",
-    },
-    {
-      title: "title6",
-      description: "description6",
-      link: "link6",
-      timestamp: "19 Aug 2020 14:21",
-    },
-    {
-      title: "title7",
-      description: "description7",
-      link: "link7",
-      timestamp: "19 Aug 2020 14:22",
     }
   ];
   expect(result).toStrictEqual(expectedResult);
