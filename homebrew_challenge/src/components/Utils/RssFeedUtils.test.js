@@ -201,6 +201,12 @@ test("getLatestFiveNewsItems reads feed", () => {
     expect(result).toStrictEqual(expectedResult);
     });
 
+    test("getLatestFiveNewsItems reads feed when items are not returned", () => {
+      const result = getLatestFiveNewsItems(inputXmlEmpty);
+      const expectedResult = [];
+      expect(result).toStrictEqual(expectedResult);
+      });
+
 test("getText", () => {
   expect(getText("string1")).toStrictEqual("string1");
   expect(getText({ p: "string1" })).toStrictEqual("string1");

@@ -48,18 +48,22 @@ export const getLatestFiveNewsItems = (strxml) => {
   // grab five latest items or all items in feed if less than 5
   const items = []
   let i = 0
-  const itemsToReturnTotal = Math.min(5, json.rss.channel.item.length)
-  for (i; i < itemsToReturnTotal; i++) {
-    const item = json.rss.channel.item[i];
-    const pubDate = moment.utc(item.pubDate);
-    const result = {
-      title: item.title,
-      description: getText(item.description),
-      link: item.link,
-      timestamp: pubDate.format("DD MMM YYYY HH:mm"),
+  try {
+    const itemsToReturnTotal = Math.min(5, json.rss.channel.item.length)
+    for (i; i < itemsToReturnTotal; i++) {
+      const item = json.rss.channel.item[i];
+      const pubDate = moment.utc(item.pubDate);
+      const result = {
+        title: item.title,
+        description: getText(item.description),
+        link: item.link,
+        timestamp: pubDate.format("DD MMM YYYY HH:mm"),
+      }
+      items.push(result);
     }
-    items.push(result);
+    return items;
+  } catch (error) {
+    // returns empty array if feed is empty
+    return items;
   }
-  console.log(items)
-  return items;
 };
