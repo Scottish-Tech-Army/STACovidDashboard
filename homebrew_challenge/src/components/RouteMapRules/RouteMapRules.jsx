@@ -10,8 +10,7 @@ const RouteMapRules = () => {
       <Row>
         <Col xs="12" className="current-phase mb-2">
           <h3>
-            We are currently in Phase 3 of the Scottish Government's COVID-19
-            Routemap.
+            We are currently in <span className="current-phase-number">Phase 3</span> of the Scottish Government's <a className="routemap-link" href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">COVID-19 Routemap</a>.
           </h3>
         </Col>
       </Row>
