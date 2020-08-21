@@ -19,10 +19,9 @@ const InfoBar = () => {
       });
   }, []);
 
-  try {
-    const covidNewsItems = covidNews.map((item, index) => {
-      console.log(item.title);
-      return (
+  const covidNewsItems = covidNews === null? <></> : covidNews.map((item, index) => {
+    return (
+      <>
         <p key={index} className="news-item">
           <a
              className="news-item-link"
@@ -37,17 +36,15 @@ const InfoBar = () => {
           {" | "}
           {item? item.timestamp : "no news yet"}
         </p>
-      );
-    });
-  } catch (error) {
-    return <>Loading...</>;
-  }
+      </>
+    );
+  });
 
   return (
     <div className="info-bar">
-      <span id="icon">
-        <img className="more-info-icon" src="./assets/more_info.png" alt="" />
-      </span>
+        <span id="icon">
+          <img className="more-info-icon" src="./assets/more_info.png" alt="" />
+        </span>
       <span>
         <p className="message">
           The latest news from
