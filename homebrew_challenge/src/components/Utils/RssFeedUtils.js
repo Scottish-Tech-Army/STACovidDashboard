@@ -37,21 +37,29 @@ export const getText = (input) => {
   }
 };
 
-export const getLatestNewsItem = (strxml) => {
+export const getLatestFiveNewsItems = (strxml) => {
   const trimStrxml = strxml
-    .replace(`<![CDATA[`, "")
-    .replace(`]]>`, "")
-    .replace("&nbsp;", " ");
+    .split(`<![CDATA[`).join("")
+    .split(`]]>`).join("")
+    .split("&nbsp;").join("");
   const parser = new DOMParser();
   const inputDom = parser.parseFromString(trimStrxml, "application/xml");
   const json = xml2json(inputDom);
-  const item = json.rss.channel.item[0];
-  const pubDate = moment(item.pubDate);
-  const result = {
-    title: item.title,
-    description: getText(item.description),
-    link: item.link,
-    timestamp: pubDate.format("DD MMM YYYY HH:mm"),
-  };
-  return result;
+  // grab five latest items or all items in feed if less than 5
+  const items = []
+  let i = 0
+  const itemsToReturnTotal = Math.min(5, json.rss.channel.item.length)
+  for (i; i < itemsToReturnTotal; i++) {
+    const item = json.rss.channel.item[i];
+    const pubDate = moment.utc(item.pubDate);
+    const result = {
+      title: item.title,
+      description: getText(item.description),
+      link: item.link,
+      timestamp: pubDate.format("DD MMM YYYY HH:mm"),
+    }
+    items.push(result);
+  }
+  console.log(items)
+  return items;
 };
