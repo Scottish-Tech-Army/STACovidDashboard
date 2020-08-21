@@ -30,7 +30,23 @@ img#logo {
 .sitemap .entry:hover,
 .sitemap .entry:active {
   text-decoration: underline;
+  cursor: pointer;
 }
+
+/* Modified className = entry, only the link is clickable instead of the whole row */
+/* --- */
+.sitemap {
+  z-index: 1;
+}
+
+.entry {
+  position: relative;
+  width: 20%;
+  left: 40%;
+  z-index: 2;
+  color: blue;
+}
+/* --- */
 
 .about-us {
   text-align: center;
