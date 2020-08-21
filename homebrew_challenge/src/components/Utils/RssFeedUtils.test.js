@@ -93,14 +93,14 @@ const inputXmlSmall = `
 <generator>PRgloo</generator>
 <atom:link href="https://news.gov.scot/feed/rss" rel="self" type="application/rss+xml"/>
 <item>
-<guid isPermaLink="false">5eff1688e74ad70920c25c70</guid>
+<guid isPermaLink="false">5efeed31e74ad70920c25969</guid>
 <link>link1</link>
 <category>Scotland</category>
-<title>title1</title>
+<title>title1&nbsp;</title>
 <description>
 <![CDATA[ <p><strong>description1</strong></p> ]]>
 </description>
-<pubDate>Fri, 03 Jul 2020 11:54:32 Z</pubDate>
+<pubDate>Wed, 19 Aug 2020 14:16:48 Z</pubDate>
 </item>
 <item>
 <guid isPermaLink="false">5efeed31e74ad70920c25969</guid>
@@ -110,7 +110,7 @@ const inputXmlSmall = `
 <description>
 <![CDATA[ <p><strong>description2</strong></p> ]]>
 </description>
-<pubDate>Fri, 03 Jul 2020 08:32:48 Z</pubDate>
+<pubDate>Wed, 19 Aug 2020 14:17:48 Z</pubDate>
 </item>
 <item>
 <guid isPermaLink="false">5efeed31e74ad70920c25969</guid>
@@ -120,10 +120,24 @@ const inputXmlSmall = `
 <description>
 <![CDATA[ <p><strong>description3</strong></p> ]]>
 </description>
-<pubDate>Thu, 20 Aug 2020 15:15:48 Z</pubDate>
+<pubDate>Wed, 19 Aug 2020 14:18:48 Z</pubDate>
 </item>
 </channel>
-</rss>`
+</rss>
+`;
+
+const inputXmlEmpty = `
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<channel>
+<title>Scottish Government News - News</title>
+<link>https://news.gov.scot/</link>
+<description>News from Scottish Government</description>
+<language>en-GB</language>
+<generator>PRgloo</generator>
+<atom:link href="https://news.gov.scot/feed/rss" rel="self" type="application/rss+xml"/>
+</channel>
+</rss>
+`;
 
 test("getLatestFiveNewsItems reads feed", () => {
   const result = getLatestFiveNewsItems(inputXml);
@@ -161,6 +175,31 @@ test("getLatestFiveNewsItems reads feed", () => {
   ];
   expect(result).toStrictEqual(expectedResult);
   });
+
+  test("getLatestFiveNewsItems reads feed when items are less than five", () => {
+    const result = getLatestFiveNewsItems(inputXmlSmall);
+    const expectedResult = [
+      {
+        title: "title1",
+        description: "description1",
+        link: "link1",
+        timestamp: "19 Aug 2020 14:16",
+      },
+      {
+        title: "title2",
+        description: "description2",
+        link: "link2",
+        timestamp: "19 Aug 2020 14:17",
+      },
+      {
+        title: "title3",
+        description: "description3",
+        link: "link3",
+        timestamp: "19 Aug 2020 14:18",
+      }
+    ];
+    expect(result).toStrictEqual(expectedResult);
+    });
 
 test("getText", () => {
   expect(getText("string1")).toStrictEqual("string1");
