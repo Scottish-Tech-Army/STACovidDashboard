@@ -489,7 +489,7 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-                Guidance from Scottish Government
+                See the latest Scottish Government Covid-19 guidance
               </a>
             </Col>
             <Col xs={12} md={4} className="p-2">
@@ -513,7 +513,7 @@ const App = () => {
                 rel="noopener noreferrer"
                 className="link"
               >
-                Advice from NHS inform
+                For Covid-19 health information visit NHS Inform
               </a>
             </Col>
           </Row>
