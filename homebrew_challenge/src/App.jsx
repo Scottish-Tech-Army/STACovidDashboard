@@ -531,12 +531,12 @@ const App = () => {
             <Col>
               <div className="footer-copyright py-3">
                 Unless otherwise stated, this webpage contains public sector
-                information licensed under
+                information licensed under {" "}
                 <a
                   href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                   target="_blank"
                   rel="noopener noreferrer licence"
-                  className=" scot-gov-link link"
+                  className="link"
                 >
                   the Open Government Licence 3.0.
                 </a>
