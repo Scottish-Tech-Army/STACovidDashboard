@@ -53,7 +53,7 @@ const InfoBar = () => {
       <span className="news-items-block">
         <ul>{covidNewsItems}</ul>
         <span className="message" id="msg">
-          ...more news from{" "}
+          ...more from{" "}
           <a
             className="link message"
             target="_blank"
