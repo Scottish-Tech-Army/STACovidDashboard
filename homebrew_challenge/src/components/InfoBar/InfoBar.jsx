@@ -19,45 +19,50 @@ const InfoBar = () => {
       });
   }, []);
 
-  const covidNewsItems = covidNews === null? <></> : covidNews.map((item, index) => {
-    return (
-      <>
-        <p key={index} className="news-item">
-          <a
-             className="news-item-link"
-             target="_blank"
-             href={item? item.link : "#"}
-             rel="noopener noreferrer"
-          >
-            {item? item.title : "no news yet"}
-          </a>
-          {" - "}
-          {item? item.description : "no news yet"}
-          {" | "}
-          {item? item.timestamp : "no news yet"}
-        </p>
-      </>
+  const covidNewsItems =
+    covidNews === null || covidNews.length === 0 ? (
+      <li className="news-item">No news available, please check back later</li>
+    ) : (
+      covidNews.map((item, index) => {
+        return (
+          <li key={index} className="news-item">
+            <a
+              className="news-item-link link"
+              target="_blank"
+              href={item.link}
+              rel="noopener noreferrer"
+            >
+              {item.title}
+            </a>
+            {" - "}
+            {item.description}
+            <span className="timestamp">
+              {" | "}
+              {item.timestamp}
+            </span>
+          </li>
+        );
+      })
     );
-  });
 
   return (
     <div className="info-bar">
-        <span id="icon">
-          <img className="more-info-icon" src="./assets/more_info.png" alt="" />
-        </span>
       <span>
-        <p className="message">
-          The latest news from
+        <img className="more-info-icon" src="./assets/more_info.png" alt="" />
+      </span>
+      <span className="news-items-block">
+        <ul>{covidNewsItems}</ul>
+        <span className="message" id="msg">
+          ...more news from{" "}
           <a
-            className="scot-gov-link link"
+            className="link message"
             target="_blank"
             href="https://news.gov.scot/news"
             rel="noopener noreferrer"
           >
             news.gov.scot
           </a>
-        </p>
-        {covidNewsItems}
+        </span>
       </span>
     </div>
   );
