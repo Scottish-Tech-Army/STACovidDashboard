@@ -22,29 +22,42 @@
   text-align: left;
 }
 
-.heatmap .l-0 ,
-.heatmapScale .l-0 {
+.heatmap .l-0{
   stroke: #e0e0e0;
 }
-.heatmap .l-1 ,
-.heatmapScale .l-1 {
+.heatmap .l-1 {
   stroke: #fef0d9;
 }
-.heatmap .l-2 ,
-.heatmapScale .l-2 {
+.heatmap .l-2{
   stroke: #fdcc8a;
 }
-.heatmap .l-3 ,
-.heatmapScale .l-3 {
+.heatmap .l-3  {
   stroke: #fc8d59;
 }
-.heatmap .l-4 ,
-.heatmapScale .l-4 {
+.heatmap .l-4  {
   stroke: #e34a33;
 }
-.heatmap .l-5 ,
-.heatmapScale .l-5 {
+.heatmap .l-5  {
   stroke: #b30000;
+}
+
+.heatmapScale .l-0 {
+  background-color: #e0e0e0;
+}
+.heatmapScale .l-1 {
+  background-color: #fef0d9;
+}
+.heatmapScale .l-2 {
+  background-color: #fdcc8a;
+}
+.heatmapScale .l-3 {
+  background-color: #fc8d59;
+}
+.heatmapScale .l-4 {
+  background-color: #e34a33;
+}
+.heatmapScale .l-5 {
+  background-color: #b30000;
 }
 
 .heatmapScale {
