@@ -1,5 +1,4 @@
 .heatmap {
-  overflow: auto;
   overflow-y: auto;
   max-height: 600px;
   height: 100%;
@@ -10,7 +9,7 @@
   overflow-y: auto;
 }
 
-.heatmap table th {
+.heatmap table thead {
   vertical-align: middle;
   position: sticky;
   top: 0;
@@ -23,24 +22,31 @@
   text-align: left;
 }
 
-.heatmap .l-0 {
+.heatmap .l-0 ,
+.heatmapScale .l-0 {
   stroke: #e0e0e0;
 }
-.heatmap .l-1 {
+.heatmap .l-1 ,
+.heatmapScale .l-1 {
   stroke: #fef0d9;
 }
-.heatmap .l-2 {
+.heatmap .l-2 ,
+.heatmapScale .l-2 {
   stroke: #fdcc8a;
 }
-.heatmap .l-3 {
+.heatmap .l-3 ,
+.heatmapScale .l-3 {
   stroke: #fc8d59;
 }
-.heatmap .l-4 {
+.heatmap .l-4 ,
+.heatmapScale .l-4 {
   stroke: #e34a33;
 }
-.heatmap .l-5 {
+.heatmap .l-5 ,
+.heatmapScale .l-5 {
   stroke: #b30000;
 }
+
 .heatmapScale {
   padding-top: 5px;
   padding-bottom: 5px;
@@ -48,37 +54,41 @@
 .heatmapScale span {
   padding: 5px 10px;
 }
-.heatmapScale .l-0 {
-  background-color: #e0e0e0;
+.heatmapScale span.smallscale {
+  display: none;
 }
-.heatmapScale .l-1 {
-  background-color: #fef0d9;
+@media all and (max-width: 810px) {
+  .heatmapScale span.smallscale {
+    display: inline;
+  }
+  .heatmapScale span.largescale {
+    display: none;
+  }
 }
-.heatmapScale .l-2 {
-  background-color: #fdcc8a;
+
+@media all and (max-width: 600px) {
+  .heatmap {
+    font-size: 80%;
+  }
 }
-.heatmapScale .l-3 {
-  background-color: #fc8d59;
-}
-.heatmapScale .l-4 {
-  background-color: #e34a33;
-}
-.heatmapScale .l-5 {
-  background-color: #b30000;
-}
+
 .heatbarLine {
-  height: 100%;
+  border: 1px solid black;
+  margin: 2px;
 }
-tr.area,
-tr.area td.heatbarCell {
-  height: 100%;
+
+svg.heatbar {
+  height: 1.5em;
+  width: 100%;
 }
+
 tr.area td {
   border: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
-.heatmap td.flex-container {
+.heatmap th.flex-container {
   display: flex;
   justify-content: space-between;
 }
