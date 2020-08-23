@@ -44,6 +44,20 @@ img#logo {
   z-index: 2;
 }
 
+@media screen and (max-width: 1300px) {
+  .sitemap .entry {
+    width: 40%;
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sitemap .entry {
+    width: 60%;
+    left: 20%;
+  }
+}
+
 .about-us {
   text-align: center;
 }

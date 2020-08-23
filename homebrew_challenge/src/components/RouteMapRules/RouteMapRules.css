@@ -11,7 +11,8 @@
 }
 
 .current-phase-number {
-  color: lawngreen;
+  color: white;
+  font-weight: 750;
 }
 
 @media screen and (max-width: 768px) {
@@ -25,21 +26,11 @@
   }
 }
 
-.routemap-link:link, .routemap-link:active, .routemap-link:visited, .routemap-link:focus  {
-  background-image: linear-gradient(white, white);
-  background-repeat: no-repeat;
-  background-size: 100% 0.33em;
-  background-position: 0 130%;
-  transition: color 0.8s ease, background-size 0.8s ease;
-  text-decoration: none;
+#link {
   color: white;
-  outline: 0;
 }
 
-.routemap-link:hover {
+#link:hover {
   color: #2a84bb;
-  opacity: 1;
-  background-size: 100% 1.2em;
   cursor: pointer;
-  text-decoration: none;
 }
