@@ -23,15 +23,6 @@ img#logo {
   text-decoration: underline;
 }
 
-.sitemap .title {
-  font-weight: bold;
-}
-
-.sitemap .entry:hover,
-.sitemap .entry:active {
-  text-decoration: underline;
-}
-
 .about-us {
   text-align: center;
 }

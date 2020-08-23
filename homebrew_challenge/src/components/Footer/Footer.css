@@ -1,0 +1,8 @@
+.sitemap .title {
+  font-weight: bold;
+}
+
+.sitemap .entry:hover,
+.sitemap .entry:active {
+  text-decoration: underline;
+}
