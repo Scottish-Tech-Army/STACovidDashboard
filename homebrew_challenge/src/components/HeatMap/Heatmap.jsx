@@ -47,6 +47,35 @@ export function parseCsvData(csvData) {
   return { dates: dates, regions: regions };
 }
 
+export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
+  function formatDate(date) {
+    return format(date, "dd MMM");
+  }
+
+  const result = [];
+  var i = 0;
+  while (i < elements.length) {
+    const startElement = elements[i];
+    var width = 1;
+    for (width = 1; i + width < elements.length; width++) {
+      if (startElement !== elements[i + width]) {
+        break;
+      }
+    }
+    const dateString =
+      width === 1
+        ? formatDate(dates[i])
+        : formatDate(dates[i]) + " - " + formatDate(dates[i + width - 1]);
+
+    result.push(
+      createHeatbarLine(startElement, i, width, region + "\n" + dateString)
+    );
+    i += width;
+  }
+
+  return result;
+}
+
 function Heatmap({
   councilAreaDataset,
   healthBoardDataset,
@@ -63,37 +92,33 @@ function Heatmap({
     null
   );
 
-  function createHeatbar(elements) {
-    const width = 200;
-    const height = 20;
+  function createHeatbar(elements, region, dates) {
+    const width = 300;
+    const height = 15;
     const viewBox = "0 0 " + width + " " + height;
     const count = elements.length;
     const elementWidth = width / count;
-    const offset = elementWidth / 2;
 
-    function createHeatbarline(element, index) {
-      const x = offset + elementWidth * index;
+    function createHeatbarLine(element, startIndex, width, titleText) {
+      const x = elementWidth * (startIndex + width / 2);
       return (
         <line
-          key={index}
+          key={startIndex}
           className={"l-" + element}
           x1={x}
           y1="0"
           x2={x}
           y2="100%"
-          strokeWidth={elementWidth}
-        ></line>
+          strokeWidth={elementWidth * width}
+        >
+          <title>{titleText}</title>
+        </line>
       );
     }
 
     return (
-      <svg
-        viewBox={viewBox}
-        preserveAspectRatio="none"
-        height="100%"
-        width="100%"
-      >
-        {elements.map(createHeatbarline)}
+      <svg className="heatbar" viewBox={viewBox} preserveAspectRatio="none">
+        {createHeatbarLines(elements, createHeatbarLine, region, dates)}
       </svg>
     );
   }
@@ -110,7 +135,8 @@ function Heatmap({
 
   function createRegionTableline(
     { name, totalDeaths, totalCases, cases, deaths },
-    index
+    index,
+    dates
   ) {
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
@@ -120,7 +146,7 @@ function Heatmap({
         <td>{total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
-            {createHeatbar(counts.map(getHeatLevel))}
+            {createHeatbar(counts.map(getHeatLevel), name, dates)}
           </div>
         </td>
       </tr>
@@ -151,7 +177,7 @@ function Heatmap({
     }
   }
 
-  function totalCountTableCell() {
+  function totalCount() {
     const dataset = getDataSet();
     if (dataset !== null) {
       const total = dataset.regions.reduce(
@@ -160,37 +186,35 @@ function Heatmap({
         0
       );
       if (total > 0) {
-        return <td>{total}</td>;
+        return total;
       }
     }
-    return <td></td>;
+    return "";
   }
 
-  function dateRangeTableCell() {
+  function dateRangeText() {
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
     }
+
     const dataset = getDataSet();
     const dates = dataset["dates"];
     let startDate = dates[0];
     let endDate = dates[dates.length - 1];
 
     if (!startDate || !endDate) {
-      return <td className="flex-container">Data not available</td>;
+      return "Data not available";
     }
 
-    return (
-      <td className="flex-container">
-        <div>{formatDate(startDate)}</div>
-        <div>{formatDate(endDate)}</div>
-      </td>
-    );
+    return formatDate(startDate) + " - " + formatDate(endDate);
   }
 
   function renderTableBody() {
     const dataset = getDataSet();
     if (dataset !== null) {
-      return dataset.regions.map(createRegionTableline);
+      return dataset.regions.map((region, i) =>
+        createRegionTableline(region, i, dataset.dates)
+      );
     }
     return null;
   }
@@ -201,12 +225,17 @@ function Heatmap({
       : "Health Boards";
   }
 
-  function valueTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
+  function areaSubTitle() {
+    const dataset = getDataSet();
+    return (
+      dataset.regions.length +
+      " " +
+      (AREATYPE_COUNCIL_AREAS === areaType ? "Areas" : "Boards")
+    );
   }
 
-  if (getDataSet() === null) {
-    return <LoadingComponent />;
+  function valueTitle() {
+    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
   }
 
   function heatbarScale() {
@@ -214,13 +243,24 @@ function Heatmap({
       <div className="heatmapScale">
         {heatLevels.map((value, index) => {
           return (
-            <span key={index} className={"l-" + index}>
+            <span key={"small" + index} className={"smallscale l-" + index}>
+              {value}
+            </span>
+          );
+        })}
+        {heatLevels.map((value, index) => {
+          return (
+            <span key={"large" + index} className={"largescale l-" + index}>
               &ge;&nbsp;{value}
             </span>
           );
-        })}{" "}
+        })}
       </div>
     );
+  }
+
+  if (getDataSet() === null) {
+    return <LoadingComponent />;
   }
 
   return (
@@ -228,23 +268,22 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th>{areaTitle()}</th>
-            <th>{valueTitle()}</th>
             <th>
-              Daily Count
-              <br />
+              <div>{areaTitle()}</div>
+              <div className="subheading">{areaSubTitle()}</div>
+            </th>
+            <th>
+              <div>{valueTitle()}</div>
+              <div className="subheading">{totalCount()}</div>
+            </th>
+            <th>
+              <div>Daily Count</div>
+              <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            {totalCountTableCell()}
-            {dateRangeTableCell()}
-          </tr>
-          {renderTableBody()}
-        </tbody>
+        <tbody>{renderTableBody()}</tbody>
       </Table>
     </div>
   );
