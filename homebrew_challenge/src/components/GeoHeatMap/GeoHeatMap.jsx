@@ -161,7 +161,10 @@ const GeoHeatMap = ({
       fillOpacity: 0,
     };
 
-    const handleRegionClick = (e) => {
+    const handleRegionPopup = (e) => {
+      if (current7DayDatasetRef.current === null) {
+        return;
+      }
       const map = mapRef.current.leafletElement;
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
@@ -189,14 +192,18 @@ const GeoHeatMap = ({
           ")</p>";
       }
 
-      L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
+      L.popup({ closeButton: false })
+        .setLatLng(e.latlng)
+        .setContent(content)
+        .openOn(map);
     };
 
     const regionLayerOptions = {
       style: INVISIBLE_LAYER_STYLE,
       onEachFeature: (feature, layer) => {
         layer.on({
-          click: handleRegionClick,
+            mouseover: handleRegionPopup,
+            click: handleRegionPopup,
         });
       },
     };
