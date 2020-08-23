@@ -177,7 +177,7 @@ function Heatmap({
     }
   }
 
-  function totalCountTableCell() {
+  function totalCount() {
     const dataset = getDataSet();
     if (dataset !== null) {
       const total = dataset.regions.reduce(
@@ -186,13 +186,13 @@ function Heatmap({
         0
       );
       if (total > 0) {
-        return <th>{total}</th>;
+        return total;
       }
     }
-    return <th></th>;
+    return "";
   }
 
-  function dateRangeTableCell() {
+  function dateRangeText() {
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
     }
@@ -203,15 +203,10 @@ function Heatmap({
     let endDate = dates[dates.length - 1];
 
     if (!startDate || !endDate) {
-      return <th className="flex-container">Data not available</th>;
+      return "Data not available";
     }
 
-    return (
-      <th className="flex-container">
-        <div>{formatDate(startDate)}</div>
-        <div>{formatDate(endDate)}</div>
-      </th>
-    );
+    return formatDate(startDate) + " - " + formatDate(endDate);
   }
 
   function renderTableBody() {
@@ -230,33 +225,42 @@ function Heatmap({
       : "Health Boards";
   }
 
-  function valueTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
+  function areaSubTitle() {
+    const dataset = getDataSet();
+    return (
+      dataset.regions.length +
+      " " +
+      (AREATYPE_COUNCIL_AREAS === areaType ? "Areas" : "Boards")
+    );
   }
 
-  if (getDataSet() === null) {
-    return <LoadingComponent />;
+  function valueTitle() {
+    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
   }
 
   function heatbarScale() {
     return (
       <div className="heatmapScale">
-      {heatLevels.map((value, index) => {
-        return (
+        {heatLevels.map((value, index) => {
+          return (
             <span key={"small" + index} className={"smallscale l-" + index}>
               {value}
             </span>
-        );
-      })}
-      {heatLevels.map((value, index) => {
-        return (
+          );
+        })}
+        {heatLevels.map((value, index) => {
+          return (
             <span key={"large" + index} className={"largescale l-" + index}>
               &ge;&nbsp;{value}
             </span>
-        );
-      })}
+          );
+        })}
       </div>
     );
+  }
+
+  if (getDataSet() === null) {
+    return <LoadingComponent />;
   }
 
   return (
@@ -264,18 +268,19 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th>{areaTitle()}</th>
-            <th>{valueTitle()}</th>
             <th>
-              Daily Count
-              <br />
+              <div>{areaTitle()}</div>
+              <div className="subheading">{areaSubTitle()}</div>
+            </th>
+            <th>
+              <div>{valueTitle()}</div>
+              <div className="subheading">{totalCount()}</div>
+            </th>
+            <th>
+              <div>Daily Count</div>
+              <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>
-          </tr>
-          <tr>
-            <th></th>
-            {totalCountTableCell()}
-            {dateRangeTableCell()}
           </tr>
         </thead>
         <tbody>{renderTableBody()}</tbody>

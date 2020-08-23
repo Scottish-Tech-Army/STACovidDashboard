@@ -9,17 +9,27 @@
   overflow-y: auto;
 }
 
-.heatmap table thead {
-  vertical-align: middle;
+.heatmap table th {
+  vertical-align: top;
   position: sticky;
   top: 0;
   z-index: 2;
   background-color: white;
 }
 
+.heatmap table th .subheading {
+  font-weight: normal;
+}
+
 .heatmap table td:first-child,
 .heatmap table th:first-child {
   text-align: left;
+}
+
+.heatmap table tr.area td {
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
 }
 
 .heatmap .l-0 {
@@ -86,22 +96,11 @@
 }
 
 .heatbarLine {
-  border: 1px solid black;
+  border: 1px solid darkgrey;
   margin: 2px;
 }
 
 svg.heatbar {
   height: 1.5em;
   width: 100%;
-}
-
-tr.area td {
-  border: 0;
-  padding: 0;
-  vertical-align: middle;
-}
-
-.heatmap th.flex-container {
-  display: flex;
-  justify-content: space-between;
 }
