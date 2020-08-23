@@ -26,7 +26,6 @@
 }
 
 .routemap-link:link, .routemap-link:active, .routemap-link:visited, .routemap-link:focus  {
-  /* background-image: linear-gradient(#2a84bb, #2a84bb); */
   background-image: linear-gradient(white, white);
   background-repeat: no-repeat;
   background-size: 100% 0.33em;
@@ -43,5 +42,4 @@
   background-size: 100% 1.2em;
   cursor: pointer;
   text-decoration: none;
-  /* color: white; */
 }
