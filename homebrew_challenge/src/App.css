@@ -30,6 +30,32 @@ img#logo {
 .sitemap .entry:hover,
 .sitemap .entry:active {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.sitemap {
+  z-index: 1;
+}
+
+.sitemap .entry {
+  position: relative;
+  width: 20%;
+  left: 40%;
+  z-index: 2;
+}
+
+@media screen and (max-width: 1300px) {
+  .sitemap .entry {
+    width: 40%;
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sitemap .entry {
+    width: 60%;
+    left: 20%;
+  }
 }
 
 .about-us {
