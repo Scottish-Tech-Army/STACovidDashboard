@@ -182,21 +182,6 @@ const App = () => {
                 </Col>
               </Row>
               <Row>
-                <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 8}>
-                  {zoomGeoMap ? (
-                    <></>
-                  ) : (
-                    <Heatmap
-                      councilAreaDataset={councilAreaDataset}
-                      healthBoardDataset={healthBoardDataset}
-                      areaType={areaType}
-                      valueType={valueType}
-                    />
-                  )}
-                </Col>
-                <Col className="d-block d-md-none">
-                  <hr className="underHeatmapSelector" />
-                </Col>
                 <Col xs={12} md={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap
                     councilAreaDataset={councilAreaDataset}
@@ -209,6 +194,21 @@ const App = () => {
                     fullscreenEnabled={zoomGeoMap}
                   />
                 </Col>
+                <Col className="d-block d-md-none">
+                  <hr className="underHeatmapSelector" />
+                </Col>
+                <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 8}>
+                  {zoomGeoMap ? (
+                    <></>
+                  ) : (
+                    <Heatmap
+                      councilAreaDataset={councilAreaDataset}
+                      healthBoardDataset={healthBoardDataset}
+                      areaType={areaType}
+                      valueType={valueType}
+                    />
+                  )}
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -217,21 +217,14 @@ const App = () => {
               <hr className="full-width-hr" />
             </Col>
           </Row>
-          <Row>
-            <Col>
+          <Row ref={zoomableCharts} className="fullscreen-charts">
+            <Col xs={12} md={3} lg={2}>
               <DataChartsSelector
                 chartType={chartType}
                 setChartType={setChartType}
               />
             </Col>
-          </Row>
-          <Row>
-            <Col>
-              <hr className="full-width-hr" />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+            <Col xs={12} md={9} lg={10}>
               <DataCharts
                 chartType={chartType}
                 healthBoardDataset={healthBoardDataset}
@@ -515,7 +508,7 @@ const App = () => {
             <Col>
               <div className="footer-copyright py-3">
                 Unless otherwise stated, this webpage contains public sector
-                information licensed under {" "}
+                information licensed under{" "}
                 <a
                   href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                   target="_blank"

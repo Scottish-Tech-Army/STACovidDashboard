@@ -5,6 +5,8 @@ import "./DataChartsSelector.css";
 
 import {
   PERCENTAGE_CASES,
+  DAILY_CASES,
+  DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
@@ -12,6 +14,8 @@ import {
 function DataChartsSelector({ chartType, setChartType }) {
   if (
     chartType !== PERCENTAGE_CASES &&
+    chartType !== DAILY_CASES &&
+    chartType !== DAILY_DEATHS &&
     chartType !== TOTAL_CASES &&
     chartType !== TOTAL_DEATHS
   ) {
@@ -23,21 +27,28 @@ function DataChartsSelector({ chartType, setChartType }) {
 
   return (
     <div className="data-charts-selector">
-      <span>
+      <div>
         <strong>Select chart:</strong>
-      </span>
+      </div>
       <ToggleButtonGroup
         className="toggle-button-group"
         name="chartType"
         type="radio"
+        vertical
         value={chartType}
         onChange={(val) => setChartType(val)}
       >
         <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
           % Tests Positive
         </ToggleButton>
+        <ToggleButton id="dailyCases" value={DAILY_CASES}>
+          Daily Cases
+        </ToggleButton>
         <ToggleButton id="totalCases" value={TOTAL_CASES}>
           Total Cases
+        </ToggleButton>
+        <ToggleButton id="dailyDeaths" value={DAILY_DEATHS}>
+          Daily Deaths
         </ToggleButton>
         <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
           Total Deaths
