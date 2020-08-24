@@ -160,6 +160,8 @@ const DataCharts = ({
           },
           hover: {
             animationDuration: 0,
+            mode: "index",
+            intersect: false,
           },
           responsiveAnimationDuration: 0,
           responsive: true,
@@ -197,10 +199,6 @@ const DataCharts = ({
               fullscreenEnabled: fullscreenEnabled,
               toggleFullscreen: toggleFullscreen,
             },
-          },
-          hover: {
-            mode: "index",
-            intersect: false,
           },
         },
       };
