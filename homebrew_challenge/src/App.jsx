@@ -8,7 +8,6 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
-import TimeLine from "./components/TimeLine/TimeLine";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
 import InfoBar from "./components/InfoBar/InfoBar";
@@ -156,7 +155,7 @@ const App = () => {
           <Row className="widgets_block">
             <Col
               xs={12}
-              md={8}
+              md={12}
               ref={zoomableMap}
               className={zoomGeoMap ? "full-screen" : ""}
             >
@@ -176,22 +175,7 @@ const App = () => {
                 </Col>
               </Row>
               <Row>
-                <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 6}>
-                  {zoomGeoMap ? (
-                    <></>
-                  ) : (
-                    <Heatmap
-                      councilAreaDataset={councilAreaDataset}
-                      healthBoardDataset={healthBoardDataset}
-                      areaType={areaType}
-                      valueType={valueType}
-                    />
-                  )}
-                </Col>
-                <Col className="d-block d-md-none">
-                  <hr className="underHeatmapSelector" />
-                </Col>
-                <Col xs={12} md={zoomGeoMap ? 12 : 6}>
+                <Col xs={12} md={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap
                     councilAreaDataset={councilAreaDataset}
                     healthBoardDataset={healthBoardDataset}
@@ -203,52 +187,45 @@ const App = () => {
                     fullscreenEnabled={zoomGeoMap}
                   />
                 </Col>
-              </Row>
-              <Row>
                 <Col className="d-block d-md-none">
                   <hr className="underHeatmapSelector" />
                 </Col>
+                <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 8}>
+                  {zoomGeoMap ? (
+                    <></>
+                  ) : (
+                    <Heatmap
+                      councilAreaDataset={councilAreaDataset}
+                      healthBoardDataset={healthBoardDataset}
+                      areaType={areaType}
+                      valueType={valueType}
+                    />
+                  )}
+                </Col>
               </Row>
             </Col>
-            <Col
-              xs={12}
-              md={4}
-              ref={zoomableCharts}
-              className={zoomDataCharts ? "full-screen" : ""}
-            >
-              <Row>
-                <Col>
-                  <DataChartsSelector
-                    chartType={chartType}
-                    setChartType={setChartType}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <hr className="underHeatmapSelector" />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <DataCharts
-                    chartType={chartType}
-                    healthBoardDataset={healthBoardDataset}
-                    fullscreenEnabled={zoomDataCharts}
-                    toggleFullscreen={() =>
-                      toggleFullscreen(zoomableCharts, setZoomDataCharts)
-                    }
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <hr className="underHeatmapSelector" />
-                </Col>
-              </Row>
-              <Row>
-                <Col>{zoomDataCharts ? <></> : <TimeLine />}</Col>
-              </Row>
+          </Row>
+          <Row>
+            <Col>
+              <hr className="full-width-hr" />
+            </Col>
+          </Row>
+          <Row ref={zoomableCharts} className="fullscreen-charts">
+            <Col xs={12} md={3} lg={2}>
+              <DataChartsSelector
+                chartType={chartType}
+                setChartType={setChartType}
+              />
+            </Col>
+            <Col xs={12} md={9} lg={10}>
+              <DataCharts
+                chartType={chartType}
+                healthBoardDataset={healthBoardDataset}
+                fullscreenEnabled={zoomDataCharts}
+                toggleFullscreen={() =>
+                  toggleFullscreen(zoomableCharts, setZoomDataCharts)
+                }
+              />
             </Col>
           </Row>
           <Row>

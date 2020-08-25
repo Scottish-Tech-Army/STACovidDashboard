@@ -1,5 +1,4 @@
 .heatmap {
-  overflow: auto;
   overflow-y: auto;
   max-height: 600px;
   height: 100%;
@@ -11,16 +10,26 @@
 }
 
 .heatmap table th {
-  vertical-align: middle;
+  vertical-align: top;
   position: sticky;
   top: 0;
   z-index: 2;
   background-color: white;
 }
 
+.heatmap table th .subheading {
+  font-weight: normal;
+}
+
 .heatmap table td:first-child,
 .heatmap table th:first-child {
   text-align: left;
+}
+
+.heatmap table tr.area td {
+  border: 0;
+  padding: 0;
+  vertical-align: middle;
 }
 
 .heatmap .l-0 {
@@ -41,13 +50,7 @@
 .heatmap .l-5 {
   stroke: #b30000;
 }
-.heatmapScale {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.heatmapScale span {
-  padding: 5px 10px;
-}
+
 .heatmapScale .l-0 {
   background-color: #e0e0e0;
 }
@@ -66,19 +69,38 @@
 .heatmapScale .l-5 {
   background-color: #b30000;
 }
-.heatbarLine {
-  height: 100%;
+
+.heatmapScale {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-tr.area,
-tr.area td.heatbarCell {
-  height: 100%;
+.heatmapScale span {
+  padding: 5px 10px;
 }
-tr.area td {
-  border: 0;
-  padding: 0;
+.heatmapScale span.smallscale {
+  display: none;
+}
+@media all and (max-width: 810px) {
+  .heatmapScale span.smallscale {
+    display: inline;
+  }
+  .heatmapScale span.largescale {
+    display: none;
+  }
 }
 
-.heatmap td.flex-container {
-  display: flex;
-  justify-content: space-between;
+@media all and (max-width: 600px) {
+  .heatmap {
+    font-size: 80%;
+  }
+}
+
+.heatbarLine {
+  border: 1px solid darkgrey;
+  margin: 2px;
+}
+
+svg.heatbar {
+  height: 1.5em;
+  width: 100%;
 }

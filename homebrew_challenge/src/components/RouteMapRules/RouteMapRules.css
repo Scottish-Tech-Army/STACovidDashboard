@@ -9,3 +9,28 @@
   color: #fff;
   padding: 2rem;
 }
+
+.current-phase-number {
+  color: white;
+  font-weight: 750;
+}
+
+@media screen and (max-width: 768px) {
+  .current-phase {
+    height: auto;
+    padding: 3%;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+}
+
+#link {
+  color: white;
+}
+
+#link:hover {
+  color: #2a84bb;
+  cursor: pointer;
+}

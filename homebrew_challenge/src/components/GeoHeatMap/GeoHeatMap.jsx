@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Map as LeafletMap, TileLayer } from "react-leaflet";
+import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -161,7 +161,10 @@ const GeoHeatMap = ({
       fillOpacity: 0,
     };
 
-    const handleRegionClick = (e) => {
+    const handleRegionPopup = (e) => {
+      if (current7DayDatasetRef.current === null) {
+        return;
+      }
       const map = mapRef.current.leafletElement;
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
@@ -189,14 +192,18 @@ const GeoHeatMap = ({
           ")</p>";
       }
 
-      L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
+      L.popup({ closeButton: false })
+        .setLatLng(e.latlng)
+        .setContent(content)
+        .openOn(map);
     };
 
     const regionLayerOptions = {
       style: INVISIBLE_LAYER_STYLE,
       onEachFeature: (feature, layer) => {
         layer.on({
-          click: handleRegionClick,
+            mouseover: handleRegionPopup,
+            click: handleRegionPopup,
         });
       },
     };
@@ -332,7 +339,7 @@ const GeoHeatMap = ({
     if (mapRef.current && mapRef.current.leafletElement) {
       const map = mapRef.current.leafletElement;
       if (!legendRef.current) {
-        legendRef.current = L.control({ position: "bottomright" });
+        legendRef.current = L.control({ position: "topleft" });
 
         legendRef.current.onAdd = function (map) {
           const div = L.DomUtil.create("div", "info legend");
@@ -378,11 +385,13 @@ const GeoHeatMap = ({
         minZoom={6}
         dragging={!L.Browser.mobile}
         tap={!L.Browser.mobile}
+        zoomControl={false}
       >
         <TileLayer
           url={tilesStadiaAlidadeSmooth}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
+        <ZoomControl position="topright" />
         <FullscreenControl
           toggleFullscreen={toggleFullscreen}
           fullscreenEnabled={fullscreenEnabled}
