@@ -2,7 +2,7 @@
 
 import React from "react";
 import SingleValueBar, {
-  parseCsvData,
+  // parseCsvData,
   parseNhsCsvData,
   getRelativeReportedDate,
 } from "./SingleValueBar";
@@ -38,8 +38,6 @@ test("singleValueBar renders default data when fetch fails", async () => {
   checkSingleValue("dailyFatalities", "Reported on 01/01/1999", "0");
   checkSingleValue("totalFatalities", "Total", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
-  checkSingleValue("dailyTestsCompleted", "Daily", "0");
-  checkSingleValue("totalTestsCompleted", "Total", "0");
 });
 
 function setFetchResponses(testsCsvData, nhsCsvData) {
@@ -67,8 +65,6 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
   checkSingleValue("dailyFatalities", "Reported Today", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
@@ -86,8 +82,6 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("singleValueBar renders dynamic fetched data with incomplete diff data", async () => {
@@ -105,8 +99,6 @@ test("singleValueBar renders dynamic fetched data with incomplete diff data", as
   checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("singleValueBar renders dynamic fetched data with missing data", async () => {
@@ -124,8 +116,6 @@ test("singleValueBar renders dynamic fetched data with missing data", async () =
   checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
-  checkSingleValue("totalTestsCompleted", "Total", "Not available");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
@@ -143,8 +133,6 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("dailyFatalities", "Not available", "Not available");
   checkSingleValue("totalFatalities", "Total", "Not available");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("getRelativeReportedDate", () => {
@@ -161,15 +149,6 @@ test("getRelativeReportedDate", () => {
   expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe("Reported on 15/06/2020");
   expect(getRelativeReportedDate(undefined)).toBeUndefined();
   expect(getRelativeReportedDate(null)).toBeUndefined();
-});
-
-test("parseCsvData", () => {
-  const expectedResult = {
-    dailyTestsCompleted: { date: 1592697600000, value: 3442 },
-    totalTestsCompleted: { date: 1592697600000, value: 231525 },
-  };
-
-  expect(parseCsvData(csvData)).toStrictEqual(expectedResult);
 });
 
 test("parseNhsCsvData", () => {

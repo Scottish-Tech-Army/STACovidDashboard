@@ -122,41 +122,14 @@ function SingleValueBar() {
   const [dailyFatalities, setDailyFatalities] = useState(emptyDate);
   const [totalFatalities, setTotalFatalities] = useState(emptyDate);
   const [fatalityCaseRatio, setFatalityCaseRatio] = useState(0);
-  const [dailyTestsCompleted, setDailyTestsCompleted] = useState(emptyDate);
-  const [totalTestsCompleted, setTotalTestsCompleted] = useState(emptyDate);
-  const [dataFetched, setDataFetched] = useState(false);
   const [nhsDataFetched, setNhsDataFetched] = useState(false);
 
   // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
-  const dataUrl = "data/summaryCounts.csv";
-
   const missingData = "Not available";
 
   function guardMissingData(input) {
     return input === undefined ? missingData : input;
   }
-
-  useEffect(() => {
-    // Only attempt to fetch data once
-    if (!dataFetched) {
-      setDataFetched(true);
-      fetch(dataUrl, {
-        method: "GET",
-      })
-        .then((res) => res.text())
-        .then((csvData) => {
-          const { dailyTestsCompleted, totalTestsCompleted } = parseCsvData(
-            csvData
-          );
-
-          setDailyTestsCompleted(dailyTestsCompleted);
-          setTotalTestsCompleted(totalTestsCompleted);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [dataFetched]);
 
   useEffect(() => {
     const currentTotalsHealthBoardsCsv = "data/currentTotalsHealthBoards.csv";
@@ -197,7 +170,7 @@ function SingleValueBar() {
   return (
     <Container fluid className="single-value-bar">
       <Row>
-        <Col xs={12} lg={4}>
+        <Col xs={12} lg={6}>
           {blockTitleRow("Cases")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
@@ -218,7 +191,7 @@ function SingleValueBar() {
             </Col>
           </Row>
         </Col>
-        <Col xs={12} lg={4}>
+        <Col xs={12} lg={6}>
           {blockTitleRow("Deaths")}
           <Row className="single-value-bar-row">
             <Col className="single-value-bar-col">
@@ -243,27 +216,6 @@ function SingleValueBar() {
                 title="Death / Case Ratio"
                 value={guardMissingData(fatalityCaseRatio)}
                 tooltip="This shows the Ratio of Total Fatalities to Total Cases of COVID-19"
-              />
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={12} lg={4}>
-          {blockTitleRow("Tests Completed")}
-          <Row className="single-value-bar-row">
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="dailyTestsCompleted"
-                title="Daily"
-                value={guardMissingData(dailyTestsCompleted.value)}
-                tooltip="This is how many tests were completed today and resets after 11.59pm (Can be delayed because of data fetching)"
-              />
-            </Col>
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="totalTestsCompleted"
-                title="Total"
-                value={guardMissingData(totalTestsCompleted.value)}
-                tooltip="This shows how many COVID-19 Tests have been completed since the beginning of the COVID-19 Pandemic"
               />
             </Col>
           </Row>
