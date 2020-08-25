@@ -1,8 +1,20 @@
 .sitemap .title {
   font-weight: bold;
+  text-align: center;
 }
 
 .sitemap .entry:hover,
 .sitemap .entry:active {
   text-decoration: underline;
+  cursor: pointer;
+  color: #0056b3;
+}
+
+.sitemap .entry {
+  text-align: center;
+  font-weight: normal;
+}
+
+#entry-link {
+  color: #3c3c3b;
 }

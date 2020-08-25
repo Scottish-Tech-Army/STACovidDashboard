@@ -8,7 +8,7 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
 
   function sitemapEntry(key, text) {
     return (
-      <div className="entry" onClick={() => setCurrentPage(key)}>
+      <div className="entry link" onClick={() => setCurrentPage(key)}>
         {text}
       </div>
     );
@@ -64,12 +64,19 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
                 "Data sources and attribution"
               )}
               {sitemapEntry(PAGE_ABOUT_US, "About us")}
+              <div className="entry link">
+                <a id="entry-link link" href="https://www.scottishtecharmy.org/privacy-policy">
+                  Privacy Policy
+                </a>
+              </div>
+              <div className="title">Contact Us</div>
+              <div>info@sta.org</div>
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
-            <div className="footer-copyright py-3">
+            <div className="footer-copyright text-center py-3">
               Unless otherwise stated, this webpage contains public sector
               information licensed under
               <a
