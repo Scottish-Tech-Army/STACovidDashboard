@@ -17,8 +17,8 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
   return (
     <footer>
       <Container className="font-small blue pt-4">
-        <Row>
-          <Col xs={12} md={4} className="p-2">
+        <Row className="d-flex">
+          <Col xs={12} md={4} className="p-2 d-flex justify-content-center">
             <a
               href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
               target="_blank"
@@ -28,7 +28,7 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
               Guidance from Scottish Government
             </a>
           </Col>
-          <Col xs={12} md={4} className="p-2">
+          <Col xs={12} md={4} className="p-2 d-flex justify-content-center">
             <a
               href="https://www.scottishtecharmy.org/"
               target="_blank"
@@ -42,7 +42,7 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
               />
             </a>
           </Col>
-          <Col xs={12} md={4} className="p-2">
+          <Col xs={12} md={4} className="p-2 d-flex justify-content-center">
             <a
               href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
               target="_blank"
@@ -65,12 +65,12 @@ const Footer = ({PAGE_PUBLIC_DASHBOARD, PAGE_ANALYTICS_DASHBOARD, PAGE_DATA_SOUR
               )}
               {sitemapEntry(PAGE_ABOUT_US, "About us")}
               <div className="entry link">
-                <a id="entry-link link" href="https://www.scottishtecharmy.org/privacy-policy">
+                <a id="entry-link" className="entry link" href="https://www.scottishtecharmy.org/privacy-policy">
                   Privacy Policy
                 </a>
               </div>
               <div className="title">Contact Us</div>
-              <div>info@sta.org</div>
+              <div className="entry">info@sta.org</div>
             </div>
           </Col>
         </Row>
