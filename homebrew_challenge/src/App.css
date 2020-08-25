@@ -78,12 +78,6 @@ img#logo {
   padding-top: 2vh;
 }
 
-.about-us p {
-  width: 72%;
-  position: relative;
-  left: 14%;
-}
-
 .team-members {
   padding-bottom: 3vh;
   display: flex;

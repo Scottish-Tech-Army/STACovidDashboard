@@ -468,12 +468,11 @@ const App = () => {
       <div fluid="true" className="about-us">
         <hr/>
         <h1>About us</h1>
-        <p>This dashboard has been developed by members of the Scottish Tech Army to improve awareness of the impacts of Covid-19.</p>
+        <p className="px-5">This dashboard has been developed by members of the Scottish Tech Army to improve awareness of the impacts of Covid-19.</p>
         <h2>The Scottish Tech Army</h2>
-        <p>Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter Jaco, the Scottish Tech Army Limited is a not for profit company that is building a volunteer Covid-19 technical response team that will work to help the Scottish Government, Local Authorities and other organisations across the country with rapid technical development projects to address current Covid-19 related challenges and post pandemic economic recovery. </p>
+        <p className="px-5">Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter Jaco, the Scottish Tech Army Limited is a not for profit company that is building a volunteer Covid-19 technical response team that will work to help the Scottish Government, local authorities and other organisations across the country with rapid technical development projects to address current Covid-19 related challenges and post pandemic economic recovery. </p>
         <h2>Meet the team</h2>
-        <p>The Covid-19 dashboard for Scotland was created by the following STA volunteers: </p>
-        {window.innerWidth > 780 ? (
+        <p className="px-5">The Covid-19 dashboard for Scotland was created by the following STA volunteers: </p>
           <Container className="team-members">
             <Row>
               <Col>
@@ -484,16 +483,6 @@ const App = () => {
               </Col>
             </Row>
           </Container>
-          ) : (
-          <Container className="team-members">
-            <Row>
-              <Col>
-                {sortedTeamMembers}
-              </Col>
-            </Row>
-          </Container>
-          )
-        }
         <hr/>
       </div>
     );
