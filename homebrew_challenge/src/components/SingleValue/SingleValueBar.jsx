@@ -99,21 +99,21 @@ export function parseNhsCsvData(csvData) {
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
 
 // Exported for tests
-export function getRelativeDate(date) {
+export function getRelativeReportedDate(date) {
   if (!date) {
     return undefined;
   }
   const daysDifference = differenceInDays(Date.now(), date);
   if (daysDifference === 0) {
-    return "Today";
+    return "Reported Today";
   }
   if (daysDifference === 1) {
-    return "Yesterday";
+    return "Reported Yesterday";
   }
   if (daysDifference > 1 && daysDifference < 7) {
-    return "last " + format(date, "EEEE");
+    return "Reported last " + format(date, "EEEE");
   }
-  return format(date, "dd/MM/yyyy");
+  return "Reported on " + format(date, "dd/MM/yyyy");
 }
 
 function SingleValueBar() {
@@ -203,9 +203,9 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyCases"
-                title={guardMissingData(getRelativeDate(dailyCases.date))}
+                title={guardMissingData(getRelativeReportedDate(dailyCases.date))}
                 value={guardMissingData(dailyCases.value)}
-                tooltip="These are the Total Cases from today and updated after 2pm daily (Can be delayed because of data fetching)"
+                tooltip="These are the Total Cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">
@@ -224,9 +224,9 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyFatalities"
-                title={guardMissingData(getRelativeDate(dailyFatalities.date))}
+                title={guardMissingData(getRelativeReportedDate(dailyFatalities.date))}
                 value={guardMissingData(dailyFatalities.value)}
-                tooltip="These are the fatalities from today and updated after 2pm daily (Can be delayed because of data fetching)"
+                tooltip="These are the fatalities reported today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
             </Col>
             <Col className="single-value-bar-col">

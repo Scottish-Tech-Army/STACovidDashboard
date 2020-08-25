@@ -4,7 +4,7 @@ import React from "react";
 import SingleValueBar, {
   parseCsvData,
   parseNhsCsvData,
-  getRelativeDate,
+  getRelativeReportedDate,
 } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
@@ -33,9 +33,9 @@ test("singleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "01/01/1999", "0");
+  checkSingleValue("dailyCases", "Reported on 01/01/1999", "0");
   checkSingleValue("totalCases", "Total", "0");
-  checkSingleValue("dailyFatalities", "01/01/1999", "0");
+  checkSingleValue("dailyFatalities", "Reported on 01/01/1999", "0");
   checkSingleValue("totalFatalities", "Total", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
   checkSingleValue("dailyTestsCompleted", "Daily", "0");
@@ -62,9 +62,9 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Today", "47");
+  checkSingleValue("dailyCases", "Reported Today", "47");
   checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Today", "0");
+  checkSingleValue("dailyFatalities", "Reported Today", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
   checkSingleValue("dailyTestsCompleted", "Daily", "3442");
@@ -81,9 +81,9 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Yesterday", "47");
+  checkSingleValue("dailyCases", "Reported Yesterday", "47");
   checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Yesterday", "0");
+  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
   checkSingleValue("dailyTestsCompleted", "Daily", "3442");
@@ -100,9 +100,9 @@ test("singleValueBar renders dynamic fetched data with incomplete diff data", as
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Yesterday", "47");
+  checkSingleValue("dailyCases", "Reported Yesterday", "47");
   checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Yesterday", "0");
+  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
   checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
@@ -119,9 +119,9 @@ test("singleValueBar renders dynamic fetched data with missing data", async () =
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Yesterday", "47");
+  checkSingleValue("dailyCases", "Reported Yesterday", "47");
   checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Yesterday", "0");
+  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
   checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
@@ -147,20 +147,20 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
-test("getRelativeDate", () => {
+test("getRelativeReportedDate", () => {
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
 
-  expect(getRelativeDate(Date.parse("2020-06-22"))).toBe("Today");
-  expect(getRelativeDate(Date.parse("2020-06-21"))).toBe("Yesterday");
-  expect(getRelativeDate(Date.parse("2020-06-20"))).toBe("last Saturday");
-  expect(getRelativeDate(Date.parse("2020-06-19"))).toBe("last Friday");
-  expect(getRelativeDate(Date.parse("2020-06-18"))).toBe("last Thursday");
-  expect(getRelativeDate(Date.parse("2020-06-17"))).toBe("last Wednesday");
-  expect(getRelativeDate(Date.parse("2020-06-16"))).toBe("last Tuesday");
-  expect(getRelativeDate(Date.parse("2020-06-15"))).toBe("15/06/2020");
-  expect(getRelativeDate(undefined)).toBeUndefined();
-  expect(getRelativeDate(null)).toBeUndefined();
+  expect(getRelativeReportedDate(Date.parse("2020-06-22"))).toBe("Reported Today");
+  expect(getRelativeReportedDate(Date.parse("2020-06-21"))).toBe("Reported Yesterday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-20"))).toBe("Reported last Saturday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-19"))).toBe("Reported last Friday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-18"))).toBe("Reported last Thursday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-17"))).toBe("Reported last Wednesday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-16"))).toBe("Reported last Tuesday");
+  expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe("Reported on 15/06/2020");
+  expect(getRelativeReportedDate(undefined)).toBeUndefined();
+  expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
 test("parseCsvData", () => {

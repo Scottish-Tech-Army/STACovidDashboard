@@ -25,6 +25,8 @@ afterEach(() => {
 
 function checkButtonText() {
   expect(percentageCasesButton().textContent).toBe("% Tests Positive");
+  expect(dailyCasesButton().textContent).toBe("Daily Cases");
+  expect(dailyDeathsButton().textContent).toBe("Daily Deaths");
   expect(totalCasesButton().textContent).toBe("Total Cases");
   expect(totalDeathsButton().textContent).toBe("Total Deaths");
 }
@@ -34,6 +36,8 @@ function checkStoredValue(expectedChartType) {
 }
 
 const percentageCasesButton = () => container.querySelector("#percentageCases");
+const dailyCasesButton = () => container.querySelector("#dailyCases");
+const dailyDeathsButton = () => container.querySelector("#dailyDeaths");
 const totalCasesButton = () => container.querySelector("#totalCases");
 const totalDeathsButton = () => container.querySelector("#totalDeaths");
 
@@ -89,6 +93,12 @@ test("default render", async () => {
 
   checkButtonText();
   checkStoredValue("percentCases");
+
+  click(dailyCasesButton());
+  checkStoredValue("dailyCases");
+
+  click(dailyDeathsButton());
+  checkStoredValue("dailyDeaths");
 
   click(totalCasesButton());
   checkStoredValue("totalCases");

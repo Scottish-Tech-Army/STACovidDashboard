@@ -5,6 +5,8 @@ import moment from "moment";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   PERCENTAGE_CASES,
+  DAILY_CASES,
+  DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
@@ -18,6 +20,8 @@ export function parseNhsCsvData(csvData) {
   const dates = [...dateAggregateValuesMap.keys()].sort();
 
   const percentageCasesPoints = [];
+  const dailyCasesPoints = [];
+  const dailyDeathsPoints = [];
   const totalCasesPoints = [];
   const totalDeathsPoints = [];
 
@@ -34,9 +38,12 @@ export function parseNhsCsvData(csvData) {
   }
 
   dates.forEach((date) => {
-    const { cumulativeCases, cumulativeDeaths } = dateAggregateValuesMap.get(
-      date
-    );
+    const {
+      cases,
+      deaths,
+      cumulativeCases,
+      cumulativeDeaths,
+    } = dateAggregateValuesMap.get(date);
 
     const positiveCases5DayWindow = get5DayDiff(
       dateAggregateValuesMap,
@@ -60,6 +67,14 @@ export function parseNhsCsvData(csvData) {
           ? 0
           : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
     });
+    dailyCasesPoints.push({
+      t: date,
+      y: cases,
+    });
+    dailyDeathsPoints.push({
+      t: date,
+      y: deaths,
+    });
     totalCasesPoints.push({
       t: date,
       y: cumulativeCases,
@@ -72,6 +87,8 @@ export function parseNhsCsvData(csvData) {
 
   return {
     percentageCases: percentageCasesPoints,
+    dailyCases: dailyCasesPoints,
+    dailyDeaths: dailyDeathsPoints,
     totalCases: totalCasesPoints,
     totalDeaths: totalDeathsPoints,
   };
@@ -88,21 +105,31 @@ const DataCharts = ({
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
     null
   );
+  const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(null);
+  const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(null);
   const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(null);
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
 
   const percentageCasesDatasetLabel =
     "% of Positive Tests (5 day moving average)";
+  const dailyCasesDatasetLabel = "Daily Cases";
+  const dailyDeathsDatasetLabel = "Daily Deaths";
   const totalCasesDatasetLabel = "Total Cases";
   const totalDeathsDatasetLabel = "Total Deaths";
 
   useEffect(() => {
     // Only attempt to fetch data once
     if (healthBoardDataset != null) {
-      const { percentageCases, totalCases, totalDeaths } = parseNhsCsvData(
-        healthBoardDataset
-      );
+      const {
+        percentageCases,
+        dailyCases,
+        dailyDeaths,
+        totalCases,
+        totalDeaths,
+      } = parseNhsCsvData(healthBoardDataset);
       setPercentageCasesSeriesData(percentageCases);
+      setDailyCasesSeriesData(dailyCases);
+      setDailyDeathsSeriesData(dailyDeaths);
       setTotalCasesSeriesData(totalCases);
       setTotalDeathsSeriesData(totalDeaths);
     }
@@ -120,6 +147,10 @@ const DataCharts = ({
               data: seriesData,
               backgroundColor: " #fdeee8",
               borderColor: "#ec6730",
+              fill: false,
+              pointRadius: 0,
+              borderWidth: 2,
+              lineTension: 0,
             },
           ],
         },
@@ -129,6 +160,8 @@ const DataCharts = ({
           },
           hover: {
             animationDuration: 0,
+            mode: "index",
+            intersect: false,
           },
           responsiveAnimationDuration: 0,
           responsive: true,
@@ -151,6 +184,9 @@ const DataCharts = ({
                 distribution: "series",
                 time: {
                   tooltipFormat: "D MMM YYYY",
+                },
+                gridLines: {
+                  display: false,
                 },
               },
             ],
@@ -192,6 +228,20 @@ const DataCharts = ({
       return configuration;
     }
 
+    function dailyCasesChartConfiguration(chartRef) {
+      return commonChartConfiguration(
+        dailyCasesDatasetLabel,
+        dailyCasesSeriesData
+      );
+    }
+
+    function dailyDeathsChartConfiguration(chartRef) {
+      return commonChartConfiguration(
+        dailyDeathsDatasetLabel,
+        dailyDeathsSeriesData
+      );
+    }
+
     function totalCasesChartConfiguration(chartRef) {
       return commonChartConfiguration(
         totalCasesDatasetLabel,
@@ -217,6 +267,18 @@ const DataCharts = ({
         percentageCasesChartConfiguration()
       );
     }
+    if (chartType === DAILY_CASES) {
+      chartInstance.current = new Chart(
+        chartRef,
+        dailyCasesChartConfiguration()
+      );
+    }
+    if (chartType === DAILY_DEATHS) {
+      chartInstance.current = new Chart(
+        chartRef,
+        dailyDeathsChartConfiguration()
+      );
+    }
     if (chartType === TOTAL_CASES) {
       chartInstance.current = new Chart(
         chartRef,
@@ -231,6 +293,8 @@ const DataCharts = ({
     }
   }, [
     percentageCasesSeriesData,
+    dailyCasesSeriesData,
+    dailyDeathsSeriesData,
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
@@ -241,6 +305,12 @@ const DataCharts = ({
   const isDataReady = () => {
     if (chartType === PERCENTAGE_CASES) {
       return percentageCasesSeriesData !== null;
+    }
+    if (chartType === DAILY_CASES) {
+      return dailyCasesSeriesData !== null;
+    }
+    if (chartType === DAILY_DEATHS) {
+      return dailyDeathsSeriesData !== null;
     }
     if (chartType === TOTAL_CASES) {
       return totalCasesSeriesData !== null;
