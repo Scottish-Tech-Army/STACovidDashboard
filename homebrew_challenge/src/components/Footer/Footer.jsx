@@ -86,6 +86,22 @@ const Footer = () => {
           </Col>
         </Row>
         <Row>
+          <Col className="p-2 d-flex justify-content-center">
+            <a
+              href="https://www.scottishtecharmy.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="STABanner.png"
+                alt="Scottish Tech Army"
+                width="270"
+                height="50"
+              />
+            </a>
+          </Col>
+        </Row>
+        <Row>
           <Col>
             <div className="footer-copyright text-center py-3 p-3">
               Unless otherwise stated, this webpage contains public sector
