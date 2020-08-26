@@ -8,63 +8,42 @@ const Footer = () => {
 
   return (
     <footer>
-      <Container fluid className="footer-container font-small">
-        <Row className="d-flex p-3">
-          <Col
-            xs={12}
-            md={4}
-            className="p-2 d-flex justify-content-center align-items-center"
-          >
-            <a
-              href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link"
-            >
-              Guidance from Scottish Government
-            </a>
+      <Container fluid className="font-small">
+        <Row className="p-3 d-flex justify-content-center">
+          <Col xs={12} md={3}>
+            <div className="sitemap">
+              <div className="title">CONNECT WITH US</div>
+              <div className="entry link">
+                <a
+                  className="entry link"
+                  href="https://twitter.com/ScotTechArmy"
+                >
+                  Twitter
+                </a>
+              </div>
+              <div className="entry link">
+                <a className="entry link" href="https://www.linkedin.com/company/scottish-tech-army-limited">
+                  LinkedIn
+                </a>
+              </div>
+              <div className="entry link">
+                <a className="entry link" href="https://www.scottishtecharmy.org/podcasts">
+                  STA Podcast
+                </a>
+              </div>
+            </div>
           </Col>
-          <Col xs={12} md={4} className="p-2 d-flex justify-content-center">
-            <a
-              href="https://www.scottishtecharmy.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="STABanner.png"
-                alt="Scottish Tech Army"
-                width="270"
-                height="50"
-              />
-            </a>
+          <Col xs={12} md={3}>
+            <div className="sitemap">
+              <div className="title">CONTACT US</div>
+              <div className="email">info@sta.org</div>
+            </div>
           </Col>
-          <Col
-            xs={12}
-            md={4}
-            className="p-2 d-flex justify-content-center align-items-center"
-          >
-            <a
-              href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link"
-            >
-              Advice from NHS inform
-            </a>
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex">
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
-        <Row className="p-3">
-          <Col xs={12} md={4}>
+          <Col xs={12} md={3}>
             <div className="sitemap">
               <div className="title">LEGAL</div>
               <div className="entry link">
                 <a
-                  id="entry-link"
                   className="entry link"
                   href="https://www.scottishtecharmy.org/privacy-policy"
                 >
@@ -73,36 +52,35 @@ const Footer = () => {
               </div>
               <div className="entry link">
                 <a
-                  id="entry-link"
                   className="entry link"
                   href="#"
                 >
-                  [Accessibility etc.]
+                  Accessibility
                 </a>
               </div>
             </div>
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={3}>
             <div className="sitemap">
-              <div className="title">CONTACT US</div>
-              <div className="email">info@sta.org</div>
-            </div>
-          </Col>
-          <Col xs={12} md={4}>
-            <div className="sitemap">
-              <div className="title">CONNECT WITH US</div>
+              <div className="title">USEFUL LINKS</div>
               <div className="entry link">
                 <a
-                  id="entry-link"
+                  href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="entry link"
-                  href="https://twitter.com/ScotTechArmy"
                 >
-                  Twitter
+                  Scottish Government Guidance
                 </a>
               </div>
               <div className="entry link">
-                <a id="entry-link" className="entry link" href="https://www.linkedin.com/company/scottish-tech-army-limited">
-                  LinkedIn
+                <a
+                  href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="entry link"
+                >
+                  Advice from NHS inform
                 </a>
               </div>
             </div>
@@ -110,14 +88,14 @@ const Footer = () => {
         </Row>
         <Row>
           <Col>
-            <div className="footer-copyright text-center p-3">
+            <div className="footer-copyright text-left py-3 p-3">
               Unless otherwise stated, this webpage contains public sector
               information licensed under{" "}
               <a
                 href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                 target="_blank"
                 rel="noopener noreferrer licence"
-                className=" scot-gov-link link"
+                className="entry link"
                 id="entry-link"
               >
                 the Open Government Licence 3.0.
@@ -127,8 +105,7 @@ const Footer = () => {
                 href="https://www.scottishtecharmy.org/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link"
-                id="entry-link"
+                className="entry link"
               >
                 ScottishTechArmy.org
               </a>

@@ -1,6 +1,5 @@
 .sitemap .title {
   font-weight: bold;
-  text-align: center;
 }
 
 .sitemap .entry:hover,
@@ -11,14 +10,19 @@
 }
 
 .sitemap .entry {
-  text-align: center;
   font-weight: normal;
 }
 
-div .footer-container {
-  margin: auto;
+.email, .sitemap .title, .sitemap .entry {
+  text-align: left;
 }
 
-.email {
-  text-align: center;
+@media screen and (max-width: 768px) {
+  .sitemap .title {
+    padding-top: 1rem;
+  }
+}
+
+footer {
+  padding: 0.5rem 0 1.5rem 0;
 }
