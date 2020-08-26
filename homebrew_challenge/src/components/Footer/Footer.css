@@ -15,6 +15,10 @@
   font-weight: normal;
 }
 
-#entry-link {
-  color: #3c3c3b;
+div .footer-container {
+  margin: auto;
+}
+
+.email {
+  text-align: center;
 }

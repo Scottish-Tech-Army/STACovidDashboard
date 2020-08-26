@@ -20,7 +20,7 @@ img#logo {
 .link {
   color: #3c3c3b;
   font-weight: bold;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .about-us {

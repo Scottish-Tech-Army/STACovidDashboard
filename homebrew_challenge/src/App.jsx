@@ -435,7 +435,6 @@ const App = () => {
           </Row>
         </Container>
       </header>
-
       {currentPage === PAGE_PUBLIC_DASHBOARD ? pagePublicDashboard() : <></>}
       {currentPage === PAGE_ANALYTICS_DASHBOARD ? (
         pageAnalyticsDashboard()
