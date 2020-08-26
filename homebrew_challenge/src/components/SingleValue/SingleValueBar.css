@@ -71,7 +71,13 @@
 
 @include media-breakpoint-up(xs) {
   .single-value-total {
-    font-size: 0.5rem;
+    font-size: 10vh;
+  }
+}
+
+@media screen and (max-width: 290px) {
+  .single-value-total, .single-value-header {
+    font-size: 0.75rem;
   }
 }
 
@@ -95,5 +101,11 @@
 @include media-breakpoint-up(xl) {
   .single-value-total {
     font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 290px) {
+  .single-value-total, .single-value-header {
+    font-size: 0.75rem;
   }
 }

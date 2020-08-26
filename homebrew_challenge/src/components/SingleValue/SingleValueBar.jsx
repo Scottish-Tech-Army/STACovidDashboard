@@ -9,48 +9,6 @@ import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
 import moment from "moment";
 
 // Exported for tests
-export function parseCsvData(csvData) {
-  function getLatestValue(dateValueMap) {
-    const lastDate = [...dateValueMap.keys()].sort().pop();
-    if (!lastDate) {
-      return { date: undefined, value: undefined };
-    }
-    const lastValue = dateValueMap.get(lastDate);
-    return { date: Date.parse(lastDate), value: lastValue };
-  }
-
-  function getLatestDiff(dateValueMap) {
-    const dates = [...dateValueMap.keys()].sort();
-    const lastDate = dates.pop();
-    const secondLastDate = dates.pop();
-    if (!lastDate || !secondLastDate) {
-      return { date: undefined, value: undefined };
-    }
-    const lastValue = dateValueMap.get(lastDate);
-    const secondLastValue = dateValueMap.get(secondLastDate);
-    return { date: Date.parse(lastDate), value: lastValue - secondLastValue };
-  }
-
-  var lines = readCsvData(csvData);
-
-  const cumulativeTotalTestsMap = new Map();
-
-  lines.forEach(([date, countType, count], i) => {
-    if ("cumulativeTotalTests" === countType) {
-      cumulativeTotalTestsMap.set(date, Number(count));
-    } else {
-      // 2020-08-13 Disabled temporarily while we decide to keep ot bin the tests completed metric
-      // throw new Error("Unrecognised input: " + countType);
-    }
-  });
-
-  return {
-    dailyTestsCompleted: getLatestDiff(cumulativeTotalTestsMap),
-    totalTestsCompleted: getLatestValue(cumulativeTotalTestsMap),
-  };
-}
-
-// Exported for tests
 export function parseNhsCsvData(csvData) {
   var lines = readCsvData(csvData);
   var result = {
@@ -176,7 +134,9 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyCases"
-                title={guardMissingData(getRelativeReportedDate(dailyCases.date))}
+                title={guardMissingData(
+                  getRelativeReportedDate(dailyCases.date)
+                )}
                 value={guardMissingData(dailyCases.value)}
                 tooltip="These are the Total Cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
@@ -197,7 +157,9 @@ function SingleValueBar() {
             <Col className="single-value-bar-col">
               <SingleValue
                 id="dailyFatalities"
-                title={guardMissingData(getRelativeReportedDate(dailyFatalities.date))}
+                title={guardMissingData(
+                  getRelativeReportedDate(dailyFatalities.date)
+                )}
                 value={guardMissingData(dailyFatalities.value)}
                 tooltip="These are the fatalities reported today and updated after 2pm daily (Can be delayed because of data fetching)"
               />
