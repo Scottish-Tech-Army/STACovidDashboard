@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const Footer = () => {
-
   return (
     <footer>
       <Container fluid className="font-small">
@@ -13,6 +12,11 @@ const Footer = () => {
           <Col xs={12} md={3}>
             <div className="sitemap">
               <div className="title">CONNECT WITH US</div>
+              <div className="entry link">
+                <a className="entry link" href="https://www.linkedin.com/company/scottish-tech-army-limited">
+                  LinkedIn
+                </a>
+              </div>
               <div className="entry link">
                 <a
                   className="entry link"
@@ -22,21 +26,10 @@ const Footer = () => {
                 </a>
               </div>
               <div className="entry link">
-                <a className="entry link" href="https://www.linkedin.com/company/scottish-tech-army-limited">
-                  LinkedIn
-                </a>
-              </div>
-              <div className="entry link">
                 <a className="entry link" href="https://www.scottishtecharmy.org/podcasts">
                   STA Podcast
                 </a>
               </div>
-            </div>
-          </Col>
-          <Col xs={12} md={3}>
-            <div className="sitemap">
-              <div className="title">CONTACT US</div>
-              <div className="email">info@sta.org</div>
             </div>
           </Col>
           <Col xs={12} md={3}>
@@ -85,10 +78,16 @@ const Footer = () => {
               </div>
             </div>
           </Col>
+          <Col xs={12} md={3}>
+            <div className="sitemap">
+              <div className="title">CONTACT US</div>
+              <div className="email">info@sta.org</div>
+            </div>
+          </Col>
         </Row>
         <Row>
           <Col>
-            <div className="footer-copyright text-left py-3 p-3">
+            <div className="footer-copyright text-center py-3 p-3">
               Unless otherwise stated, this webpage contains public sector
               information licensed under{" "}
               <a

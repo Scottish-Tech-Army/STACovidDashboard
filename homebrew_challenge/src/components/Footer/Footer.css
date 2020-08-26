@@ -14,7 +14,7 @@
 }
 
 .email, .sitemap .title, .sitemap .entry {
-  text-align: left;
+  text-align: center;
 }
 
 @media screen and (max-width: 768px) {
