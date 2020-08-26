@@ -6,11 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 import org.apache.http.Header;
@@ -89,11 +85,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             storeStatsQuery(QUERY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS,
                     OBJECTKEY_DAILY_HEALTH_BOARDS_CASES_AND_PATIENTS, context);
 
-            String last7Days = getDaysDateValueClause();
             String last2Years = getYearsDateValueClause();
 
-            storeStatsQuery(QUERYTEMPLATE_SUMMARY_COUNTS.replace(LAST_7_DAYS, last7Days), OBJECTKEY_SUMMARY_COUNTS,
-                    context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_HEALTH_BOARDS_DEATHS.replace(LAST_2_YEARS, last2Years),
                     OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS, context);
             storeStatsQuery(QUERYTEMPLATE_ANNUAL_COUNCIL_AREAS_DEATHS.replace(LAST_2_YEARS, last2Years),
@@ -281,25 +274,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         return singleYearLine(thisYear) + singleYearLine(thisYear - 1);
     }
 
-    // Last 7 days
-    private static String getDaysDateValueClause() {
-        Instant today = Instant.now();
-        StringBuilder result = new StringBuilder(singleDayLine(today));
-
-        for (int i = 1; i < 7; i++) {
-            Instant nextDay = today.minus(i, ChronoUnit.DAYS);
-            result.append(singleDayLine(nextDay));
-        }
-        return result.toString();
-    }
-
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    private static String singleDayLine(Instant date) {
-        String dateString = simpleDateFormat.format(new Date(date.toEpochMilli()));
-        return "( <http://reference.data.gov.uk/id/day/" + dateString + "> \"" + dateString + "\" )";
-    }
-
     private static String singleYearLine(int year) {
         return "( <http://reference.data.gov.uk/id/year/" + year + "> \"" + year + "\" )";
     }
@@ -335,7 +309,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
     private static final String OBJECTKEY_STATS_GOV_DATES_MODIFIED = OBJECT_FOLDER + "datesmodified.csv";
-    private static final String OBJECTKEY_SUMMARY_COUNTS = OBJECT_FOLDER + "summaryCounts.csv";
     private static final String OBJECTKEY_WEEKLY_HEALTH_BOARDS_DEATHS = OBJECT_FOLDER + "weeklyHealthBoardsDeaths.csv";
     private static final String OBJECTKEY_ANNUAL_HEALTH_BOARDS_DEATHS = OBJECT_FOLDER + "annualHealthBoardsDeaths.csv";
     private static final String OBJECTKEY_DAILY_SCOTTISH_CASES_AND_DEATHS = OBJECT_FOLDER
@@ -349,7 +322,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     private static final String RSS_NEWS_FEED_URL = "https://news.gov.scot/feed/rss";
     private static final String OBJECTKEY_RSS_NEWS_FEED = OBJECT_FOLDER + "newsScotGovRss.xml";
 
-    private static final String LAST_7_DAYS = "__LAST_7_DAYS__";
     private static final String LAST_2_YEARS = "__LAST_2_YEARS__";
 
     private static final String FRAGMENT_COMMON_PREFIXES = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
@@ -361,19 +333,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "?obs <http://statistics.gov.scot/def/dimension/age> <http://statistics.gov.scot/def/concept/age/all>.\n"
             + "?obs <http://statistics.gov.scot/def/dimension/causeOfDeath> <http://statistics.gov.scot/def/concept/cause-of-death/covid-19-related>.\n"
             + "?obs <http://statistics.gov.scot/def/dimension/locationOfDeath> <http://statistics.gov.scot/def/concept/location-of-death/all>.\n";
-
-    private static final String QUERYTEMPLATE_SUMMARY_COUNTS = FRAGMENT_COMMON_PREFIXES
-            + "SELECT ?date ?shortValue ?count WHERE {\n" + "  VALUES (?value ?shortValue) {\n"
-            + "    ( <http://statistics.gov.scot/def/concept/variable/testing-daily-people-found-positive> \"dailyPositiveTests\" )\n"
-            + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-positive> \"cumulativePositiveTests\" )\n"
-            + "    ( <http://statistics.gov.scot/def/concept/variable/testing-cumulative-people-tested-for-covid-19-total> \"cumulativeTotalTests\")\n"
-            + "    ( <http://statistics.gov.scot/def/concept/variable/number-of-covid-19-confirmed-deaths-registered-to-date> \"cumulativeDeaths\" )\n"
-            + "  }\n" + "  VALUES (?perioduri ?date) { " + LAST_7_DAYS + " }\n"
-            + "  ?obs qb:dataSet <http://statistics.gov.scot/data/coronavirus-covid-19-management-information> .\n"
-            + "  ?obs dim:refArea <http://statistics.gov.scot/id/statistical-geography/S92000003> .\n"
-            + "  ?obs <http://statistics.gov.scot/def/dimension/variable> ?value .\n"
-            + "  ?obs <http://statistics.gov.scot/def/measure-properties/count> ?count .\n"
-            + "  ?obs dim:refPeriod ?perioduri\n" + "}";
 
     private static final String QUERY_WEEKLY_HEALTH_BOARDS_DEATHS = FRAGMENT_COMMON_PREFIXES + "\n"
             + "SELECT ?date ?areaname ?count WHERE {\n" + FRAGMENT_ALL_COVID_DEATHS
