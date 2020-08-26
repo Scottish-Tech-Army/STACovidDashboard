@@ -101,7 +101,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className="entry link">
-                <a id="entry-link" className="entry link" href="LinkedIn">
+                <a id="entry-link" className="entry link" href="https://www.linkedin.com/company/scottish-tech-army-limited">
                   LinkedIn
                 </a>
               </div>
