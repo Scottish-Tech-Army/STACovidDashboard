@@ -97,7 +97,6 @@ const Footer = ({
                   [Accessibility etc.]
                 </a>
               </div>
-            
             </div>
           </Col>
           <Col xs={12} md={4}>
