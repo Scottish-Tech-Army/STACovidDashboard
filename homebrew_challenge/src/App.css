@@ -60,9 +60,10 @@ img#logo {
 
 .about-us {
   text-align: center;
+  padding-top: 3vh;
 }
 
-.about-us ul {
+.about-us {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -71,4 +72,15 @@ img#logo {
 .about-us .name {
   color: #3c3c3b;
   font-size: 16pt;
+}
+
+.about-us h1 {
+  padding-top: 2vh;
+}
+
+.team-members {
+  padding-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
