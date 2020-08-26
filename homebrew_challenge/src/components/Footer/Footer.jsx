@@ -4,24 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Footer = ({
-  PAGE_PUBLIC_DASHBOARD,
-  PAGE_ANALYTICS_DASHBOARD,
-  PAGE_DATA_SOURCES,
-  PAGE_ABOUT_US,
-  setCurrentPage
-}) => {
-  function sitemapEntry(key, text) {
-    return (
-      <div
-        className="entry link"
-        id="entry-link"
-        onClick={() => setCurrentPage(key)}
-      >
-        {text}
-      </div>
-    );
-  }
+const Footer = () => {
 
   return (
     <footer>
