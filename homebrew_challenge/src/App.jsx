@@ -19,6 +19,12 @@ import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
 } from "./components/HeatmapDataSelector/HeatmapConsts";
+import {
+  PAGE_PUBLIC_DASHBOARD,
+  PAGE_ANALYTICS_DASHBOARD,
+  PAGE_DATA_SOURCES,
+  PAGE_ABOUT_US,
+} from "./PageConsts";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 
@@ -29,10 +35,6 @@ const tagManagerArgs = {
 TagManager.initialize(tagManagerArgs);
 
 const App = () => {
-  const PAGE_PUBLIC_DASHBOARD = "publicDashboard";
-  const PAGE_ANALYTICS_DASHBOARD = "analyticsDashboard";
-  const PAGE_DATA_SOURCES = "dataSources";
-  const PAGE_ABOUT_US = "aboutUs";
 
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
@@ -444,10 +446,6 @@ const App = () => {
       {currentPage === PAGE_DATA_SOURCES ? pageDataSources() : <></>}
       {currentPage === PAGE_ABOUT_US ? pageAboutUs() : <></>}
       <Footer
-        PAGE_PUBLIC_DASHBOARD = {PAGE_PUBLIC_DASHBOARD}
-        PAGE_ANALYTICS_DASHBOARD = {PAGE_ANALYTICS_DASHBOARD}
-        PAGE_DATA_SOURCES = {PAGE_DATA_SOURCES}
-        PAGE_ABOUT_US = {PAGE_ABOUT_US}
         setCurrentPage={setCurrentPage}
       />
     </div>

@@ -13,8 +13,8 @@
   font-weight: normal;
 }
 
-.email, .sitemap .title, .sitemap .entry {
-  text-align: center;
+.sitemap .email, .sitemap .title, .sitemap .entry {
+  text-align: left;
 }
 
 @media screen and (max-width: 768px) {
@@ -23,6 +23,26 @@
   }
 }
 
+.sitemap-container {
+  flex-direction: row;
+}
+
+@media screen and (max-width: 1024px) {
+  .sitemap-container {
+    flex-direction: column;
+  }
+}
+
 footer {
-  padding: 0.5rem 0 1.5rem 0;
+  padding: 0 0 1.5rem 0;
+}
+
+.social-media {
+  padding: 0 5px;
+}
+
+.sitemap {
+  margin-right: 50px;
+  margin-left: 20px;
+  margin-top: 15px;
 }
