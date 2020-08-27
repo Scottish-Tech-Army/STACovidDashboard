@@ -2,7 +2,6 @@
 
 import React from "react";
 import SingleValueBar, {
-  // parseCsvData,
   parseNhsCsvData,
   getRelativeReportedDate,
 } from "./SingleValueBar";
