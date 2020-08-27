@@ -28,6 +28,7 @@
 
 #link {
   color: white;
+  text-decoration: underline;
 }
 
 #link:hover {
