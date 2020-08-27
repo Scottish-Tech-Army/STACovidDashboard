@@ -33,8 +33,8 @@ const Footer = ({ setCurrentPage }) => {
       <Container fluid className="font-small">
         <Row className="p-1">
           <Col
+            sm={12}
             md={12}
-            lg={4}
             className="p-2 d-flex justify-content-left sta-logo"
           >
             <a
@@ -51,8 +51,8 @@ const Footer = ({ setCurrentPage }) => {
             </a>
           </Col>
           <Col
+            sm={12}
             md={12}
-            lg={8}
             className="sitemap-container d-flex justify-content-between"
           >
             <div className="sitemap">

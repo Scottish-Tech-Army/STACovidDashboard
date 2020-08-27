@@ -21,22 +21,20 @@
   .sitemap .title {
     padding-top: 20px;
   }
-  .sta-logo {
-    display: block;
-  }
 }
 
 .sitemap-container {
   flex-direction: row;
+  padding-bottom: 20px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 767px) {
   .sitemap-container {
     flex-direction: column;
   }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 570px) {
   .social {
     margin-top: 20px;
   }
@@ -47,11 +45,15 @@
 }
 
 .sitemap {
-  margin-right: 50px;
+  margin-right: 20px;
   margin-left: 20px;
   margin-top: 15px;
 }
 
 .sta-logo {
   margin-left: 20px;
+}
+
+footer {
+  padding-bottom: 50px;
 }
