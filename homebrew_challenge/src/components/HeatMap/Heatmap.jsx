@@ -221,8 +221,8 @@ function Heatmap({
 
   function areaTitle() {
     return AREATYPE_COUNCIL_AREAS === areaType
-      ? "Council Areas"
-      : "Health Boards";
+      ? "COUNCIL AREAS"
+      : "HEALTH BOARDS";
   }
 
   function areaSubTitle() {
@@ -235,7 +235,7 @@ function Heatmap({
   }
 
   function valueTitle() {
-    return VALUETYPE_DEATHS === valueType ? "Total Deaths" : "Total Cases";
+    return VALUETYPE_DEATHS === valueType ? "TOTAL DEATHS" : "TOTAL CASES";
   }
 
   function heatbarScale() {
@@ -277,7 +277,7 @@ function Heatmap({
               <div className="subheading">{totalCount()}</div>
             </th>
             <th>
-              <div>Daily Count</div>
+              <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>

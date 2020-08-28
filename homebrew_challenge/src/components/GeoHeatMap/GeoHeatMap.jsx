@@ -355,7 +355,7 @@ const GeoHeatMap = ({
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
           div.innerHTML +=
-            "<div class='legend-title'>Region Counts<br/>(last 7 days)</div>";
+            "<div class='legend-title'>REGION " + currentValueTypeRef.current.toUpperCase() + "<br/>(last 7 days)</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
