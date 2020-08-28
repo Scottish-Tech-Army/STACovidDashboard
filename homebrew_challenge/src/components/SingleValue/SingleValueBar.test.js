@@ -2,7 +2,6 @@
 
 import React from "react";
 import SingleValueBar, {
-  parseCsvData,
   parseNhsCsvData,
   getRelativeReportedDate,
 } from "./SingleValueBar";
@@ -38,22 +37,12 @@ test("singleValueBar renders default data when fetch fails", async () => {
   checkSingleValue("dailyFatalities", "Reported on 01/01/1999", "0");
   checkSingleValue("totalFatalities", "Total", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
-  checkSingleValue("dailyTestsCompleted", "Daily", "0");
-  checkSingleValue("totalTestsCompleted", "Total", "0");
 });
 
-function setFetchResponses(testsCsvData, nhsCsvData) {
-  fetch.mockResponse((req) => {
-    return req.url === "data/summaryCounts.csv"
-      ? Promise.resolve(testsCsvData)
-      : req.url === "data/currentTotalsHealthBoards.csv"
-      ? Promise.resolve(nhsCsvData)
-      : Promise.reject(new Error("bad url: " + req.url));
-  });
-}
+
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
-  setFetchResponses(csvData, nhsCsvData);
+  fetch.mockResponse(nhsCsvData);
 
   // Set today to be 2020-06-21
   setMockDate("2020-06-21");
@@ -67,12 +56,10 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
   checkSingleValue("dailyFatalities", "Reported Today", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
-  setFetchResponses(csvData, nhsCsvData);
+  fetch.mockResponse(nhsCsvData);
 
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
@@ -86,50 +73,10 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
   checkSingleValue("totalFatalities", "Total", "2491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
-});
-
-test("singleValueBar renders dynamic fetched data with incomplete diff data", async () => {
-  setFetchResponses(incompleteDiffCsvData, nhsCsvData);
-
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
-
-  await act(async () => {
-    render(<SingleValueBar />, container);
-  });
-
-  checkSingleValue("dailyCases", "Reported Yesterday", "47");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
-  checkSingleValue("totalFatalities", "Total", "2491");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
-});
-
-test("singleValueBar renders dynamic fetched data with missing data", async () => {
-  setFetchResponses(missingCsvData, nhsCsvData);
-
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
-
-  await act(async () => {
-    render(<SingleValueBar />, container);
-  });
-
-  checkSingleValue("dailyCases", "Reported Yesterday", "47");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
-  checkSingleValue("totalFatalities", "Total", "2491");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
-  checkSingleValue("dailyTestsCompleted", "Daily", "Not available");
-  checkSingleValue("totalTestsCompleted", "Total", "Not available");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
-  setFetchResponses(csvData, missingNhsCsvData);
+  fetch.mockResponse(missingNhsCsvData);
 
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
@@ -143,8 +90,6 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("dailyFatalities", "Not available", "Not available");
   checkSingleValue("totalFatalities", "Total", "Not available");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
-  checkSingleValue("dailyTestsCompleted", "Daily", "3442");
-  checkSingleValue("totalTestsCompleted", "Total", "231525");
 });
 
 test("getRelativeReportedDate", () => {
@@ -163,15 +108,6 @@ test("getRelativeReportedDate", () => {
   expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
-test("parseCsvData", () => {
-  const expectedResult = {
-    dailyTestsCompleted: { date: 1592697600000, value: 3442 },
-    totalTestsCompleted: { date: 1592697600000, value: 231525 },
-  };
-
-  expect(parseCsvData(csvData)).toStrictEqual(expectedResult);
-});
-
 test("parseNhsCsvData", () => {
   const expectedResult = {
     cases: { date: 1592697600000, value: 47 },
@@ -183,18 +119,6 @@ test("parseNhsCsvData", () => {
 
   expect(parseNhsCsvData(nhsCsvData)).toStrictEqual(expectedResult);
 });
-
-// 2020-08-13 Disabled temporarily while we decide to keep ot bin the tests completed metric
-// test("parseCsvData with bad count type", () => {
-//   const badCsvData = `date,shortValue,count
-//     2020-03-02,unknown,815`;
-//
-//   global.suppressConsoleErrorLogs();
-//
-//   expect(() => {
-//     parseCsvData(badCsvData);
-//   }).toThrow("Unrecognised input: unknown");
-// });
 
 function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
   const singleValueElement = container.querySelector("#" + singleValueId);
@@ -209,34 +133,6 @@ function setMockDate(date) {
     .spyOn(global.Date, "now")
     .mockImplementation(() => Date.parse(date).valueOf());
 }
-
-const csvData = `date,shortValue,count
-2020-04-20,cumulativeDeaths,915
-2020-05-20,cumulativeDeaths,2184
-2020-04-20,cumulativePositiveTests,8450
-2020-05-20,cumulativePositiveTests,14751
-2020-04-20,cumulativeTotalTests,40700
-2020-05-20,cumulativeTotalTests,92594
-2020-04-20,dailyPositiveTests,263
-2020-05-20,dailyPositiveTests,96
-2020-06-20,cumulativePositiveTests,18130
-2020-06-20,cumulativeTotalTests,228083
-2020-06-20,dailyPositiveTests,26
-2020-06-20,cumulativeDeaths,2473
-2020-06-21,cumulativePositiveTests,18156
-2020-06-21,cumulativeTotalTests,231525
-2020-06-21,dailyPositiveTests,26
-2020-06-21,cumulativeDeaths,2472`;
-
-// On the cases where there isn't enough data to do diffs of cumulative values
-const incompleteDiffCsvData = `date,shortValue,count
-2020-06-21,cumulativePositiveTests,18156
-2020-06-21,cumulativeTotalTests,231525
-2020-06-21,dailyPositiveTests,26
-2020-06-21,cumulativeDeaths,2472`;
-
-// On the cases where there isn't data available
-const missingCsvData = `date,shortValue,count`;
 
 const nhsCsvData = `Date,HB,HBQF,NewPositive,TotalCases,CrudeRatePositive,TotalPositivePercent,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
 20200621,S08000015,"",2,1285,347.899068659303,0.0476243421540286,0,171,46.2962962962963,25697,6957.16915746156
