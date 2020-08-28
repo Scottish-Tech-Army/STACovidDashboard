@@ -16,7 +16,6 @@ const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
       <div className="entry link" onClick={() => setCurrentPage(key)}>
-        {" "}
         <div
           className="entry link"
           id="entry-link"
