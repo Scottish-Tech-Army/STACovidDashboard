@@ -18,19 +18,6 @@
   font-weight: bold;
 }
 
-.btn-secondary.disabled,
-.btn-secondary.disabled:hover,
-.btn-secondary.disabled:active,
-.btn-secondary:disabled,
-.btn-secondary:disabled:hover,
-.btn-secondary:disabled:active,
-.btn-secondary:disabled:focus {
-  color: white;
-  background-color: #616161;
-  border-color: #616161;
-  font-weight: bold;
-}
-
 .heatmap-selector .toggle-button-group {
   margin: 0.5rem 0 0.5rem 0;
 }
