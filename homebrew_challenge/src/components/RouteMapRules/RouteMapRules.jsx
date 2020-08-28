@@ -10,7 +10,19 @@ const RouteMapRules = () => {
       <Row>
         <Col xs="12" className="current-phase mb-2">
           <h3>
-            We are currently in <span className="current-phase-number">Phase 3</span> of the Scottish Government's <a className="link" id="link" target="_blank" rel="noopener noreferrer" href="https://www.gov.scot/coronavirus-covid-19/">COVID-19 Routemap</a>.
+            We are currently in{" "}
+            <span className="current-phase-number">Phase 3</span> of the
+            Scottish Government's{" "}
+            <a
+              className="link"
+              id="link"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.gov.scot/coronavirus-covid-19/"
+            >
+              COVID-19 Routemap
+            </a>
+            .
           </h3>
         </Col>
       </Row>

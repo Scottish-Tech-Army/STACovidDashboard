@@ -1,0 +1,59 @@
+.sitemap .title {
+  font-weight: bold;
+}
+
+.sitemap .entry:hover,
+.sitemap .entry:active {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0056b3;
+}
+
+.sitemap .entry {
+  font-weight: normal;
+}
+
+.sitemap .email, .sitemap .title, .sitemap .entry {
+  text-align: left;
+}
+
+@media screen and (max-width: 768px) {
+  .sitemap .title {
+    padding-top: 20px;
+  }
+}
+
+.sitemap-container {
+  flex-direction: row;
+  padding-bottom: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .sitemap-container {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .social {
+    margin-top: 20px;
+  }
+}
+
+.social-media {
+  padding: 0 5px;
+}
+
+.sitemap {
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 15px;
+}
+
+.sta-logo {
+  margin-left: 20px;
+}
+
+footer {
+  padding-bottom: 50px;
+}
