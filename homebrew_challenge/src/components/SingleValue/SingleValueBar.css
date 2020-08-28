@@ -16,13 +16,13 @@
 
 .single-value-bar .title {
   background-color: white;
-  color: #2a84bb;
+  color: #287DB2;
   text-align: center;
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
-  border: 2px solid #2a84bb;
+  border: 2px solid #287DB2;
 }
 
 .single-value-bar-row {
@@ -40,7 +40,7 @@
 
 .single-value {
   color: White;
-  background-color: #2a84bb;
+  background-color: #287DB2;
   text-align: center;
   width: 100%;
 }
