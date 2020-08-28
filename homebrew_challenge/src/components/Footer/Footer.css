@@ -19,22 +19,25 @@
 
 @media screen and (max-width: 768px) {
   .sitemap .title {
-    padding-top: 1rem;
+    padding-top: 20px;
   }
 }
 
 .sitemap-container {
   flex-direction: row;
+  padding-bottom: 20px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 767px) {
   .sitemap-container {
     flex-direction: column;
   }
 }
 
-footer {
-  padding: 0 0 1.5rem 0;
+@media screen and (max-width: 570px) {
+  .social {
+    margin-top: 20px;
+  }
 }
 
 .social-media {
@@ -42,7 +45,15 @@ footer {
 }
 
 .sitemap {
-  margin-right: 50px;
+  margin-right: 20px;
   margin-left: 20px;
   margin-top: 15px;
+}
+
+.sta-logo {
+  margin-left: 20px;
+}
+
+footer {
+  padding-bottom: 50px;
 }

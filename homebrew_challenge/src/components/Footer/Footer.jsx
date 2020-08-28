@@ -17,7 +17,6 @@ const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
       <div className='entry link' onClick={() => setCurrentPage(key)}>
-        {' '}
         <div
           className='entry link'
           id='entry-link'
@@ -32,12 +31,8 @@ const Footer = ({ setCurrentPage }) => {
   return (
     <footer>
       <Container fluid className='font-small'>
-        <Row className='p-4'>
-          <Col
-            md={12}
-            lg={4}
-            className='p-2 d-flex justify-content-left sta-logo'
-          >
+        <Row className='p-1'>
+          <Col md={12} className='p-2 d-flex justify-content-left sta-logo'>
             <a
               href='https://www.scottishtecharmy.org/'
               target='_blank'
@@ -52,8 +47,8 @@ const Footer = ({ setCurrentPage }) => {
             </a>
           </Col>
           <Col
+            sm={12}
             md={12}
-            lg={8}
             className='sitemap-container d-flex justify-content-between'
           >
             <div className='sitemap'>
@@ -128,7 +123,7 @@ const Footer = ({ setCurrentPage }) => {
             </div>
           </Col>
         </Row>
-        <Row className='d-none d-sm-flex'>
+        <Row className='d-sm-flex'>
           <Col>
             <hr className='full-width-hr' />
           </Col>
@@ -158,7 +153,7 @@ const Footer = ({ setCurrentPage }) => {
               </a>
             </div>
           </Col>
-          <Col sm={12} md={3} className='d-flex justify-content-end'>
+          <Col sm={12} md={3} className='d-flex justify-content-end social'>
             <div>Connect with us:{'  '}</div>
             <div className='entry link'>
               <a
