@@ -13,7 +13,7 @@
 
 .more-info-icon {
   height: 70px;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .timestamp, .message, .news-item-title {
@@ -22,7 +22,13 @@
 }
 
 @media screen and (min-width: 1025px) {
+  .news-items-block {
+    padding: 0;
+  }
+  .list-items {
+    padding: 0px;
+  }
   .more-info-icon {
-    margin-left: 50px;
+    margin-left: 15px;
   }
 }

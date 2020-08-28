@@ -26,7 +26,7 @@ const InfoBar = () => {
     covidNews === null || covidNews.length === 0 ? (
       <>
         <p className="news-item-title">NO NEWS AVAILABLE</p>
-        <p className="news-item">Oops, something went wrong.  Please check back later.</p>
+        <p className="news-item">Oops, something went wrong. Please check back again later.</p>
       </>
     ) : (
       covidNews.map((item, index) => {
@@ -58,7 +58,7 @@ const InfoBar = () => {
           <img className="more-info-icon" src="./assets/more_info.png" alt="" />
         </Col>
         <Col md={11} className="news-items-block">
-        <ul>{covidNewsItems}</ul>
+        <ul className="list-items">{covidNewsItems}</ul>
         </Col>
       </Row>
       <Row>
