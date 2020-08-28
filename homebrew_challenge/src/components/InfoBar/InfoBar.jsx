@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getLatestFiveNewsItems } from "../Utils/RssFeedUtils";
 import "./InfoBar.css";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const InfoBar = () => {
   const [covidNews, setCovidNews] = useState(null);
@@ -21,13 +24,16 @@ const InfoBar = () => {
 
   const covidNewsItems =
     covidNews === null || covidNews.length === 0 ? (
-      <li className="news-item">No news available, please check back later</li>
+      <>
+        <p className="news-item-title">NO NEWS AVAILABLE</p>
+        <p className="news-item">Oops, something went wrong.  Please check back later.</p>
+      </>
     ) : (
       covidNews.map((item, index) => {
         return (
-          <li key={index} className="news-item">
+          <li key={index}>
             <a
-              className="news-item-link link"
+              className="link"
               target="_blank"
               href={item.link}
               rel="noopener noreferrer"
@@ -46,25 +52,31 @@ const InfoBar = () => {
     );
 
   return (
-    <div className="info-bar">
-      <span>
-        <img className="more-info-icon" src="./assets/more_info.png" alt="" />
-      </span>
-      <span className="news-items-block">
+    <Container fluid className="info-bar">
+      <Row>
+        <Col md={1}>
+          <img className="more-info-icon" src="./assets/more_info.png" alt="" />
+        </Col>
+        <Col md={11} className="news-items-block">
         <ul>{covidNewsItems}</ul>
-        <span className="message" id="msg">
+        </Col>
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end">
+        <span className="message">
           ...more from{" "}
           <a
-            className="link message"
+            className="link scot-gov-link"
             target="_blank"
             href="https://news.gov.scot/news"
             rel="noopener noreferrer"
           >
             news.gov.scot
           </a>
-        </span>
-      </span>
-    </div>
+          </span>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
