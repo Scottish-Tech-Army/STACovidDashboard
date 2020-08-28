@@ -496,13 +496,13 @@ const App = () => {
 
   function pageAccessibility() {
     return (
-      <div className='accessibilty-page'>
+      <div fluid='true' className='accessibility-page'>
         <h1>Accessibility</h1>
-        <p>
+        <p className='px-5'>
           We want everyone who visits the Covid-19 Dashboard to feel welcome,
           and able to find information whatever their circumstances
         </p>
-        <p>To do this we've:</p>
+        <p className='px-5'>To do this we've:</p>
         <ul>
           <li>
             Designed the dashboard to be accessible and usable for everyone
@@ -514,38 +514,47 @@ const App = () => {
         </ul>
         <hr />
         <h2>Confirmance statement</h2>
-        <p>
+        <p className='px-5'>
           We're working towards meeting the AA standard of the Web COntent
           Accessibility Guidelines (WCAG) 2.0.
         </p>
-        <p>
+        <p className='px-5'>
           Automated testing has taken place against these standards and all
           expectations are met under the directive
         </p>
         <hr />
         <h2>Browsers</h2>
-        <p>We've tested the website using the following web browsers:</p>
-        <ul>
-          <li>browser 1</li>
-          <li>browser 2</li>
-          <li>browser 3</li>
+        <p className='px-5'>
+          We've tested the website using the following web browsers:
+        </p>
+        <ul className='browsers'>
+          <li>Google Chrome</li>
+          <li>Mozilla Firefox</li>
+          <li>Safari</li>
+          <li>Microsoft Edge</li>
         </ul>
-        <p>We've tested the website using the following mobile browsers:</p>
-        <ul>
-          <li>browser 1</li>
-          <li>browser 2</li>
-          <li>browser 3</li>
+        <p className='px-5'>
+          We've tested the website using the following mobile browsers:
+        </p>
+        <ul className='browsers'>
+          <li>Google Chrome</li>
+          <li>Mozilla Firefox</li>
+          <li>Safari</li>
+          <li>Samsung Browser</li>
         </ul>
         <hr />
         <h2>Screen Readers</h2>
-        <p>
+        <p className='px-5'>
           This website is compatible with modern screen readers and other
           assistive technologies
         </p>
         <hr />
         <h2>Data Sonification</h2>
-        <p>
-          Some copy needed from Eirini around the sonification piece to go here
+        <p className='px-5'>
+          <i>
+            (Some copy needed from Eirini around the sonification piece to go
+            here)
+          </i>
         </p>
         <hr />
       </div>

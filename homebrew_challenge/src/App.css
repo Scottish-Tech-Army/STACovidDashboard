@@ -8,7 +8,8 @@
   border: 1px solid #319bd5;
 }
 
-.full-screen, .fullscreen-charts {
+.full-screen,
+.fullscreen-charts {
   background-color: White;
 }
 
@@ -23,12 +24,14 @@ img#logo {
   text-decoration: none;
 }
 
-.about-us {
+.about-us,
+.accessibility-page {
   text-align: center;
   padding-top: 3vh;
 }
 
-.about-us {
+.about-us,
+.accessibility-page ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -39,7 +42,9 @@ img#logo {
   font-size: 16pt;
 }
 
-.about-us h1 {
+.about-us h1,
+.accessibility-page h1,
+.accessibility-page p {
   padding-top: 2vh;
 }
 
@@ -48,4 +53,9 @@ img#logo {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.accessibility-page .browsers {
+  font-style: italic;
+  padding-top: 0.1vh;
 }
