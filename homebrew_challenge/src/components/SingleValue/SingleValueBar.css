@@ -69,43 +69,13 @@
 
 /*CSS3 extras*/
 
-@include media-breakpoint-up(xs) {
+@media screen and (max-width: 340px) {
   .single-value-total {
-    font-size: 10vh;
+    font-size: 1.1rem;
   }
-}
 
-@media screen and (max-width: 290px) {
-  .single-value-total, .single-value-header {
-    font-size: 0.75rem;
-  }
-}
+  .single-value-header {
+    font-size: 0.55rem;
 
-@include media-breakpoint-up(sm) {
-  .single-value-total {
-    font-size: 0.75rem;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  .single-value-total {
-    font-size: 1.25rem;
-  }
-}
-
-@include media-breakpoint-up(lg) {
-  .single-value-total {
-    font-size: 1.75rem;
-  }
-}
-@include media-breakpoint-up(xl) {
-  .single-value-total {
-    font-size: 2rem;
-  }
-}
-
-@media screen and (max-width: 290px) {
-  .single-value-total, .single-value-header {
-    font-size: 0.75rem;
   }
 }
