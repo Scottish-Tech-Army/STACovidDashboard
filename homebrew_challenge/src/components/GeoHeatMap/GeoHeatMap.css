@@ -43,5 +43,12 @@
   opacity: 0.7;
 }
 .region-popup {
-  text-align: center;
+  text-align: left;
+}
+
+.map-date-range {
+  font-weight: bold;
+  color: #fc8d59;
+  border-bottom: 1px solid LightGray;
+  padding-bottom: 5px;
 }

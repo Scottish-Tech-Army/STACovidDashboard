@@ -6,6 +6,7 @@ import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
+  VALUETYPE_CASES,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
   createPlaceDateValuesMap,
@@ -174,6 +175,15 @@ const GeoHeatMap = ({
         regionData.name +
         "</strong><br />Not available</p>";
 
+        function toTitleCase(str) {
+          return str.replace(
+              /\w\S*/g,
+              function(txt) {
+                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              }
+          );
+      }
+
       const count =
         currentValueTypeRef.current === VALUETYPE_DEATHS
           ? regionData.deaths
@@ -181,15 +191,15 @@ const GeoHeatMap = ({
 
       if (regionData) {
         content =
-          "<p class='region-popup'><strong>" +
-          regionData.name +
-          "</strong><br />Count: " +
-          count +
-          "<br />(" +
+          "<div class='region-popup'><div><strong>" +
+          regionData.name.toUpperCase() +
+          "</strong></div><div class='map-date-range'>" +
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
           moment(regionData.toDate).format("DD MMM") +
-          ")</p>";
+          "</div>"+"<br />" + toTitleCase(currentValueTypeRef.current) + ": " +
+          count +
+          "<br /></div>";
       }
 
       L.popup({ closeButton: false })
