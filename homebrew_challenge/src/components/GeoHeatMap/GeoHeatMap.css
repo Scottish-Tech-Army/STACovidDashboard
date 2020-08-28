@@ -29,7 +29,7 @@
   border: 2px solid rgba(0,0,0,0.2);
 }
 .legend .legend-title {
-  text-align: center;
+  text-align: left;
   font-weight: bold;
 }
 .legend-line {
@@ -47,7 +47,7 @@
 }
 .map-date-range {
   font-weight: bold;
-  color: #fc8d59;
+  color: #e34a33;
   border-bottom: 1px solid LightGray;
   padding-bottom: 5px;
 }
