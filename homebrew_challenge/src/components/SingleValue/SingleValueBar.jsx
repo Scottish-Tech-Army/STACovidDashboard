@@ -119,16 +119,6 @@ function SingleValueBar() {
     }
   }, [nhsDataFetched]);
 
-  function blockTitleRow(title) {
-    return (
-      <Row className="title-row">
-        <Col className="title-col">
-          <div className="title">{title}</div>
-        </Col>
-      </Row>
-    );
-  }
-
   return (
     <Container fluid className="d-flex justify-content-around single-value-bar">
       <Row>

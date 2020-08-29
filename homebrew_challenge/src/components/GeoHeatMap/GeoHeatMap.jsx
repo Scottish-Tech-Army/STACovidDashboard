@@ -6,7 +6,6 @@ import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
-  VALUETYPE_CASES,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
   createPlaceDateValuesMap,
