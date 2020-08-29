@@ -1,21 +1,19 @@
 .footnote, .date-reported {
   font-size: 0.75rem;
-}
-
-.footnote-stars {
-  color: #fc8d59;
+  color: DarkGrey;
   font-weight: bold;
-  font-size: 1rem;
 }
 
 .single-value-heading {
-  height: 20%;
+  height: 25%;
+  margin-left: 20px;
 }
 
 .single-value-number {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: #2a84bb;
   font-weight: bold;
+  margin-left: 30px;
 }
 
 .single-value-line {
@@ -23,17 +21,19 @@
 }
 
 .single-value {
-  border: 1px solid DarkGray;
-  padding: 10px 20px 30px 20px;
+  box-shadow: 10px 10px 5px #aaaaaa;
+  padding: 10px 0 20px 0;
   height: 100%;
   background-color: #ffffff;
   color: #133a53;
 }
 
 .single-value-bar {
-  padding: 10px;
+  padding: 20px 10px;
+  margin: 0;
   display: flex;
   flex-direction: row;
+  background-color: #f2f2f2;
 }
 
 .single-value-container {

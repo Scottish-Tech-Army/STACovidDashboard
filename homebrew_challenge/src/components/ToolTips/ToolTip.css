@@ -1,12 +1,14 @@
-.tooltip-icon {
+/* .tooltip-icon {
   position: absolute;
   top: 0;
   right: 0;
-  padding-right: 5px;
-  padding-top: 5px;
+  padding-right: 50px;
+  padding-top: 25px;
   line-height: 1;
+  cursor: help;
 }
-
+*/
 .tooltip-icon .fa-question-circle {
-  color: white;
+  /* color: #133a53; */
+  display: none;
 }
