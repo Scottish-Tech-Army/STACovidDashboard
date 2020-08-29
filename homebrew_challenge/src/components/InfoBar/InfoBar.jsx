@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getLatestFiveNewsItems } from "../Utils/RssFeedUtils";
 import "./InfoBar.css";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const InfoBar = () => {
   const [covidNews, setCovidNews] = useState(null);
@@ -21,7 +24,10 @@ const InfoBar = () => {
 
   const covidNewsItems =
     covidNews === null || covidNews.length === 0 ? (
-      <li className="news-item">No news available, please check back later</li>
+      <>
+        <p className="news-item news-item-title">NO NEWS AVAILABLE</p>
+        <p className="news-item">Oops, something went wrong. Please check back again later.</p>
+      </>
     ) : (
       covidNews.map((item, index) => {
         return (
@@ -32,7 +38,7 @@ const InfoBar = () => {
               href={item.link}
               rel="noopener noreferrer"
             >
-              {item.title}
+              {item.title.toUpperCase()}
             </a>
             {" - "}
             {item.description}
@@ -46,16 +52,20 @@ const InfoBar = () => {
     );
 
   return (
-    <div className="info-bar">
-      <span>
-        <img className="more-info-icon" src="./assets/more_info.png" alt="" />
-      </span>
-      <span className="news-items-block">
-        <ul>{covidNewsItems}</ul>
-        <span className="message" id="msg">
+    <div className="info-bar d-flex flex-column">
+      <div className="d-flex flex-row">
+        <div className="icon-container">
+          <img className="more-info-icon" src="./assets/more_info.png" alt="" />
+        </div>
+        <div className="news-items-block justify-content-start">
+          <ul className="list-items">{covidNewsItems}</ul>
+        </div>
+      </div>
+      <div className="message-container d-flex justify-content-end">
+        <span className="message">
           ...more from{" "}
           <a
-            className="link message"
+            className="link scot-gov-link"
             target="_blank"
             href="https://news.gov.scot/news"
             rel="noopener noreferrer"
@@ -63,7 +73,7 @@ const InfoBar = () => {
             news.gov.scot
           </a>
         </span>
-      </span>
+      </div>
     </div>
   );
 };

@@ -32,7 +32,6 @@ const Footer = ({ setCurrentPage }) => {
       <Container fluid className="font-small">
         <Row className="p-1">
           <Col
-            sm={12}
             md={12}
             className="p-2 d-flex justify-content-left sta-logo"
           >
@@ -50,7 +49,6 @@ const Footer = ({ setCurrentPage }) => {
             </a>
           </Col>
           <Col
-            sm={12}
             md={12}
             className="sitemap-container d-flex justify-content-between"
           >
@@ -118,20 +116,17 @@ const Footer = ({ setCurrentPage }) => {
             <div className="sitemap">
               <div className="title">ABOUT</div>
               {sitemapEntry(PAGE_ABOUT_US, "About Us")}
-              <div className="entry link">
-                <a
-                  className="entry link"
-                  href="https://www.scottishtecharmy.org/podcasts"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  STA Podcast
-                </a>
-              </div>
             </div>
             <div className="sitemap">
               <div className="title">CONTACT</div>
-              <div className="email">info@sta.org</div>
+              <div>
+                <a
+                  href="mailto:info@sta.org?subject=Covid-19%20Dashboard%20Feedback"
+                  className=" entry link entry-link"
+                >
+                  info@sta.org
+                </a>
+              </div>
             </div>
           </Col>
         </Row>
@@ -166,7 +161,7 @@ const Footer = ({ setCurrentPage }) => {
             </div>
           </Col>
           <Col sm={12} md={3} className="d-flex justify-content-end social">
-            <div>Connect with us:{"  "}</div>
+            <div className="d-flex align-items-center">Connect with us:{" "}</div>
             <div className="entry link">
               <a
                 className="entry link"
