@@ -52,17 +52,16 @@ const InfoBar = () => {
     );
 
   return (
-    <Container fluid className="info-bar">
-      <Row>
-        <Col md={1}>
+    <div className="info-bar d-flex flex-column">
+      <div className="d-flex flex-row">
+        <div className="icon-container">
           <img className="more-info-icon" src="./assets/more_info.png" alt="" />
-        </Col>
-        <Col md={11} className="news-items-block">
+        </div>
+        <div className="news-items-block justify-content-start">
           <ul className="list-items">{covidNewsItems}</ul>
-        </Col>
-      </Row>
-      <Row>
-        <Col className="d-flex justify-content-end">
+        </div>
+      </div>
+      <div className="message-container d-flex justify-content-end">
         <span className="message">
           ...more from{" "}
           <a
@@ -73,10 +72,9 @@ const InfoBar = () => {
           >
             news.gov.scot
           </a>
-          </span>
-        </Col>
-      </Row>
-    </Container>
+        </span>
+      </div>
+    </div>
   );
 };
 

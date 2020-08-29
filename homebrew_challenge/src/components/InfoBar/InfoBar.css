@@ -3,17 +3,8 @@
   padding: 10px 20px;
 }
 
-.news-items-block {
-  margin-top: 20px;
-}
-
 .scot-gov-link {
   color: #287DB2;
-}
-
-.more-info-icon {
-  height: 70px;
-  margin-top: 25px;
 }
 
 .timestamp, .message, .news-item-title {
@@ -24,14 +15,21 @@
   font-weight: bold;
 }
 
-@media screen and (min-width: 1025px) {
-  .news-items-block {
-    padding: 0;
-  }
-  .list-items {
-    padding: 0px;
-  }
-  .more-info-icon {
-    margin-left: 15px;
-  }
+.more-info-icon {
+  height: 3rem;
+  margin-top: 5px;
+}
+
+.news-items-block {
+  padding: 0;
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.list-items {
+  padding-left: 20px;
+}
+
+.icon-container {
+  padding: 0;
 }
