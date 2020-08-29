@@ -8,3 +8,16 @@
 .tooltip-icon .fa-question-circle {
   color: #133a53;
 }
+
+#tooltip > .tooltip-inner {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  border: 0.25px solid LightGray;
+}
+
+.tooltip.show {
+  opacity: 1;
+}

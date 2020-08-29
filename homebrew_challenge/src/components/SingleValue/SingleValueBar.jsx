@@ -146,7 +146,7 @@ function SingleValueBar() {
             getRelativeReportedDate(dailyFatalities.date)
           )}
           value={guardMissingData(numberWithCommas(dailyFatalities.value))}
-          tooltip="these are the fatalities reported on the above day and updated after 2pm daily (can be delayed because of data fetching)."
+          tooltip="These are the fatalities reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
       <div className="p-2 single-value-container">
@@ -154,7 +154,7 @@ function SingleValueBar() {
           id="totalFatalities"
           heading="TOTAL FATALITIES"
           value={guardMissingData(numberWithCommas(totalFatalities.value))}
-          tooltip="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
+          tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
           dateReported="reported since 20 February, 2020"
         />
       </div>
@@ -163,7 +163,7 @@ function SingleValueBar() {
           id="fatalityCaseRatio"
           heading="DEATH/CASE RATIO"
           value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
-          tooltip="this is the percentage of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
+          tooltip="This is the % of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
         />
       </div>
     </div>
