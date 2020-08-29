@@ -25,20 +25,20 @@ const InfoBar = () => {
   const covidNewsItems =
     covidNews === null || covidNews.length === 0 ? (
       <>
-        <p className="news-item-title">NO NEWS AVAILABLE</p>
+        <p className="news-item news-item-title">NO NEWS AVAILABLE</p>
         <p className="news-item">Oops, something went wrong. Please check back again later.</p>
       </>
     ) : (
       covidNews.map((item, index) => {
         return (
-          <li key={index}>
+          <li key={index} className="news-item">
             <a
-              className="link"
+              className="news-item-link link"
               target="_blank"
               href={item.link}
               rel="noopener noreferrer"
             >
-              {item.title}
+              {item.title.toUpperCase()}
             </a>
             {" - "}
             {item.description}
@@ -58,7 +58,7 @@ const InfoBar = () => {
           <img className="more-info-icon" src="./assets/more_info.png" alt="" />
         </Col>
         <Col md={11} className="news-items-block">
-        <ul className="list-items">{covidNewsItems}</ul>
+          <ul className="list-items">{covidNewsItems}</ul>
         </Col>
       </Row>
       <Row>

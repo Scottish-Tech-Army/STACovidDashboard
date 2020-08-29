@@ -18,6 +18,9 @@
 
 .timestamp, .message, .news-item-title {
   color: #133a53;
+}
+
+.news-item-title {
   font-weight: bold;
 }
 
