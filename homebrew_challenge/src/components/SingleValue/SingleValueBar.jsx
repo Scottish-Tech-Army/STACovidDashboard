@@ -6,6 +6,10 @@ import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
 import moment from "moment";
 
 // Exported for tests
+export function numberWithCommas(number) {
+  return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function parseNhsCsvData(csvData) {
   var lines = readCsvData(csvData);
   var result = {
@@ -86,10 +90,6 @@ function SingleValueBar() {
     return input === undefined ? missingData : input;
   }
 
-  function numberWithCommas(number) {
-    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   useEffect(() => {
     const currentTotalsHealthBoardsCsv = "data/currentTotalsHealthBoards.csv";
 
@@ -123,10 +123,10 @@ function SingleValueBar() {
           <SingleValue
             id="dailyCases"
             heading="DAILY CASES"
-            footnote1={guardMissingData(
+            dateReported={guardMissingData(
               getRelativeReportedDate(dailyCases.date)
             )}
-            footnote2="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
+            footnote="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
             value={guardMissingData(numberWithCommas(dailyCases.value))}
           />
         </div>
@@ -135,18 +135,18 @@ function SingleValueBar() {
             id="totalCases"
             heading="TOTAL CASES"
             value={guardMissingData(numberWithCommas(totalCases.value))}
-            footnote1="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
+            footnote="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
           />
         </div>
       <div className="p-2 single-value-container">
           <SingleValue
             id="dailyFatalities"
             heading="DAILY FATALITIES"
-            footnote1={guardMissingData(
+            dateReported={guardMissingData(
               getRelativeReportedDate(dailyFatalities.date)
             )}
             value={guardMissingData(numberWithCommas(dailyFatalities.value))}
-            footnote2="these are the fatalities reported on the above day and updated after 2pm daily (can be delayed because of data fetching)."
+            footnote="these are the fatalities reported on the above day and updated after 2pm daily (can be delayed because of data fetching)."
           />
         </div>
       <div className="p-2 single-value-container">
@@ -154,7 +154,7 @@ function SingleValueBar() {
             id="totalFatalities"
             heading="TOTAL FATALITIES"
             value={guardMissingData(numberWithCommas(totalFatalities.value))}
-            footnote1="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
+            footnote="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
           />
         </div>
     <div className="p-2 single-value-container">
@@ -162,8 +162,7 @@ function SingleValueBar() {
             id="fatalityCaseRatio"
             heading="DEATH/CASE RATIO"
             value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
-            footnote1="this is the percentage of people who have died after testing positive for the COVID-19."
-            footnote2="the real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
+            footnote="this is the percentage of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
           />
         </div>
 

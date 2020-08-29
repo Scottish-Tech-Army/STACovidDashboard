@@ -2,30 +2,31 @@ import React from "react";
 import "./SingleValueBar.css";
 
 function SingleValue({
-  footnote1 = null,
-  footnote2 = null,
+  dateReported,
+  footnote = null,
   value = "Missing value",
-  heading
+  heading,
+  id,
 }) {
   return (
-    <div className="single-value">
+    <div className="single-value" id={id}>
       <div className="single-value-heading">
         <strong>{heading}</strong>
       </div>
       <div className="single-value-number">{value}</div>
       <hr className="single-value-line"/>
-      {footnote1 ? (
-        <div className="footnote">
+      {dateReported ? (
+        <div className="date-reported">
           <span className="footnote-stars">*</span>
-          {footnote1}
+          {dateReported}
         </div>
       ) : (
         <></>
       )}
-      {footnote2 ? (
+      {footnote ? (
         <div className="footnote">
           <span className="footnote-stars">**</span>
-          {footnote2}
+          {footnote}
         </div>
       ) : (
         <></>
