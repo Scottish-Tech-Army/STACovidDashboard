@@ -15,7 +15,7 @@
 }
 
 .single-value {
-  border: 0.5px solid LightGray;
+  border: 1px solid DarkGray;
   padding: 20px;
   height: 100%;
   background-color: #ffffff;
