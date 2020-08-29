@@ -28,7 +28,7 @@ test("infoBar renders default data when fetch fails", async () => {
   await act(async () => {
     render(<InfoBar />, container);
   });
-  checkNewsItems(["No news available, please check back later"]);
+  checkNewsItems(["NO NEWS AVAILABLE", "Oops, something went wrong. Please check back again later."]);
   checkNewsItemLinks([]);
 });
 
@@ -39,11 +39,11 @@ test("infoBar renders dynamic fetched five news items", async () => {
     render(<InfoBar />, container);
   });
   const expectedResult = [
-    "title1 - description1 | 19 Aug 2020 14:16",
-    "title2 - description2 | 19 Aug 2020 14:17",
-    "title3 - description3 | 19 Aug 2020 14:18",
-    "title4 - description4 | 19 Aug 2020 14:19",
-    "title5 - description5 | 19 Aug 2020 14:20"
+    "TITLE1 - description1 | 19 Aug 2020 14:16",
+    "TITLE2 - description2 | 19 Aug 2020 14:17",
+    "TITLE3 - description3 | 19 Aug 2020 14:18",
+    "TITLE4 - description4 | 19 Aug 2020 14:19",
+    "TITLE5 - description5 | 19 Aug 2020 14:20"
   ];
   checkNewsItems(expectedResult);
   checkNewsItemLinks(["link1", "link2", "link3", "link4", "link5"]);
@@ -56,9 +56,9 @@ test("infoBar renders dynamic fetched three news items", async () => {
     render(<InfoBar />, container);
   });
   const expectedResult = [
-    "title1 - description1 | 19 Aug 2020 14:16",
-    "title2 - description2 | 19 Aug 2020 14:17",
-    "title3 - description3 | 19 Aug 2020 14:18"
+    "TITLE1 - description1 | 19 Aug 2020 14:16",
+    "TITLE2 - description2 | 19 Aug 2020 14:17",
+    "TITLE3 - description3 | 19 Aug 2020 14:18"
   ];
   checkNewsItems(expectedResult);
   checkNewsItemLinks(["link1", "link2", "link3"]);
@@ -70,7 +70,7 @@ test("infoBar displays message when no news items available", async () => {
   await act(async () => {
     render(<InfoBar />, container);
   });
-  checkNewsItems(["No news available, please check back later"]);
+  checkNewsItems(["NO NEWS AVAILABLE", "Oops, something went wrong. Please check back again later."]);
   checkNewsItemLinks([]);
 });
 
