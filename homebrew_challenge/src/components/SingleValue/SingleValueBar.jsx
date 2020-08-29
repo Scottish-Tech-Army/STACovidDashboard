@@ -146,7 +146,7 @@ function SingleValueBar() {
         <Col>
           <SingleValue
             id="totalCases"
-            heading="TOTAL"
+            heading="TOTAL CASES"
             value={guardMissingData(numberWithCommas(totalCases.value))}
             footnote1="these are the total number of cases which have tested positive for COVID-19 since records began on 28 Febraury, 2020."
           />
@@ -165,7 +165,7 @@ function SingleValueBar() {
         <Col>
           <SingleValue
             id="totalFatalities"
-            heading="TOTAL"
+            heading="TOTAL FATALITIES"
             value={guardMissingData(numberWithCommas(totalFatalities.value))}
             footnote1="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
           />
