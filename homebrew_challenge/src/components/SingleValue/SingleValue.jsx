@@ -1,17 +1,19 @@
 import React from "react";
-import ToolTip from "../ToolTips/ToolTip";
+import "./SingleValueBar.css";
 
 function SingleValue({
-  id,
-  title = "Missing title",
+  footnote1 = null,
+  footnote2 = null,
   value = "Missing value",
-  tooltip,
+  heading,
 }) {
   return (
-    <div className="single-value" id={id}>
-      {tooltip ? <ToolTip tooltip={tooltip} /> : <></>}
-      <div className="single-value-header">{title}</div>
-      <div className="single-value-total">{value}</div>
+    <div className="single-value">
+      <><strong>{heading}</strong></>
+      <div className="single-value-number">{value}</div>
+      <hr />
+      {footnote1 ? <div className="footnote"><span className="footnote-stars">*</span>{footnote1}</div> : <></> }
+      {footnote2 ? <div className="footnote"><span className="footnote-stars">**</span>{footnote2}</div> : <></> }
     </div>
   );
 }

@@ -16,7 +16,7 @@ export function parseNhsCsvData(csvData) {
     deaths: { date: undefined, value: undefined },
     cumulativeCases: { date: undefined, value: undefined },
     cumulativeDeaths: { date: undefined, value: undefined },
-    fatalityCaseRatio: undefined,
+    fatalityCaseRatio: undefined
   };
   lines.forEach(
     (
@@ -29,7 +29,7 @@ export function parseNhsCsvData(csvData) {
         v2,
         v3,
         dailyDeaths,
-        cumulativeDeaths,
+        cumulativeDeaths
       ],
       i
     ) => {
@@ -46,7 +46,7 @@ export function parseNhsCsvData(csvData) {
           deaths: { date: date, value: Number(dailyDeaths) },
           cumulativeCases: { date: date, value: Number(cumulativeCases) },
           cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-          fatalityCaseRatio: fatalityCaseRatio,
+          fatalityCaseRatio: fatalityCaseRatio
         };
       }
     }
@@ -63,15 +63,15 @@ export function getRelativeReportedDate(date) {
   }
   const daysDifference = differenceInDays(Date.now(), date);
   if (daysDifference === 0) {
-    return "Reported Today";
+    return "reported today";
   }
   if (daysDifference === 1) {
-    return "Reported Yesterday";
+    return "reported yesterday";
   }
   if (daysDifference > 1 && daysDifference < 7) {
-    return "Reported last " + format(date, "EEEE");
+    return "reported last " + format(date, "EEEE");
   }
-  return "Reported on " + format(date, "dd/MM/yyyy");
+  return "reported on " + format(date, "dd MMMM, yyyy");
 }
 
 function SingleValueBar() {
@@ -89,6 +89,10 @@ function SingleValueBar() {
     return input === undefined ? missingData : input;
   }
 
+  function numberWithCommas(number) {
+    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   useEffect(() => {
     const currentTotalsHealthBoardsCsv = "data/currentTotalsHealthBoards.csv";
 
@@ -96,10 +100,10 @@ function SingleValueBar() {
     if (!nhsDataFetched) {
       setNhsDataFetched(true);
       fetch(currentTotalsHealthBoardsCsv, {
-        method: "GET",
+        method: "GET"
       })
-        .then((res) => res.text())
-        .then((csvData) => {
+        .then(res => res.text())
+        .then(csvData => {
           const results = parseNhsCsvData(csvData);
           if (results !== null) {
             setDailyCases(results.cases);
@@ -109,7 +113,7 @@ function SingleValueBar() {
             setFatalityCaseRatio(results.fatalityCaseRatio);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
     }
@@ -126,61 +130,54 @@ function SingleValueBar() {
   }
 
   return (
-    <Container fluid className="single-value-bar">
+    <Container fluid className="d-flex justify-content-around single-value-bar">
       <Row>
-        <Col xs={12} lg={6}>
-          {blockTitleRow("Cases")}
-          <Row className="single-value-bar-row">
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="dailyCases"
-                title={guardMissingData(
-                  getRelativeReportedDate(dailyCases.date)
-                )}
-                value={guardMissingData(dailyCases.value)}
-                tooltip="These are the Total Cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
-              />
-            </Col>
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="totalCases"
-                title="Total"
-                value={guardMissingData(totalCases.value)}
-                tooltip="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began"
-              />
-            </Col>
-          </Row>
+        <Col>
+          <SingleValue
+            id="dailyCases"
+            heading="DAILY CASES"
+            footnote1={guardMissingData(
+              getRelativeReportedDate(dailyCases.date)
+            )}
+            footnote2="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
+            value={guardMissingData(numberWithCommas(dailyCases.value))}
+          />
         </Col>
-        <Col xs={12} lg={6}>
-          {blockTitleRow("Deaths")}
-          <Row className="single-value-bar-row">
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="dailyFatalities"
-                title={guardMissingData(
-                  getRelativeReportedDate(dailyFatalities.date)
-                )}
-                value={guardMissingData(dailyFatalities.value)}
-                tooltip="These are the fatalities reported today and updated after 2pm daily (Can be delayed because of data fetching)"
-              />
-            </Col>
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="totalFatalities"
-                title="Total"
-                value={guardMissingData(totalFatalities.value)}
-                tooltip="These are the Total Fatalities since the COVID-19 Pandemic began"
-              />
-            </Col>
-            <Col className="single-value-bar-col">
-              <SingleValue
-                id="fatalityCaseRatio"
-                title="Death / Case Ratio"
-                value={guardMissingData(fatalityCaseRatio)}
-                tooltip="This shows the Ratio of Total Fatalities to Total Cases of COVID-19"
-              />
-            </Col>
-          </Row>
+        <Col>
+          <SingleValue
+            id="totalCases"
+            heading="TOTAL"
+            value={guardMissingData(numberWithCommas(totalCases.value))}
+            footnote1="these are the total number of cases which have tested positive for COVID-19 since records began on 28 Febraury, 2020."
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="dailyFatalities"
+            heading="DAILY FATALITIES"
+            footnote1={guardMissingData(
+              getRelativeReportedDate(dailyFatalities.date)
+            )}
+            value={guardMissingData(numberWithCommas(dailyFatalities.value))}
+            footnote2="these are the fatalities reported on the above day and updated after 2pm daily (can be delayed because of data fetching)."
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="totalFatalities"
+            heading="TOTAL"
+            value={guardMissingData(numberWithCommas(totalFatalities.value))}
+            footnote1="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
+          />
+        </Col>
+        <Col>
+          <SingleValue
+            id="fatalityCaseRatio"
+            heading="DEATH/CASE RATIO"
+            value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
+            footnote1="this is the percentage of people who have died after testing positive for the COVID-19."
+            footnote2="the real fatality rate is currently est. < 1% as not everyone who catches COVID-19 gets tested."
+          />
         </Col>
       </Row>
     </Container>
@@ -188,3 +185,68 @@ function SingleValueBar() {
 }
 
 export default SingleValueBar;
+
+// This is the percentage of people who have died after testing positive for the virus.
+//
+// The real fatality rate will likely be much, much lower, probably under 1%, as not everyone who catches the virus gets tested for it.
+
+// <Row>
+//   <Col xs={12} lg={6}>
+//     {blockTitleRow("Cases")}
+//     <Row className="single-value-bar-row">
+//       <Col className="single-value-bar-col">
+//         <SingleValue
+//           id="dailyCases"
+//           title={guardMissingData(
+//             getRelativeReportedDate(dailyCases.date)
+//           )}
+//           value={guardMissingData(dailyCases.value)}
+//           tooltip="These are the Total Cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
+//         />
+//       </Col>
+//       <Col className="single-value-bar-col">
+//         <SingleValue
+//           id="totalCases"
+//           title="Total"
+//           value={guardMissingData(totalCases.value)}
+//           tooltip="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began"
+//         />
+//       </Col>
+//     </Row>
+//   </Col>
+//   <Col xs={12} lg={6}>
+//     {blockTitleRow("Deaths")}
+//     <Row className="single-value-bar-row">
+//       <Col className="single-value-bar-col">
+//         <SingleValue
+//           id="dailyFatalities"
+//           title={guardMissingData(
+//             getRelativeReportedDate(dailyFatalities.date)
+//           )}
+//           value={guardMissingData(dailyFatalities.value)}
+//           tooltip="These are the fatalities reported today and updated after 2pm daily (Can be delayed because of data fetching)"
+//         />
+//       </Col>
+//       <Col className="single-value-bar-col">
+//         <SingleValue
+//           id="totalFatalities"
+//           title="Total"
+//           value={guardMissingData(totalFatalities.value)}
+//           tooltip="These are the Total Fatalities since the COVID-19 Pandemic began"
+//         />
+//       </Col>
+//       <Col className="single-value-bar-col">
+//         <SingleValue
+//           id="fatalityCaseRatio"
+//           title="Death / Case Ratio"
+//           value={guardMissingData(fatalityCaseRatio)}
+//           tooltip="This shows the Ratio of Total Fatalities to Total Cases of COVID-19"
+//         />
+//       </Col>
+//     </Row>
+//   </Col>
+// </Row>
+
+// tooltip="These are the Total Cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
+
+// tooltip="These are the Total Cases of COVID-19 since the COVID-19 Pandemic began"

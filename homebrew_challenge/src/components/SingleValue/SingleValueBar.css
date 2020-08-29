@@ -1,81 +1,27 @@
-.single-value-bar {
-  padding: 0;
-}
-
-.single-value-bar .title-row {
-  margin-right: -5px;
-  margin-left: -5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.single-value-bar .title-col {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0;
-}
-
-.single-value-bar .title {
-  background-color: white;
-  color: #2a84bb;
-  text-align: center;
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border: 2px solid #2a84bb;
-}
-
-.single-value-bar-row {
-  margin-right: -5px;
-  margin-left: -5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.single-value-bar-col {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0;
-}
-
-.single-value {
-  color: White;
-  background-color: #2a84bb;
-  text-align: center;
-  width: 100%;
-}
-
-.single-value-header {
-  padding: 1rem 0.75rem 0 0.5rem;
-  margin-top: 0;
-  font-weight: bold;
-  height: 3rem;
+.footnote {
   font-size: 0.75rem;
 }
 
-.single-value-total {
-  padding: 0 1rem 2rem 1rem;
-  font-weight: bolder;
-  font-size: 1.5rem;
+.footnote-stars {
+  color: #fc8d59;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-.callout {
-  z-index: 20;
-  position: absolute;
-  top: 30px;
-  border: 0;
-  left: -12px;
+.single-value-number {
+  font-size: 4rem;
+  color: #2a84bb;
+  font-weight: bold;
 }
 
-/*CSS3 extras*/
+.single-value {
+  border: 0.5px solid LightGray;
+  padding: 20px;
+  height: 100%;
+  background-color: #ffffff;
+  color: #133a53;
+}
 
-@media screen and (max-width: 340px) {
-  .single-value-total {
-    font-size: 1.1rem;
-  }
-
-  .single-value-header {
-    font-size: 0.55rem;
-
-  }
+.single-value-bar {
+  padding: 10px;
 }
