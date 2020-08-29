@@ -9,11 +9,11 @@ function SingleValue({
 }) {
   return (
     <div className="single-value">
-      <>
+      <div className="single-value-heading">
         <strong>{heading}</strong>
-      </>
+      </div>
       <div className="single-value-number">{value}</div>
-      <hr />
+      <hr className="single-value-line"/>
       {footnote1 ? (
         <div className="footnote">
           <span className="footnote-stars">*</span>

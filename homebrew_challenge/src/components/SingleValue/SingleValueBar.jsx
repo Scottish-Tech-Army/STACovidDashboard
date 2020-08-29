@@ -2,9 +2,6 @@ import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
 import { differenceInDays, format } from "date-fns";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
 import moment from "moment";
 
@@ -120,9 +117,9 @@ function SingleValueBar() {
   }, [nhsDataFetched]);
 
   return (
-    <Container fluid className="d-flex justify-content-around single-value-bar">
-      <Row>
-        <Col>
+    <div className="single-value-bar">
+
+    <div className="p-2 single-value-container">
           <SingleValue
             id="dailyCases"
             heading="DAILY CASES"
@@ -132,16 +129,16 @@ function SingleValueBar() {
             footnote2="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
             value={guardMissingData(numberWithCommas(dailyCases.value))}
           />
-        </Col>
-        <Col>
+        </div>
+  <div className="p-2 single-value-container">
           <SingleValue
             id="totalCases"
             heading="TOTAL CASES"
             value={guardMissingData(numberWithCommas(totalCases.value))}
-            footnote1="these are the total number of cases which have tested positive for COVID-19 since records began on 28 Febraury, 2020."
+            footnote1="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
           />
-        </Col>
-        <Col>
+        </div>
+      <div className="p-2 single-value-container">
           <SingleValue
             id="dailyFatalities"
             heading="DAILY FATALITIES"
@@ -151,26 +148,26 @@ function SingleValueBar() {
             value={guardMissingData(numberWithCommas(dailyFatalities.value))}
             footnote2="these are the fatalities reported on the above day and updated after 2pm daily (can be delayed because of data fetching)."
           />
-        </Col>
-        <Col>
+        </div>
+      <div className="p-2 single-value-container">
           <SingleValue
             id="totalFatalities"
             heading="TOTAL FATALITIES"
             value={guardMissingData(numberWithCommas(totalFatalities.value))}
             footnote1="these are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
           />
-        </Col>
-        <Col>
+        </div>
+    <div className="p-2 single-value-container">
           <SingleValue
             id="fatalityCaseRatio"
             heading="DEATH/CASE RATIO"
             value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
             footnote1="this is the percentage of people who have died after testing positive for the COVID-19."
-            footnote2="the real fatality rate is currently est. < 1% as not everyone who catches COVID-19 gets tested."
+            footnote2="the real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
           />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+
+    </div>
   );
 }
 

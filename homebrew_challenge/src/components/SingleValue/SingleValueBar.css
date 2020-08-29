@@ -8,15 +8,23 @@
   font-size: 1rem;
 }
 
+.single-value-heading {
+  height: 20%;
+}
+
 .single-value-number {
-  font-size: 4rem;
+  font-size: 2.5rem;
   color: #2a84bb;
   font-weight: bold;
 }
 
+.single-value-line {
+  margin: 0;
+}
+
 .single-value {
   border: 1px solid DarkGray;
-  padding: 20px;
+  padding: 10px 20px 30px 20px;
   height: 100%;
   background-color: #ffffff;
   color: #133a53;
@@ -24,4 +32,29 @@
 
 .single-value-bar {
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.single-value-container {
+  width: 20%;
+}
+
+@media screen and (max-width: 1024px) {
+  .single-value-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .single-value-container {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .single-value-bar {
+    flex-direction: column;
+  }
+  .single-value-container {
+    width: 100%;
+  }
 }
