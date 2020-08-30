@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 
 const RouteMapRules = () => {
   return (
-    <Container fluid>
+    <Container fluid className="d-flex flex-column">
       <Row>
         <Col xs="12" className="current-phase">
           <h2>

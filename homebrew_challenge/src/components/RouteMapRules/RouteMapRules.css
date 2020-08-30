@@ -1,5 +1,5 @@
 .current-phase {
-  text-align: left;
+
   background-color: #133a53;
   color: #ffffff;
   padding: 2rem;
@@ -7,7 +7,7 @@
 
 .current-phase-number {
   font-weight: bold;
-  color: #2a84bb;
+  color: #fc8d59;
 }
 
 @media screen and (max-width: 768px) {
@@ -22,7 +22,7 @@
 }
 
 #link {
-  color: #2a84bb;
+  color: #c1def1;
   text-decoration: underline;
 }
 
