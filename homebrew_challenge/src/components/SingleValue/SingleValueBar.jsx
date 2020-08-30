@@ -5,11 +5,6 @@ import { differenceInDays, format } from "date-fns";
 import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
 import moment from "moment";
 
-// Exported for tests
-export function numberWithCommas(number) {
-  return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
-
 export function parseNhsCsvData(csvData) {
   var lines = readCsvData(csvData);
   var result = {
@@ -125,7 +120,7 @@ function SingleValueBar() {
           dateReported={guardMissingData(
             getRelativeReportedDate(dailyCases.date)
           )}
-          value={guardMissingData(numberWithCommas(dailyCases.value))}
+          value={guardMissingData(dailyCases.value.toLocaleString())}
           tooltip="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
@@ -134,7 +129,7 @@ function SingleValueBar() {
           id="totalCases"
           title="TOTAL CASES"
           dateReported="reported since 20 February, 2020"
-          value={guardMissingData(numberWithCommas(totalCases.value))}
+          value={guardMissingData(totalCases.value.toLocaleString())}
           tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
       </div>
@@ -145,7 +140,7 @@ function SingleValueBar() {
           dateReported={guardMissingData(
             getRelativeReportedDate(dailyFatalities.date)
           )}
-          value={guardMissingData(numberWithCommas(dailyFatalities.value))}
+          value={guardMissingData(dailyFatalities.value.toLocaleString())}
           tooltip="These are the fatalities reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
@@ -154,7 +149,7 @@ function SingleValueBar() {
           id="totalFatalities"
           title="TOTAL FATALITIES"
           dateReported="reported since 20 February, 2020"
-          value={guardMissingData(numberWithCommas(totalFatalities.value))}
+          value={guardMissingData(totalFatalities.value.toLocaleString())}
           tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
         />
       </div>
@@ -162,7 +157,7 @@ function SingleValueBar() {
         <SingleValue
           id="fatalityCaseRatio"
           title="DEATH/CASE RATIO"
-          value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
+          value={guardMissingData(fatalityCaseRatio)}
           tooltip="This is the % of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
         />
       </div>
