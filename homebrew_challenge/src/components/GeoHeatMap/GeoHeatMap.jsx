@@ -388,14 +388,9 @@ const GeoHeatMap = ({
   const tilesStadiaAlidadeSmooth =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
   return (
+
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
-        <HeatmapDataSelector
-          areaType={areaType}
-          valueType={valueType}
-          setAreaType={setAreaType}
-          setValueType={setValueType}
-        />
-      <hr className="full-width-hr" />
+      <div className="geo-heatmap-container">
       <LeafletMap
         ref={mapRef}
         id="map"
@@ -415,6 +410,14 @@ const GeoHeatMap = ({
           fullscreenEnabled={fullscreenEnabled}
         />
       </LeafletMap>
+      </div>
+      <hr className="full-width-hr" />
+      <HeatmapDataSelector
+        areaType={areaType}
+        valueType={valueType}
+        setAreaType={setAreaType}
+        setValueType={setValueType}
+      />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 .current-phase {
-
   background-color: #133a53;
   color: #ffffff;
   padding: 2rem;
@@ -23,7 +22,6 @@
 
 #link {
   color: #c1def1;
-  text-decoration: underline;
 }
 
 #link:hover {

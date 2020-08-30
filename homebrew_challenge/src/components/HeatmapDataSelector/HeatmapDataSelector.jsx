@@ -37,7 +37,7 @@ function HeatmapDataSelector({
 
   return (
     <Container className="heatmap-selector">
-      <Row>
+      <Row className="selector-container">
         <Col className="selector-group d-flex justify-content-center">
           <ToggleButtonGroup
             className="toggle-button-group"
@@ -47,10 +47,10 @@ function HeatmapDataSelector({
             onChange={(val) => setAreaType(val)}
           >
             <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-              HEALTH BOARDS
+              Health Boards
             </ToggleButton>
             <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
-              COUNCIL AREAS
+              Council Areas
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
@@ -63,10 +63,10 @@ function HeatmapDataSelector({
             onChange={(val) => setValueType(val)}
           >
             <ToggleButton id="cases" value={VALUETYPE_CASES}>
-              CASES
+              Cases
             </ToggleButton>
             <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-              DEATHS
+              Deaths
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>

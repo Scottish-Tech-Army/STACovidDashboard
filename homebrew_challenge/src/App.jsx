@@ -164,7 +164,7 @@ const App = () => {
               className={zoomGeoMap ? "full-screen" : ""}
             >
               <Row>
-                <Col xs={12} md={zoomGeoMap ? 12 : 4}>
+                <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap
                     setAreaType={setAreaType}
                     setValueType={setValueType}
@@ -178,10 +178,10 @@ const App = () => {
                     fullscreenEnabled={zoomGeoMap}
                   />
                 </Col>
-                <Col className="d-block d-md-none">
+                <Col className="d-block d-lg-none">
                   <hr className="underHeatmapSelector" />
                 </Col>
-                <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 8}>
+                <Col xs={zoomGeoMap ? 0 : 12} lg={zoomGeoMap ? 0 : 8} className="heatmap-container">
                   {zoomGeoMap ? (
                     <></>
                   ) : (
@@ -469,7 +469,8 @@ const App = () => {
             <img id="logo" src="STALogo.png" alt="Scottish Tech Army Logo" />
           </div>
           <div className="heading heading-title">
-            <h1>Scottish Summary COVID-19 Dashboard</h1>
+            <h1>SUMMARY DASHBOARD</h1>
+            <h2>Scottish COVID-19 Statistics</h2>
           </div>
         </div>
       </header>
