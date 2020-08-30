@@ -5,7 +5,7 @@
 }
 
 .heatmap table {
-  text-align: center;
+
   overflow-y: auto;
 }
 
@@ -20,11 +20,6 @@
 
 .heatmap table th .subheading {
   font-weight: normal;
-}
-
-.heatmap table td:first-child,
-.heatmap table th:first-child {
-  text-align: left;
 }
 
 .heatmap table tr.area td {
