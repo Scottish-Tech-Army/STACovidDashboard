@@ -1,5 +1,5 @@
 import React from "react";
-import GeoHeatMap from "./GeoHeatMap";
+import RegionGeoMap from "./RegionGeoMap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -19,9 +19,9 @@ afterEach(() => {
 
 test("default render", async () => {
   act(() => {
-    render(<GeoHeatMap toggleFullscreen={() => {}} />, container);
+    render(<RegionGeoMap />, container);
   });
   expect(map()).not.toBeNull();
 });
 
-const map = () => container.querySelector(".geo-map #map");
+const map = () => container.querySelector(".geo-map #regionmap");

@@ -89,13 +89,13 @@ const GeoHeatMap = ({
 
   // Parse datasets
   useEffect(() => {
-    if (null !== councilAreaDataset) {
+    if (null !== councilAreaDataset && undefined !== councilAreaDataset) {
       setCouncilArea7DayDataset(parse7DayWindowCsvData(councilAreaDataset));
     }
   }, [councilAreaDataset]);
 
   useEffect(() => {
-    if (null !== healthBoardDataset) {
+    if (null !== healthBoardDataset && undefined !== healthBoardDataset) {
       setHealthBoard7DayDataset(parse7DayWindowCsvData(healthBoardDataset));
     }
   }, [healthBoardDataset]);

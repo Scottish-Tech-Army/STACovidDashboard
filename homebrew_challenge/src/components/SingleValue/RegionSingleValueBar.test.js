@@ -1,4 +1,4 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue"] }] */
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue", "expectNormalScotlandValues", "expectNormalHealthBoardValues", "expectNormalCouncilAreaValues"] }] */
 
 import React from "react";
 import RegionSingleValueBar, {
@@ -24,33 +24,6 @@ afterEach(() => {
   container = null;
   jest.resetAllMocks();
 });
-
-function expectNormalScotlandValues() {
-  checkSingleValue("dailyCases", "Reported Today", "7");
-  checkSingleValue("weeklyCases", "This week", "1572");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyDeaths", "Reported Today", "3");
-  checkSingleValue("weeklyDeaths", "This week", "86");
-  checkSingleValue("totalDeaths", "Total", "2491");
-}
-
-function expectNormalCouncilAreaValues() {
-  checkSingleValue("dailyCases", "Reported Yesterday", "1");
-  checkSingleValue("weeklyCases", "This week", "150");
-  checkSingleValue("totalCases", "Total", "311");
-  checkSingleValue("dailyDeaths", "Reported Yesterday", "2");
-  checkSingleValue("weeklyDeaths", "This week", "37");
-  checkSingleValue("totalDeaths", "Total", "40");
-}
-
-function expectNormalHealthBoardValues() {
-  checkSingleValue("dailyCases", "Reported Today", "4");
-  checkSingleValue("weeklyCases", "This week", "501");
-  checkSingleValue("totalCases", "Total", "305");
-  checkSingleValue("dailyDeaths", "Reported Today", "0");
-  checkSingleValue("weeklyDeaths", "This week", "34");
-  checkSingleValue("totalDeaths", "Total", "40");
-}
 
 describe("normal rendering, all data available", () => {
   it("scotland today", () => {
@@ -514,6 +487,33 @@ test("parseNhsCACsvData", () => {
     expectedResult
   );
 });
+
+function expectNormalScotlandValues() {
+  checkSingleValue("dailyCases", "Reported Today", "7");
+  checkSingleValue("weeklyCases", "This week", "1572");
+  checkSingleValue("totalCases", "Total", "19126");
+  checkSingleValue("dailyDeaths", "Reported Today", "3");
+  checkSingleValue("weeklyDeaths", "This week", "86");
+  checkSingleValue("totalDeaths", "Total", "2491");
+}
+
+function expectNormalCouncilAreaValues() {
+  checkSingleValue("dailyCases", "Reported Yesterday", "1");
+  checkSingleValue("weeklyCases", "This week", "150");
+  checkSingleValue("totalCases", "Total", "311");
+  checkSingleValue("dailyDeaths", "Reported Yesterday", "2");
+  checkSingleValue("weeklyDeaths", "This week", "37");
+  checkSingleValue("totalDeaths", "Total", "40");
+}
+
+function expectNormalHealthBoardValues() {
+  checkSingleValue("dailyCases", "Reported Today", "4");
+  checkSingleValue("weeklyCases", "This week", "501");
+  checkSingleValue("totalCases", "Total", "305");
+  checkSingleValue("dailyDeaths", "Reported Today", "0");
+  checkSingleValue("weeklyDeaths", "This week", "34");
+  checkSingleValue("totalDeaths", "Total", "40");
+}
 
 function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
   const singleValueElement = container.querySelector("#" + singleValueId);

@@ -33,7 +33,7 @@ import {
   Additionally, the non Scotland features of the council areas data were removed.
 */
 
-const GeoRegionMap = ({
+const RegionGeoMap = ({
   councilAreaDataset,
   healthBoardDataset,
   regionCode = FEATURE_CODE_SCOTLAND,
@@ -186,4 +186,4 @@ const GeoRegionMap = ({
   );
 };
 
-export default GeoRegionMap;
+export default RegionGeoMap;

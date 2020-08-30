@@ -8,6 +8,15 @@ import {
 } from "../HeatmapDataSelector/HeatmapConsts";
 
 function RegionTypeSelector({ areaType, setAreaType }) {
+  if (
+    areaType !== AREATYPE_COUNCIL_AREAS &&
+    areaType !== AREATYPE_HEALTH_BOARDS
+  ) {
+    throw new Error("Unrecognised areaType: " + areaType);
+  }
+  if (setAreaType === null || setAreaType === undefined) {
+    throw new Error("Unrecognised setAreaType: " + setAreaType);
+  }
   return (
     <ToggleButtonGroup
       className="toggle-button-group"
