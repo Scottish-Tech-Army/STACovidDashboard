@@ -95,7 +95,6 @@ public class LambdaFunctionHandlerTest {
             { "data/weeklyCouncilAreasDeaths.csv", "weeklyCouncilAreasDeaths.output" },
             { "data/dailyHealthBoardsCases.csv", "dailyHealthBoardsCases.output", },
             { "data/analysis/dailyHealthBoardsCasesAndPatients.csv", "dailyHealthBoardsCasesAndPatients.output" },
-            { "data/summaryCounts.csv", "summaryCounts.output" },
             { "data/annualHealthBoardsDeaths.csv", "annualHealthBoardsDeaths.output" },
             { "data/annualCouncilAreasDeaths.csv", "annualCouncilAreasDeaths.output" },
             { "data/datesmodified.csv", DATES_MODIFIED_CONTENT } };
@@ -155,7 +154,7 @@ public class LambdaFunctionHandlerTest {
             createHttpResponse(DATES_MODIFIED_CONTENT), createHttpResponse("weeklyHealthBoardsDeaths.output"),
             createHttpResponse("dailyScottishCasesAndDeaths.output"),
             createHttpResponse("weeklyCouncilAreasDeaths.output"), createHttpResponse("dailyHealthBoardsCases.output"),
-            createHttpResponse("dailyHealthBoardsCasesAndPatients.output"), createHttpResponse("summaryCounts.output"),
+            createHttpResponse("dailyHealthBoardsCasesAndPatients.output"),
             createHttpResponse("annualHealthBoardsDeaths.output"),
             createHttpResponse("annualCouncilAreasDeaths.output"), };
 
@@ -286,8 +285,8 @@ public class LambdaFunctionHandlerTest {
         checkS3Writes(EXPECTED_S3_PUT_OBJECTS_ALL);
 
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(9), LAST_MODIFIED_DATE_DAILY_CA);
-        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(10), null);
+        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(8), LAST_MODIFIED_DATE_DAILY_CA);
+        checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(9), null);
     }
 
     @Test
@@ -436,20 +435,20 @@ public class LambdaFunctionHandlerTest {
 
     private void checkRequests_allRequestsMade() throws UnsupportedOperationException, IOException {
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        assertEquals(14, httpRequests.size());
-        // The first 9 are requests to statistics.gov.scot
-        for (int i = 0; i < 9; i++) {
+        assertEquals(13, httpRequests.size());
+        // The first 8 are requests to statistics.gov.scot
+        for (int i = 0; i < 8; i++) {
             checkSparQLPostRequest((HttpPost) httpRequests.get(i));
         }
 
         // The next 4 are requests to nhs.scot
+        checkNhsGetRequest((HttpGet) httpRequests.get(8));
         checkNhsGetRequest((HttpGet) httpRequests.get(9));
         checkNhsGetRequest((HttpGet) httpRequests.get(10));
         checkNhsGetRequest((HttpGet) httpRequests.get(11));
-        checkNhsGetRequest((HttpGet) httpRequests.get(12));
 
         // The last is a request to news.gov.scot rss feed
-        checkRssFeedGetRequest((HttpGet) httpRequests.get(13));
+        checkRssFeedGetRequest((HttpGet) httpRequests.get(12));
     }
 
     private void checkSparQLPostRequest(HttpPost postRequest) throws UnsupportedOperationException, IOException {

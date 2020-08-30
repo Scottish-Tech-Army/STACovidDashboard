@@ -3,8 +3,8 @@
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #2a84bb;
-  border-color: #2a84bb;
+  background-color: #287DB2;
+  border-color: #287DB2;
   font-weight: bold;
 }
 
@@ -29,4 +29,8 @@
   background-color: #616161;
   border-color: #616161;
   font-weight: bold;
+}
+
+.hidden-chart {
+  display: none;
 }

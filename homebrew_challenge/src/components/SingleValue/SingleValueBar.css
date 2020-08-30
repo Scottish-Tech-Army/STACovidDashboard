@@ -16,13 +16,13 @@
 
 .single-value-bar .title {
   background-color: white;
-  color: #2a84bb;
+  color: #287DB2;
   text-align: center;
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
-  border: 2px solid #2a84bb;
+  border: 2px solid #287DB2;
 }
 
 .single-value-bar-row {
@@ -40,7 +40,7 @@
 
 .single-value {
   color: White;
-  background-color: #2a84bb;
+  background-color: #287DB2;
   text-align: center;
   width: 100%;
 }
@@ -69,31 +69,13 @@
 
 /*CSS3 extras*/
 
-@include media-breakpoint-up(xs) {
+@media screen and (max-width: 340px) {
   .single-value-total {
-    font-size: 0.5rem;
+    font-size: 1.1rem;
   }
-}
 
-@include media-breakpoint-up(sm) {
-  .single-value-total {
-    font-size: 0.75rem;
-  }
-}
+  .single-value-header {
+    font-size: 0.55rem;
 
-@include media-breakpoint-up(md) {
-  .single-value-total {
-    font-size: 1.25rem;
-  }
-}
-
-@include media-breakpoint-up(lg) {
-  .single-value-total {
-    font-size: 1.75rem;
-  }
-}
-@include media-breakpoint-up(xl) {
-  .single-value-total {
-    font-size: 2rem;
   }
 }
