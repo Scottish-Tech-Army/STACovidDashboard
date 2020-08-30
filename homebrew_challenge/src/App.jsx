@@ -26,7 +26,7 @@ TagManager.initialize(tagManagerArgs);
 
 const App = () => {
 
-  const [currentPage, setCurrentPage] = useState(PAGE_REGIONAL);
+  const [currentPage, setCurrentPage] = useState(PAGE_OVERVIEW);
 
   const [healthBoardDataset, setHealthBoardDataset] = useState(null);
   const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
