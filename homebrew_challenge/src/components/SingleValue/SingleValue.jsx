@@ -3,7 +3,7 @@ import ToolTip from "../ToolTips/ToolTip";
 import "./SingleValueBar.css";
 
 function SingleValue({
-  dateReported,
+  subtitle,
   tooltip,
   value = "Missing value",
   title,
@@ -14,9 +14,9 @@ function SingleValue({
       {tooltip ? <ToolTip tooltip={tooltip} /> : <></>}
       <div className="single-value-heading">
         <strong>{title}</strong>
-        {dateReported ? (
-          <div className="date-reported">
-            {dateReported}
+        {subtitle ? (
+          <div className="subtitle">
+            {subtitle}
           </div>
         ) : (
           <></>

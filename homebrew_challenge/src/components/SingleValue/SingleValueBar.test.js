@@ -32,11 +32,11 @@ test("singleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "reported on 01 January, 1999", "0");
-  checkSingleValue("totalCases", "reported since 20 February, 2020", "0");
-  checkSingleValue("dailyFatalities", "reported on 01 January, 1999", "0");
-  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "0");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
+  checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalCases", "0", "reported since 20 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalFatalities", "0", "reported since 20 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "0");
 });
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
@@ -49,11 +49,11 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "reported today", "47");
-  checkSingleValue("totalCases", "reported since 20 February, 2020", "19,126");
-  checkSingleValue("dailyFatalities", "reported today", "0");
-  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "2,491");
-  checkSingleValue("fatalityCaseRatio", "reported since 20 February, 2020", "13.0%");
+  checkSingleValue("dailyCases", "47", "reported today");
+  checkSingleValue("totalCases", "19,126", "reported since 20 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported today");
+  checkSingleValue("totalFatalities", "2,491", "reported since 20 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
@@ -66,11 +66,11 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "reported yesterday", "47");
-  checkSingleValue("totalCases", "reported since 20 February, 2020", "19,126");
-  checkSingleValue("dailyFatalities", "reported yesterday", "0");
-  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "2,491");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
+  checkSingleValue("dailyCases", "47", "reported yesterday");
+  checkSingleValue("totalCases", "19,126", "reported since 20 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported yesterday");
+  checkSingleValue("totalFatalities", "2,491", "reported since 20 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "13.0%", "Death / Case Ratio");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
@@ -134,12 +134,11 @@ test("parseNhsCsvData", () => {
   expect(parseNhsCsvData(nhsCsvData)).toStrictEqual(expectedResult);
 });
 
-function checkSingleValue(singleValueId, expectedDateReported, expectedValue) {
+function checkSingleValue(singleValueId, expectedValue, expectedSubtitle=null) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  console.log(singleValueElement);
-  const dateReported = singleValueElement.querySelector(".date-reported");
+  const subtitle = singleValueElement.querySelector(".subtitle");
   const value = singleValueElement.querySelector(".single-value-number");
-  expect(dateReported.textContent).toBe(expectedDateReported);
+  expect(subtitle.textContent).toBe(expectedSubtitle == null ? "" : expectedSubtitle);
   expect(value.textContent).toBe(expectedValue);
 }
 
