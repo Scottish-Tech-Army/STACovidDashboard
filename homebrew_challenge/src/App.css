@@ -49,3 +49,8 @@ img#logo {
   align-items: center;
   justify-content: center;
 }
+
+.widgets-block {
+  background-color: #f2f2f2;
+  padding: 0 0 40px 0;
+}

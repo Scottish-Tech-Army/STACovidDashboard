@@ -154,7 +154,7 @@ const App = () => {
               <hr className="full-width-hr" />
             </Col>
           </Row>
-          <Row className="widgets_block">
+          <Row className="widgets-block">
             <Col
               xs={12}
               md={12}
