@@ -1,24 +1,26 @@
-.geo-map {
+.geo-map,  .full-screen-geo-map{
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  height: 100%;
   width: 100%;
-  min-height: 600px;
+}
+
+.geo-map {
+  height: 600px;
+}
+
+.full-screen-geo-map {
+  height: 90vh;
 }
 
 .hidden-geo-map {
   display: none;
 }
 
-#map {
+#map, #regionmap {
   height: 100%;
   width: 100%;
-}
-
-.full-screen {
-  height: 90vh;
 }
 
 .legend {

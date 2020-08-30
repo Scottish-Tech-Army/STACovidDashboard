@@ -4,7 +4,6 @@ import React from "react";
 import SingleValueBar, {
   parseCsvData,
   parseNhsCsvData,
-  getRelativeReportedDate,
 } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
@@ -145,22 +144,6 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
   checkSingleValue("dailyTestsCompleted", "Daily", "3442");
   checkSingleValue("totalTestsCompleted", "Total", "231525");
-});
-
-test("getRelativeReportedDate", () => {
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
-
-  expect(getRelativeReportedDate(Date.parse("2020-06-22"))).toBe("Reported Today");
-  expect(getRelativeReportedDate(Date.parse("2020-06-21"))).toBe("Reported Yesterday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-20"))).toBe("Reported last Saturday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-19"))).toBe("Reported last Friday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-18"))).toBe("Reported last Thursday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-17"))).toBe("Reported last Wednesday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-16"))).toBe("Reported last Tuesday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe("Reported on 15/06/2020");
-  expect(getRelativeReportedDate(undefined)).toBeUndefined();
-  expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
 test("parseCsvData", () => {
