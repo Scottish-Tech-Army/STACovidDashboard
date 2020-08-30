@@ -121,27 +121,27 @@ function SingleValueBar() {
       <div className="p-2 single-value-container">
         <SingleValue
           id="dailyCases"
-          heading="DAILY CASES"
+          title="DAILY CASES"
           dateReported={guardMissingData(
             getRelativeReportedDate(dailyCases.date)
           )}
-          tooltip="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
           value={guardMissingData(numberWithCommas(dailyCases.value))}
+          tooltip="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
       <div className="p-2 single-value-container">
         <SingleValue
           id="totalCases"
-          heading="TOTAL CASES"
+          title="TOTAL CASES"
+          dateReported="reported since 20 February, 2020"
           value={guardMissingData(numberWithCommas(totalCases.value))}
           tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
-          dateReported="reported since 20 February, 2020"
         />
       </div>
       <div className="p-2 single-value-container">
         <SingleValue
           id="dailyFatalities"
-          heading="DAILY FATALITIES"
+          title="DAILY FATALITIES"
           dateReported={guardMissingData(
             getRelativeReportedDate(dailyFatalities.date)
           )}
@@ -152,16 +152,16 @@ function SingleValueBar() {
       <div className="p-2 single-value-container">
         <SingleValue
           id="totalFatalities"
-          heading="TOTAL FATALITIES"
+          title="TOTAL FATALITIES"
+          dateReported="reported since 20 February, 2020"
           value={guardMissingData(numberWithCommas(totalFatalities.value))}
           tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
-          dateReported="reported since 20 February, 2020"
         />
       </div>
       <div className="p-2 single-value-container">
         <SingleValue
           id="fatalityCaseRatio"
-          heading="DEATH/CASE RATIO"
+          title="DEATH/CASE RATIO"
           value={guardMissingData(numberWithCommas(fatalityCaseRatio))}
           tooltip="This is the % of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
         />

@@ -20,19 +20,19 @@ afterEach(() => {
 });
 
 test("singleValue renders correctly", () => {
-  render(<SingleValue dateReported="Reported date not available" value="Test count" />, container);
-  checkSingleValue("*Reported date not available", "Test count");
+  render(<SingleValue dateReported="reported date not available" value="Test count" />, container);
+  checkSingleValue("reported date not available", "Test count");
 });
 
 test("singleValue renders error message when missing props", async () => {
   render(<SingleValue value="Test count" />, container);
-  checkSingleValue("*Reported date not available", "Test count");
+  checkSingleValue("reported date not available", "Test count");
 
   render(<SingleValue dateReported="Test date reported" />, container);
-  checkSingleValue("*Test date reported", "Missing value");
+  checkSingleValue("test date reported", "Missing value");
 
   render(<SingleValue />, container);
-  checkSingleValue("*Reported date not available", "Missing value");
+  checkSingleValue("reported date not available", "Missing value");
 });
 
 const dateReported = () => container.querySelector(".date-reported");

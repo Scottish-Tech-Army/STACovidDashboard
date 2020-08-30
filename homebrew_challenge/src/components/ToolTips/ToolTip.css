@@ -1,8 +1,10 @@
 .tooltip-icon {
   position: absolute;
-  padding: 0 10px;
+  top: 0;
+  right: 0;
+  padding-right: 5px;
+  padding-top: 5px;
   line-height: 1;
-  cursor: help;
 }
 
 .tooltip-icon .fa-question-circle {

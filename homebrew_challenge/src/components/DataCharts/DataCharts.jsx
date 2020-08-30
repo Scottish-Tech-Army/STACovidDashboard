@@ -138,9 +138,6 @@ const DataCharts = ({
   useEffect(() => {
     function commonChartConfiguration(datasetLabel, seriesData) {
       return {
-        backgroundColor: "White",
-        titleFontColor: "#000000",
-        bodyFontColor: "#000000",
         type: "line",
         data: {
           datasets: [

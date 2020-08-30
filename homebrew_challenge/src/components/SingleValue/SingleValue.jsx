@@ -6,14 +6,14 @@ function SingleValue({
   dateReported,
   tooltip,
   value = "Missing value",
-  heading,
+  title,
   id,
 }) {
   return (
     <div className="single-value" id={id}>
       {tooltip ? <ToolTip tooltip={tooltip} /> : <></>}
       <div className="single-value-heading">
-        <strong>{heading}</strong>
+        <strong>{title}</strong>
         {dateReported ? (
           <div className="date-reported">
             {dateReported}

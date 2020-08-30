@@ -32,10 +32,10 @@ test("singleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "reported on 01/01/1999", "0");
-  checkSingleValue("totalCases", "Total", "0");
-  checkSingleValue("dailyFatalities", "reported on 01/01/1999", "0");
-  checkSingleValue("totalFatalities", "Total", "0");
+  checkSingleValue("dailyCases", "reported on 01 January, 1999", "0");
+  checkSingleValue("totalCases", "reported since 20 February, 2020", "0");
+  checkSingleValue("dailyFatalities", "reported on 01 January, 1999", "0");
+  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
 });
 
@@ -50,10 +50,10 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
   });
 
   checkSingleValue("dailyCases", "reported today", "47");
-  checkSingleValue("totalCases", "Reported date not available", "19126");
+  checkSingleValue("totalCases", "reported since 20 February, 2020", "19,126");
   checkSingleValue("dailyFatalities", "reported today", "0");
-  checkSingleValue("totalFatalities", "Reported date not available", "2491");
-  checkSingleValue("fatalityCaseRatio", "Reported date not available", "13.0%");
+  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "2,491");
+  checkSingleValue("fatalityCaseRatio", "reported since 20 February, 2020", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
@@ -67,9 +67,9 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   });
 
   checkSingleValue("dailyCases", "reported yesterday", "47");
-  checkSingleValue("totalCases", "Total", "19126");
+  checkSingleValue("totalCases", "reported since 20 February, 2020", "19,126");
   checkSingleValue("dailyFatalities", "reported yesterday", "0");
-  checkSingleValue("totalFatalities", "Total", "2491");
+  checkSingleValue("totalFatalities", "reported since 20 February, 2020", "2,491");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
 });
 
@@ -136,7 +136,7 @@ test("parseNhsCsvData", () => {
 
 function checkSingleValue(singleValueId, expectedDateReported, expectedValue) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  // console.log(singleValueElement);
+  console.log(singleValueElement);
   const dateReported = singleValueElement.querySelector(".date-reported");
   const value = singleValueElement.querySelector(".single-value-number");
   expect(dateReported.textContent).toBe(expectedDateReported);
