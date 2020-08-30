@@ -164,18 +164,10 @@ const App = () => {
               className={zoomGeoMap ? "full-screen" : ""}
             >
               <Row>
-                <Col>
-                  <HeatmapDataSelector
-                    areaType={areaType}
-                    valueType={valueType}
-                    setAreaType={setAreaType}
-                    setValueType={setValueType}
-                  />
-                </Col>
-              </Row>
-              <Row>
                 <Col xs={12} md={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap
+                    setAreaType={setAreaType}
+                    setValueType={setValueType}
                     councilAreaDataset={councilAreaDataset}
                     healthBoardDataset={healthBoardDataset}
                     areaType={areaType}
@@ -472,25 +464,14 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <Container fluid className="header">
-          <Row id="page-title" className="pt-3">
-            <Col>
-              <h1 className="header-title">
-                <img
-                  id="logo"
-                  src="STALogo.png"
-                  alt="Scottish Tech Army Logo"
-                />
-                COVID-19 Dashboard for Scotland
-              </h1>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <hr className="full-width-hr" />
-            </Col>
-          </Row>
-        </Container>
+        <div className="heading-container">
+          <div className="heading">
+            <img id="logo" src="STALogo.png" alt="Scottish Tech Army Logo" />
+          </div>
+          <div className="heading heading-title">
+            <h1>Scottish Summary COVID-19 Dashboard</h1>
+          </div>
+        </div>
       </header>
       {currentPage === PAGE_PUBLIC_DASHBOARD ? pagePublicDashboard() : <></>}
       {currentPage === PAGE_DATA_SOURCES ? pageDataSources() : <></>}

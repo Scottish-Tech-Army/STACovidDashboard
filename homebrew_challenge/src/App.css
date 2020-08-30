@@ -1,3 +1,43 @@
+.heading-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+}
+
+.heading {
+  padding-right: 20px;
+  display: flex;
+  align-items: flex-end;
+}
+
+@media screen and (max-width: 375px) {
+
+  .heading-title {
+    padding: 10px 20px 0;
+  }
+}
+
+@media screen and (max-width: 386px) {
+  .heading-container {
+    flex-direction: column;
+  }
+  .heading-title {
+    padding: 10px 20px 0;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .heading-container h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .heading-container h1 {
+    font-size: 1.75rem;
+  }
+}
+
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
   margin-top: 8px;
@@ -10,13 +50,14 @@
   padding: 0;
 }
 
-.full-screen, .fullscreen-charts {
+.full-screen,
+.fullscreen-charts {
   background-color: White;
 }
 
 img#logo {
-  height: 6rem;
-  margin-right: 2rem;
+  height: 100px;
+  margin-left: 20px;
 }
 
 .link {
