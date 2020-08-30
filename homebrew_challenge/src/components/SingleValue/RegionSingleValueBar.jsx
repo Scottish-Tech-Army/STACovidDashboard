@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
   FEATURE_CODE_SCOTLAND,
+  FEATURE_CODE_MAP,
   parse7DayWindowCsvData,getRelativeReportedDate
 } from "../Utils/CsvUtils";
 import moment from "moment";
@@ -73,7 +74,7 @@ export function parseNhsCACsvData(lines) {
   return placeStatsMap;
 }
 
-const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
+const emptyDate = { date: undefined, value: undefined };
 
 function RegionalSingleValueBar({
   currentTotalsHealthBoardDataset = null,
@@ -86,13 +87,17 @@ function RegionalSingleValueBar({
   const [placeWeeklyStatsMap, setPlaceWeeklyStatsMap] = useState(new Map());
 
   const [dailyCases, setDailyCases] = useState(emptyDate);
-  const [weeklyCases, setWeeklyCases] = useState(0);
+  const [weeklyCases, setWeeklyCases] = useState(undefined);
   const [totalCases, setTotalCases] = useState(emptyDate);
   const [dailyDeaths, setDailyDeaths] = useState(emptyDate);
-  const [weeklyDeaths, setWeeklyDeaths] = useState(0);
+  const [weeklyDeaths, setWeeklyDeaths] = useState(undefined);
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
+
+  if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
+    throw new Error("Unrecognised regionCode: " + regionCode);
+  }
 
   function guardMissingData(input) {
     return input === undefined ? missingData : input;
@@ -102,7 +107,6 @@ function RegionalSingleValueBar({
     if (currentTotalsHealthBoardDataset !== null) {
       const placeStatsMap = parseNhsHBCsvData(currentTotalsHealthBoardDataset);
       setPlaceStatsMap(
-        // In case of duplicate (Scotland), HB takes precedence
         (existingMap) => new Map([...existingMap, ...placeStatsMap])
       );
     }
@@ -112,7 +116,6 @@ function RegionalSingleValueBar({
     if (currentTotalsCouncilAreaDataset !== null) {
       const placeStatsMap = parseNhsCACsvData(currentTotalsCouncilAreaDataset);
       setPlaceStatsMap(
-        // In case of duplicate (Scotland), HB takes precedence
         (existingMap) => new Map([...placeStatsMap, ...existingMap])
       );
     }
@@ -217,7 +220,7 @@ function RegionalSingleValueBar({
         </Col>
         <Col className="single-value-bar-col">
           <SingleValue
-            id="dailyDeaths"
+            id="weeklyDeaths"
             title="This week"
             value={guardMissingData(weeklyDeaths)}
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)"
