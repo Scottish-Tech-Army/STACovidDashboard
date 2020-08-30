@@ -17,25 +17,24 @@ import Footer from "./components/Footer/Footer";
 import { PERCENTAGE_CASES } from "./components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
-  VALUETYPE_CASES,
+  VALUETYPE_CASES
 } from "./components/HeatmapDataSelector/HeatmapConsts";
 import {
   PAGE_PUBLIC_DASHBOARD,
   PAGE_ANALYTICS_DASHBOARD,
   PAGE_DATA_SOURCES,
-  PAGE_ABOUT_US,
+  PAGE_ABOUT_US
 } from "./PageConsts";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 
 const tagManagerArgs = {
-  gtmId: "GTM-5LKHW33",
+  gtmId: "GTM-5LKHW33"
 };
 
 TagManager.initialize(tagManagerArgs);
 
 const App = () => {
-
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(PERCENTAGE_CASES);
@@ -133,18 +132,21 @@ const App = () => {
   function pagePublicDashboard() {
     return (
       <>
-        <header>
-          <Container fluid className="header">
-            <Row className="pt-3 justify-content-center align-items-center">
-              <Col>
-                <RouteMapRules />
-              </Col>
-            </Row>
-          </Container>
-        </header>
+        <Container fluid>
+          <Row className="justify-content-center align-items-center route-map-rules">
+            <Col>
+              <RouteMapRules />
+            </Col>
+          </Row>
+        </Container>
 
         <Container fluid>
-          <Row className="pt-3">
+          <Row>
+            <Col>
+              <hr className="full-width-hr" />
+            </Col>
+          </Row>
+          <Row>
             <Col>
               <SingleValueBar />
             </Col>
@@ -154,7 +156,7 @@ const App = () => {
               <hr className="full-width-hr" />
             </Col>
           </Row>
-          <Row className="widgets_block">
+          <Row>
             <Col
               xs={12}
               md={12}
@@ -169,11 +171,6 @@ const App = () => {
                     setAreaType={setAreaType}
                     setValueType={setValueType}
                   />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <hr className="underHeatmapSelector" />
                 </Col>
               </Row>
               <Row>
@@ -240,28 +237,8 @@ const App = () => {
               <InfoBar />
             </Col>
           </Row>
-          <Row className="d-none d-sm-flex">
-            <Col>
-              <hr className="full-width-hr" />
-            </Col>
-          </Row>
         </Container>
       </>
-    );
-  }
-
-  function pageAnalyticsDashboard() {
-    // const analyticsUrl = "http://127.0.0.1:7136/";
-    const analyticsUrl = "https://sta-homebrew.shinyapps.io/analysis/";
-
-    return (
-      <iframe
-        id="analytics-frame"
-        src={analyticsUrl}
-        style={{ border: "none", width: "100%", height: "850px" }}
-        frameborder="0"
-        title="COVID-19 Analytics"
-      ></iframe>
     );
   }
 
@@ -271,7 +248,7 @@ const App = () => {
         <h2>Data sources and attributions</h2>
         <ul>
           <li>
-            Routemap information:
+            Route Map information:
             <a
               href={
                 "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
@@ -365,113 +342,129 @@ const App = () => {
   }
 
   function pageAboutUs() {
-
     const teamMembers = [
       {
-        "name": "Rhi Batstone",
-        "linkedinRef": "https://www.linkedin.com/in/rhiannon-batstone-076191120"
+        name: "Rhi Batstone",
+        linkedinRef: "https://www.linkedin.com/in/rhiannon-batstone-076191120"
       },
       {
-        "name": "Ric Clark",
-        "linkedinRef": "https://www.linkedin.com/in/richard--clark"
+        name: "Ric Clark",
+        linkedinRef: "https://www.linkedin.com/in/richard--clark"
       },
       {
-        "name": "Eirini Komninou",
-        "linkedinRef": "https://www.linkedin.com/in/eirinikomninou"
+        name: "Eirini Komninou",
+        linkedinRef: "https://www.linkedin.com/in/eirinikomninou"
       },
       {
-        "name": "Adam Daniel Hidvegi",
-        "linkedinRef": "https://www.linkedin.com/in/adam-daniel-hidvegi"
+        name: "Adam Daniel Hidvegi",
+        linkedinRef: "https://www.linkedin.com/in/adam-daniel-hidvegi"
       },
       {
-        "name": "Rob Armitage",
-        "linkedinRef": "https://www.linkedin.com/in/rob-armitage"
+        name: "Rob Armitage",
+        linkedinRef: "https://www.linkedin.com/in/rob-armitage"
       },
       {
-        "name": "Becky Still",
-        "linkedinRef": "https://www.linkedin.com/in/rebeccastill1"
+        name: "Becky Still",
+        linkedinRef: "https://www.linkedin.com/in/rebeccastill1"
       },
       {
-        "name": "Bhagyashri Dhadage",
-        "linkedinRef": "https://www.linkedin.com/in/bhagyashri-dhadage-1b1278b1"
+        name: "Bhagyashri Dhadage",
+        linkedinRef: "https://www.linkedin.com/in/bhagyashri-dhadage-1b1278b1"
       },
       {
-        "name": "Andrew Rendle",
-        "linkedinRef": "https://www.linkedin.com/in/andrew-rendle-578546"
+        name: "Andrew Rendle",
+        linkedinRef: "https://www.linkedin.com/in/andrew-rendle-578546"
       },
       {
-        "name": "Donal Stewart",
-        "linkedinRef": "https://www.linkedin.com/in/donalstewart"
+        name: "Donal Stewart",
+        linkedinRef: "https://www.linkedin.com/in/donalstewart"
       },
       {
-        "name": "Allan Stevenson",
-        "linkedinRef": "https://www.linkedin.com/in/alstev"
+        name: "Allan Stevenson",
+        linkedinRef: "https://www.linkedin.com/in/alstev"
       },
       {
-        "name": "Gabriela Satrovskaja",
-        "linkedinRef": "https://www.linkedin.com/in/gabriela-satrovskaja"
+        name: "Gabriela Satrovskaja",
+        linkedinRef: "https://www.linkedin.com/in/gabriela-satrovskaja"
       },
       {
-        "name": "Euan Robertson",
-        "linkedinRef": "https://www.linkedin.com/in/euan-robertson-5845582"
+        name: "Euan Robertson",
+        linkedinRef: "https://www.linkedin.com/in/euan-robertson-5845582"
       },
       {
-        "name": "Luke Pritchard-Woollett",
-        "linkedinRef": "https://www.linkedin.com/in/lukepritchardwoollett"
+        name: "Luke Pritchard-Woollett",
+        linkedinRef: "https://www.linkedin.com/in/lukepritchardwoollett"
       },
       {
-        "name": "Cristina Perez",
-        "linkedinRef": "https://www.linkedin.com/in/cristina-perez-11229846"
+        name: "Cristina Perez",
+        linkedinRef: "https://www.linkedin.com/in/cristina-perez-11229846"
       },
       {
-        "name": "Colin Lyman",
-        "linkedinRef": "https://www.linkedin.com/in/colin-lyman"
+        name: "Colin Lyman",
+        linkedinRef: "https://www.linkedin.com/in/colin-lyman"
       },
       {
-        "name": "Jonathan Lau",
-        "linkedinRef": "https://www.linkedin.com/in/jonathancylau"
+        name: "Jonathan Lau",
+        linkedinRef: "https://www.linkedin.com/in/jonathancylau"
       },
       {
-        "name": "Craig Climie",
-        "linkedinRef": "https://www.linkedin.com/in/craig-climie"
+        name: "Craig Climie",
+        linkedinRef: "https://www.linkedin.com/in/craig-climie"
       }
     ];
 
-    const sortedTeamMembers = teamMembers.sort((a, b) => a.name.localeCompare(b.name)).map((data, index) => {
-      return(
-        <li key={index}>
-          <a
-            href={data.linkedinRef}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link"
-          >
-            {data.name}
-          </a>
-        </li>
-      )
-    });
+    const sortedTeamMembers = teamMembers
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((data, index) => {
+        return (
+          <li key={index}>
+            <a
+              href={data.linkedinRef}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link"
+            >
+              {data.name}
+            </a>
+          </li>
+        );
+      });
 
     return (
       <div fluid="true" className="about-us">
-        <hr/>
         <h1>About us</h1>
-        <p className="px-5">This dashboard has been developed by members of the Scottish Tech Army to improve awareness of the impacts of Covid-19.</p>
+        <p className="px-5">
+          This dashboard has been developed by members of the Scottish Tech Army
+          to improve awareness of the impacts of Covid-19.
+        </p>
         <h2>The Scottish Tech Army</h2>
-        <p className="px-5">Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter Jaco, the Scottish Tech Army Limited is a not for profit company that is building a volunteer Covid-19 technical response team that will work to help the Scottish Government, local authorities and other organisations across the country with rapid technical development projects to address current Covid-19 related challenges and post pandemic economic recovery. </p>
+        <p className="px-5">
+          Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter
+          Jaco, the Scottish Tech Army Limited is a not for profit company that
+          is building a volunteer Covid-19 technical response team that will
+          work to help the Scottish Government, local authorities and other
+          organisations across the country with rapid technical development
+          projects to address current Covid-19 related challenges and post
+          pandemic economic recovery.{" "}
+        </p>
         <h2>Meet the team</h2>
-        <p className="px-5">The Covid-19 dashboard for Scotland was created by the following STA volunteers: </p>
-          <Container className="team-members">
-            <Row>
-              <Col>
-                {sortedTeamMembers.slice(0, sortedTeamMembers.length/2+1)}
-              </Col>
-              <Col>
-                {sortedTeamMembers.slice(sortedTeamMembers.length/2+1, sortedTeamMembers.length)}
-              </Col>
-            </Row>
-          </Container>
-        <hr/>
+        <p className="px-5">
+          The Covid-19 dashboard for Scotland was created by the following STA
+          volunteers:{" "}
+        </p>
+        <Container className="team-members">
+          <Row>
+            <Col>
+              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2 + 1)}
+            </Col>
+            <Col>
+              {sortedTeamMembers.slice(
+                sortedTeamMembers.length / 2 + 1,
+                sortedTeamMembers.length
+              )}
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
@@ -492,19 +485,17 @@ const App = () => {
               </h1>
             </Col>
           </Row>
+          <Row>
+            <Col>
+              <hr className="full-width-hr" />
+            </Col>
+          </Row>
         </Container>
       </header>
       {currentPage === PAGE_PUBLIC_DASHBOARD ? pagePublicDashboard() : <></>}
-      {currentPage === PAGE_ANALYTICS_DASHBOARD ? (
-        pageAnalyticsDashboard()
-      ) : (
-        <></>
-      )}
       {currentPage === PAGE_DATA_SOURCES ? pageDataSources() : <></>}
       {currentPage === PAGE_ABOUT_US ? pageAboutUs() : <></>}
-      <Footer
-        setCurrentPage={setCurrentPage}
-      />
+      <Footer setCurrentPage={setCurrentPage} />
     </div>
   );
 };

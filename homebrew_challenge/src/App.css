@@ -6,6 +6,8 @@
 
 .full-width-hr {
   border: 1px solid #2a84bb;
+  margin: 10px 0;
+  padding: 0;
 }
 
 .full-screen, .fullscreen-charts {
@@ -24,28 +26,9 @@ img#logo {
 }
 
 .about-us {
-  text-align: center;
-  padding-top: 3vh;
-}
-
-.about-us {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.about-us .name {
-  color: #3c3c3b;
-  font-size: 16pt;
-}
-
-.about-us h1 {
-  padding-top: 2vh;
+  height: 60vh;
 }
 
 .team-members {
-  padding-bottom: 3vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

@@ -30,6 +30,11 @@ const Footer = ({ setCurrentPage }) => {
   return (
     <footer>
       <Container fluid className="font-small">
+        <Row>
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
         <Row className="p-1">
           <Col
             md={12}
