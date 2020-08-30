@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getLatestFiveNewsItems } from "../Utils/RssFeedUtils";
 import "./InfoBar.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const InfoBar = () => {
   const [covidNews, setCovidNews] = useState(null);
