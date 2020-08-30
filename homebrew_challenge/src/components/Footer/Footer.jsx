@@ -10,20 +10,30 @@ import {
   PAGE_ABOUT_US,
 } from "../../pages/PageConsts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
-import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedinIn, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
       <div className="entry link" onClick={() => setCurrentPage(key)}>
-        <div
-          className="entry link"
-          id="entry-link"
-          onClick={() => setCurrentPage(key)}
-        >
+        <div className="entry link" onClick={() => setCurrentPage(key)}>
           {text}
         </div>
+      </div>
+    );
+  }
+
+  function sitemapExternalLink(href, content) {
+    return (
+      <div className="entry link">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="entry link"
+        >
+          {content}
+        </a>
       </div>
     );
   }
@@ -58,49 +68,22 @@ const Footer = ({ setCurrentPage }) => {
             </div>
             <div className="sitemap">
               <div className="title">COVID HELP</div>
-              <div className="entry link">
-                <a
-                  href="https://www.gov.scot/collections/coronavirus-covid-19-guidance/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="entry link"
-                >
-                  Scottish Government Guidance
-                </a>
-              </div>
-              <div className="entry link">
-                <a
-                  href="https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="entry link"
-                >
-                  NHS inform Advice
-                </a>
-              </div>
+              {sitemapExternalLink(
+                "https://www.gov.scot/collections/coronavirus-covid-19-guidance/",
+                "Scottish Government Guidance"
+              )}
+              {sitemapExternalLink(
+                "https://www.nhsinform.scot/illnesses-and-conditions/infections-and-poisoning/coronavirus-covid-19",
+                "NHS inform Advice"
+              )}
             </div>
             <div className="sitemap">
               <div className="title">LEGAL</div>
-              <div className="entry link">
-                <a
-                  className="entry link"
-                  href="https://www.scottishtecharmy.org/privacy-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </a>
-              </div>
-              <div className="entry link">
-                <a
-                  className="entry link"
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Accessibility
-                </a>
-              </div>
+              {sitemapExternalLink(
+                "https://www.scottishtecharmy.org/privacy-policy",
+                "Privacy Policy"
+              )}
+              {sitemapExternalLink("#", "Accessibility")}
             </div>
             <div className="sitemap">
               <div className="title">ABOUT</div>
@@ -108,14 +91,10 @@ const Footer = ({ setCurrentPage }) => {
             </div>
             <div className="sitemap">
               <div className="title">CONTACT</div>
-              <div>
-                <a
-                  href="mailto:info@sta.org?subject=Covid-19%20Dashboard%20Feedback"
-                  className=" entry link entry-link"
-                >
-                  info@sta.org
-                </a>
-              </div>
+              {sitemapExternalLink(
+                "mailto:info@sta.org?subject=Covid-19%20Dashboard%20Feedback",
+                "info@sta.org"
+              )}
             </div>
           </Col>
         </Row>
@@ -134,7 +113,6 @@ const Footer = ({ setCurrentPage }) => {
                 target="_blank"
                 rel="noopener noreferrer licence"
                 className="entry link"
-                id="entry-link"
               >
                 the Open Government Licence 3.0.
               </a>
@@ -151,36 +129,24 @@ const Footer = ({ setCurrentPage }) => {
           </Col>
           <Col sm={12} md={3} className="d-flex justify-content-end social">
             <div className="d-flex align-items-center">Connect with us: </div>
-            <div className="entry link">
-              <a
-                className="entry link"
-                href="https://www.linkedin.com/company/scottish-tech-army-limited"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon
-                  icon={faTwitter}
-                  size="3x"
-                  color="#133a53"
-                  className="social-media"
-                />
-              </a>
-            </div>
-            <div className="entry link">
-              <a
-                className="entry link"
-                href="https://twitter.com/ScotTechArmy"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon
-                  icon={faLinkedinIn}
-                  size="3x"
-                  color="#133a53"
-                  className="social-media"
-                />
-              </a>
-            </div>
+            {sitemapExternalLink(
+              "https://www.linkedin.com/company/scottish-tech-army-limited",
+              <FontAwesomeIcon
+                icon={faLinkedinIn}
+                size="3x"
+                color="#133a53"
+                className="social-media"
+              />
+            )}
+            {sitemapExternalLink(
+              "https://twitter.com/ScotTechArmy",
+              <FontAwesomeIcon
+                icon={faTwitter}
+                size="3x"
+                color="#133a53"
+                className="social-media"
+              />
+            )}
           </Col>
         </Row>
       </Container>
