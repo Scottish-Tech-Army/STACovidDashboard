@@ -25,11 +25,11 @@ export function getPopulationMap(placeDateValuesResult) {
   const places = [...placeDateValuesMap.keys()];
   places.forEach((place) => {
     const dateValuesMap = placeDateValuesMap.get(place);
-    const { cases, crudeRatePositive } = dateValuesMap.get(finalDate);
+    const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
     if (crudeRatePositive === 0) {
       populationMap.set(place, 0);
     } else {
-      const population = 100000 * (cases / crudeRatePositive);
+      const population = 100000 * (cumulativeCases / crudeRatePositive);
       populationMap.set(place, population);
       populationTotal += population;
     }
@@ -257,9 +257,6 @@ const RegionDataCharts = ({
           tooltips: {
             callbacks: {
               label: (tooltipItem, data) => {
-                console.log(tooltipItem);
-                console.log(data);
-
                 return (
                   data.datasets[tooltipItem.datasetIndex].label +
                   ": " +
