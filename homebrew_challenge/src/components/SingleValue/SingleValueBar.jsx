@@ -117,7 +117,7 @@ function SingleValueBar() {
         <SingleValue
           id="dailyCases"
           title="DAILY CASES"
-          dateReported={guardMissingData(
+          subtitle={guardMissingData(
             getRelativeReportedDate(dailyCases.date)
           )}
           value={guardMissingData(dailyCases.value.toLocaleString())}
@@ -128,7 +128,7 @@ function SingleValueBar() {
         <SingleValue
           id="totalCases"
           title="TOTAL CASES"
-          dateReported="reported since 20 February, 2020"
+          subtitle="reported since 20 February, 2020"
           value={guardMissingData(totalCases.value.toLocaleString())}
           tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
@@ -137,7 +137,7 @@ function SingleValueBar() {
         <SingleValue
           id="dailyFatalities"
           title="DAILY FATALITIES"
-          dateReported={guardMissingData(
+          subtitle={guardMissingData(
             getRelativeReportedDate(dailyFatalities.date)
           )}
           value={guardMissingData(dailyFatalities.value.toLocaleString())}
@@ -148,7 +148,7 @@ function SingleValueBar() {
         <SingleValue
           id="totalFatalities"
           title="TOTAL FATALITIES"
-          dateReported="reported since 20 February, 2020"
+          subtitle="reported since 20 February, 2020"
           value={guardMissingData(totalFatalities.value.toLocaleString())}
           tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
         />
