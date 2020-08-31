@@ -13,7 +13,7 @@ import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
-import { PERCENTAGE_CASES } from "../components/DataCharts/DataChartsConsts";
+import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
@@ -22,7 +22,7 @@ import {
 const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
-  const [chartType, setChartType] = useState(PERCENTAGE_CASES);
+  const [chartType, setChartType] = useState(DAILY_CASES);
   const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 

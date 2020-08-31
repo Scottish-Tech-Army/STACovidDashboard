@@ -153,10 +153,7 @@ const DataCharts = ({
         scaleID: "x-axis-0",
         borderColor: "rgba(0,0,0,0.25)",
         borderWidth: 2,
-
-        // Data value to draw the line at
         value: date,
-
         label: {
           backgroundColor: "white",
           fontColor: "black",
@@ -165,8 +162,6 @@ const DataCharts = ({
           position: "top",
           enabled: true,
           yAdjust: (index % 2) * 20,
-
-          // Text to display in label - default is null. Provide an array to display values on a new line
           content: name,
         },
       };
