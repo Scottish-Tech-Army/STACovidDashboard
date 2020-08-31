@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./HeatmapDataSelector.css";
+import "../../common.css";
 
 import {
   AREATYPE_COUNCIL_AREAS,

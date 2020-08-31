@@ -1,10 +1,7 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue"] }] */
 
 import React from "react";
-import SingleValueBar, {
-  parseNhsCsvData,
-  getRelativeReportedDate,
-} from "./SingleValueBar";
+import SingleValueBar, { parseNhsCsvData } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -38,8 +35,6 @@ test("singleValueBar renders default data when fetch fails", async () => {
   checkSingleValue("totalFatalities", "Total", "0");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
 });
-
-
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
   fetch.mockResponse(nhsCsvData);
@@ -90,22 +85,6 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("dailyFatalities", "Not available", "Not available");
   checkSingleValue("totalFatalities", "Total", "Not available");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
-});
-
-test("getRelativeReportedDate", () => {
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
-
-  expect(getRelativeReportedDate(Date.parse("2020-06-22"))).toBe("Reported Today");
-  expect(getRelativeReportedDate(Date.parse("2020-06-21"))).toBe("Reported Yesterday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-20"))).toBe("Reported last Saturday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-19"))).toBe("Reported last Friday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-18"))).toBe("Reported last Thursday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-17"))).toBe("Reported last Wednesday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-16"))).toBe("Reported last Tuesday");
-  expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe("Reported on 15/06/2020");
-  expect(getRelativeReportedDate(undefined)).toBeUndefined();
-  expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
 test("parseNhsCsvData", () => {
