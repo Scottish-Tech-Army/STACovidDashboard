@@ -148,7 +148,7 @@ const DataCharts = ({
     function getDateLine({ date, name }, index) {
       return {
         type: "line",
-        drawTime: "beforeDatasetsDraw",
+        drawTime: "afterDatasetsDraw",
         mode: "vertical",
         scaleID: "x-axis-0",
         borderColor: "rgba(0,0,0,0.25)",
@@ -160,8 +160,8 @@ const DataCharts = ({
         label: {
           backgroundColor: "white",
           fontColor: "black",
-          xPadding: 6,
-          yPadding: 6,
+          xPadding: 0,
+          yPadding: 0,
           position: "top",
           enabled: true,
           yAdjust: (index % 2) * 20,
