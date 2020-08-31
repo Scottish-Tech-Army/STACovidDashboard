@@ -5,7 +5,6 @@ import SingleValueBar from "./components/SingleValue/SingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
@@ -21,7 +20,6 @@ import {
 } from "./components/HeatmapDataSelector/HeatmapConsts";
 import {
   PAGE_PUBLIC_DASHBOARD,
-  PAGE_ANALYTICS_DASHBOARD,
   PAGE_DATA_SOURCES,
   PAGE_ABOUT_US
 } from "./PageConsts";
