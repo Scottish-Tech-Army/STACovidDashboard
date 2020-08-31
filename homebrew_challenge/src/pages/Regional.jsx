@@ -24,6 +24,11 @@ const Regional = ({
   return (
     <Container fluid className="regional-page">
       <Row>
+        <Col>
+          <hr className="full-width-hr" />
+        </Col>
+      </Row>
+      <Row>
         <Col xs={12} md={4}>
           <RegionGeoMap
             councilAreaDataset={councilAreaDataset}
@@ -69,11 +74,6 @@ const Regional = ({
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <hr className="full-width-hr" />
         </Col>
       </Row>
     </Container>
