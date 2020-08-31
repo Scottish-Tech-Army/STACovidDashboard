@@ -22,7 +22,7 @@ function SingleValue({
           <></>
         )}
       </div>
-      <hr />
+      <hr className="single-value-hr"/>
       <div className="single-value-number">{value}</div>
     </div>
   );

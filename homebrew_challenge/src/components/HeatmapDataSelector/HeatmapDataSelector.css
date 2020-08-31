@@ -19,8 +19,7 @@
 }
 
 .heatmap-selector .toggle-button-group {
-  margin: 10px 20px;
-  height: 100%;
+  margin: 0.5rem 0 0.5rem 0;
 }
 
 .heatmap-selector {
@@ -33,25 +32,5 @@
 }
 
 .btn {
-  font-size: 0.8rem;
   text-align: left;
-}
-
-@media screen and (max-width: 375px) {
-  .btn {
-    font-size: 0.8rem;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .selector-container {
-    display: flex;
-    flex-direction: column;
-  }
-  .heatmap-selector .selector-group {
-    margin: 5px auto;
-  }
-}
-.selector-container {
-  background-color: #ffffff;
 }

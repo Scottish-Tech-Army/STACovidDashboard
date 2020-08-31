@@ -38,7 +38,7 @@ function HeatmapDataSelector({
   return (
     <Container className="heatmap-selector">
       <Row className="selector-container">
-        <Col className="selector-group d-flex justify-content-center">
+        <Col className="selector-group" xs={12} md={6}>
           <ToggleButtonGroup
             className="toggle-button-group"
             name="areaType"
@@ -54,7 +54,7 @@ function HeatmapDataSelector({
             </ToggleButton>
           </ToggleButtonGroup>
         </Col>
-        <Col className="selector-group">
+        <Col className="selector-group" xs={12} md={6}>
           <ToggleButtonGroup
             className="toggle-button-group"
             name="valueType"

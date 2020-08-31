@@ -10,7 +10,7 @@
 }
 
 .single-value-number {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #2a84bb;
   font-weight: bold;
   margin-left: 40px;
@@ -22,7 +22,7 @@
 
 .single-value {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 10px 0 20px 0;
+  padding: 10px 0 0;
   height: 100%;
   background-color: #ffffff;
   color: #133a53;
@@ -41,6 +41,11 @@
 
 .single-value-container {
   width: 20%;
+}
+
+.single-value-hr {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 @media screen and (max-width: 1324px) {
