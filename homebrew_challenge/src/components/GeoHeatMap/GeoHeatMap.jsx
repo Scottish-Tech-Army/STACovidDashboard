@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
-import HeatmapDataSelector from "../HeatmapDataSelector/HeatmapDataSelector";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
@@ -411,13 +410,6 @@ const GeoHeatMap = ({
         />
       </LeafletMap>
       </div>
-      <hr className="full-width-hr" />
-      <HeatmapDataSelector
-        areaType={areaType}
-        valueType={valueType}
-        setAreaType={setAreaType}
-        setValueType={setValueType}
-      />
     </div>
   );
 };

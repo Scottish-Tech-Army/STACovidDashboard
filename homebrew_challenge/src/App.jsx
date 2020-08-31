@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import Heatmap from "./components/HeatMap/Heatmap";
 import GeoHeatMap from "./components/GeoHeatMap/GeoHeatMap";
 import DataChartsSelector from "./components/DataCharts/DataChartsSelector";
+import HeatmapDataSelector from "./components/HeatmapDataSelector/HeatmapDataSelector";
 import DataCharts from "./components/DataCharts/DataCharts";
 import InfoBar from "./components/InfoBar/InfoBar";
 import RouteMapRules from "./components/RouteMapRules/RouteMapRules";
@@ -162,6 +163,21 @@ const App = () => {
               className={zoomGeoMap ? "full-screen" : ""}
             >
               <Row>
+                <Col>
+                  <HeatmapDataSelector
+                    areaType={areaType}
+                    valueType={valueType}
+                    setAreaType={setAreaType}
+                    setValueType={setValueType}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <hr className="underHeatmapSelector" />
+                </Col>
+              </Row>
+              <Row>
                 <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap
                     setAreaType={setAreaType}
@@ -176,10 +192,14 @@ const App = () => {
                     fullscreenEnabled={zoomGeoMap}
                   />
                 </Col>
-                <Col className="d-block d-lg-none">
+                <Col className="d-block d-md-none">
                   <hr className="underHeatmapSelector" />
                 </Col>
-                <Col xs={zoomGeoMap ? 0 : 12} lg={zoomGeoMap ? 0 : 8} className="heatmap-container">
+                <Col
+                  xs={zoomGeoMap ? 0 : 12}
+                  lg={zoomGeoMap ? 0 : 8}
+                  className="heatmap-container"
+                >
                   {zoomGeoMap ? (
                     <></>
                   ) : (
