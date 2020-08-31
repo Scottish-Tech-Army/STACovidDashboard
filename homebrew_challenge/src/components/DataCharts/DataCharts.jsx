@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
+import "../../common.css";
 import moment from "moment";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
@@ -11,7 +12,11 @@ import {
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
 import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
-import "./FullscreenButton";
+import "chartjs-plugin-annotation";
+import {
+  commonChartConfiguration,
+  datasetConfiguration,
+} from "./DataChartsUtils";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -136,79 +141,18 @@ const DataCharts = ({
   }, [healthBoardDataset]);
 
   useEffect(() => {
-    function commonChartConfiguration(datasetLabel, seriesData) {
-      return {
-        type: "line",
+    const DATASET_COLOUR = "#ec6730";
 
-        data: {
-          datasets: [
-            {
-              label: datasetLabel,
-              data: seriesData,
-              backgroundColor: " #fdeee8",
-              borderColor: "#ec6730",
-              fill: false,
-              pointRadius: 0,
-              borderWidth: 2,
-              lineTension: 0,
-            },
-          ],
-        },
-        options: {
-          animation: {
-            duration: 0,
-          },
-          hover: {
-            animationDuration: 0,
-            mode: "index",
-            intersect: false,
-          },
-          responsiveAnimationDuration: 0,
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  maxTicksLimit: 20,
-                  callback: function (value, index, values) {
-                    return Math.round(value);
-                  },
-                },
-              },
-            ],
-            xAxes: [
-              {
-                type: "time",
-                distribution: "series",
-                time: {
-                  tooltipFormat: "D MMM YYYY",
-                },
-                gridLines: {
-                  display: false,
-                },
-              },
-            ],
-          },
-          legend: {
-            position: "bottom",
-          },
-          plugins: {
-            chartJsPluginFullscreenButton: {
-              fullscreenEnabled: fullscreenEnabled,
-              toggleFullscreen: toggleFullscreen,
-            },
-          },
-        },
-      };
-    }
+    function percentageCasesChartConfiguration() {
+      const datasets = [
+        datasetConfiguration(
+          percentageCasesDatasetLabel,
+          percentageCasesSeriesData,
+          DATASET_COLOUR
+        ),
+      ];
+      const configuration = commonChartConfiguration(datasets);
 
-    function percentageCasesChartConfiguration(chartRef) {
-      const configuration = commonChartConfiguration(
-        percentageCasesDatasetLabel,
-        percentageCasesSeriesData
-      );
       configuration.options.scales.yAxes[0].ticks.callback = (
         value,
         index,
@@ -228,32 +172,11 @@ const DataCharts = ({
       return configuration;
     }
 
-    function dailyCasesChartConfiguration(chartRef) {
-      return commonChartConfiguration(
-        dailyCasesDatasetLabel,
-        dailyCasesSeriesData
-      );
-    }
-
-    function dailyDeathsChartConfiguration(chartRef) {
-      return commonChartConfiguration(
-        dailyDeathsDatasetLabel,
-        dailyDeathsSeriesData
-      );
-    }
-
-    function totalCasesChartConfiguration(chartRef) {
-      return commonChartConfiguration(
-        totalCasesDatasetLabel,
-        totalCasesSeriesData
-      );
-    }
-
-    function totalDeathsChartConfiguration(chartRef) {
-      return commonChartConfiguration(
-        totalDeathsDatasetLabel,
-        totalDeathsSeriesData
-      );
+    function basicChartConfiguration(datasetLabel, seriesData) {
+      const datasets = [
+        datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
+      ];
+      return commonChartConfiguration(datasets);
     }
 
     if (chartInstance.current !== null) {
@@ -266,29 +189,25 @@ const DataCharts = ({
         chartRef,
         percentageCasesChartConfiguration()
       );
-    }
-    if (chartType === DAILY_CASES) {
+    } else if (chartType === DAILY_CASES) {
       chartInstance.current = new Chart(
         chartRef,
-        dailyCasesChartConfiguration()
+        basicChartConfiguration(dailyCasesDatasetLabel, dailyCasesSeriesData)
       );
-    }
-    if (chartType === DAILY_DEATHS) {
+    } else if (chartType === DAILY_DEATHS) {
       chartInstance.current = new Chart(
         chartRef,
-        dailyDeathsChartConfiguration()
+        basicChartConfiguration(dailyDeathsDatasetLabel, dailyDeathsSeriesData)
       );
-    }
-    if (chartType === TOTAL_CASES) {
+    } else if (chartType === TOTAL_CASES) {
       chartInstance.current = new Chart(
         chartRef,
-        totalCasesChartConfiguration()
+        basicChartConfiguration(totalCasesDatasetLabel, totalCasesSeriesData)
       );
-    }
-    if (chartType === TOTAL_DEATHS) {
+    } else if (chartType === TOTAL_DEATHS) {
       chartInstance.current = new Chart(
         chartRef,
-        totalDeathsChartConfiguration()
+        basicChartConfiguration(totalDeathsDatasetLabel, totalDeathsSeriesData)
       );
     }
   }, [

@@ -4,9 +4,9 @@ import React from "react";
 import DataChartsSelector from "./DataChartsSelector";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { PERCENTAGE_CASES } from "./DataChartsConsts";
+import { DAILY_CASES } from "./DataChartsConsts";
 
-var storedChartType = PERCENTAGE_CASES;
+var storedChartType = DAILY_CASES;
 const setChartType = (value) => (storedChartType = value);
 
 var container = null;
@@ -24,22 +24,22 @@ afterEach(() => {
 });
 
 function checkButtonText() {
-  expect(percentageCasesButton().textContent).toBe("% Tests Positive");
   expect(dailyCasesButton().textContent).toBe("Daily Cases");
   expect(dailyDeathsButton().textContent).toBe("Daily Deaths");
   expect(totalCasesButton().textContent).toBe("Total Cases");
   expect(totalDeathsButton().textContent).toBe("Total Deaths");
+  expect(percentageCasesButton().textContent).toBe("% Tests Positive");
 }
 
 function checkStoredValue(expectedChartType) {
   expect(storedChartType).toBe(expectedChartType);
 }
 
-const percentageCasesButton = () => container.querySelector("#percentageCases");
 const dailyCasesButton = () => container.querySelector("#dailyCases");
 const dailyDeathsButton = () => container.querySelector("#dailyDeaths");
 const totalCasesButton = () => container.querySelector("#totalCases");
 const totalDeathsButton = () => container.querySelector("#totalDeaths");
+const percentageCasesButton = () => container.querySelector("#percentageCases");
 
 function click(button) {
   act(() => {
@@ -92,9 +92,6 @@ test("default render", async () => {
   });
 
   checkButtonText();
-  checkStoredValue("percentCases");
-
-  click(dailyCasesButton());
   checkStoredValue("dailyCases");
 
   click(dailyDeathsButton());
@@ -108,4 +105,7 @@ test("default render", async () => {
 
   click(percentageCasesButton());
   checkStoredValue("percentCases");
+
+  click(dailyCasesButton());
+  checkStoredValue("dailyCases");
 });
