@@ -50,6 +50,7 @@ export function parseNhsCsvData(csvData) {
 }
 
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
+const SUBTITLE_TOTAL = "reported since 28 February, 2020"
 
 function SingleValueBar() {
   const [dailyCases, setDailyCases] = useState(emptyDate);
@@ -109,7 +110,7 @@ function SingleValueBar() {
         <SingleValue
           id="totalCases"
           title="TOTAL CASES"
-          subtitle="reported since 28 February, 2020"
+          subtitle={SUBTITLE_TOTAL}
           value={guardMissingData(totalCases.value)}
           tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
@@ -129,7 +130,7 @@ function SingleValueBar() {
         <SingleValue
           id="totalFatalities"
           title="TOTAL FATALITIES"
-          subtitle="reported since 28 February, 2020"
+          subtitle={SUBTITLE_TOTAL}
           value={guardMissingData(totalFatalities.value)}
           tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
         />
