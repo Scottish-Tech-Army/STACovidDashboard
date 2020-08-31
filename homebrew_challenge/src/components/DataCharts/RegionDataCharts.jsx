@@ -13,6 +13,10 @@ import {
   createPlaceDateValuesMap,
   FEATURE_CODE_SCOTLAND,
 } from "../Utils/CsvUtils";
+import {
+  commonChartConfiguration,
+  datasetConfiguration,
+} from "./DataChartsUtils";
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
@@ -206,84 +210,6 @@ const RegionDataCharts = ({
   }, [councilAreaDataset]);
 
   useEffect(() => {
-    function commonChartConfiguration(datasets) {
-      return {
-        type: "line",
-
-        data: {
-          datasets: datasets,
-        },
-        options: {
-          animation: {
-            duration: 0,
-          },
-          hover: {
-            animationDuration: 0,
-            mode: "index",
-            intersect: false,
-          },
-          responsiveAnimationDuration: 0,
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                id: "y-axis-0",
-                ticks: {
-                  beginAtZero: true,
-                  maxTicksLimit: 20,
-                  callback: function (value, index, values) {
-                    return Math.round(value);
-                  },
-                },
-              },
-            ],
-            xAxes: [
-              {
-                type: "time",
-                distribution: "series",
-                time: {
-                  tooltipFormat: "D MMM YYYY",
-                },
-                gridLines: {
-                  display: false,
-                },
-              },
-            ],
-          },
-          legend: {
-            position: "bottom",
-          },
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                return (
-                  data.datasets[tooltipItem.datasetIndex].label +
-                  ": " +
-                  (Number.isInteger(tooltipItem.yLabel)
-                    ? tooltipItem.yLabel
-                    : tooltipItem.yLabel.toFixed(1))
-                );
-              },
-            },
-          },
-        },
-      };
-    }
-
-    function datasetConfiguration(datasetLabel, seriesData, colour) {
-      return {
-        label: datasetLabel,
-        data: seriesData,
-        backgroundColor: colour,
-        borderColor: colour,
-        fill: false,
-        pointRadius: 0,
-        borderWidth: 2,
-        lineTension: 0,
-      };
-    }
-
     function getAverageSeriesData(seriesData, regionCode) {
       if (regionCode == null) {
         return seriesData.get(FEATURE_CODE_SCOTLAND);
@@ -307,7 +233,11 @@ const RegionDataCharts = ({
 
     function setChart(datasetLabel, seriesData, regionCode) {
       const datasets = [
-        datasetConfiguration(datasetLabel, seriesData.get(regionCode), REGION_DATASET_COLOUR),
+        datasetConfiguration(
+          datasetLabel,
+          seriesData.get(regionCode),
+          REGION_DATASET_COLOUR
+        ),
       ];
       if (regionCode !== FEATURE_CODE_SCOTLAND) {
         datasets.push(
@@ -318,9 +248,23 @@ const RegionDataCharts = ({
           )
         );
       }
+      const chartConfiguration = commonChartConfiguration(datasets);
+      chartConfiguration.options.tooltips = {
+        callbacks: {
+          label: (tooltipItem, data) => {
+            return (
+              data.datasets[tooltipItem.datasetIndex].label +
+              ": " +
+              (Number.isInteger(tooltipItem.yLabel)
+                ? tooltipItem.yLabel
+                : tooltipItem.yLabel.toFixed(1))
+            );
+          },
+        },
+      };
 
       const chartRef = chartContainer.current.getContext("2d");
-      chartInstance.current = new Chart(chartRef, commonChartConfiguration(datasets));
+      chartInstance.current = new Chart(chartRef, chartConfiguration);
     }
 
     if (chartInstance.current !== null) {

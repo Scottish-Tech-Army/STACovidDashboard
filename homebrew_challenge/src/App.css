@@ -75,15 +75,30 @@ img#logo {
   text-decoration: none;
 }
 
-.about-us {
+.about-us,
+.accessibility-page {
+  text-align: center;
+  padding-top: 3vh;
+}
+
+.about-us,
+.accessibility-page ul {
   list-style-type: none;
   height: 60vh;
 }
 
-.team-members {
+.about-us h1,
+.accessibility-page h1,
+.accessibility-page p {
+  padding-top: 2vh;
 }
 
 .widgets-block {
   background-color: #f2f2f2;
   padding: 0 0 40px 0;
+}
+
+.accessibility-page .browsers {
+  font-style: italic;
+  padding-top: 0.1vh;
 }

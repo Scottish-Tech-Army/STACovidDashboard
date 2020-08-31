@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-annotation": "^0.5.7",
     "date-fns": "^2.14.0",
     "leaflet": "^1.6.0",
     "moment": "^2.27.0",

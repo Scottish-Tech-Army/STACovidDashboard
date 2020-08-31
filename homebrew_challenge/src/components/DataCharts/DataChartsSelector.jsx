@@ -38,9 +38,6 @@ function DataChartsSelector({ chartType, setChartType }) {
         value={chartType}
         onChange={(val) => setChartType(val)}
       >
-        <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
-          % Tests Positive
-        </ToggleButton>
         <ToggleButton id="dailyCases" value={DAILY_CASES}>
           Daily Cases
         </ToggleButton>
@@ -52,6 +49,9 @@ function DataChartsSelector({ chartType, setChartType }) {
         </ToggleButton>
         <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
           Total Deaths
+        </ToggleButton>
+        <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
+          % Tests Positive
         </ToggleButton>
       </ToggleButtonGroup>
     </div>

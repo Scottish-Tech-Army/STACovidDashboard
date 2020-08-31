@@ -1,9 +1,6 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_MAP,
@@ -198,7 +195,7 @@ function RegionalSingleValueBar({
             tooltip="These are the total cases of COVID-19 since the COVID-19 Pandemic began."
           />
         </div>
-    
+
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyDeaths"

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import AboutUs from "./pages/AboutUs";
+import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
 import Overview from "./pages/Overview";
 import Regional from "./pages/Regional";
 import {
   PAGE_ABOUT_US,
+  PAGE_ACCESSIBILITY,
   PAGE_DATA_SOURCES,
   PAGE_OVERVIEW,
   PAGE_REGIONAL,
@@ -25,7 +24,6 @@ const tagManagerArgs = {
 TagManager.initialize(tagManagerArgs);
 
 const App = () => {
-
   const [currentPage, setCurrentPage] = useState(PAGE_OVERVIEW);
 
   const [healthBoardDataset, setHealthBoardDataset] = useState(null);
@@ -126,11 +124,10 @@ const App = () => {
       ) : (
         <></>
       )}
+      {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer
-        setCurrentPage={setCurrentPage}
-      />
+      <Footer setCurrentPage={setCurrentPage} />
     </div>
   );
 };

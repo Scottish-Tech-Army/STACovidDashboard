@@ -8,6 +8,7 @@ import {
   PAGE_REGIONAL,
   PAGE_DATA_SOURCES,
   PAGE_ABOUT_US,
+  PAGE_ACCESSIBILITY,
 } from "../../pages/PageConsts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedinIn, faTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -88,7 +89,7 @@ const Footer = ({ setCurrentPage }) => {
                 "https://www.scottishtecharmy.org/privacy-policy",
                 "Privacy Policy"
               )}
-              {sitemapExternalLink("#", "Accessibility")}
+              {sitemapEntry(PAGE_ACCESSIBILITY, "Accessibility")}
             </div>
             <div className="sitemap">
               <div className="title">ABOUT</div>
