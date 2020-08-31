@@ -13,10 +13,6 @@
   font-weight: normal;
 }
 
-.sitemap .email, .sitemap .title, .sitemap .entry {
-  text-align: left;
-}
-
 @media screen and (max-width: 768px) {
   .sitemap .title {
     padding-top: 20px;

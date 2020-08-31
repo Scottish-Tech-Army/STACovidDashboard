@@ -3,8 +3,8 @@
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #287DB2;
-  border-color: #287DB2;
+  background-color: #287db2;
+  border-color: #287db2;
   font-weight: bold;
 }
 
@@ -19,7 +19,8 @@
 }
 
 .heatmap-selector .toggle-button-group {
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 10px 20px;
+  height: 100%;
 }
 
 .heatmap-selector {
@@ -32,5 +33,28 @@
 }
 
 .btn {
+  font-size: 0.8rem;
   text-align: left;
+}
+
+@media screen and (max-width: 375px) {
+  .btn {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .selector-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .heatmap-selector .selector-group {
+    margin: 5px auto;
+  }
+  .btn {
+    width: 45%;
+  }
+}
+.selector-container {
+  background-color: #ffffff;
 }

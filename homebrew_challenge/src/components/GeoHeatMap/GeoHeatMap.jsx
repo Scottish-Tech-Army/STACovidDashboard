@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
+import HeatmapDataSelector from "../HeatmapDataSelector/HeatmapDataSelector";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
@@ -90,6 +91,8 @@ const GeoHeatMap = ({
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
   fullscreenEnabled = false,
+  setAreaType,
+  setValueType,
 }) => {
   const [healthBoard7DayDataset, setHealthBoard7DayDataset] = useState(null);
   const [councilArea7DayDataset, setCouncilArea7DayDataset] = useState(null);
@@ -384,9 +387,10 @@ const GeoHeatMap = ({
 
   const tilesStadiaAlidadeSmooth =
     "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
-
   return (
+
     <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
+      <div className="geo-heatmap-container">
       <LeafletMap
         ref={mapRef}
         id="map"
@@ -406,6 +410,14 @@ const GeoHeatMap = ({
           fullscreenEnabled={fullscreenEnabled}
         />
       </LeafletMap>
+      </div>
+      <hr className="full-width-hr" />
+      <HeatmapDataSelector
+        areaType={areaType}
+        valueType={valueType}
+        setAreaType={setAreaType}
+        setValueType={setValueType}
+      />
     </div>
   );
 };

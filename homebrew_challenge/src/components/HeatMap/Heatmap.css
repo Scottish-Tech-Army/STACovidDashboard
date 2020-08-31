@@ -3,12 +3,10 @@
   max-height: 600px;
   height: 100%;
   background-color: #ffffff;
-  box-shadow: 10px 10px 5px #aaaaaa;
-  border-radius: 5px;
 }
 
 .heatmap table {
-  text-align: left;
+
   overflow-y: auto;
 }
 

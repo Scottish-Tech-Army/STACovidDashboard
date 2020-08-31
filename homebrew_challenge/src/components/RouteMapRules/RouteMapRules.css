@@ -1,19 +1,12 @@
-.route-map-rules {
-  color: #133a53;
-  margin-bottom: 0;
-}
-
 .current-phase {
-  text-align: left;
-  font-weight: bold;
   background-color: #133a53;
-  color: #fff;
+  color: #ffffff;
   padding: 2rem;
 }
 
 .current-phase-number {
-  color: white;
-  font-weight: 750;
+  font-weight: bold;
+  color: #fc8d59;
 }
 
 @media screen and (max-width: 768px) {
@@ -22,17 +15,16 @@
     padding: 3%;
   }
 
-  h3 {
+  h2 {
     font-size: 1.2em;
   }
 }
 
 #link {
-  color: white;
-  text-decoration: underline;
+  color: #c1def1;
 }
 
 #link:hover {
-  color: #287DB2;
+  color: #fc8d59;
   cursor: pointer;
 }
