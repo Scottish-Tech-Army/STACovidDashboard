@@ -192,7 +192,7 @@ const App = () => {
                     fullscreenEnabled={zoomGeoMap}
                   />
                 </Col>
-                <Col className="d-block d-md-none">
+                <Col className="d-block d-lg-none">
                   <hr className="underHeatmapSelector" />
                 </Col>
                 <Col
