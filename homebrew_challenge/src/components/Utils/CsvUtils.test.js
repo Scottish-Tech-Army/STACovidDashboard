@@ -302,28 +302,28 @@ test("getRelativeReportedDate", () => {
   setMockDate("2020-06-22");
 
   expect(getRelativeReportedDate(Date.parse("2020-06-22"))).toBe(
-    "Reported Today"
+    "reported today"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-21"))).toBe(
-    "Reported Yesterday"
+    "reported yesterday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-20"))).toBe(
-    "Reported last Saturday"
+    "reported last Saturday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-19"))).toBe(
-    "Reported last Friday"
+    "reported last Friday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-18"))).toBe(
-    "Reported last Thursday"
+    "reported last Thursday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-17"))).toBe(
-    "Reported last Wednesday"
+    "reported last Wednesday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-16"))).toBe(
-    "Reported last Tuesday"
+    "reported last Tuesday"
   );
   expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe(
-    "Reported on 15/06/2020"
+    "reported on 15 June, 2020"
   );
   expect(getRelativeReportedDate(undefined)).toBeUndefined();
   expect(getRelativeReportedDate(null)).toBeUndefined();

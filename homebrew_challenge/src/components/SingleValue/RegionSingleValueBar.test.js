@@ -146,11 +146,11 @@ describe("normal rendering, currentTotalsCouncilAreaDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "This week", "150");
-    checkSingleValue("totalCases", "Total", "Not available");
+    checkSingleValue("weeklyCases", "150");
+    checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "This week", "37");
-    checkSingleValue("totalDeaths", "Total", "Not available");
+    checkSingleValue("weeklyDeaths", "37");
+    checkSingleValue("totalDeaths",  "Not available", "reported since 28 February, 2020");
   });
 });
 
@@ -173,11 +173,11 @@ describe("normal rendering, currentTotalsHealthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "This week", "1572");
-    checkSingleValue("totalCases", "Total", "Not available");
+    checkSingleValue("weeklyCases", "1572");
+    checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "This week", "86");
-    checkSingleValue("totalDeaths", "Total", "Not available");
+    checkSingleValue("weeklyDeaths", "86");
+    checkSingleValue("totalDeaths", "Not available", "reported since 28 February, 2020");
   });
 
   it("health board today", () => {
@@ -198,11 +198,11 @@ describe("normal rendering, currentTotalsHealthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "This week", "501");
-    checkSingleValue("totalCases", "Total", "Not available");
+    checkSingleValue("weeklyCases", "501");
+    checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "This week", "34");
-    checkSingleValue("totalDeaths", "Total", "Not available");
+    checkSingleValue("weeklyDeaths", "34");
+    checkSingleValue("totalDeaths", "Not available", "reported since 28 February, 2020");
   });
 
   it("council area yesterday", () => {
@@ -284,12 +284,12 @@ describe("normal rendering, councilAreaDataset null", () => {
       );
     });
 
-    checkSingleValue("dailyCases", "Reported Yesterday", "1");
-    checkSingleValue("weeklyCases", "This week", "Not available");
-    checkSingleValue("totalCases", "Total", "311");
-    checkSingleValue("dailyDeaths", "Reported Yesterday", "2");
-    checkSingleValue("weeklyDeaths", "This week", "Not available");
-    checkSingleValue("totalDeaths", "Total", "40");
+    checkSingleValue("dailyCases", "1", "reported yesterday");
+    checkSingleValue("weeklyCases", "Not available");
+    checkSingleValue("totalCases", "311", "reported since 28 February, 2020");
+    checkSingleValue("dailyDeaths", "2", "reported yesterday");
+    checkSingleValue("weeklyDeaths", "Not available");
+    checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
   });
 });
 
@@ -311,14 +311,14 @@ describe("normal rendering, healthBoardDataset null", () => {
       );
     });
 
-    checkSingleValue("dailyCases", "Reported Today", "7");
+    checkSingleValue("dailyCases", "7", "reported today");
     // Falls back on value calculated from CA data
-    checkSingleValue("weeklyCases", "This week", "672");
-    checkSingleValue("totalCases", "Total", "19126");
-    checkSingleValue("dailyDeaths", "Reported Today", "3");
+    checkSingleValue("weeklyCases", "672");
+    checkSingleValue("totalCases", "19126", "reported since 28 February, 2020");
+    checkSingleValue("dailyDeaths", "3", "reported today");
     // Falls back on value calculated from CA data
-    checkSingleValue("weeklyDeaths", "This week", "72");
-    checkSingleValue("totalDeaths", "Total", "2491");
+    checkSingleValue("weeklyDeaths", "72");
+    checkSingleValue("totalDeaths", "2491", "reported since 28 February, 2020");
   });
 
   it("health board today", () => {
@@ -338,12 +338,12 @@ describe("normal rendering, healthBoardDataset null", () => {
       );
     });
 
-    checkSingleValue("dailyCases", "Reported Today", "4");
-    checkSingleValue("weeklyCases", "This week", "Not available");
-    checkSingleValue("totalCases", "Total", "305");
-    checkSingleValue("dailyDeaths", "Reported Today", "0");
-    checkSingleValue("weeklyDeaths", "This week", "Not available");
-    checkSingleValue("totalDeaths", "Total", "40");
+    checkSingleValue("dailyCases", "4", "reported today");
+    checkSingleValue("weeklyCases", "Not available");
+    checkSingleValue("totalCases", "305", "reported since 28 February, 2020");
+    checkSingleValue("dailyDeaths", "0", "reported today");
+    checkSingleValue("weeklyDeaths", "Not available");
+    checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
   });
 
   it("council area yesterday", () => {
@@ -489,37 +489,37 @@ test("parseNhsCACsvData", () => {
 });
 
 function expectNormalScotlandValues() {
-  checkSingleValue("dailyCases", "Reported Today", "7");
-  checkSingleValue("weeklyCases", "This week", "1572");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyDeaths", "Reported Today", "3");
-  checkSingleValue("weeklyDeaths", "This week", "86");
-  checkSingleValue("totalDeaths", "Total", "2491");
+  checkSingleValue("dailyCases", "7", "reported today");
+  checkSingleValue("weeklyCases", "1572");
+  checkSingleValue("totalCases", "19126", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "3", "reported today");
+  checkSingleValue("weeklyDeaths", "86");
+  checkSingleValue("totalDeaths", "2491", "reported since 28 February, 2020");
 }
 
 function expectNormalCouncilAreaValues() {
-  checkSingleValue("dailyCases", "Reported Yesterday", "1");
-  checkSingleValue("weeklyCases", "This week", "150");
-  checkSingleValue("totalCases", "Total", "311");
-  checkSingleValue("dailyDeaths", "Reported Yesterday", "2");
-  checkSingleValue("weeklyDeaths", "This week", "37");
-  checkSingleValue("totalDeaths", "Total", "40");
+  checkSingleValue("dailyCases", "1", "reported yesterday");
+  checkSingleValue("weeklyCases", "150");
+  checkSingleValue("totalCases", "311", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "2", "reported yesterday");
+  checkSingleValue("weeklyDeaths", "37");
+  checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
 }
 
 function expectNormalHealthBoardValues() {
-  checkSingleValue("dailyCases", "Reported Today", "4");
-  checkSingleValue("weeklyCases", "This week", "501");
-  checkSingleValue("totalCases", "Total", "305");
-  checkSingleValue("dailyDeaths", "Reported Today", "0");
-  checkSingleValue("weeklyDeaths", "This week", "34");
-  checkSingleValue("totalDeaths", "Total", "40");
+  checkSingleValue("dailyCases", "4", "reported today");
+  checkSingleValue("weeklyCases", "501");
+  checkSingleValue("totalCases", "305", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "0", "reported today");
+  checkSingleValue("weeklyDeaths", "34");
+  checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
 }
 
-function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
+function checkSingleValue(singleValueId, expectedValue, expectedSubtitle=null) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  const title = singleValueElement.querySelector(".single-value-header");
-  const value = singleValueElement.querySelector(".single-value-total");
-  expect(title.textContent).toBe(expectedTitle);
+  const subtitle = singleValueElement.querySelector(".subtitle");
+  const value = singleValueElement.querySelector(".single-value-number");
+  expect(subtitle.textContent).toBe(expectedSubtitle == null ? "" : expectedSubtitle);
   expect(value.textContent).toBe(expectedValue);
 }
 

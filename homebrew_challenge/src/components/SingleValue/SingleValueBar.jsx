@@ -63,7 +63,7 @@ function SingleValueBar() {
   const missingData = "Not available";
 
   function guardMissingData(input) {
-    return input === undefined ? missingData : input;
+    return input === undefined ? missingData : input.toLocaleString();
   }
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function SingleValueBar() {
           subtitle={guardMissingData(
             getRelativeReportedDate(dailyCases.date)
           )}
-          value={guardMissingData(dailyCases.value.toLocaleString())}
+          value={guardMissingData(dailyCases.value)}
           tooltip="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
@@ -109,8 +109,8 @@ function SingleValueBar() {
         <SingleValue
           id="totalCases"
           title="TOTAL CASES"
-          subtitle="reported since 20 February, 2020"
-          value={guardMissingData(totalCases.value.toLocaleString())}
+          subtitle="reported since 28 February, 2020"
+          value={guardMissingData(totalCases.value)}
           tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
       </div>
@@ -121,7 +121,7 @@ function SingleValueBar() {
           subtitle={guardMissingData(
             getRelativeReportedDate(dailyFatalities.date)
           )}
-          value={guardMissingData(dailyFatalities.value.toLocaleString())}
+          value={guardMissingData(dailyFatalities.value)}
           tooltip="These are the fatalities reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
@@ -129,8 +129,8 @@ function SingleValueBar() {
         <SingleValue
           id="totalFatalities"
           title="TOTAL FATALITIES"
-          subtitle="reported since 20 February, 2020"
-          value={guardMissingData(totalFatalities.value.toLocaleString())}
+          subtitle="reported since 28 February, 2020"
+          value={guardMissingData(totalFatalities.value)}
           tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
         />
       </div>

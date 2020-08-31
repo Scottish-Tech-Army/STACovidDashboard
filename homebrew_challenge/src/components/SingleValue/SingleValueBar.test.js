@@ -30,9 +30,9 @@ test("singleValueBar renders default data when fetch fails", async () => {
   });
 
   checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
-  checkSingleValue("totalCases", "0", "reported since 20 February, 2020");
+  checkSingleValue("totalCases", "0", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "0", "reported on 01 January, 1999");
-  checkSingleValue("totalFatalities", "0", "reported since 20 February, 2020");
+  checkSingleValue("totalFatalities", "0", "reported since 28 February, 2020");
   checkSingleValue("fatalityCaseRatio", "0");
 });
 
@@ -47,9 +47,9 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
   });
 
   checkSingleValue("dailyCases", "47", "reported today");
-  checkSingleValue("totalCases", "19,126", "reported since 20 February, 2020");
+  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "0", "reported today");
-  checkSingleValue("totalFatalities", "2,491", "reported since 20 February, 2020");
+  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
   checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
@@ -64,10 +64,10 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   });
 
   checkSingleValue("dailyCases", "47", "reported yesterday");
-  checkSingleValue("totalCases", "19,126", "reported since 20 February, 2020");
+  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "0", "reported yesterday");
-  checkSingleValue("totalFatalities", "2,491", "reported since 20 February, 2020");
-  checkSingleValue("fatalityCaseRatio", "13.0%", "Death / Case Ratio");
+  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
@@ -80,11 +80,12 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
     render(<SingleValueBar />, container);
   });
 
+  // console.log(container.textContent);
   checkSingleValue("dailyCases", "Not available", "Not available");
-  checkSingleValue("totalCases", "Total", "Not available");
+  checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "Not available", "Not available");
-  checkSingleValue("totalFatalities", "Total", "Not available");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
+  checkSingleValue("totalFatalities", "Not available", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "Not available");
 });
 
 test("parseNhsCsvData", () => {
