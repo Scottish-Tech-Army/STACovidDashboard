@@ -39,6 +39,19 @@ const App = () => {
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
 
+  function pageTitle() {
+    if (currentPage === PAGE_OVERVIEW) {
+      return "SUMMARY DASHBOARD"
+    }
+    else if (currentPage === PAGE_REGIONAL) {
+      return "REGIONAL INSIGHTS"
+    }
+    else if (currentPage === PAGE_ABOUT_US) {
+      return "ABOUT US"
+    }
+    else return "DATA SOURCES"
+  }
+
   // Load and parse datasets
   useEffect(() => {
     if (null === councilAreaDataset) {
@@ -88,8 +101,8 @@ const App = () => {
             <img id="logo" src="STALogo.png" alt="Scottish Tech Army Logo" />
           </div>
           <div className="heading heading-title">
-            <h1>SUMMARY DASHBOARD</h1>
-            <h2>Scottish COVID-19 Statistics</h2>
+            <h1>Scottish COVID-19 Statistics</h1>
+            <h2>{pageTitle()}</h2>
           </div>
         </div>
       </header>
