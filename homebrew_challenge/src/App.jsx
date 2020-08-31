@@ -162,21 +162,21 @@ const App = () => {
               ref={zoomableMap}
               className={zoomGeoMap ? "full-screen" : ""}
             >
-              <Row>
-                <Col>
-                  <HeatmapDataSelector
-                    areaType={areaType}
-                    valueType={valueType}
-                    setAreaType={setAreaType}
-                    setValueType={setValueType}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <hr className="underHeatmapSelector" />
-                </Col>
-              </Row>
+              {/* // <Row>
+              //   <Col>
+              //     <HeatmapDataSelector
+              //       areaType={areaType}
+              //       valueType={valueType}
+              //       setAreaType={setAreaType}
+              //       setValueType={setValueType}
+              //     />
+              //   </Col>
+              // </Row>
+              // <Row>
+              //   <Col>
+              //     <hr className="underHeatmapSelector" />
+              //   </Col>
+              // </Row> */}
               <Row>
                 <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
                   <GeoHeatMap

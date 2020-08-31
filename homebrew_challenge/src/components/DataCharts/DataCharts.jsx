@@ -342,12 +342,12 @@ const DataCharts = ({
   }
 
   return (
-    <>
+    <div className="chart-border">
       <div className={getScreenModeClassName()}>
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}
-    </>
+    </div>
   );
 };
 
