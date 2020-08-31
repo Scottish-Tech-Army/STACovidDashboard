@@ -25,16 +25,45 @@ img#logo {
 }
 
 .about-us,
-.accessibility-page {
-  text-align: center;
+.accessibility-page,
+.data-sources {
+  text-align: left;
   padding-top: 3vh;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
-.about-us,
+.about-us-details,
+.accessibility-intro,
+.accessibility-details {
+  padding-bottom: 30px;
+}
+
+.about-us h1,
+.accessibility-page h1,
+.data-sources h1 {
+  padding-top: 2vh;
+}
+
+.about-us ul,
 .accessibility-page ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.accessibility-intro li {
+  padding-left: 20px;
+}
+
+.accessibility-page .browsers {
+  font-style: italic;
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.accessibility-page #browsers-list {
+  margin-bottom: 5px;
 }
 
 .about-us .name {
@@ -42,20 +71,9 @@ img#logo {
   font-size: 16pt;
 }
 
-.about-us h1,
-.accessibility-page h1,
-.accessibility-page p {
-  padding-top: 2vh;
-}
-
 .team-members {
   padding-bottom: 3vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.accessibility-page .browsers {
-  font-style: italic;
-  padding-top: 0.1vh;
+  align-items: left;
+  justify-content: left;
 }
