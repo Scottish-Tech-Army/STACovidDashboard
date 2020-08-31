@@ -1,4 +1,5 @@
 import moment from "moment";
+import { differenceInDays, format } from "date-fns";
 
 export function readCsvData(csvData) {
   var allTextLines = csvData.toString().split(/\r\n|\n/);
@@ -33,7 +34,7 @@ export function createPlaceDateValuesMap(lines) {
         place,
         dailyCases,
         cumulativeCases,
-        v2,
+        crudeRatePositive,
         v3,
         dailyDeaths,
         cumulativeDeaths,
@@ -50,6 +51,7 @@ export function createPlaceDateValuesMap(lines) {
         deaths: Number(dailyDeaths),
         cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
+        crudeRatePositive: Number(crudeRatePositive),
       });
       dateSet.add(date);
     }
@@ -102,7 +104,8 @@ export function createDateAggregateValuesMap(lines) {
         deaths: values.deaths + Number(dailyDeaths),
         cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
         cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-        cumulativeNegativeTests: values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
+        cumulativeNegativeTests:
+          values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
       });
     }
   );
@@ -126,59 +129,133 @@ export async function fetchAndStore(datasetName, setDataset, processCsvData) {
     });
 }
 
+// Return summary stats per region for the last 7 days
+export function parse7DayWindowCsvData(csvData) {
+  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
+  const endDate = dates[dates.length - 1];
+  const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
+  const filteredDates = dates.filter((date) => date >= startDate);
+
+  var scotlandTotalCases = 0;
+  var scotlandTotalDeaths = 0;
+
+  const regions = new Map();
+  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
+    var regionTotalCases = 0;
+    var regionTotalDeaths = 0;
+    filteredDates.forEach((date) => {
+      const values = dateValuesMap.get(date);
+      if (values !== undefined) {
+        regionTotalCases += values.cases;
+        regionTotalDeaths += values.deaths;
+      }
+    });
+    regions.set(featureCode, {
+      cases: regionTotalCases,
+      deaths: regionTotalDeaths,
+      fromDate: filteredDates[0],
+      name: getPlaceNameByFeatureCode(featureCode),
+      toDate: endDate,
+    });
+    scotlandTotalCases += regionTotalCases;
+    scotlandTotalDeaths += regionTotalDeaths;
+  });
+
+  regions.set(FEATURE_CODE_SCOTLAND, {
+    cases: scotlandTotalCases,
+    deaths: scotlandTotalDeaths,
+    fromDate: filteredDates[0],
+    name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
+    toDate: endDate,
+  });
+
+  return regions;
+}
+
+// Return date in words relative to today
+export function getRelativeReportedDate(date) {
+  if (!date) {
+    return undefined;
+  }
+  const daysDifference = differenceInDays(Date.now(), date);
+  if (daysDifference === 0) {
+    return "Reported Today";
+  }
+  if (daysDifference === 1) {
+    return "Reported Yesterday";
+  }
+  if (daysDifference > 1 && daysDifference < 7) {
+    return "Reported last " + format(date, "EEEE");
+  }
+  return "Reported on " + format(date, "dd/MM/yyyy");
+}
+
 export const FEATURE_CODE_SCOTLAND = "S92000003";
 
-const FEATURE_CODE_MAP = {
-  // Country
-  S92000003: "Scotland",
-  //Health boards
-  S08000015: "Ayrshire & Arran",
-  S08000016: "Borders",
-  S08000017: "Dumfries & Galloway",
-  S08000019: "Forth Valley",
-  S08000020: "Grampian",
-  S08000022: "Highland",
-  S08000024: "Lothian",
-  S08000025: "Orkney",
-  S08000026: "Shetland",
-  S08000028: "Western Isles",
-  S08000029: "Fife",
-  S08000030: "Tayside",
-  S08000031: "Greater Glasgow & Clyde",
-  S08000032: "Lanarkshire",
-  //Council areas
+export const FEATURE_CODE_COUNCIL_AREAS_MAP = {
+  S12000033: "Aberdeen City",
+  S12000034: "Aberdeenshire",
+  S12000041: "Angus",
+  S12000035: "Argyll & Bute",
+  S12000036: "City of Edinburgh",
   S12000005: "Clackmannanshire",
   S12000006: "Dumfries & Galloway",
+  S12000042: "Dundee City",
   S12000008: "East Ayrshire",
+  S12000045: "East Dunbartonshire",
   S12000010: "East Lothian",
   S12000011: "East Renfrewshire",
-  S12000013: "Na h-Eileanan Siar",
   S12000014: "Falkirk",
+  S12000047: "Fife",
+  S12000049: "Glasgow City",
   S12000017: "Highland",
   S12000018: "Inverclyde",
   S12000019: "Midlothian",
   S12000020: "Moray",
+  S12000013: "Na h-Eileanan Siar",
   S12000021: "North Ayrshire",
+  S12000050: "North Lanarkshire",
   S12000023: "Orkney Islands",
+  S12000048: "Perth & Kinross",
+  S12000038: "Renfrewshire",
   S12000026: "Scottish Borders",
   S12000027: "Shetland Islands",
   S12000028: "South Ayrshire",
   S12000029: "South Lanarkshire",
   S12000030: "Stirling",
-  S12000033: "Aberdeen City",
-  S12000034: "Aberdeenshire",
-  S12000035: "Argyll & Bute",
-  S12000036: "City of Edinburgh",
-  S12000038: "Renfrewshire",
   S12000039: "West Dunbartonshire",
   S12000040: "West Lothian",
-  S12000041: "Angus",
-  S12000042: "Dundee City",
-  S12000045: "East Dunbartonshire",
-  S12000047: "Fife",
-  S12000048: "Perth & Kinross",
-  S12000049: "Glasgow City",
-  S12000050: "North Lanarkshire",
+};
+
+export const FEATURE_CODE_COUNCIL_AREAS = Object.keys(
+  FEATURE_CODE_COUNCIL_AREAS_MAP
+);
+
+export const FEATURE_CODE_HEALTH_BOARDS_MAP = {
+  S08000015: "Ayrshire & Arran",
+  S08000016: "Borders",
+  S08000017: "Dumfries & Galloway",
+  S08000029: "Fife",
+  S08000019: "Forth Valley",
+  S08000020: "Grampian",
+  S08000031: "Greater Glasgow & Clyde",
+  S08000022: "Highland",
+  S08000032: "Lanarkshire",
+  S08000024: "Lothian",
+  S08000025: "Orkney",
+  S08000026: "Shetland",
+  S08000030: "Tayside",
+  S08000028: "Western Isles",
+};
+
+export const FEATURE_CODE_HEALTH_BOARDS = Object.keys(
+  FEATURE_CODE_HEALTH_BOARDS_MAP
+);
+
+export const FEATURE_CODE_MAP = {
+  S92000003: "Scotland",
+  ...FEATURE_CODE_HEALTH_BOARDS_MAP,
+  ...FEATURE_CODE_COUNCIL_AREAS_MAP,
 };
 
 export function getPlaceNameByFeatureCode(featureCode) {

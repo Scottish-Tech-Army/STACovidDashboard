@@ -1,10 +1,7 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkSingleValue"] }] */
 
 import React from "react";
-import SingleValueBar, {
-  parseNhsCsvData,
-  getRelativeReportedDate
-} from "./SingleValueBar";
+import SingleValueBar, { parseNhsCsvData } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 
@@ -88,38 +85,6 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
   checkSingleValue("dailyFatalities", "Not available", "Not available");
   checkSingleValue("totalFatalities", "Total", "Not available");
   checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
-});
-
-test("getRelativeReportedDate", () => {
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
-
-  expect(getRelativeReportedDate(Date.parse("2020-06-22"))).toBe(
-    "reported today"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-21"))).toBe(
-    "reported yesterday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-20"))).toBe(
-    "reported last Saturday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-19"))).toBe(
-    "reported last Friday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-18"))).toBe(
-    "reported last Thursday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-17"))).toBe(
-    "reported last Wednesday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-16"))).toBe(
-    "reported last Tuesday"
-  );
-  expect(getRelativeReportedDate(Date.parse("2020-06-15"))).toBe(
-    "reported on 15 June, 2020"
-  );
-  expect(getRelativeReportedDate(undefined)).toBeUndefined();
-  expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
 test("parseNhsCsvData", () => {

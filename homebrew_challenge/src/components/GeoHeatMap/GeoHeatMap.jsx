@@ -8,13 +8,13 @@ import {
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
-  createPlaceDateValuesMap,
-  getPlaceNameByFeatureCode,
+  parse7DayWindowCsvData,
 } from "../Utils/CsvUtils";
 import FullscreenControl from "./FullscreenControl";
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
 import moment from "moment";
+import { setScotlandDefaultBounds, featureCodeForFeature, MAP_TILES_URL } from "./GeoUtils";
 
 /*
   geoJSONHealthBoards data from
@@ -26,43 +26,8 @@ import moment from "moment";
   Additionally, the non Scotland features of the council areas data were removed.
 */
 
-export function parse7DayWindowCsvData(csvData) {
-  const { placeDateValuesMap } = createPlaceDateValuesMap(csvData);
-
-  const regions = new Map();
-  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
-    const dates = [...dateValuesMap.keys()].sort();
-    const endDate = dates[dates.length - 1];
-    const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
-    const filteredDates = dates.filter((date) => date >= startDate);
-    let totalCases = 0;
-    let totalDeaths = 0;
-    filteredDates.forEach((date) => {
-      const { cases, deaths } = dateValuesMap.get(date);
-      totalCases += cases;
-      totalDeaths += deaths;
-    });
-    regions.set(featureCode, {
-      cases: totalCases,
-      deaths: totalDeaths,
-      fromDate: filteredDates[0],
-      name: getPlaceNameByFeatureCode(featureCode),
-      toDate: endDate,
-    });
-  });
-  return regions;
-}
-
 const deathsHeatLevels = [0, 1, 2, 5, 10, 20];
 const casesHeatLevels = [0, 1, 5, 10, 20, 50];
-const scotlandBounds = [
-  [54.6, -7.5],
-  [61.0, -0.4],
-];
-const scotlandMaxBounds = [
-  [52.0, -10.0],
-  [63.5, 2.0],
-];
 
 const heatcolours = [
   "#e0e0e0",
@@ -126,18 +91,16 @@ const GeoHeatMap = ({
 
   // Parse datasets
   useEffect(() => {
-    if (null !== councilAreaDataset && null === councilArea7DayDataset) {
+    if (null !== councilAreaDataset && undefined !== councilAreaDataset) {
       setCouncilArea7DayDataset(parse7DayWindowCsvData(councilAreaDataset));
     }
-    if (null !== healthBoardDataset && null === healthBoard7DayDataset) {
+  }, [councilAreaDataset]);
+
+  useEffect(() => {
+    if (null !== healthBoardDataset && undefined !== healthBoardDataset) {
       setHealthBoard7DayDataset(parse7DayWindowCsvData(healthBoardDataset));
     }
-  }, [
-    healthBoardDataset,
-    councilAreaDataset,
-    healthBoard7DayDataset,
-    councilArea7DayDataset,
-  ]);
+  }, [healthBoardDataset]);
 
   // Set current heatlevels
   useEffect(() => {
@@ -213,8 +176,8 @@ const GeoHeatMap = ({
       style: INVISIBLE_LAYER_STYLE,
       onEachFeature: (feature, layer) => {
         layer.on({
-            mouseover: handleRegionPopup,
-            click: handleRegionPopup,
+          mouseover: handleRegionPopup,
+          click: handleRegionPopup,
         });
       },
     };
@@ -229,31 +192,8 @@ const GeoHeatMap = ({
 
   // Fit bounds and restrict the panning
   useEffect(() => {
-    // There is a known issue in leaflet where map sizing is not updated on all container size events.
-    // This causes fitBounds() to fit to an incorrectly sized map. The workaround is to observe document resize
-    // events if available or trigger a recalculation of the map size after a delay. Ugly, but currently necessary
-    // https://github.com/Leaflet/Leaflet/issues/4835
-    if (window.ResizeObserver) {
-      const ro = new window.ResizeObserver((entries, observer) => {
-        if (mapRef.current && mapRef.current.leafletElement) {
-          const map = mapRef.current.leafletElement;
-          map.invalidateSize();
-          map.setMaxBounds(scotlandMaxBounds);
-          map.fitBounds(scotlandBounds, { maxZoom: 10, animate: false });
-        }
-      });
-      ro.observe(document.body);
-    } else {
-      // ResizeObserver not available - fall back on delayed bounds setting
-      setTimeout(function () {
-        console.log("ResizeObserver not available");
-        if (mapRef.current && mapRef.current.leafletElement) {
-          const map = mapRef.current.leafletElement;
-          map.invalidateSize();
-          map.setMaxBounds(scotlandMaxBounds);
-          map.fitBounds(scotlandBounds, { maxZoom: 10, animate: false });
-        }
-      }, 3000);
+    if (mapRef.current && mapRef.current.leafletElement) {
+      setScotlandDefaultBounds(mapRef.current.leafletElement);
     }
   }, []);
 
@@ -376,20 +316,8 @@ const GeoHeatMap = ({
     }
   }, [currentHeatLevels]);
 
-  function featureCodeForFeature(feature) {
-    var featureCode = feature.properties.HBCode;
-    if (featureCode === undefined) {
-      featureCode = feature.properties.CODE;
-    }
-    return featureCode;
-  }
-
-  const tilesStadiaAlidadeSmooth =
-    "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
   return (
-
-    <div className={fullscreenEnabled ? "full-screen geo-map" : "geo-map"}>
-      <div className="geo-heatmap-container">
+    <div className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
       <LeafletMap
         ref={mapRef}
         id="map"
@@ -400,7 +328,7 @@ const GeoHeatMap = ({
         zoomControl={false}
       >
         <TileLayer
-          url={tilesStadiaAlidadeSmooth}
+          url={MAP_TILES_URL}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         <ZoomControl position="topright" />
@@ -410,7 +338,6 @@ const GeoHeatMap = ({
         />
       </LeafletMap>
       </div>
-    </div>
   );
 };
 

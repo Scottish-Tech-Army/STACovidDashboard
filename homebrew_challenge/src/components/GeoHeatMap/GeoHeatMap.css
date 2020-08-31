@@ -1,36 +1,26 @@
-.geo-heatmap-container {
+.geo-map,  .full-screen-geo-map{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
-  height: 97%;
-  width: 97%;
-  background-color: #ffffff;
-  box-shadow: 10px 10px 5px #aaaaaa;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .geo-map {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  height: 100%;
-  width: 100%;
-  min-height: 600px;
-  background-color: #f2f2f2;
-  padding: 0;
+  height: 600px;
+}
+
+.full-screen-geo-map {
+  height: 90vh;
 }
 
 .hidden-geo-map {
   display: none;
 }
 
-#map {
-  height: 95%;
-  width: 95%;
-}
-
-.full-screen {
-  height: 90vh;
+#map, #regionmap {
+  height: 100%;
+  width: 100%;
 }
 
 .legend {

@@ -1,8 +1,7 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import { differenceInDays, format } from "date-fns";
-import { FEATURE_CODE_SCOTLAND, readCsvData } from "../Utils/CsvUtils";
+import { FEATURE_CODE_SCOTLAND, readCsvData,getRelativeReportedDate } from "../Utils/CsvUtils";
 import moment from "moment";
 
 export function parseNhsCsvData(csvData) {
@@ -51,24 +50,6 @@ export function parseNhsCsvData(csvData) {
 }
 
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
-
-// Exported for tests
-export function getRelativeReportedDate(date) {
-  if (!date) {
-    return undefined;
-  }
-  const daysDifference = differenceInDays(Date.now(), date);
-  if (daysDifference === 0) {
-    return "reported today";
-  }
-  if (daysDifference === 1) {
-    return "reported yesterday";
-  }
-  if (daysDifference > 1 && daysDifference < 7) {
-    return "reported last " + format(date, "EEEE");
-  }
-  return "reported on " + format(date, "dd MMMM, yyyy");
-}
 
 function SingleValueBar() {
   const [dailyCases, setDailyCases] = useState(emptyDate);
