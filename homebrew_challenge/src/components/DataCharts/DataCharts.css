@@ -5,10 +5,6 @@
   max-height: 400px;
 }
 
-.hidden-chart {
-  display: none;
-}
-
 .full-screen {
   height: 90vh;
   max-height: 90vh;

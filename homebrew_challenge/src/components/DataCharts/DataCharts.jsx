@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
+import "../../common.css";
 import moment from "moment";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
@@ -11,7 +12,7 @@ import {
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
 import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
-import "./FullscreenButton";
+import "chartjs-plugin-annotation";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -136,6 +137,41 @@ const DataCharts = ({
   }, [healthBoardDataset]);
 
   useEffect(() => {
+    const keyDates = [
+      { date: Date.parse("2020-03-24"), name: "Lockdown" },
+      { date: Date.parse("2020-05-29"), name: "Phase 1" },
+      { date: Date.parse("2020-06-19"), name: "Phase 2" },
+      { date: Date.parse("2020-07-10"), name: "Phase 3" },
+      { date: Date.parse("2020-08-11"), name: "Schools reopen" },
+    ];
+
+    function getDateLine({ date, name }, index) {
+      return {
+        type: "line",
+        drawTime: "beforeDatasetsDraw",
+        mode: "vertical",
+        scaleID: "x-axis-0",
+        borderColor: "rgba(0,0,0,0.25)",
+        borderWidth: 2,
+
+        // Data value to draw the line at
+        value: date,
+
+        label: {
+          backgroundColor: "white",
+          fontColor: "black",
+          xPadding: 6,
+          yPadding: 6,
+          position: "top",
+          enabled: true,
+          yAdjust: (index % 2) * 20,
+
+          // Text to display in label - default is null. Provide an array to display values on a new line
+          content: name,
+        },
+      };
+    }
+
     function commonChartConfiguration(datasetLabel, seriesData) {
       return {
         type: "line",
@@ -169,6 +205,7 @@ const DataCharts = ({
           scales: {
             yAxes: [
               {
+                id: "y-axis-0",
                 ticks: {
                   beginAtZero: true,
                   maxTicksLimit: 20,
@@ -180,6 +217,7 @@ const DataCharts = ({
             ],
             xAxes: [
               {
+                id: "x-axis-0",
                 type: "time",
                 distribution: "series",
                 time: {
@@ -194,11 +232,8 @@ const DataCharts = ({
           legend: {
             position: "bottom",
           },
-          plugins: {
-            chartJsPluginFullscreenButton: {
-              fullscreenEnabled: fullscreenEnabled,
-              toggleFullscreen: toggleFullscreen,
-            },
+          annotation: {
+            annotations: keyDates.map(getDateLine),
           },
         },
       };
