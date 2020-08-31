@@ -91,6 +91,7 @@ function RegionalSingleValueBar({
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
+  const SUBTITLE_TOTAL = "reported since 28 February, 2020"
 
   if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
     throw new Error("Unrecognised regionCode: " + regionCode);
@@ -190,7 +191,7 @@ function RegionalSingleValueBar({
           <SingleValue
             id="totalCases"
             title="TOTAL CASES"
-            subtitle="reported since 28 February, 2020"
+            subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalCases.value)}
             tooltip="These are the total cases of COVID-19 since the COVID-19 Pandemic began."
           />
@@ -217,7 +218,7 @@ function RegionalSingleValueBar({
           <SingleValue
             id="totalDeaths"
             title="TOTAL FATALITIES"
-            subtitle="reported since 28 February, 2020"
+            subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalDeaths.value)}
             tooltip="These are the total deaths since the COVID-19 Pandemic began."
           />
