@@ -51,6 +51,13 @@ const App = () => {
     } else return "";
   }
 
+  function scrollToTop (page) {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: 0
+    });
+  }
+
   // Load and parse datasets
   useEffect(() => {
     if (null === councilAreaDataset) {
@@ -133,7 +140,9 @@ const App = () => {
       {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer setCurrentPage={setCurrentPage} />
+      <Footer
+        setCurrentPage={scrollToTop}
+      />
     </div>
   );
 };
