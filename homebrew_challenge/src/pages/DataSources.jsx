@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const DataSources = () => {
   return (
     <div className="data-sources">
-      <h2>Data sources and attributions</h2>
+      <h1>Data sources and attributions</h1>
+      <hr className="full-width-hr" />
       <ul>
         <li>
           Routemap information:

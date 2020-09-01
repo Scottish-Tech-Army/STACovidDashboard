@@ -96,40 +96,48 @@ const AboutUs = () => {
 
   return (
     <div fluid="true" className="about-us">
-      <hr />
-      <h1>About us</h1>
-      <p className="px-5">
-        This dashboard has been developed by members of the Scottish Tech Army
-        to improve awareness of the impacts of Covid-19.
-      </p>
-      <h2>The Scottish Tech Army</h2>
-      <p className="px-5">
-        Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter
-        Jaco, the Scottish Tech Army Limited is a not for profit company that is
-        building a volunteer Covid-19 technical response team that will work to
-        help the Scottish Government, local authorities and other organisations
-        across the country with rapid technical development projects to address
-        current Covid-19 related challenges and post pandemic economic recovery.{" "}
-      </p>
-      <h2>Meet the team</h2>
-      <p className="px-5">
-        The Covid-19 dashboard for Scotland was created by the following STA
-        volunteers:{" "}
-      </p>
-      <Container className="team-members">
-        <Row>
-          <Col>
-            {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2 + 1)}
-          </Col>
-          <Col>
-            {sortedTeamMembers.slice(
-              sortedTeamMembers.length / 2 + 1,
-              sortedTeamMembers.length
-            )}
-          </Col>
-        </Row>
-      </Container>
-      <hr />
+      <div className="about-us-details">
+        <h1>About us</h1>
+        <hr className="full-width-hr" />
+        <p>
+          This dashboard has been developed by members of the Scottish Tech Army
+          to improve awareness of the impacts of Covid-19.
+        </p>
+      </div>
+      <div className="about-us-details">
+        <h2>The Scottish Tech Army</h2>
+        <hr className="full-width-hr" />
+        <p>
+          Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter
+          Jaco, the Scottish Tech Army Limited is a not for profit company that
+          is building a volunteer Covid-19 technical response team that will
+          work to help the Scottish Government, local authorities and other
+          organisations across the country with rapid technical development
+          projects to address current Covid-19 related challenges and post
+          pandemic economic recovery.{" "}
+        </p>
+      </div>
+      <div className="about-us-details">
+        <h2>Meet the team</h2>
+        <hr className="full-width-hr" />
+        <p>
+          The Covid-19 dashboard for Scotland was created by the following STA
+          volunteers:{" "}
+        </p>
+        <Container className="team-members">
+          <Row>
+            <Col>
+              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2 + 1)}
+            </Col>
+            <Col>
+              {sortedTeamMembers.slice(
+                sortedTeamMembers.length / 2 + 1,
+                sortedTeamMembers.length
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </div>
   );
 };
