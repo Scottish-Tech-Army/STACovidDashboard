@@ -98,8 +98,8 @@ const Footer = ({ setCurrentPage }) => {
             <div className="sitemap">
               <div className="title">CONTACT</div>
               {sitemapExternalLink(
-                "mailto:info@sta.org?subject=Covid-19%20Dashboard%20Feedback",
-                "info@sta.org"
+                "mailto:info@scottishtecharmy.org?subject=Covid-19%20Dashboard%20Feedback",
+                "info@scottishtecharmy.org"
               )}
             </div>
           </Col>

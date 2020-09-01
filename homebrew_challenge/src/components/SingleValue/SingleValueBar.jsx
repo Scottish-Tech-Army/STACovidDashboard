@@ -103,7 +103,7 @@ function SingleValueBar() {
             getRelativeReportedDate(dailyCases.date)
           )}
           value={guardMissingData(dailyCases.value)}
-          tooltip="these are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
+          tooltip="These are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
       <div className="p-2 single-value-container">
@@ -112,7 +112,7 @@ function SingleValueBar() {
           title="TOTAL CASES"
           subtitle={SUBTITLE_TOTAL}
           value={guardMissingData(totalCases.value)}
-          tooltip="these are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
+          tooltip="These are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
       </div>
       <div className="p-2 single-value-container">
