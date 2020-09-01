@@ -51,6 +51,18 @@ const App = () => {
     } else return "";
   }
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0
+      // behavior: "smooth"
+    });
+  }
+
+  function triggerScrollToTop (page) {
+    setCurrentPage(page);
+    scrollToTop();
+  }
+
   // Load and parse datasets
   useEffect(() => {
     if (null === councilAreaDataset) {
@@ -133,7 +145,9 @@ const App = () => {
       {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer setCurrentPage={setCurrentPage} />
+      <Footer
+        setCurrentPage={setCurrentPage}
+        triggerScrollToTop={triggerScrollToTop} />
     </div>
   );
 };
