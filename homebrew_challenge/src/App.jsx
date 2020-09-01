@@ -39,15 +39,21 @@ const App = () => {
 
   function pageTitle() {
     if (currentPage === PAGE_OVERVIEW) {
-      return "SUMMARY DASHBOARD"
+      return "SUMMARY DASHBOARD";
     }
     else if (currentPage === PAGE_REGIONAL) {
-      return "REGIONAL INSIGHTS"
+      return "REGIONAL INSIGHTS";
     }
     else if (currentPage === PAGE_ABOUT_US) {
-      return "ABOUT US"
+      return "ABOUT US";
     }
-    else return "DATA SOURCES"
+    else if (currentPage === PAGE_ACCESSIBILITY) {
+      return "ACCESSIBILITY STATEMENT";
+    }
+    else if (currentPage === PAGE_DATA_SOURCES) {
+      return "DATA SOURCES";
+    }
+    else return "";
   }
 
   // Load and parse datasets
