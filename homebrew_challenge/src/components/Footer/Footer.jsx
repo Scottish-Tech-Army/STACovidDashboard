@@ -141,7 +141,7 @@ const Footer = ({ setCurrentPage }) => {
                 icon={faLinkedinIn}
                 size="3x"
                 color="#133a53"
-                className="social-media"
+                className="third-party-logo"
               />
             )}
             {sitemapExternalLink(
@@ -150,7 +150,7 @@ const Footer = ({ setCurrentPage }) => {
                 icon={faTwitter}
                 size="3x"
                 color="#133a53"
-                className="social-media"
+                className="third-party-logo"
               />
             )}
           </Col>
