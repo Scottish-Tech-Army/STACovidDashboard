@@ -6,10 +6,10 @@ import Col from "react-bootstrap/Col";
 
 const RouteMapRules = () => {
   return (
-    <Container fluid className="route-map-rules">
+    <Container fluid className="d-flex flex-column">
       <Row>
-        <Col xs="12" className="current-phase mb-2">
-          <h3>
+        <Col xs="12" className="current-phase">
+          <h2>
             We are currently in{" "}
             <span className="current-phase-number">Phase 3</span> of the
             Scottish Government's{" "}
@@ -20,10 +20,10 @@ const RouteMapRules = () => {
               rel="noopener noreferrer"
               href="https://www.gov.scot/coronavirus-covid-19/"
             >
-              COVID-19 Routemap
+              COVID-19 Route Map
             </a>
             .
-          </h3>
+          </h2>
         </Col>
       </Row>
     </Container>

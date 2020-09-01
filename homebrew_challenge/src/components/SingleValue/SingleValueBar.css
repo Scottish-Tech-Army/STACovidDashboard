@@ -1,81 +1,89 @@
-.single-value-bar {
-  padding: 0;
-}
-
-.single-value-bar .title-row {
-  margin-right: -5px;
-  margin-left: -5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.single-value-bar .title-col {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0;
-}
-
-.single-value-bar .title {
-  background-color: white;
-  color: #287DB2;
-  text-align: center;
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
+.subtitle {
+  font-size: 0.75rem;
+  color: DarkGrey;
   font-weight: bold;
-  border: 2px solid #287DB2;
 }
 
-.single-value-bar-row {
-  margin-right: -5px;
-  margin-left: -5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+.single-value-heading {
+  height: 25%;
+  margin-left: 30px;
+  padding-right: 26px;
 }
 
-.single-value-bar-col {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0;
+.single-value-number {
+  font-size: 2.5rem;
+  color: #2a84bb;
+  font-weight: bold;
+  margin-left: 40px;
+}
+
+.single-value-line {
+  margin: 0;
 }
 
 .single-value {
-  color: White;
-  background-color: #287DB2;
-  text-align: center;
-  width: 100%;
+  box-shadow: 10px 10px 5px #aaaaaa;
+  padding: 10px 0 0;
+  height: 100%;
+  background-color: #ffffff;
+  color: #133a53;
+  position: relative;
 }
 
-.single-value-header {
-  padding: 1rem 0.75rem 0 0.5rem;
+.region-single-value-bar,
+.single-value-bar {
+  padding: 10px;
+  margin: 0;
   margin-top: 0;
-  font-weight: bold;
-  height: 3rem;
-  font-size: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  background-color: #f2f2f2;
+  position: relative;
 }
 
-.single-value-total {
-  padding: 0 1rem 2rem 1rem;
-  font-weight: bolder;
-  font-size: 1.5rem;
+.single-value-container {
+  width: 20%;
 }
 
-.callout {
-  z-index: 20;
-  position: absolute;
-  top: 30px;
-  border: 0;
-  left: -12px;
+.region-single-value-container {
+  width: 33%;
 }
 
-/*CSS3 extras*/
+.single-value-hr {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
-@media screen and (max-width: 340px) {
-  .single-value-total {
-    font-size: 1.1rem;
+@media screen and (max-width: 1324px) {
+  .single-value-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
+  .single-value-container {
+    width: 50%;
+  }
+}
 
-  .single-value-header {
-    font-size: 0.55rem;
+@media screen and (max-width: 600px) {
+  .region-single-value-bar {
+    flex-direction: column;
+  }
+  .region-single-value-container {
+    width: 100%;
+  }
+}
 
+@media screen and (max-width: 500px) {
+  .single-value-bar {
+    flex-direction: column;
+  }
+  .single-value-container {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .single-value-number {
+    font-size: 2rem;
   }
 }

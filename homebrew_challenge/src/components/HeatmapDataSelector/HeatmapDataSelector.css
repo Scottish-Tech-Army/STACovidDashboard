@@ -3,8 +3,8 @@
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #287DB2;
-  border-color: #287DB2;
+  background-color: #287db2;
+  border-color: #287db2;
   font-weight: bold;
 }
 
@@ -15,19 +15,6 @@
   color: white;
   background-color: #133a53;
   border-color: #133a53;
-  font-weight: bold;
-}
-
-.btn-secondary.disabled,
-.btn-secondary.disabled:hover,
-.btn-secondary.disabled:active,
-.btn-secondary:disabled,
-.btn-secondary:disabled:hover,
-.btn-secondary:disabled:active,
-.btn-secondary:disabled:focus {
-  color: white;
-  background-color: #616161;
-  border-color: #616161;
   font-weight: bold;
 }
 
@@ -42,4 +29,8 @@
 .heatmap-selector .selector-group {
   display: flex;
   flex-direction: column;
+}
+
+.btn {
+  text-align: left;
 }

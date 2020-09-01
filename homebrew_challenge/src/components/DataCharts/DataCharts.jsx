@@ -161,11 +161,22 @@ const DataCharts = ({
         return Math.round(value) + "%";
       };
       configuration.options.tooltips = {
+        backgroundColor: "White",
+        titleFontColor: "#000000",
+        bodyFontColor: "#000000",
+        borderColor: "DarkGray;",
+        borderWidth: 1,
+        position: "nearest",
         callbacks: {
           label: (tooltipItem, data) => {
-            return (
-              percentageCasesDatasetLabel + ": " + tooltipItem.yLabel.toFixed(2)
-            );
+            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive"
+            return chartLabel
+          },
+          labelColor: (tooltipItem, data) => {
+            return {
+              backgroundColor: "#ec6730",
+              borderColor: "#ec6730",
+            };
           },
         },
       };
@@ -251,12 +262,12 @@ const DataCharts = ({
   }
 
   return (
-    <>
+    <div className="chart-border">
       <div className={getScreenModeClassName()}>
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}
-    </>
+    </div>
   );
 };
 

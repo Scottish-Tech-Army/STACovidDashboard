@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import AboutUs from "./pages/AboutUs";
 import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
@@ -39,6 +36,20 @@ const App = () => {
     currentTotalsCouncilAreaDataset,
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
+
+  function pageTitle() {
+    if (currentPage === PAGE_OVERVIEW) {
+      return "SUMMARY DASHBOARD";
+    } else if (currentPage === PAGE_REGIONAL) {
+      return "REGIONAL INSIGHTS";
+    } else if (currentPage === PAGE_ABOUT_US) {
+      return "ABOUT US";
+    } else if (currentPage === PAGE_ACCESSIBILITY) {
+      return "ACCESSIBILITY STATEMENT";
+    } else if (currentPage === PAGE_DATA_SOURCES) {
+      return "DATA SOURCES";
+    } else return "";
+  }
 
   // Load and parse datasets
   useEffect(() => {
@@ -84,20 +95,20 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <Container fluid className="header">
-          <Row id="page-title" className="pt-3">
-            <Col>
-              <h1 className="header-title">
-                <img
-                  id="logo"
-                  src="STALogo.png"
-                  alt="Scottish Tech Army Logo"
-                />
-                COVID-19 Dashboard for Scotland
-              </h1>
-            </Col>
-          </Row>
-        </Container>
+        <div className="heading-container">
+          <div className="heading">
+            <img
+              onClick={() => setCurrentPage(PAGE_OVERVIEW)}
+              id="logo"
+              src="STALogo.png"
+              alt="Scottish Tech Army Logo"
+            />
+          </div>
+          <div className="heading heading-title">
+            <h1>Scottish COVID-19 Statistics</h1>
+            <h2>{pageTitle()}</h2>
+          </div>
+        </div>
       </header>
 
       {currentPage === PAGE_OVERVIEW ? (

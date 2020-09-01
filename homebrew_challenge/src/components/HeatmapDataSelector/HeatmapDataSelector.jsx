@@ -37,13 +37,9 @@ function HeatmapDataSelector({
   }
 
   return (
-    <Container fluid className="heatmap-selector">
-      <Row>
+    <Container className="heatmap-selector">
+      <Row className="selector-container">
         <Col className="selector-group" xs={12} md={6}>
-          <span>
-            <strong>Select region type:</strong>
-          </span>
-
           <ToggleButtonGroup
             className="toggle-button-group"
             name="areaType"
@@ -60,9 +56,6 @@ function HeatmapDataSelector({
           </ToggleButtonGroup>
         </Col>
         <Col className="selector-group" xs={12} md={6}>
-          <span>
-            <strong>Select measure (last 7 days):</strong>
-          </span>
           <ToggleButtonGroup
             className="toggle-button-group"
             name="valueType"

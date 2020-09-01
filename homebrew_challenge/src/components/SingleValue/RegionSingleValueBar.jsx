@@ -1,13 +1,11 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_MAP,
-  parse7DayWindowCsvData,getRelativeReportedDate
+  parse7DayWindowCsvData,
+  getRelativeReportedDate,
 } from "../Utils/CsvUtils";
 import moment from "moment";
 
@@ -94,13 +92,14 @@ function RegionalSingleValueBar({
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
+  const SUBTITLE_TOTAL = "reported since 28 February, 2020";
 
   if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
     throw new Error("Unrecognised regionCode: " + regionCode);
   }
 
   function guardMissingData(input) {
-    return input === undefined ? missingData : input;
+    return input === undefined ? missingData : input.toLocaleString();
   }
 
   useEffect(() => {
@@ -169,73 +168,70 @@ function RegionalSingleValueBar({
     }
   }, [placeWeeklyStatsMap, regionCode]);
 
-  function blockTitleRow(title) {
-    return (
-      <Row className="title-row">
-        <Col className="title-col">
-          <div className="title">{title}</div>
-        </Col>
-      </Row>
-    );
-  }
-
   return (
-    <Container fluid className="single-value-bar">
-      {blockTitleRow("Cases")}
-      <Row className="single-value-bar-row">
-        <Col className="single-value-bar-col">
+    <>
+      <div className="region-single-value-bar">
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyCases"
-            title={guardMissingData(getRelativeReportedDate(dailyCases.date))}
+            title="DAILY CASES"
+            subtitle={guardMissingData(
+              getRelativeReportedDate(dailyCases.date)
+            )}
             value={guardMissingData(dailyCases.value)}
-            tooltip="These are the cases reported today and updated after 2pm daily (Can be delayed because of data fetching)"
+            tooltip="These are the cases reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
-        </Col>
-        <Col className="single-value-bar-col">
+        </div>
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyCases"
-            title="This week"
+            title="CASES THIS WEEK"
             value={guardMissingData(weeklyCases)}
-            tooltip="These are the cases over the last week and updated after 2pm daily (Can be delayed because of data fetching)"
+            tooltip="These are the cases over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
-        </Col>
-        <Col className="single-value-bar-col">
+        </div>
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="totalCases"
-            title="Total"
+            title="TOTAL CASES"
+            subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalCases.value)}
-            tooltip="These are the total cases of COVID-19 since the COVID-19 Pandemic began"
+            tooltip="These are the total cases of COVID-19 since the COVID-19 Pandemic began."
           />
-        </Col>
-      </Row>
-      {blockTitleRow("Deaths")}
-      <Row className="single-value-bar-row">
-        <Col className="single-value-bar-col">
+        </div>
+      </div>
+
+      <div className="region-single-value-bar">
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyDeaths"
-            title={guardMissingData(getRelativeReportedDate(dailyDeaths.date))}
+            title="DAILY FATALITIES"
+            subtitle={guardMissingData(
+              getRelativeReportedDate(dailyDeaths.date)
+            )}
             value={guardMissingData(dailyDeaths.value)}
-            tooltip="These are the deaths reported today and updated after 2pm daily (Can be delayed because of data fetching)"
+            tooltip="These are the deaths reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
-        </Col>
-        <Col className="single-value-bar-col">
+        </div>
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyDeaths"
-            title="This week"
+            title="FATALITIES THIS WEEK"
             value={guardMissingData(weeklyDeaths)}
-            tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)"
+            tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
-        </Col>
-        <Col className="single-value-bar-col">
+        </div>
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="totalDeaths"
-            title="Total"
+            title="TOTAL FATALITIES"
+            subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalDeaths.value)}
-            tooltip="These are the total deaths since the COVID-19 Pandemic began"
+            tooltip="These are the total deaths since the COVID-19 Pandemic began."
           />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </>
   );
 }
 
