@@ -51,16 +51,11 @@ const App = () => {
     } else return "";
   }
 
-  function scrollToTop() {
+  function scrollToTop (page) {
+    setCurrentPage(page);
     window.scrollTo({
       top: 0
-      // behavior: "smooth"
     });
-  }
-
-  function triggerScrollToTop (page) {
-    setCurrentPage(page);
-    scrollToTop();
   }
 
   // Load and parse datasets
@@ -146,8 +141,8 @@ const App = () => {
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
       <Footer
-        setCurrentPage={setCurrentPage}
-        triggerScrollToTop={triggerScrollToTop} />
+        setCurrentPage={scrollToTop}
+      />
     </div>
   );
 };

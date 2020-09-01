@@ -13,13 +13,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedinIn, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-const Footer = ({ triggerScrollToTop }) => {
+const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
-      <div className="entry link" onClick={() => triggerScrollToTop(key)}>
-        <div className="entry link" onClick={() => triggerScrollToTop(key)}>
+      <div className="entry link" onClick={() => setCurrentPage(key)}>
           {text}
-        </div>
       </div>
     );
   }
