@@ -18,7 +18,7 @@ import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 
 const tagManagerArgs = {
-  gtmId: "GTM-5LKHW33"
+  gtmId: "GTM-5LKHW33",
 };
 
 TagManager.initialize(tagManagerArgs);
@@ -40,20 +40,15 @@ const App = () => {
   function pageTitle() {
     if (currentPage === PAGE_OVERVIEW) {
       return "SUMMARY DASHBOARD";
-    }
-    else if (currentPage === PAGE_REGIONAL) {
+    } else if (currentPage === PAGE_REGIONAL) {
       return "REGIONAL INSIGHTS";
-    }
-    else if (currentPage === PAGE_ABOUT_US) {
+    } else if (currentPage === PAGE_ABOUT_US) {
       return "ABOUT US";
-    }
-    else if (currentPage === PAGE_ACCESSIBILITY) {
+    } else if (currentPage === PAGE_ACCESSIBILITY) {
       return "ACCESSIBILITY STATEMENT";
-    }
-    else if (currentPage === PAGE_DATA_SOURCES) {
+    } else if (currentPage === PAGE_DATA_SOURCES) {
       return "DATA SOURCES";
-    }
-    else return "";
+    } else return "";
   }
 
   // Load and parse datasets
@@ -102,7 +97,12 @@ const App = () => {
       <header>
         <div className="heading-container">
           <div className="heading">
-            <img id="logo" src="STALogo.png" alt="Scottish Tech Army Logo" />
+            <img
+              onClick={() => setCurrentPage(PAGE_OVERVIEW)}
+              id="logo"
+              src="STALogo.png"
+              alt="Scottish Tech Army Logo"
+            />
           </div>
           <div className="heading heading-title">
             <h1>Scottish COVID-19 Statistics</h1>
