@@ -67,7 +67,7 @@ const Footer = ({ setCurrentPage }) => {
             <div className="sitemap">
               <div className="title">DASHBOARDS</div>
               {sitemapEntry(PAGE_OVERVIEW, "Summary Dashboard")}
-              {sitemapEntry(PAGE_REGIONAL, "Regional Dashboard")}
+              {sitemapEntry(PAGE_REGIONAL, "Regional Insights")}
               {sitemapEntry(PAGE_DATA_SOURCES, "Data Sources")}
             </div>
             <div className="sitemap">
