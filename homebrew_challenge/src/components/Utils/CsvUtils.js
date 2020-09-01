@@ -179,15 +179,15 @@ export function getRelativeReportedDate(date) {
   }
   const daysDifference = differenceInDays(Date.now(), date);
   if (daysDifference === 0) {
-    return "Reported Today";
+    return "reported today";
   }
   if (daysDifference === 1) {
-    return "Reported Yesterday";
+    return "reported yesterday";
   }
   if (daysDifference > 1 && daysDifference < 7) {
-    return "Reported last " + format(date, "EEEE");
+    return "reported last " + format(date, "EEEE");
   }
-  return "Reported on " + format(date, "dd/MM/yyyy");
+  return "reported on " + format(date, "dd MMMM, yyyy");
 }
 
 export const FEATURE_CODE_SCOTLAND = "S92000003";

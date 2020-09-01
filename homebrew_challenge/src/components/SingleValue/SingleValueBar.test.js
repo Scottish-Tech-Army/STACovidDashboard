@@ -29,11 +29,11 @@ test("singleValueBar renders default data when fetch fails", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Reported on 01/01/1999", "0");
-  checkSingleValue("totalCases", "Total", "0");
-  checkSingleValue("dailyFatalities", "Reported on 01/01/1999", "0");
-  checkSingleValue("totalFatalities", "Total", "0");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "0");
+  checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalCases", "0", "reported since 28 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalFatalities", "0", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "0");
 });
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
@@ -46,11 +46,11 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Reported Today", "47");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Reported Today", "0");
-  checkSingleValue("totalFatalities", "Total", "2491");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
+  checkSingleValue("dailyCases", "47", "reported today");
+  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported today");
+  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
@@ -63,11 +63,11 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
     render(<SingleValueBar />, container);
   });
 
-  checkSingleValue("dailyCases", "Reported Yesterday", "47");
-  checkSingleValue("totalCases", "Total", "19126");
-  checkSingleValue("dailyFatalities", "Reported Yesterday", "0");
-  checkSingleValue("totalFatalities", "Total", "2491");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "13.0%");
+  checkSingleValue("dailyCases", "47", "reported yesterday");
+  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
+  checkSingleValue("dailyFatalities", "0", "reported yesterday");
+  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
@@ -80,11 +80,12 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
     render(<SingleValueBar />, container);
   });
 
+  // console.log(container.textContent);
   checkSingleValue("dailyCases", "Not available", "Not available");
-  checkSingleValue("totalCases", "Total", "Not available");
+  checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "Not available", "Not available");
-  checkSingleValue("totalFatalities", "Total", "Not available");
-  checkSingleValue("fatalityCaseRatio", "Death / Case Ratio", "Not available");
+  checkSingleValue("totalFatalities", "Not available", "reported since 28 February, 2020");
+  checkSingleValue("fatalityCaseRatio", "Not available");
 });
 
 test("parseNhsCsvData", () => {
@@ -93,17 +94,17 @@ test("parseNhsCsvData", () => {
     deaths: { date: 1592697600000, value: 0 },
     cumulativeCases: { date: 1592697600000, value: 19126 },
     cumulativeDeaths: { date: 1592697600000, value: 2491 },
-    fatalityCaseRatio: "13.0%",
+    fatalityCaseRatio: "13.0%"
   };
 
   expect(parseNhsCsvData(nhsCsvData)).toStrictEqual(expectedResult);
 });
 
-function checkSingleValue(singleValueId, expectedTitle, expectedValue) {
+function checkSingleValue(singleValueId, expectedValue, expectedSubtitle=null) {
   const singleValueElement = container.querySelector("#" + singleValueId);
-  const title = singleValueElement.querySelector(".single-value-header");
-  const value = singleValueElement.querySelector(".single-value-total");
-  expect(title.textContent).toBe(expectedTitle);
+  const subtitle = singleValueElement.querySelector(".subtitle");
+  const value = singleValueElement.querySelector(".single-value-number");
+  expect(subtitle.textContent).toBe(expectedSubtitle == null ? "" : expectedSubtitle);
   expect(value.textContent).toBe(expectedValue);
 }
 

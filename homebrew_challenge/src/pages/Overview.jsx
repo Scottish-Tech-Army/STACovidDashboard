@@ -13,7 +13,7 @@ import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
-import { PERCENTAGE_CASES } from "../components/DataCharts/DataChartsConsts";
+import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
@@ -22,7 +22,7 @@ import {
 const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
-  const [chartType, setChartType] = useState(PERCENTAGE_CASES);
+  const [chartType, setChartType] = useState(DAILY_CASES);
   const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
@@ -91,21 +91,23 @@ const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
       false
     );
   }, []);
-
-return (
+  return (
     <>
-      <header>
-        <Container fluid className="header">
-          <Row className="pt-3 justify-content-center align-items-center">
-            <Col>
-              <RouteMapRules />
-            </Col>
-          </Row>
-        </Container>
-      </header>
+      <Container fluid>
+        <Row className="justify-content-center align-items-center route-map-rules">
+          <Col>
+            <RouteMapRules />
+          </Col>
+        </Row>
+      </Container>
 
       <Container fluid>
-        <Row className="pt-3">
+        <Row>
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row>
           <Col>
             <SingleValueBar />
           </Col>
@@ -138,7 +140,7 @@ return (
               </Col>
             </Row>
             <Row>
-              <Col xs={12} md={zoomGeoMap ? 12 : 4}>
+              <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
                 <GeoHeatMap
                   councilAreaDataset={councilAreaDataset}
                   healthBoardDataset={healthBoardDataset}
@@ -150,10 +152,14 @@ return (
                   fullscreenEnabled={zoomGeoMap}
                 />
               </Col>
-              <Col className="d-block d-md-none">
+              <Col className="d-block d-lg-none">
                 <hr className="underHeatmapSelector" />
               </Col>
-              <Col xs={zoomGeoMap ? 0 : 12} md={zoomGeoMap ? 0 : 8}>
+              <Col
+                xs={zoomGeoMap ? 0 : 12}
+                lg={zoomGeoMap ? 0 : 8}
+                className="heatmap-container"
+              >
                 {zoomGeoMap ? (
                   <></>
                 ) : (
@@ -199,11 +205,6 @@ return (
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
           <Col>
             <InfoBar />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex">
-          <Col>
-            <hr className="full-width-hr" />
           </Col>
         </Row>
       </Container>

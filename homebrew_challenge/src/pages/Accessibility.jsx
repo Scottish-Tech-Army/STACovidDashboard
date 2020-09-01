@@ -24,7 +24,7 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
-        <h2>Confirmance Statement</h2>
+        <h2>Conformance Statement</h2>
         <hr className="full-width-hr" />
         <p>
           We're working towards meeting the AA standard of the{" "}

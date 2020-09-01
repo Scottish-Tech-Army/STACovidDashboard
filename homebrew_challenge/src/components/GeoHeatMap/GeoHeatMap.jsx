@@ -55,6 +55,8 @@ const GeoHeatMap = ({
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
   fullscreenEnabled = false,
+  setAreaType,
+  setValueType,
 }) => {
   const [healthBoard7DayDataset, setHealthBoard7DayDataset] = useState(null);
   const [councilArea7DayDataset, setCouncilArea7DayDataset] = useState(null);
@@ -137,6 +139,15 @@ const GeoHeatMap = ({
         regionData.name +
         "</strong><br />Not available</p>";
 
+        function toTitleCase(str) {
+          return str.replace(
+              /\w\S*/g,
+              function(txt) {
+                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              }
+          );
+      }
+
       const count =
         currentValueTypeRef.current === VALUETYPE_DEATHS
           ? regionData.deaths
@@ -144,15 +155,15 @@ const GeoHeatMap = ({
 
       if (regionData) {
         content =
-          "<p class='region-popup'><strong>" +
-          regionData.name +
-          "</strong><br />Count: " +
-          count +
-          "<br />(" +
+          "<div class='region-popup'><div><strong>" +
+          regionData.name.toUpperCase() +
+          "</strong></div><div class='map-date-range'>" +
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
           moment(regionData.toDate).format("DD MMM") +
-          ")</p>";
+          "</div> <br /><strong>" + toTitleCase(currentValueTypeRef.current) + ": </strong>" +
+          count +
+          "</div>";
       }
 
       L.popup({ closeButton: false })
@@ -285,7 +296,7 @@ const GeoHeatMap = ({
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
           div.innerHTML +=
-            "<div class='legend-title'>Region Counts<br/>(last 7 days)</div>";
+            "<div class='legend-title'>REGION " + currentValueTypeRef.current.toUpperCase() + "<br/>(last 7 days)</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
@@ -326,7 +337,7 @@ const GeoHeatMap = ({
           fullscreenEnabled={fullscreenEnabled}
         />
       </LeafletMap>
-    </div>
+      </div>
   );
 };
 

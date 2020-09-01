@@ -81,8 +81,8 @@ describe("heatmap renders dynamic fetched data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Council Areas3 Areas",
-      "Total Deaths150",
+      "COUNCIL AREAS3 Areas",
+      "TOTAL DEATHS150",
       "06 Mar 2020 - 09 Mar 2020"
     );
 
@@ -108,8 +108,8 @@ describe("heatmap renders dynamic fetched data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Health Boards3 Boards",
-      "Total Deaths150",
+      "HEALTH BOARDS3 Boards",
+      "TOTAL DEATHS150",
       "06 Mar 2020 - 09 Mar 2020"
     );
 
@@ -135,8 +135,8 @@ describe("heatmap renders dynamic fetched data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Health Boards3 Boards",
-      "Total Cases75",
+      "HEALTH BOARDS3 Boards",
+      "TOTAL CASES75",
       "06 Mar 2020 - 09 Mar 2020"
     );
 
@@ -162,8 +162,8 @@ describe("heatmap renders dynamic fetched data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Council Areas3 Areas",
-      "Total Cases75",
+      "COUNCIL AREAS3 Areas",
+      "TOTAL CASES75",
       "06 Mar 2020 - 09 Mar 2020"
     );
 
@@ -191,8 +191,8 @@ describe("heatmap handles missing data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Council Areas0 Areas",
-      "Total Deaths",
+      "COUNCIL AREAS0 Areas",
+      "TOTAL DEATHS",
       "Data not available"
     );
 
@@ -215,8 +215,8 @@ describe("heatmap handles missing data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Health Boards0 Boards",
-      "Total Deaths",
+      "HEALTH BOARDS0 Boards",
+      "TOTAL DEATHS",
       "Data not available"
     );
 
@@ -239,8 +239,8 @@ describe("heatmap handles missing data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
-      "Health Boards0 Boards",
-      "Total Cases",
+      "HEALTH BOARDS0 Boards",
+      "TOTAL CASES",
       "Data not available"
     );
 
@@ -262,7 +262,7 @@ describe("heatmap handles missing data", () => {
     });
 
     expect(loadingComponent()).toBeNull();
-    checkHeaderRow("Council Areas0 Areas", "Total Cases", "Data not available");
+    checkHeaderRow("COUNCIL AREAS0 Areas", "TOTAL CASES", "Data not available");
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(0);
@@ -436,7 +436,7 @@ function checkHeaderRow(areaName, areaCount, dateRange) {
   expect(cells[0].textContent).toStrictEqual(areaName);
   expect(cells[1].textContent).toStrictEqual(areaCount);
   expect(cells[2].textContent).toStrictEqual(
-    "Daily Count" + dateRange + HEAT_LEVELS_TEXT
+    "DAILY COUNT" + dateRange + HEAT_LEVELS_TEXT
   );
 }
 
