@@ -173,7 +173,7 @@ describe("normal rendering, currentTotalsHealthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "1572");
+    checkSingleValue("weeklyCases", "1,572");
     checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "Not available", "Not available");
     checkSingleValue("weeklyDeaths", "86");
@@ -314,11 +314,11 @@ describe("normal rendering, healthBoardDataset null", () => {
     checkSingleValue("dailyCases", "7", "reported today");
     // Falls back on value calculated from CA data
     checkSingleValue("weeklyCases", "672");
-    checkSingleValue("totalCases", "19126", "reported since 28 February, 2020");
+    checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "3", "reported today");
     // Falls back on value calculated from CA data
     checkSingleValue("weeklyDeaths", "72");
-    checkSingleValue("totalDeaths", "2491", "reported since 28 February, 2020");
+    checkSingleValue("totalDeaths", "2,491", "reported since 28 February, 2020");
   });
 
   it("health board today", () => {
@@ -490,11 +490,11 @@ test("parseNhsCACsvData", () => {
 
 function expectNormalScotlandValues() {
   checkSingleValue("dailyCases", "7", "reported today");
-  checkSingleValue("weeklyCases", "1572");
-  checkSingleValue("totalCases", "19126", "reported since 28 February, 2020");
+  checkSingleValue("weeklyCases", "1,572");
+  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyDeaths", "3", "reported today");
   checkSingleValue("weeklyDeaths", "86");
-  checkSingleValue("totalDeaths", "2491", "reported since 28 February, 2020");
+  checkSingleValue("totalDeaths", "2,491", "reported since 28 February, 2020");
 }
 
 function expectNormalCouncilAreaValues() {

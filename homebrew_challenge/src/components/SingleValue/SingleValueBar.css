@@ -7,6 +7,7 @@
 .single-value-heading {
   height: 25%;
   margin-left: 30px;
+  padding-right: 26px;
 }
 
 .single-value-number {
@@ -29,6 +30,7 @@
   position: relative;
 }
 
+.region-single-value-bar,
 .single-value-bar {
   padding: 10px;
   margin: 0;
@@ -43,6 +45,10 @@
   width: 20%;
 }
 
+.region-single-value-container {
+  width: 33%;
+}
+
 .single-value-hr {
   margin-bottom: 0;
   padding-bottom: 0;
@@ -55,6 +61,15 @@
   }
   .single-value-container {
     width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .region-single-value-bar {
+    flex-direction: column;
+  }
+  .region-single-value-container {
+    width: 100%;
   }
 }
 

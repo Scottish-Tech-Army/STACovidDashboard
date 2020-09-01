@@ -140,7 +140,7 @@ function SingleValueBar() {
           id="fatalityCaseRatio"
           title="DEATH/CASE RATIO"
           value={guardMissingData(fatalityCaseRatio)}
-          tooltip="This is the % of people who have died after testing positive for the COVID-19. The real fatality rate is currently est at < 1% as not everyone who catches COVID-19 gets tested."
+          tooltip="This is the % of people who have died after testing positive for the COVID-19. The real fatality rate is currently estimated at < 1% as not everyone who catches COVID-19 gets tested."
         />
       </div>
     </div>

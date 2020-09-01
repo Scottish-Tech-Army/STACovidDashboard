@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import {
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_MAP,
-  parse7DayWindowCsvData,getRelativeReportedDate
+  parse7DayWindowCsvData,
+  getRelativeReportedDate,
 } from "../Utils/CsvUtils";
 import moment from "moment";
 
@@ -91,14 +92,14 @@ function RegionalSingleValueBar({
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
-  const SUBTITLE_TOTAL = "reported since 28 February, 2020"
+  const SUBTITLE_TOTAL = "reported since 28 February, 2020";
 
   if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
     throw new Error("Unrecognised regionCode: " + regionCode);
   }
 
   function guardMissingData(input) {
-    return input === undefined ? missingData : input;
+    return input === undefined ? missingData : input.toLocaleString();
   }
 
   useEffect(() => {
@@ -169,12 +170,14 @@ function RegionalSingleValueBar({
 
   return (
     <>
-    <div className="single-value-bar">
-      <div className="p-2 region-single-value-container">
+      <div className="region-single-value-bar">
+        <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyCases"
             title="DAILY CASES"
-            subtitle={guardMissingData(getRelativeReportedDate(dailyCases.date))}
+            subtitle={guardMissingData(
+              getRelativeReportedDate(dailyCases.date)
+            )}
             value={guardMissingData(dailyCases.value)}
             tooltip="These are the cases reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
@@ -196,12 +199,16 @@ function RegionalSingleValueBar({
             tooltip="These are the total cases of COVID-19 since the COVID-19 Pandemic began."
           />
         </div>
+      </div>
 
+      <div className="region-single-value-bar">
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyDeaths"
             title="DAILY FATALITIES"
-            subtitle={guardMissingData(getRelativeReportedDate(dailyDeaths.date))}
+            subtitle={guardMissingData(
+              getRelativeReportedDate(dailyDeaths.date)
+            )}
             value={guardMissingData(dailyDeaths.value)}
             tooltip="These are the deaths reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />

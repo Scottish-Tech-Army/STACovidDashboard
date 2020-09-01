@@ -29,7 +29,7 @@ const Regional = ({
         </Col>
       </Row>
       <Row>
-        <Col xs={12} md={4}>
+        <Col xs={12} lg={4}>
           <RegionGeoMap
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
@@ -37,7 +37,7 @@ const Regional = ({
             setRegionCode={setRegionCode}
           />
         </Col>
-        <Col>
+        <Col xs={12} lg={8}>
           <hr className="d-flex d-md-none full-width-hr" />
           <strong>Select region (or select on map):</strong>
 

@@ -3,6 +3,7 @@ const keyDates = [
   { date: Date.parse("2020-05-29"), name: "Phase 1" },
   { date: Date.parse("2020-06-19"), name: "Phase 2" },
   { date: Date.parse("2020-07-10"), name: "Phase 3" },
+  { date: Date.parse("2020-07-15"), name: "Bars reopen" },
   { date: Date.parse("2020-08-11"), name: "Schools reopen" },
 ];
 

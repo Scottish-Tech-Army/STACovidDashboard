@@ -84,10 +84,10 @@ img#logo {
 .about-us,
 .accessibility-page ul {
   list-style-type: none;
-  height: 60vh;
 }
 
 .about-us h1,
+.about-us h2,
 .accessibility-page h1,
 .accessibility-page p {
   padding-top: 2vh;
