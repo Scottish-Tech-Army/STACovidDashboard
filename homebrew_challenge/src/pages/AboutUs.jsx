@@ -138,7 +138,6 @@ const AboutUs = () => {
           </Row>
         </Container>
       </div>
-      <hr className="full-width-hr" />
     </div>
   );
 };

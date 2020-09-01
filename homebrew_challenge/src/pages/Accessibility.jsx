@@ -73,7 +73,6 @@ const Accessibility = () => {
           assistive technologies.
         </p>
       </div>
-      <hr className="full-width-hr" />
     </div>
   );
 };

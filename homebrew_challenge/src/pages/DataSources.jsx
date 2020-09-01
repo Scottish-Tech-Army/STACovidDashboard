@@ -98,7 +98,6 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
-      <hr className="full-width-hr" />
     </div>
   );
 };
