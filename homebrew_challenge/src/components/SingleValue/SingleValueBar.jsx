@@ -1,17 +1,19 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React, { useEffect, useState } from "react";
-import { FEATURE_CODE_SCOTLAND, readCsvData,getRelativeReportedDate } from "../Utils/CsvUtils";
+import {
+  FEATURE_CODE_SCOTLAND,
+  getRelativeReportedDate,
+} from "../Utils/CsvUtils";
 import moment from "moment";
 
-export function parseNhsCsvData(csvData) {
-  var lines = readCsvData(csvData);
+export function parseNhsCsvData(lines) {
   var result = {
     cases: { date: undefined, value: undefined },
     deaths: { date: undefined, value: undefined },
     cumulativeCases: { date: undefined, value: undefined },
     cumulativeDeaths: { date: undefined, value: undefined },
-    fatalityCaseRatio: undefined
+    fatalityCaseRatio: undefined,
   };
   lines.forEach(
     (
@@ -24,7 +26,7 @@ export function parseNhsCsvData(csvData) {
         v2,
         v3,
         dailyDeaths,
-        cumulativeDeaths
+        cumulativeDeaths,
       ],
       i
     ) => {
@@ -41,7 +43,7 @@ export function parseNhsCsvData(csvData) {
           deaths: { date: date, value: Number(dailyDeaths) },
           cumulativeCases: { date: date, value: Number(cumulativeCases) },
           cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-          fatalityCaseRatio: fatalityCaseRatio
+          fatalityCaseRatio: fatalityCaseRatio,
         };
       }
     }
@@ -50,48 +52,33 @@ export function parseNhsCsvData(csvData) {
 }
 
 const emptyDate = { date: Date.parse("1999-01-01"), value: 0 };
-const SUBTITLE_TOTAL = "reported since 28 February, 2020"
+const SUBTITLE_TOTAL = "reported since 28 February, 2020";
+const MISSING_DATA = "Not available";
 
-function SingleValueBar() {
+function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
   const [dailyCases, setDailyCases] = useState(emptyDate);
   const [totalCases, setTotalCases] = useState(emptyDate);
   const [dailyFatalities, setDailyFatalities] = useState(emptyDate);
   const [totalFatalities, setTotalFatalities] = useState(emptyDate);
   const [fatalityCaseRatio, setFatalityCaseRatio] = useState(0);
-  const [nhsDataFetched, setNhsDataFetched] = useState(false);
 
-  // Get the last 3 days of data, to allow diff of the last two values even when today's data is not available
-  const missingData = "Not available";
 
   function guardMissingData(input) {
-    return input === undefined ? missingData : input.toLocaleString();
+    return input === undefined ? MISSING_DATA : input.toLocaleString();
   }
 
   useEffect(() => {
-    const currentTotalsHealthBoardsCsv = "data/currentTotalsHealthBoards.csv";
-
-    // Only attempt to fetch data once
-    if (!nhsDataFetched) {
-      setNhsDataFetched(true);
-      fetch(currentTotalsHealthBoardsCsv, {
-        method: "GET"
-      })
-        .then(res => res.text())
-        .then(csvData => {
-          const results = parseNhsCsvData(csvData);
-          if (results !== null) {
-            setDailyCases(results.cases);
-            setTotalCases(results.cumulativeCases);
-            setDailyFatalities(results.deaths);
-            setTotalFatalities(results.cumulativeDeaths);
-            setFatalityCaseRatio(results.fatalityCaseRatio);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+    if (currentTotalsHealthBoardDataset !== null) {
+      const results = parseNhsCsvData(currentTotalsHealthBoardDataset);
+      if (results !== null) {
+        setDailyCases(results.cases);
+        setTotalCases(results.cumulativeCases);
+        setDailyFatalities(results.deaths);
+        setTotalFatalities(results.cumulativeDeaths);
+        setFatalityCaseRatio(results.fatalityCaseRatio);
+      }
     }
-  }, [nhsDataFetched]);
+  }, [currentTotalsHealthBoardDataset]);
 
   return (
     <div className="single-value-bar">
@@ -99,9 +86,7 @@ function SingleValueBar() {
         <SingleValue
           id="dailyCases"
           title="DAILY CASES"
-          subtitle={guardMissingData(
-            getRelativeReportedDate(dailyCases.date)
-          )}
+          subtitle={guardMissingData(getRelativeReportedDate(dailyCases.date))}
           value={guardMissingData(dailyCases.value)}
           tooltip="These are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
