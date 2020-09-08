@@ -4,6 +4,7 @@ import React from "react";
 import SingleValueBar, { parseNhsCsvData } from "./SingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { readCsvData } from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -21,12 +22,12 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-test("singleValueBar renders default data when fetch fails", async () => {
-  fetch.mockReject(new Error("fetch failed"));
-  global.suppressConsoleErrorLogs();
-
+test("singleValueBar renders default data when dataset is null", async () => {
   await act(async () => {
-    render(<SingleValueBar />, container);
+    render(
+      <SingleValueBar currentTotalsHealthBoardDataset={null} />,
+      container
+    );
   });
 
   checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
@@ -37,54 +38,79 @@ test("singleValueBar renders default data when fetch fails", async () => {
 });
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
-  fetch.mockResponse(nhsCsvData);
-
   // Set today to be 2020-06-21
   setMockDate("2020-06-21");
 
   await act(async () => {
-    render(<SingleValueBar />, container);
+    render(
+      <SingleValueBar
+        currentTotalsHealthBoardDataset={testCurrentTotalsHealthBoardDataset}
+      />,
+      container
+    );
   });
 
   checkSingleValue("dailyCases", "47", "reported today");
   checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "0", "reported today");
-  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
+  checkSingleValue(
+    "totalFatalities",
+    "2,491",
+    "reported since 28 February, 2020"
+  );
   checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
-  fetch.mockResponse(nhsCsvData);
-
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
 
   await act(async () => {
-    render(<SingleValueBar />, container);
+    render(
+      <SingleValueBar
+        currentTotalsHealthBoardDataset={testCurrentTotalsHealthBoardDataset}
+      />,
+      container
+    );
   });
 
   checkSingleValue("dailyCases", "47", "reported yesterday");
   checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyFatalities", "0", "reported yesterday");
-  checkSingleValue("totalFatalities", "2,491", "reported since 28 February, 2020");
+  checkSingleValue(
+    "totalFatalities",
+    "2,491",
+    "reported since 28 February, 2020"
+  );
   checkSingleValue("fatalityCaseRatio", "13.0%");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
-  fetch.mockResponse(missingNhsCsvData);
-
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
 
   await act(async () => {
-    render(<SingleValueBar />, container);
+    render(
+      <SingleValueBar
+        currentTotalsHealthBoardDataset={readCsvData(missingNhsCsvData)}
+      />,
+      container
+    );
   });
 
   // console.log(container.textContent);
   checkSingleValue("dailyCases", "Not available", "Not available");
-  checkSingleValue("totalCases", "Not available", "reported since 28 February, 2020");
+  checkSingleValue(
+    "totalCases",
+    "Not available",
+    "reported since 28 February, 2020"
+  );
   checkSingleValue("dailyFatalities", "Not available", "Not available");
-  checkSingleValue("totalFatalities", "Not available", "reported since 28 February, 2020");
+  checkSingleValue(
+    "totalFatalities",
+    "Not available",
+    "reported since 28 February, 2020"
+  );
   checkSingleValue("fatalityCaseRatio", "Not available");
 });
 
@@ -94,17 +120,25 @@ test("parseNhsCsvData", () => {
     deaths: { date: 1592697600000, value: 0 },
     cumulativeCases: { date: 1592697600000, value: 19126 },
     cumulativeDeaths: { date: 1592697600000, value: 2491 },
-    fatalityCaseRatio: "13.0%"
+    fatalityCaseRatio: "13.0%",
   };
 
-  expect(parseNhsCsvData(nhsCsvData)).toStrictEqual(expectedResult);
+  expect(parseNhsCsvData(testCurrentTotalsHealthBoardDataset)).toStrictEqual(
+    expectedResult
+  );
 });
 
-function checkSingleValue(singleValueId, expectedValue, expectedSubtitle=null) {
+function checkSingleValue(
+  singleValueId,
+  expectedValue,
+  expectedSubtitle = null
+) {
   const singleValueElement = container.querySelector("#" + singleValueId);
   const subtitle = singleValueElement.querySelector(".subtitle");
   const value = singleValueElement.querySelector(".single-value-number");
-  expect(subtitle.textContent).toBe(expectedSubtitle == null ? "" : expectedSubtitle);
+  expect(subtitle.textContent).toBe(
+    expectedSubtitle == null ? "" : expectedSubtitle
+  );
   expect(value.textContent).toBe(expectedValue);
 }
 
@@ -130,5 +164,7 @@ const nhsCsvData = `Date,HB,HBQF,NewPositive,TotalCases,CrudeRatePositive,TotalP
 20200621,S08000031,"",8,5079,429.288660490905,0.0530987329067871,0,728,61.5322198931638,90573,7655.4364730543
 20200621,S08000032,"",2,2801,423.175706300045,0.0533879729343372,0,353,53.331318930352,49664,7503.24822480737
 20200621,S92000003,d,47,19126,350.081452601907,0.046966895288331,0,2491,45.5951531125876,388097,7103.71021177676`;
+
+const testCurrentTotalsHealthBoardDataset = readCsvData(nhsCsvData);
 
 const missingNhsCsvData = `Date,HB,HBQF,NewPositive,TotalCases,CrudeRatePositive,TotalPositivePercent,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative`;

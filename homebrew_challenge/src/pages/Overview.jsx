@@ -20,7 +20,11 @@ import {
   VALUETYPE_CASES,
 } from "../components/HeatmapDataSelector/HeatmapConsts";
 
-const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
+const Overview = ({
+  councilAreaDataset,
+  healthBoardDataset,
+  currentTotalsHealthBoardDataset,
+}) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(DAILY_CASES);
@@ -110,7 +114,9 @@ const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
         </Row>
         <Row>
           <Col>
-            <SingleValueBar />
+            <SingleValueBar
+              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+            />
           </Col>
         </Row>
         <Row>
