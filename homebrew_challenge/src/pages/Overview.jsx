@@ -11,6 +11,7 @@ import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
+import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
@@ -195,6 +196,16 @@ const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
                 toggleFullscreen(zoomableCharts, setZoomDataCharts)
               }
             />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row className="d-none d-sm-flex justify-content-center align-items-center">
+          <Col>
+            <Facts />
           </Col>
         </Row>
         <Row>
