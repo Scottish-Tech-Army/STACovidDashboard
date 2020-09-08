@@ -27,33 +27,33 @@ function DataChartsSelector({ chartType, setChartType }) {
 
   return (
     <div className="data-charts-selector">
-      <div>
-        <strong>Select chart:</strong>
-      </div>
-      <ToggleButtonGroup
-        className="toggle-button-group"
-        name="chartType"
-        type="radio"
-        vertical
-        value={chartType}
-        onChange={(val) => setChartType(val)}
-      >
-        <ToggleButton id="dailyCases" value={DAILY_CASES}>
-          Daily Cases
-        </ToggleButton>
-        <ToggleButton id="totalCases" value={TOTAL_CASES}>
-          Total Cases
-        </ToggleButton>
-        <ToggleButton id="dailyDeaths" value={DAILY_DEATHS}>
-          Daily Deaths
-        </ToggleButton>
-        <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
-          Total Deaths
-        </ToggleButton>
-        <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
-          % Tests Positive
-        </ToggleButton>
-      </ToggleButtonGroup>
+      <fieldset>
+        <legend>Select Chart:</legend>
+        <ToggleButtonGroup
+          className="toggle-button-group"
+          name="chartType"
+          type="radio"
+          vertical
+          value={chartType}
+          onChange={(val) => setChartType(val)}
+        >
+          <ToggleButton id="dailyCases" value={DAILY_CASES}>
+            Daily Cases
+          </ToggleButton>
+          <ToggleButton id="totalCases" value={TOTAL_CASES}>
+            Total Cases
+          </ToggleButton>
+          <ToggleButton id="dailyDeaths" value={DAILY_DEATHS}>
+            Daily Deaths
+          </ToggleButton>
+          <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
+            Total Deaths
+          </ToggleButton>
+          <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
+            % Tests Positive
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </fieldset>
     </div>
   );
 }
