@@ -32,7 +32,18 @@ const Facts = () => {
         <div className="facts-component">
           <img className="facts-icon" src="./assets/public_health_advice.png" alt=""/>
           <div className="facts-guidance">
-            <div><span className="highlight-FACTS">S</span>elf-isolate and book a test if you have COVID-19 symptoms.</div>
+            <div>
+              <span className="highlight-FACTS">S</span>elf-isolate and
+              <a
+                className="link"
+                id="test-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.gov.scot/coronavirus-covid-19/"
+              >
+                {" "}book a test
+              </a> if you have COVID-19 symptoms.
+            </div>
           </div>
         </div>
       </div>
