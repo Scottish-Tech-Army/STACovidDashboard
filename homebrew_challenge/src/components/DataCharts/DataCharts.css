@@ -4,12 +4,27 @@
   display: flex;
   justify-content: center;
   background-color: #ffffff;
+  position: relative;
 }
 .chart-container {
   height: 100%;
   width: 100%;
   min-height: 400px;
   max-height: 400px;
+}
+
+.region-chart-container {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.sonification-play-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  border: none;
+  background: none;
 }
 
 .full-screen {

@@ -265,3 +265,10 @@ export function getPlaceNameByFeatureCode(featureCode) {
   }
   return result;
 }
+
+export function getPhoneticPlaceNameByFeatureCode(featureCode) {
+  if (featureCode === "S12000013") {
+    return "Nahelen an sheer";
+  }
+  return getPlaceNameByFeatureCode(featureCode);
+}
