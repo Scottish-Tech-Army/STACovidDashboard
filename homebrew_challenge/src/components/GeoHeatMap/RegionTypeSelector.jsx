@@ -18,6 +18,8 @@ function RegionTypeSelector({ areaType, setAreaType }) {
     throw new Error("Unrecognised setAreaType: " + setAreaType);
   }
   return (
+    <fieldset>
+      <legend>Select Boundaries:</legend>
     <ToggleButtonGroup
       className="toggle-button-group"
       name="areaType"
@@ -33,6 +35,7 @@ function RegionTypeSelector({ areaType, setAreaType }) {
         Council Areas
       </ToggleButton>
     </ToggleButtonGroup>
+    </fieldset>
   );
 }
 

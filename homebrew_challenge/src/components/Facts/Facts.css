@@ -1,0 +1,71 @@
+.icons-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.facts-container {
+  margin: 0;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  background-color: #f2f2f2;
+}
+
+.facts-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.facts-component {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  width: 19%;
+  min-height: 110px;
+  padding: 10px;
+  box-shadow: 10px 10px 5px #aaaaaa;
+  background-color: #ffffff;
+}
+
+.facts-icon {
+  padding: 5px;
+  background-color: #ffffff;
+  height: 6rem;
+  width: 6rem;
+  margin: 0;
+  padding-top: 5px;
+}
+
+.facts-guidance {
+  margin: 0 5px 0 10px;
+  padding-right: 5px;
+  width: 100%;
+  background-color: #ffffff;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 1258px) {
+  .facts-component {
+    flex-direction: column;
+  }
+  .facts-icon {
+    margin: 0 auto;
+  }
+}
+
+.highlight-FACTS {
+  color: #e34a33;
+  font-weight: bolder;
+  font-size: 30px;
+}
+
+#test-link{
+  color: #2a84bb;
+}
