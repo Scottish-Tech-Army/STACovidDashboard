@@ -200,7 +200,7 @@ const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr className="full-width-hr d-none d-sm-flex" />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
@@ -208,7 +208,7 @@ const Overview = ({ councilAreaDataset, healthBoardDataset }) => {
             <Facts />
           </Col>
         </Row>
-        <Row>
+        <Row className="d-none d-sm-flex">
           <Col>
             <hr className="full-width-hr" />
           </Col>
