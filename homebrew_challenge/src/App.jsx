@@ -16,6 +16,7 @@ import {
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
+import { stopAudio } from "./components/Utils/Sonification";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -51,12 +52,17 @@ const App = () => {
     } else return "";
   }
 
-  function scrollToTop (page) {
+  function scrollToTop(page) {
     setCurrentPage(page);
     window.scrollTo({
-      top: 0
+      top: 0,
     });
   }
+
+  // Stop audio on page change
+  useEffect(() => {
+    stopAudio();
+  }, [currentPage]);
 
   // Load and parse datasets
   useEffect(() => {
@@ -140,9 +146,7 @@ const App = () => {
       {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer
-        setCurrentPage={scrollToTop}
-      />
+      <Footer setCurrentPage={scrollToTop} />
     </div>
   );
 };

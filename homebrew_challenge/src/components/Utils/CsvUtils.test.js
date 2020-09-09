@@ -4,6 +4,7 @@ import {
   createDateAggregateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
+  getPhoneticPlaceNameByFeatureCode,
   parse7DayWindowCsvData,
   getRelativeReportedDate,
 } from "../Utils/CsvUtils";
@@ -102,6 +103,36 @@ test("getPlaceNameByFeatureCode", async () => {
     "Unknown feature code: null"
   );
   expect(() => getPlaceNameByFeatureCode(undefined)).toThrow(
+    "Unknown feature code: undefined"
+  );
+});
+
+test("getPhoneticPlaceNameByFeatureCode", async () => {
+  // Health board
+  expect(getPhoneticPlaceNameByFeatureCode("S08000031")).toStrictEqual(
+    "Greater Glasgow & Clyde"
+  );
+  expect(getPhoneticPlaceNameByFeatureCode("S08000017")).toStrictEqual(
+    "Dumfries & Galloway"
+  );
+  // Council area
+  expect(getPhoneticPlaceNameByFeatureCode("S12000040")).toStrictEqual("West Lothian");
+  expect(getPhoneticPlaceNameByFeatureCode("S12000013")).toStrictEqual(
+    "Nahelen an sheer"
+  );
+  // Country
+  expect(getPhoneticPlaceNameByFeatureCode("S92000003")).toStrictEqual("Scotland");
+  expect(() => getPhoneticPlaceNameByFeatureCode("S12345678")).toThrow(
+    "Unknown feature code: S12345678"
+  );
+  expect(() => getPhoneticPlaceNameByFeatureCode("unknown")).toThrow(
+    "Unknown feature code: unknown"
+  );
+  expect(() => getPhoneticPlaceNameByFeatureCode("")).toThrow("Unknown feature code: ");
+  expect(() => getPhoneticPlaceNameByFeatureCode(null)).toThrow(
+    "Unknown feature code: null"
+  );
+  expect(() => getPhoneticPlaceNameByFeatureCode(undefined)).toThrow(
     "Unknown feature code: undefined"
   );
 });
