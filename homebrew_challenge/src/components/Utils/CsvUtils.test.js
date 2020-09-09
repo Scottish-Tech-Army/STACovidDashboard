@@ -13,32 +13,32 @@ beforeEach(() => {
   fetch.resetMocks();
 });
 
-const inputCsvData = `date,areaname,count
-    2020-03-16,Orkney Islands,0
-    2020-03-23,Glasgow City,7
-    2020-03-23,Aberdeen City,0
-    2020-03-30,Orkney Islands,0
-    2020-03-30,Glasgow City,46
-    2020-03-16,Glasgow City,1
-    2020-03-16,Aberdeen City,1
-    2020-03-23,Orkney Islands,0
-    2020-03-30,Aberdeen City,2
+const inputCsvData = `
+
+Date,CA,NewPositive,TotalCases
+20200902,S12000005,0,204
+
+20200903,S12000006,0,314
+,S12000008,2,474
+unknown,S12000013,0,7
+20209999,S12000014,3,702
+20200905,,0,289
+
+
+20200902,unknown,3,240
+20200906,S12000011,2,415
+
 
     `;
 
 const parsedCsvData = [
-  ["2020-03-16", "Orkney Islands", "0"],
-  ["2020-03-23", "Glasgow City", "7"],
-  ["2020-03-23", "Aberdeen City", "0"],
-  ["2020-03-30", "Orkney Islands", "0"],
-  ["2020-03-30", "Glasgow City", "46"],
-  ["2020-03-16", "Glasgow City", "1"],
-  ["2020-03-16", "Aberdeen City", "1"],
-  ["2020-03-23", "Orkney Islands", "0"],
-  ["2020-03-30", "Aberdeen City", "2"],
+  ["20200902", "S12000005", "0", "204"],
+  ["20200903", "S12000006", "0", "314"],
+  ["20200906", "S12000011", "2", "415"],
 ];
 
 test("readCsvData", () => {
+  global.suppressConsoleWarnLogs();
   expect(readCsvData(inputCsvData)).toStrictEqual(parsedCsvData);
 });
 
@@ -50,8 +50,8 @@ test("fetchAndStore when fetch fails", async () => {
   await act(async () => {
     await fetchAndStore(
       "test query",
-      readCsvData,
-      (val) => (processedResult = parsedCsvData)
+      (val) => (processedResult = "something not null"),
+      readCsvData
     );
   });
 
@@ -61,13 +61,14 @@ test("fetchAndStore when fetch fails", async () => {
 
 test("fetchAndStore when fetch succeeds", async () => {
   fetch.mockResponse(inputCsvData);
+  global.suppressConsoleWarnLogs();
   var processedResult = null;
 
   await act(async () => {
     await fetchAndStore(
       "test query",
-      readCsvData,
-      (val) => (processedResult = parsedCsvData)
+      (val) => (processedResult = val),
+      readCsvData
     );
   });
 
