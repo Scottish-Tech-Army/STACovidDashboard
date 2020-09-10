@@ -1,9 +1,3 @@
-.icons-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .facts-container {
   margin: 0;
   padding: 20px;
@@ -26,8 +20,7 @@
   align-items: flex-start;
   text-align: left;
   width: 19%;
-  min-height: 110px;
-  padding: 10px;
+  padding: 10px 10px 15px 10px;
   box-shadow: 10px 10px 5px #aaaaaa;
   background-color: #ffffff;
 }
@@ -35,10 +28,9 @@
 .facts-icon {
   padding: 5px;
   background-color: #ffffff;
-  height: 6rem;
-  width: 6rem;
+  height: 5rem;
+  width: 5rem;
   margin: 0;
-  padding-top: 5px;
 }
 
 .facts-guidance {
@@ -60,10 +52,13 @@
   }
 }
 
-.highlight-FACTS {
+.highlight-facts {
   color: #e34a33;
   font-weight: bolder;
   font-size: 30px;
+  line-height: 30px;
+  position: relative;
+  top: 2px;
 }
 
 #test-link{

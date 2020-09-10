@@ -204,9 +204,9 @@ const Overview = ({
             />
           </Col>
         </Row>
-        <Row>
+        <Row className="d-none d-sm-flex">
           <Col>
-            <hr className="full-width-hr d-none d-sm-flex" />
+            <hr className="full-width-hr" />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
