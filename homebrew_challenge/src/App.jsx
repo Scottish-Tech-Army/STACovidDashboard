@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import AboutUs from "./pages/AboutUs";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
 import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
 import Overview from "./pages/Overview";
@@ -51,10 +53,10 @@ const App = () => {
     } else return "";
   }
 
-  function scrollToTop (page) {
+  function scrollToTop(page) {
     setCurrentPage(page);
     window.scrollTo({
-      top: 0
+      top: 0,
     });
   }
 
@@ -99,6 +101,24 @@ const App = () => {
     }
   }, [currentTotalsHealthBoardDataset]);
 
+  function createNavbar() {
+    return (
+      <Navbar className="dashboard-navbar" bg="light" expand="sm">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link onClick={() => setCurrentPage(PAGE_OVERVIEW)}>
+              Summary Dashboard
+            </Nav.Link>
+            <Nav.Link onClick={() => setCurrentPage(PAGE_REGIONAL)}>
+              Regional Insights
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    );
+  }
+
   return (
     <div className="App">
       <header>
@@ -116,6 +136,7 @@ const App = () => {
             <h2>{pageTitle()}</h2>
           </div>
         </div>
+        {createNavbar()}
       </header>
 
       {currentPage === PAGE_OVERVIEW ? (
@@ -140,9 +161,7 @@ const App = () => {
       {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
       {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
       {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer
-        setCurrentPage={scrollToTop}
-      />
+      <Footer setCurrentPage={scrollToTop} />
     </div>
   );
 };

@@ -1,8 +1,12 @@
 .heading-container {
   display: flex;
   flex-direction: row;
-  padding: 10px 0 20px;
+  padding: 10px 0 10px;
   align-items: flex-end;
+}
+
+.dashboard-navbar {
+  margin: 0 15px 10px 15px;
 }
 
 .heading-container h2 {
