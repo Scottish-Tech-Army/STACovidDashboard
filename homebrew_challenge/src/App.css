@@ -24,6 +24,12 @@
   flex-direction: column;
 }
 
+.navbar-links {
+  display: flex;
+  justify-content: flex-end;
+  font-weight: 600;
+}
+
 @media screen and (max-width: 375px) {
   .heading-container {
     align-items: flex-start;
@@ -36,6 +42,10 @@
   }
   img#logo {
     height: 80px !important;
+  }
+
+  .navbar-links {
+    flex-direction: column;
   }
 }
 

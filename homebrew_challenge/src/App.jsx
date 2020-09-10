@@ -106,13 +106,32 @@ const App = () => {
       <Navbar className="dashboard-navbar" bg="light" expand="sm">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link onClick={() => setCurrentPage(PAGE_OVERVIEW)}>
-              Summary Dashboard
-            </Nav.Link>
-            <Nav.Link onClick={() => setCurrentPage(PAGE_REGIONAL)}>
-              Regional Insights
-            </Nav.Link>
+          <Nav className="heading-container">
+            <Navbar.Brand className="heading">
+              <img
+                onClick={() => setCurrentPage(PAGE_OVERVIEW)}
+                id="logo"
+                src="STALogo.png"
+                alt="Scottish Tech Army Logo"
+              />{" "}
+            </Navbar.Brand>
+            <div className="heading heading-title">
+              <h1>Scottish COVID-19 Statistics</h1>
+              <h2>{pageTitle()}</h2>
+            </div>
+            <div className="navbar-links">
+              <Nav.Link onClick={() => setCurrentPage(PAGE_OVERVIEW)}>
+                Home
+              </Nav.Link>
+              {" | "}
+              <Nav.Link onClick={() => setCurrentPage(PAGE_REGIONAL)}>
+                Insights
+              </Nav.Link>
+              {" | "}
+              <Nav.Link onClick={() => setCurrentPage(PAGE_ABOUT_US)}>
+                About
+              </Nav.Link>
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -122,7 +141,7 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <div className="heading-container">
+        {/* <div className="heading-container">
           <div className="heading">
             <img
               onClick={() => setCurrentPage(PAGE_OVERVIEW)}
@@ -135,7 +154,7 @@ const App = () => {
             <h1>Scottish COVID-19 Statistics</h1>
             <h2>{pageTitle()}</h2>
           </div>
-        </div>
+        </div> */}
         {createNavbar()}
       </header>
 
