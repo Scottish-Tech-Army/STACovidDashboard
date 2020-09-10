@@ -150,7 +150,7 @@ const Footer = ({ setCurrentPage }) => {
                 size="3x"
                 color="#133a53"
                 className="third-party-logo"
-                title="Link to Scottish Tech Army Twiter account"
+                title="Link to Scottish Tech Army Twitter account"
               />
             )}
           </Col>

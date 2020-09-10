@@ -4,7 +4,7 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "../../common.css";
 import {
   AREATYPE_COUNCIL_AREAS,
-  AREATYPE_HEALTH_BOARDS
+  AREATYPE_HEALTH_BOARDS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 
 function RegionTypeSelector({ areaType, setAreaType }) {
