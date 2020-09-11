@@ -1,8 +1,10 @@
 .heading-container {
   display: flex;
   flex-direction: row;
-  padding: 10px 0 10px;
-  align-items: flex-end;
+  padding: 5px 0 5px;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
 .dashboard-navbar {
@@ -12,22 +14,50 @@
 .heading-container h2 {
   color: #2a84bb;
   font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .heading {
+  display: flex;
+  align-items: center;
   padding-right: 20px;
   font-weight: bold;
+}
+
+.heading .h1 {
+  display: inline-block;
 }
 
 .heading-title {
   display: flex;
   flex-direction: column;
+  font-size: 2rem;
 }
 
 .navbar-links {
   display: flex;
   justify-content: flex-end;
+  padding: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
+}
+
+.navbar-expand-md .navbar-links .right {
+  border-left: 2px solid #3c3c3b;
+}
+
+.navbar-links .right,
+.navbar-links .left {
+  margin: 10px 0;
+  padding: 0;
+}
+
+.navbar-light .navbar-nav .nav-link.disabled {
+  color: rgba(0, 0, 0, 0.9);
 }
 
 @media screen and (max-width: 375px) {
@@ -55,9 +85,14 @@
   }
 }
 
-@media screen and (max-width: 660px) {
+/* max-width changed from 600px to 766px so the border goes as soon as it snaps to burger menu */
+@media screen and (max-width: 766px) {
   .heading-container h1 {
     font-size: 1.75rem;
+  }
+
+  .navbar-expand-md .navbar-links .right {
+    border-left: none;
   }
 }
 
@@ -79,8 +114,8 @@
 }
 
 img#logo {
-  height: 120px;
-  margin-left: 20px;
+  height: 100px;
+  margin-right: 20px;
 }
 
 .link {
