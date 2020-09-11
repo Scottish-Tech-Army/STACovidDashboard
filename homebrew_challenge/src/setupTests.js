@@ -25,3 +25,6 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
 
 // Suppress console error message
 global.suppressConsoleErrorLogs = () => spyOn(console, "error");
+
+// Suppress console warning message
+global.suppressConsoleWarnLogs = () => spyOn(console, "warn");
