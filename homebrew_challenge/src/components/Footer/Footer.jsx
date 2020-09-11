@@ -132,7 +132,7 @@ const Footer = ({ setCurrentPage }) => {
             </div>
           </Col>
           <Col sm={12} md={3} className="d-flex justify-content-end social">
-            <div className="d-flex align-items-center">Connect with us: </div>
+            <div className="d-flex align-items-center">Connect with us:</div>
             {sitemapExternalLink(
               "https://www.linkedin.com/company/scottish-tech-army-limited",
               <FontAwesomeIcon
@@ -140,6 +140,7 @@ const Footer = ({ setCurrentPage }) => {
                 size="3x"
                 color="#133a53"
                 className="third-party-logo"
+                title="Linked to Scottish Tech Army LinkedIn account"
               />
             )}
             {sitemapExternalLink(
@@ -149,6 +150,7 @@ const Footer = ({ setCurrentPage }) => {
                 size="3x"
                 color="#133a53"
                 className="third-party-logo"
+                title="Link to Scottish Tech Army Twitter account"
               />
             )}
           </Col>

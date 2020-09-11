@@ -18,21 +18,24 @@ function RegionTypeSelector({ areaType, setAreaType }) {
     throw new Error("Unrecognised setAreaType: " + setAreaType);
   }
   return (
-    <ToggleButtonGroup
-      className="toggle-button-group"
-      name="areaType"
-      type="radio"
-      value={areaType}
-      vertical
-      onChange={setAreaType}
-    >
-      <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-        Health Boards
-      </ToggleButton>
-      <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
-        Council Areas
-      </ToggleButton>
-    </ToggleButtonGroup>
+    <fieldset>
+      <legend>Select Boundaries:</legend>
+      <ToggleButtonGroup
+        className="toggle-button-group"
+        name="areaType"
+        type="radio"
+        value={areaType}
+        vertical
+        onChange={setAreaType}
+      >
+        <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
+          Health Boards
+        </ToggleButton>
+        <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
+          Council Areas
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </fieldset>
   );
 }
 
