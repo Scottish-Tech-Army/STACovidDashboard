@@ -18,6 +18,7 @@ import {
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
+import { stopAudio } from "./components/Utils/Sonification";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -59,6 +60,11 @@ const App = () => {
       top: 0,
     });
   }
+
+  // Stop audio on page change
+  useEffect(() => {
+    stopAudio();
+  }, [currentPage]);
 
   // Load and parse datasets
   useEffect(() => {

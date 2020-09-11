@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
-import "./RegionDataCharts.css";
+import "./DataCharts.css";
 import "../../common.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import SonificationPlayButton from "./SonificationPlayButton";
 import {
   DAILY_CASES,
   DAILY_DEATHS,
@@ -146,6 +147,8 @@ const RegionDataCharts = ({
   const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(new Map());
   const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(new Map());
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(new Map());
+  const [audio, setAudio] = useState(null);
+  const [seriesTitle, setSeriesTitle] = useState("No data");
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
@@ -267,18 +270,43 @@ const RegionDataCharts = ({
       chartInstance.current = new Chart(chartRef, chartConfiguration);
     }
 
+    function setSonification(seriesData, seriesTitle) {
+      if (seriesData !== null && seriesData !== undefined) {
+        setAudio(seriesData.map(({ t, y }) => y));
+        setSeriesTitle(seriesTitle);
+      }
+    }
+
     if (chartInstance.current !== null) {
       chartInstance.current.destroy();
     }
 
     if (chartType === DAILY_CASES) {
       setChart(dailyCasesDatasetLabel, dailyCasesSeriesData, regionCode);
+      setSonification(
+        dailyCasesSeriesData.get(regionCode),
+        dailyCasesDatasetLabel
+      );
     } else if (chartType === DAILY_DEATHS) {
       setChart(dailyDeathsDatasetLabel, dailyDeathsSeriesData, regionCode);
+      setSonification(
+        dailyDeathsSeriesData.get(regionCode),
+        dailyDeathsDatasetLabel
+      );
     } else if (chartType === TOTAL_CASES) {
       setChart(totalCasesDatasetLabel, totalCasesSeriesData, regionCode);
+      setSonification(
+        totalCasesSeriesData.get(regionCode),
+        totalCasesDatasetLabel
+      );
     } else if (chartType === TOTAL_DEATHS) {
       setChart(totalDeathsDatasetLabel, totalDeathsSeriesData, regionCode);
+      if (totalDeathsSeriesData.get(regionCode) !== undefined) {
+        setSonification(
+          totalDeathsSeriesData.get(regionCode),
+          totalDeathsDatasetLabel
+        );
+      }
     }
   }, [
     dailyCasesSeriesData,
@@ -312,6 +340,11 @@ const RegionDataCharts = ({
 
   return (
     <div className="chart-border">
+      <SonificationPlayButton
+        seriesData={audio}
+        seriesTitle={seriesTitle}
+        regionCode={regionCode}
+      />
       <div className={getScreenModeClassName()}>
         <canvas ref={chartContainer} />
       </div>

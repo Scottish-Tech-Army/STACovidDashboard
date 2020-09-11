@@ -40,36 +40,42 @@ function HeatmapDataSelector({
     <Container className="heatmap-selector">
       <Row className="selector-container">
         <Col className="selector-group" xs={12} md={6}>
-          <ToggleButtonGroup
-            className="toggle-button-group"
-            name="areaType"
-            type="radio"
-            value={areaType}
-            onChange={(val) => setAreaType(val)}
-          >
-            <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
-              Health Boards
-            </ToggleButton>
-            <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
-              Council Areas
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <fieldset>
+            <legend>Select boundaries:</legend>
+            <ToggleButtonGroup
+              className="toggle-button-group"
+              name="areaType"
+              type="radio"
+              value={areaType}
+              onChange={(val) => setAreaType(val)}
+            >
+              <ToggleButton id="healthBoards" value={AREATYPE_HEALTH_BOARDS}>
+                Health Boards
+              </ToggleButton>
+              <ToggleButton id="councilAreas" value={AREATYPE_COUNCIL_AREAS}>
+                Council Areas
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </fieldset>
         </Col>
         <Col className="selector-group" xs={12} md={6}>
-          <ToggleButtonGroup
-            className="toggle-button-group"
-            name="valueType"
-            type="radio"
-            value={valueType}
-            onChange={(val) => setValueType(val)}
-          >
-            <ToggleButton id="cases" value={VALUETYPE_CASES}>
-              Cases
-            </ToggleButton>
-            <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
-              Deaths
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <fieldset>
+          <legend>Select type:</legend>
+            <ToggleButtonGroup
+              className="toggle-button-group"
+              name="valueType"
+              type="radio"
+              value={valueType}
+              onChange={(val) => setValueType(val)}
+            >
+              <ToggleButton id="cases" value={VALUETYPE_CASES}>
+                Cases
+              </ToggleButton>
+              <ToggleButton id="deaths" value={VALUETYPE_DEATHS}>
+                Deaths
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </fieldset>
         </Col>
       </Row>
     </Container>

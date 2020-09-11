@@ -2,17 +2,33 @@ import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
 export function readCsvData(csvData) {
-  var allTextLines = csvData.toString().split(/\r\n|\n/);
+  var allTextLines = csvData
+    .toString()
+    .split(/\r\n|\n/)
+    .filter((line) => line.trim().length > 0);
   var lines = [];
 
+  // Remove the column header row
+  allTextLines.shift();
+
   allTextLines.forEach((line) => {
-    if (line.trim().length > 0) {
-      lines.push(line.split(",").map((s) => s.trim()));
+    const splitline = line.split(",").map((s) => s.trim());
+    if (isValidCsvRow(splitline)) {
+      lines.push(splitline);
+    } else {
+      console.warn("Invalid csv data: [" + line + "]");
     }
   });
-  // Remove the column header row
-  lines.shift();
   return lines;
+}
+
+// Validate the first two cells ([date, featureCode] common to all the current CSV files)
+function isValidCsvRow(cells) {
+  const [dateString, featureCode] = cells;
+  return (
+    moment.utc(dateString, true).isValid() &&
+    FEATURE_CODE_MAP[featureCode] !== undefined
+  );
 }
 
 // Expects the input CVS columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
@@ -264,4 +280,11 @@ export function getPlaceNameByFeatureCode(featureCode) {
     throw new Error("Unknown feature code: " + featureCode);
   }
   return result;
+}
+
+export function getPhoneticPlaceNameByFeatureCode(featureCode) {
+  if (featureCode === "S12000013") {
+    return "Nahelen an sheer";
+  }
+  return getPlaceNameByFeatureCode(featureCode);
 }
