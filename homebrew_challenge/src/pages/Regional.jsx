@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
@@ -11,6 +11,7 @@ import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import { FEATURE_CODE_SCOTLAND } from "../components/Utils/CsvUtils";
+import { stopAudio } from "../components/Utils/Sonification";
 
 const Regional = ({
   councilAreaDataset,
@@ -20,6 +21,11 @@ const Regional = ({
 }) => {
   const [regionCode, setRegionCode] = useState(FEATURE_CODE_SCOTLAND);
   const [chartType, setChartType] = useState(DAILY_CASES);
+
+  // Stop audio on chart or region change
+  useEffect(() => {
+    stopAudio();
+  }, [chartType, regionCode]);
 
   return (
     <Container fluid className="regional-page">

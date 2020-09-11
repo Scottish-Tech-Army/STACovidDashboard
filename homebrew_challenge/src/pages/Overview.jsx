@@ -19,6 +19,7 @@ import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
 } from "../components/HeatmapDataSelector/HeatmapConsts";
+import { stopAudio } from "../components/Utils/Sonification";
 
 const Overview = ({
   councilAreaDataset,
@@ -33,6 +34,11 @@ const Overview = ({
 
   const zoomableCharts = useRef();
   const zoomableMap = useRef();
+
+  // Stop audio on chart change
+  useEffect(() => {
+    stopAudio();
+  }, [chartType]);
 
   function toggleFullscreen(element, setter) {
     var elem = element.current || document.documentElement;

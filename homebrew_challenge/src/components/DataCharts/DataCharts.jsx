@@ -17,6 +17,7 @@ import {
   commonChartConfiguration,
   datasetConfiguration,
 } from "./DataChartsUtils";
+import SonificationPlayButton from "./SonificationPlayButton";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -114,6 +115,8 @@ const DataCharts = ({
   const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(null);
   const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(null);
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
+  const [audio, setAudio] = useState(null);
+  const [seriesTitle, setSeriesTitle] = useState("No data");
 
   const percentageCasesDatasetLabel =
     "% of Positive Tests (5 day moving average)";
@@ -169,8 +172,8 @@ const DataCharts = ({
         position: "nearest",
         callbacks: {
           label: (tooltipItem, data) => {
-            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive"
-            return chartLabel
+            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive";
+            return chartLabel;
           },
           labelColor: (tooltipItem, data) => {
             return {
@@ -194,32 +197,46 @@ const DataCharts = ({
       chartInstance.current.destroy();
     }
 
+    function setSonification(seriesData, seriesTitle) {
+      if (seriesData !== null && seriesData !== undefined) {
+        setAudio(seriesData.map(({ t, y }) => y));
+        setSeriesTitle(seriesTitle);
+      }
+    }
+
     const chartRef = chartContainer.current.getContext("2d");
     if (chartType === PERCENTAGE_CASES) {
       chartInstance.current = new Chart(
         chartRef,
         percentageCasesChartConfiguration()
       );
+      if (percentageCasesSeriesData !== undefined) {
+        setSonification(percentageCasesSeriesData, "Percentage tests positive");
+      }
     } else if (chartType === DAILY_CASES) {
       chartInstance.current = new Chart(
         chartRef,
         basicChartConfiguration(dailyCasesDatasetLabel, dailyCasesSeriesData)
       );
+      setSonification(dailyCasesSeriesData, dailyCasesDatasetLabel);
     } else if (chartType === DAILY_DEATHS) {
       chartInstance.current = new Chart(
         chartRef,
         basicChartConfiguration(dailyDeathsDatasetLabel, dailyDeathsSeriesData)
       );
+      setSonification(dailyDeathsSeriesData, dailyDeathsDatasetLabel);
     } else if (chartType === TOTAL_CASES) {
       chartInstance.current = new Chart(
         chartRef,
         basicChartConfiguration(totalCasesDatasetLabel, totalCasesSeriesData)
       );
+      setSonification(totalCasesSeriesData, totalCasesDatasetLabel);
     } else if (chartType === TOTAL_DEATHS) {
       chartInstance.current = new Chart(
         chartRef,
         basicChartConfiguration(totalDeathsDatasetLabel, totalDeathsSeriesData)
       );
+      setSonification(totalDeathsSeriesData, totalDeathsDatasetLabel);
     }
   }, [
     percentageCasesSeriesData,
@@ -263,6 +280,7 @@ const DataCharts = ({
 
   return (
     <div className="chart-border">
+      <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
       <div className={getScreenModeClassName()}>
         <canvas ref={chartContainer} />
       </div>
