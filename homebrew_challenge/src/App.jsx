@@ -109,7 +109,7 @@ const App = () => {
 
   function createNavbar() {
     return (
-      <Navbar className="dashboard-navbar" bg="light" expand="md">
+      <Navbar className="dashboard-navbar" bg="white" expand="md">
         <img
           onClick={() => setCurrentPage(PAGE_OVERVIEW)}
           id="logo"

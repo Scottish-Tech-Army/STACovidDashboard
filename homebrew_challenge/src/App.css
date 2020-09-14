@@ -8,7 +8,7 @@
 }
 
 .dashboard-navbar {
-  margin: 0 15px 10px 15px;
+  margin: 0 1px 4px 1px;
 }
 
 .heading-container h2 {
@@ -85,8 +85,12 @@
   }
 }
 
-/* max-width changed from 600px to 766px so the border goes as soon as it snaps to burger menu */
-@media screen and (max-width: 766px) {
+/* max-width changed from 600px to 767px so the border is hidden as soon as it snaps to burger menu */
+@media screen and (max-width: 767px) {
+  .heading-container {
+    border-bottom: 2px solid #2a84bb;
+  }
+
   .heading-container h1 {
     font-size: 1.75rem;
   }
