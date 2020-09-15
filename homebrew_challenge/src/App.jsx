@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AboutUs from "./pages/AboutUs";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
 import Overview from "./pages/Overview";
@@ -19,6 +17,7 @@ import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
+import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -39,20 +38,6 @@ const App = () => {
     currentTotalsCouncilAreaDataset,
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
-
-  function pageTitle() {
-    if (currentPage === PAGE_OVERVIEW) {
-      return "SUMMARY DASHBOARD";
-    } else if (currentPage === PAGE_REGIONAL) {
-      return "REGIONAL INSIGHTS";
-    } else if (currentPage === PAGE_ABOUT_US) {
-      return "ABOUT US";
-    } else if (currentPage === PAGE_ACCESSIBILITY) {
-      return "ACCESSIBILITY STATEMENT";
-    } else if (currentPage === PAGE_DATA_SOURCES) {
-      return "DATA SOURCES";
-    } else return "";
-  }
 
   function scrollToTop(page) {
     setCurrentPage(page);
@@ -107,52 +92,14 @@ const App = () => {
     }
   }, [currentTotalsHealthBoardDataset]);
 
-  function createNavbar() {
-    return (
-      <Navbar className="dashboard-navbar" bg="white" expand="md">
-        <img
-          onClick={() => setCurrentPage(PAGE_OVERVIEW)}
-          id="logo"
-          src="STALogo.png"
-          alt="Scottish Tech Army Logo"
-        />
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="heading-container">
-            <Navbar.Brand className="heading d-none d-lg-flex">
-              <h1>Scottish COVID-19 Statistics</h1>
-            </Navbar.Brand>
-            <Nav className="navbar-links">
-              <Nav.Link
-                disabled={currentPage === PAGE_OVERVIEW}
-                onClick={(event) => {
-                  setCurrentPage(PAGE_OVERVIEW);
-                  event.target.blur();
-                }}
-                className="left"
-              >
-                Summary Dashboard
-              </Nav.Link>
-              <Nav.Link
-                disabled={currentPage === PAGE_REGIONAL}
-                onClick={(event) => {
-                  setCurrentPage(PAGE_REGIONAL);
-                  event.target.blur(event);
-                }}
-                className="right"
-              >
-                Regional Insights
-              </Nav.Link>
-            </Nav>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    );
-  }
-
   return (
     <div className="App">
-      <header>{createNavbar()}</header>
+      <header>
+        <DashboardNavbar
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
+      </header>
 
       {currentPage === PAGE_OVERVIEW ? (
         <Overview
