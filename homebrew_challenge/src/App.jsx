@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./components/Header/Header.jsx";
 import AboutUs from "./pages/AboutUs";
 import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
 import Overview from "./pages/Overview";
 import Regional from "./pages/Regional";
+import Footer from "./components/Footer/Footer";
 import {
   PAGE_ABOUT_US,
   PAGE_ACCESSIBILITY,
@@ -13,7 +15,6 @@ import {
   PAGE_OVERVIEW,
   PAGE_REGIONAL,
 } from "./pages/PageConsts";
-import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
@@ -107,23 +108,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <header>
-        <div className="heading-container">
-          <div className="heading">
-            <img
-              onClick={() => setCurrentPage(PAGE_OVERVIEW)}
-              id="logo"
-              src="STALogo.png"
-              alt="Scottish Tech Army Logo"
-            />
-          </div>
-          <div className="heading heading-title">
-            <h1>Scottish COVID-19 Statistics</h1>
-            <h2>{pageTitle()}</h2>
-          </div>
-        </div>
-      </header>
-
+      <Header setCurrentPage={setCurrentPage} pageTitle={pageTitle} />
       {currentPage === PAGE_OVERVIEW ? (
         <Overview
           councilAreaDataset={councilAreaDataset}
