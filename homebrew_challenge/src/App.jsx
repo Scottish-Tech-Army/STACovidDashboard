@@ -125,14 +125,20 @@ const App = () => {
             <Nav className="navbar-links">
               <Nav.Link
                 disabled={currentPage === PAGE_OVERVIEW}
-                onClick={() => setCurrentPage(PAGE_OVERVIEW)}
+                onClick={(event) => {
+                  setCurrentPage(PAGE_OVERVIEW);
+                  event.target.blur();
+                }}
                 className="left"
               >
                 Summary Dashboard
               </Nav.Link>
               <Nav.Link
                 disabled={currentPage === PAGE_REGIONAL}
-                onClick={() => setCurrentPage(PAGE_REGIONAL)}
+                onClick={(event) => {
+                  setCurrentPage(PAGE_REGIONAL);
+                  event.target.blur(event);
+                }}
                 className="right"
               >
                 Regional Insights

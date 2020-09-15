@@ -100,6 +100,12 @@
   }
 }
 
+@media (max-width: 992px) {
+  .heading-container {
+    justify-content: flex-end;
+  }
+}
+
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
   margin-top: 8px;

@@ -29,7 +29,7 @@ const Regional = ({
 
   return (
     <Container fluid className="regional-page">
-      <Row>
+      <Row className="d-none d-lg-block">
         <Col>
           <hr className="full-width-hr" />
         </Col>
