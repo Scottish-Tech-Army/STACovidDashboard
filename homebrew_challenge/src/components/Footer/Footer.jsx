@@ -17,7 +17,7 @@ const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
       <div className="entry link" onClick={() => setCurrentPage(key)}>
-          {text}
+        {text}
       </div>
     );
   }
@@ -109,6 +109,16 @@ const Footer = ({ setCurrentPage }) => {
         </Row>
         <Row>
           <Col sm={12} md={9}>
+            <div>
+              <a
+                href="https://www.scottishtecharmy.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="entry link"
+              >
+                BUILT BY VOLUNTEERS WITHIN THE SCOTTISH TECH ARMY
+              </a>
+            </div>
             <div className="footer-copyright text-left">
               Unless otherwise stated, this webpage contains public sector
               information licensed under{" "}
@@ -131,8 +141,12 @@ const Footer = ({ setCurrentPage }) => {
               </a>
             </div>
           </Col>
-          <Col sm={12} md={3} className="d-flex justify-content-end social">
-            <div className="d-flex align-items-center">Connect with us:</div>
+          <Col
+            sm={12}
+            md={3}
+            className="d-flex justify-content-end social align-items-center"
+          >
+            <div className="d-flex">Connect with us:</div>
             {sitemapExternalLink(
               "https://www.linkedin.com/company/scottish-tech-army-limited",
               <FontAwesomeIcon

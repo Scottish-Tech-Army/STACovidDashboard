@@ -20,20 +20,10 @@ function Header({ pageTitle }, { setCurrentPage }) {
             alt="Scottish Tech Army Logo"
           />
         </div>
-
         <div className="heading heading-title">
           <h1>Scottish COVID-19 Statistics</h1>
           <h2>{pageTitle()}</h2>
         </div>
-      </div>
-      <div>
-        <a
-        href="https://www.scottishtecharmy.org/"
-        target="_blank"
-        rel="noopener noreferrer"
-        id="sta-link">
-          BUILT BY VOLUNTEERS WITHIN THE SCOTTISH TECH ARMY
-        </a>
       </div>
     </header>
   );
