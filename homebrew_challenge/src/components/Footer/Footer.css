@@ -50,6 +50,19 @@
   margin-left: 20px;
 }
 
+.dedication {
+  margin-top: 10px;
+}
+
+.sta-logo-text {
+  color: black;
+}
+
+.sta-logo-text:hover {
+  color: black;
+  text-decoration: none;
+}
+
 footer {
   padding-bottom: 30px;
 }
