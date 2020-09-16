@@ -19,6 +19,7 @@ export function parseNhsHBCsvData(lines) {
         dateString,
         place,
         v1,
+        v4,
         dailyCases,
         cumulativeCases,
         v2,
@@ -50,6 +51,7 @@ export function parseNhsCACsvData(lines) {
       [
         dateString,
         place,
+        v1,
         dailyCases,
         cumulativeCases,
         v2,
