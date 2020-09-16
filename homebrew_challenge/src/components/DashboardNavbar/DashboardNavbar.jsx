@@ -14,7 +14,6 @@ const DashboardNavbar = ({ currentPage, setCurrentPage }) => {
           setCurrentPage(pageId);
           event.target.blur();
         }}
-        className="nav-page-link"
       >
         {title}
       </Nav.Link>
