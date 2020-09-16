@@ -17,7 +17,7 @@ const Footer = ({ setCurrentPage }) => {
   function sitemapEntry(key, text) {
     return (
       <div className="entry link" onClick={() => setCurrentPage(key)}>
-          {text}
+        {text}
       </div>
     );
   }
@@ -46,20 +46,6 @@ const Footer = ({ setCurrentPage }) => {
           </Col>
         </Row>
         <Row className="p-1">
-          <Col md={12} className="p-2 d-flex justify-content-left sta-logo">
-            <a
-              href="https://www.scottishtecharmy.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="STABanner.png"
-                alt="Scottish Tech Army"
-                width="270"
-                height="50"
-              />
-            </a>
-          </Col>
           <Col
             md={12}
             className="sitemap-container d-flex justify-content-between"
@@ -99,6 +85,21 @@ const Footer = ({ setCurrentPage }) => {
                 "mailto:info@scottishtecharmy.org?subject=Covid-19%20Dashboard%20Feedback",
                 "info@scottishtecharmy.org"
               )}
+              <a
+                href="https://www.scottishtecharmy.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sta-logo-text"
+              >
+                <div className="dedication">
+                  Proudly made by volunteers from<br/>
+                  <img
+                    src="STABanner.png"
+                    alt="Scottish Tech Army"
+                    width="270"
+                  />
+                </div>
+              </a>
             </div>
           </Col>
         </Row>
@@ -131,8 +132,12 @@ const Footer = ({ setCurrentPage }) => {
               </a>
             </div>
           </Col>
-          <Col sm={12} md={3} className="d-flex justify-content-end social">
-            <div className="d-flex align-items-center">Connect with us:</div>
+          <Col
+            sm={12}
+            md={3}
+            className="d-flex justify-content-end social align-items-center"
+          >
+            <div>Connect with us:</div>
             {sitemapExternalLink(
               "https://www.linkedin.com/company/scottish-tech-army-limited",
               <FontAwesomeIcon
