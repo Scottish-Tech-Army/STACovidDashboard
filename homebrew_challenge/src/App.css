@@ -1,51 +1,3 @@
-.heading-container {
-  display: flex;
-  flex-direction: row;
-  padding: 10px 0 20px;
-  align-items: flex-end;
-}
-
-.heading-container h2 {
-  color: #2a84bb;
-  font-weight: bold;
-}
-
-.heading {
-  padding-right: 20px;
-  font-weight: bold;
-}
-
-.heading-title {
-  display: flex;
-  flex-direction: column;
-}
-
-@media screen and (max-width: 375px) {
-  .heading-container {
-    align-items: flex-start;
-    flex-direction: column;
-    padding-bottom: 0;
-  }
-  .heading-title {
-    padding: 10px 20px 0;
-    margin-bottom: 0;
-  }
-  img#logo {
-    height: 80px !important;
-  }
-}
-
-@media screen and (max-width: 414px) {
-  .heading-container h1 {
-    font-size: 1.25rem;
-  }
-}
-
-@media screen and (max-width: 660px) {
-  .heading-container h1 {
-    font-size: 1.75rem;
-  }
-}
 
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
@@ -62,11 +14,6 @@
 .full-screen,
 .fullscreen-charts {
   background-color: White;
-}
-
-img#logo {
-  height: 120px;
-  margin-left: 20px;
 }
 
 .link {
