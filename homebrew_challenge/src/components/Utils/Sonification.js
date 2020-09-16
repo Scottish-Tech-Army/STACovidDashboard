@@ -1,6 +1,6 @@
 const A4_FREQUENCY = 220;
-// C4 to C8 inclusive
-const NO_OF_TONES = 45;
+// C4 to G#6 inclusive
+const NO_OF_TONES = 33;
 
 var sonificationPlaying = false;
 var sonificationToneOscillator = null;
@@ -83,7 +83,9 @@ async function playDataIntroduction(
     await waitForTone(audioCtx, MIN_TONE);
     await waitForSpeech("Maximum value " + maxDataValue + ".");
     await waitForTone(audioCtx, MAX_TONE);
-    await waitForSpeech("From 28th February until today.");
+    await waitForSpeech(
+      "From 28th February until today. Each tone represents one day."
+    );
   } else {
     console.warn(
       "web speech API not available - skipping dataset introduction"
