@@ -48,6 +48,7 @@ export function createPlaceDateValuesMap(lines) {
       [
         dateString,
         place,
+        v1,
         dailyCases,
         cumulativeCases,
         crudeRatePositive,
@@ -93,6 +94,7 @@ export function createDateAggregateValuesMap(lines) {
       [
         dateString,
         v1,
+        v5,
         dailyCases,
         cumulativeCases,
         v2,

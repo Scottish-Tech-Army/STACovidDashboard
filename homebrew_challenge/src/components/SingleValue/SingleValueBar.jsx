@@ -21,6 +21,7 @@ export function parseNhsCsvData(lines) {
         dateString,
         place,
         v1,
+        v4,
         dailyCases,
         cumulativeCases,
         v2,
