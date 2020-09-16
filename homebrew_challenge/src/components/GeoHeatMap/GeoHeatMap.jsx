@@ -326,6 +326,8 @@ const GeoHeatMap = ({
         dragging={!L.Browser.mobile}
         tap={!L.Browser.mobile}
         zoomControl={false}
+        touchZoom={false}
+        scrollWheelZoom={false}
       >
         <TileLayer
           url={MAP_TILES_URL}
