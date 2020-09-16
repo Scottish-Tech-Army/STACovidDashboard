@@ -137,7 +137,7 @@ const Footer = ({ setCurrentPage }) => {
             md={3}
             className="d-flex justify-content-end social align-items-center"
           >
-            <div className="d-flex">Connect with us:</div>
+            <div>Connect with us:</div>
             {sitemapExternalLink(
               "https://www.linkedin.com/company/scottish-tech-army-limited",
               <FontAwesomeIcon
