@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import AboutUs from "./pages/AboutUs";
 import Accessibility from "./pages/Accessibility";
 import DataSources from "./pages/DataSources";
@@ -17,6 +17,7 @@ import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
 import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
+import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -37,20 +38,6 @@ const App = () => {
     currentTotalsCouncilAreaDataset,
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
-
-  function pageTitle() {
-    if (currentPage === PAGE_OVERVIEW) {
-      return "SUMMARY DASHBOARD";
-    } else if (currentPage === PAGE_REGIONAL) {
-      return "REGIONAL INSIGHTS";
-    } else if (currentPage === PAGE_ABOUT_US) {
-      return "ABOUT US";
-    } else if (currentPage === PAGE_ACCESSIBILITY) {
-      return "ACCESSIBILITY STATEMENT";
-    } else if (currentPage === PAGE_DATA_SOURCES) {
-      return "DATA SOURCES";
-    } else return "";
-  }
 
   function scrollToTop(page) {
     setCurrentPage(page);
@@ -108,20 +95,10 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <div className="heading-container">
-          <div className="heading">
-            <img
-              onClick={() => setCurrentPage(PAGE_OVERVIEW)}
-              id="logo"
-              src="STALogo.png"
-              alt="Scottish Tech Army Logo"
-            />
-          </div>
-          <div className="heading heading-title">
-            <h1>Scottish COVID-19 Statistics</h1>
-            <h2>{pageTitle()}</h2>
-          </div>
-        </div>
+        <DashboardNavbar
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
       </header>
 
       {currentPage === PAGE_OVERVIEW ? (
