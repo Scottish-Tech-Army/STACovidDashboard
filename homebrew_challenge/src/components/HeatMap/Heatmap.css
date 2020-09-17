@@ -32,38 +32,51 @@
   stroke: #e0e0e0;
 }
 .heatmap .l-1 {
-  stroke: #fef0d9;
+  stroke: #ffffb2;
 }
 .heatmap .l-2 {
-  stroke: #fdcc8a;
+  stroke: #fed976;
 }
 .heatmap .l-3 {
-  stroke: #fc8d59;
+  stroke: #feb24c;
 }
 .heatmap .l-4 {
-  stroke: #e34a33;
+  stroke: #fd8d3c;
 }
 .heatmap .l-5 {
-  stroke: #b30000;
+  stroke: #f03b20;
+}
+.heatmap .l-6 {
+  stroke: #bd0026;
+}
+.heatmap .l-7 {
+  stroke: #020202;
 }
 
 .heatmapScale .l-0 {
   background-color: #e0e0e0;
 }
 .heatmapScale .l-1 {
-  background-color: #fef0d9;
+  background-color: #ffffb2;
 }
 .heatmapScale .l-2 {
-  background-color: #fdcc8a;
+  background-color: #fed976;
 }
 .heatmapScale .l-3 {
-  background-color: #fc8d59;
+  background-color: #feb24c;
 }
 .heatmapScale .l-4 {
-  background-color: #e34a33;
+  background-color: #fd8d3c;
 }
 .heatmapScale .l-5 {
-  background-color: #b30000;
+  background-color: #f03b20;
+}
+.heatmapScale .l-6 {
+  background-color: #bd0026;
+}
+.heatmapScale .l-7 {
+  background-color: #020202;
+  color: white;
 }
 
 .heatmapScale {

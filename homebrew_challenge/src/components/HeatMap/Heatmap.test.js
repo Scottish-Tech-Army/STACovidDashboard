@@ -88,9 +88,13 @@ describe("heatmap renders dynamic fetched data", () => {
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(3);
-    checkRow(dataRows[0], "Argyll & Bute", "50", [1, 0, 2]);
-    checkRow(dataRows[1], "Midlothian", "60", [1, 0, 2]);
-    checkRow(dataRows[2], "Na h-Eileanan Siar", "40", [1, 0, 2, 1]);
+
+    // counts = 2, 8, -1 ,5
+    checkRow(dataRows[0], "Argyll & Bute", "50", [2, 0, 3]);
+    // counts = 3, 9, -2, 6
+    checkRow(dataRows[1], "Midlothian", "60", [2, 0, 3]);
+    // counts = 1, 7, 0 ,4
+    checkRow(dataRows[2], "Na h-Eileanan Siar", "40", [1, 0, 3, 2]);
   });
 
   it("health boards; deaths", async () => {
@@ -115,9 +119,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(3);
-    checkRow(dataRows[0], "Grampian", "60", [1, 0, 2]);
-    checkRow(dataRows[1], "Greater Glasgow & Clyde", "40", [1, 0, 2, 1]);
-    checkRow(dataRows[2], "Highland", "50", [1, 0, 2]);
+    // counts = 3, -2, 9, 6
+    checkRow(dataRows[0], "Grampian", "60", [2, 0, 3]);
+    // counts = 1, 0, 7, 4
+    checkRow(dataRows[1], "Greater Glasgow & Clyde", "40", [1, 0, 3, 2]);
+    // counts = 2, -1, 8, 5
+    checkRow(dataRows[2], "Highland", "50", [2, 0, 3]);
   });
 
   it("health boards; cases", async () => {
@@ -142,9 +149,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(3);
-    checkRow(dataRows[0], "Grampian", "26", [1, 0, 3, 0]);
+    // counts = 1, -1, 26, -8
+    checkRow(dataRows[0], "Grampian", "26", [1, 0, 5, 0]);
+    // counts = 0, 0, 0, 0
     checkRow(dataRows[1], "Greater Glasgow & Clyde", "24", [0]);
-    checkRow(dataRows[2], "Highland", "25", [1, 0, 5]);
+    // counts = 1, -1, 201, 300
+    checkRow(dataRows[2], "Highland", "25", [1, 0, 7]);
   });
 
   it("council areas; cases", async () => {
@@ -169,8 +179,11 @@ describe("heatmap renders dynamic fetched data", () => {
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(3);
-    checkRow(dataRows[0], "Argyll & Bute", "25", [1, 0, 5]);
-    checkRow(dataRows[1], "Midlothian", "26", [1, 0, 3, 0]);
+    // counts = 1, -1, 201, 300
+    checkRow(dataRows[0], "Argyll & Bute", "25", [1, 0, 7]);
+    // counts = 1, -1, 26, -8
+    checkRow(dataRows[1], "Midlothian", "26", [1, 0, 5, 0]);
+    // counts = 0, 0, 0, 0
     checkRow(dataRows[2], "Na h-Eileanan Siar", "24", [0]);
   });
 });
@@ -428,7 +441,7 @@ describe("createHeatbarLines", () => {
   });
 });
 
-const HEAT_LEVELS_TEXT = "01510100200≥ 0≥ 1≥ 5≥ 10≥ 100≥ 200";
+const HEAT_LEVELS_TEXT = "0125102050100≥ 0≥ 1≥ 2≥ 5≥ 10≥ 20≥ 50≥ 100";
 
 function checkHeaderRow(areaName, areaCount, dateRange) {
   const cells = headers()[0].querySelectorAll("th");
