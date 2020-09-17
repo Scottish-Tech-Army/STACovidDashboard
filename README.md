@@ -1,5 +1,4 @@
-# homebrew-challenge-DataSTAr
-Scottish Tech Army COVID-19 Dashboard for Scotland
+# Scottish Tech Army COVID-19 Statistics
 
 Copyright 2020 ScottishTechArmy.org
 
