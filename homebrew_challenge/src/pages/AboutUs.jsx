@@ -94,6 +94,47 @@ const AboutUs = () => {
       );
     });
 
+  const vendors = [
+    {
+      name: "Atlassian",
+      vendorurl: "https://www.atlassian.com/",
+      logoref: "../assets/vendorLogos/atlassian.svg",
+    },
+    {
+      name: "AWS",
+      vendorurl: "https://aws.amazon.com/",
+      logoref: "../assets/vendorLogos/aws.svg",
+    },
+    {
+      name: "Slack",
+      vendorurl: "https://slack.com/",
+      logoref: "../assets/vendorLogos/slack.svg",
+    },
+    {
+      name: "StadiaMaps",
+      vendorurl: "https://stadiamaps.com/",
+      logoref: "../assets/vendorLogos/stadiamaps.svg",
+    },
+  ];
+
+  const sortedVendors = vendors
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((data, index) => {
+      return (
+        <li key={index}>
+          <a href={data.vendorurl}>
+            <img
+              src={data.logoref}
+              alt={data.name}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link"
+            ></img>
+          </a>
+        </li>
+      );
+    });
+
   return (
     <div fluid="true" className="about-us">
       <div className="about-us-details">
@@ -137,6 +178,27 @@ const AboutUs = () => {
             </Col>
           </Row>
         </Container>
+        <div className="about-us-details">
+          <h2>Thanks to</h2>
+          <hr className="full-width-hr" />
+          <p>
+            The work the team has undertaken to produce this dashboard would not
+            be possible without the kind donations from some of our partner
+            organisations. We would like the thank the following companies for
+            donating access to their systems for the Scottish Tech Army{" "}
+          </p>
+          <Container className="vendors">
+            <Row>
+              <Col>{sortedVendors.slice(0, sortedVendors.length / 2 + 2)}</Col>
+              <Col>
+                {sortedVendors.slice(
+                  sortedVendors.length / 2 + 2,
+                  sortedVendors.length
+                )}
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     </div>
   );

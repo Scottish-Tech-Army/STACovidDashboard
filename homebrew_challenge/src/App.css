@@ -48,6 +48,11 @@
   padding-top: 2vh;
 }
 
+.vendors {
+  list-style-type: none;
+  max-width: 20vw;
+}
+
 .accessibility-page ul {
   list-style-type: none;
   margin: 0 0 1rem 0;
