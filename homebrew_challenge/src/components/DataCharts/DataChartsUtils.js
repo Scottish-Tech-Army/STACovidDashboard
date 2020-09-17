@@ -23,7 +23,7 @@ function getDateLine({ date, name }, index) {
       yPadding: 0,
       position: "top",
       enabled: true,
-      yAdjust: (index % 2) * 20,
+      yAdjust: index * 20,
       content: name,
     },
   };
