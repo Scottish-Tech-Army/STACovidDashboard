@@ -16,6 +16,7 @@ import "chartjs-plugin-annotation";
 import {
   commonChartConfiguration,
   datasetConfiguration,
+  getWhoThresholdLine,
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
 
@@ -183,6 +184,11 @@ const DataCharts = ({
           },
         },
       };
+      configuration.options.annotation.annotations = [
+        ...configuration.options.annotation.annotations,
+        getWhoThresholdLine(),
+      ];
+
       return configuration;
     }
 

@@ -23,8 +23,29 @@ function getDateLine({ date, name }, index) {
       yPadding: 0,
       position: "top",
       enabled: true,
-      yAdjust: (index % 2) * 20,
+      yAdjust: index * 20,
       content: name,
+    },
+  };
+}
+
+export function getWhoThresholdLine() {
+  return {
+    type: "line",
+    drawTime: "afterDatasetsDraw",
+    mode: "horizontal",
+    scaleID: "y-axis-0",
+    borderColor: "rgba(255,0,0,0.8)",
+    borderWidth: 2,
+    value: 5,
+    label: {
+      backgroundColor: "white",
+      fontColor: "black",
+      xPadding: 0,
+      yPadding: 0,
+      position: "top",
+      enabled: true,
+      content: "WHO recommended threshold",
     },
   };
 }
