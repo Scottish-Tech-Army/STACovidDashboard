@@ -9,90 +9,119 @@ const AboutUs = () => {
   const teamMembers = [
     {
       name: "Rhi Batstone",
-      linkedinRef: "https://www.linkedin.com/in/rhiannon-batstone-076191120",
+      url: "https://www.linkedin.com/in/rhiannon-batstone-076191120",
     },
     {
       name: "Ric Clark",
-      linkedinRef: "https://www.linkedin.com/in/richard--clark",
+      url: "https://www.linkedin.com/in/richard--clark",
     },
     {
       name: "Eirini Komninou",
-      linkedinRef: "https://www.linkedin.com/in/eirinikomninou",
+      url: "https://www.linkedin.com/in/eirinikomninou",
     },
     {
       name: "Adam Daniel Hidvegi",
-      linkedinRef: "https://www.linkedin.com/in/adam-daniel-hidvegi",
+      url: "https://www.linkedin.com/in/adam-daniel-hidvegi",
     },
     {
       name: "Rob Armitage",
-      linkedinRef: "https://www.linkedin.com/in/rob-armitage",
+      url: "https://www.linkedin.com/in/rob-armitage",
     },
     {
       name: "Becky Still",
-      linkedinRef: "https://www.linkedin.com/in/rebeccastill1",
+      url: "https://www.linkedin.com/in/rebeccastill1",
     },
     {
       name: "Bhagyashri Dhadage",
-      linkedinRef: "https://www.linkedin.com/in/bhagyashri-dhadage-1b1278b1",
+      url: "https://www.linkedin.com/in/bhagyashri-dhadage-1b1278b1",
     },
     {
       name: "Andrew Rendle",
-      linkedinRef: "https://www.linkedin.com/in/andrew-rendle-578546",
+      url: "https://www.linkedin.com/in/andrew-rendle-578546",
     },
     {
       name: "Donal Stewart",
-      linkedinRef: "https://www.linkedin.com/in/donalstewart",
+      url: "https://www.linkedin.com/in/donalstewart",
     },
     {
       name: "Allan Stevenson",
-      linkedinRef: "https://www.linkedin.com/in/alstev",
+      url: "https://www.linkedin.com/in/alstev",
     },
     {
       name: "Gabriela Satrovskaja",
-      linkedinRef: "https://www.linkedin.com/in/gabriela-satrovskaja",
+      url: "https://www.linkedin.com/in/gabriela-satrovskaja",
     },
     {
       name: "Euan Robertson",
-      linkedinRef: "https://www.linkedin.com/in/euan-robertson-5845582",
+      url: "https://www.linkedin.com/in/euan-robertson-5845582",
     },
     {
       name: "Luke Pritchard-Woollett",
-      linkedinRef: "https://www.linkedin.com/in/lukepritchardwoollett",
+      url: "https://www.linkedin.com/in/lukepritchardwoollett",
     },
     {
       name: "Cristina Perez",
-      linkedinRef: "https://www.linkedin.com/in/cristina-perez-11229846",
+      url: "https://www.linkedin.com/in/cristina-perez-11229846",
     },
     {
       name: "Colin Lyman",
-      linkedinRef: "https://www.linkedin.com/in/colin-lyman",
+      url: "https://www.linkedin.com/in/colin-lyman",
     },
     {
       name: "Jonathan Lau",
-      linkedinRef: "https://www.linkedin.com/in/jonathancylau",
+      url: "https://www.linkedin.com/in/jonathancylau",
     },
     {
       name: "Craig Climie",
-      linkedinRef: "https://www.linkedin.com/in/craig-climie",
+      url: "https://www.linkedin.com/in/craig-climie",
+    },
+    {
+      name: "Stephen Ramsay",
+      url: "https://www.linkedin.com/in/stephen-ramsay",
     },
   ];
 
-  const sortedTeamMembers = teamMembers
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map((data, index) => {
-      return (
-        <li key={index}>
-          <a
-            href={data.linkedinRef}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link"
-          >
-            {data.name}
-          </a>
-        </li>
-      );
-    });
+  function createMemberLinks(members) {
+    return members
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((data, index) => {
+        return (
+          <li key={index}>
+            <a
+              href={data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link"
+            >
+              {data.name}
+            </a>
+          </li>
+        );
+      });
+  }
+
+  const sortedTeamMembers = createMemberLinks(teamMembers);
+
+  const vendors = [
+    {
+      name: "Atlassian",
+      url: "https://www.atlassian.com/",
+    },
+    {
+      name: "AWS",
+      url: "https://aws.amazon.com/",
+    },
+    {
+      name: "Slack",
+      url: "https://slack.com/",
+    },
+    {
+      name: "Stadia Maps",
+      url: "https://stadiamaps.com/",
+    },
+  ];
+
+  const sortedVendors = createMemberLinks(vendors);
 
   return (
     <div fluid="true" className="about-us">
@@ -127,12 +156,33 @@ const AboutUs = () => {
         <Container className="team-members">
           <Row>
             <Col>
-              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2 + 1)}
+              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2)}
             </Col>
             <Col>
               {sortedTeamMembers.slice(
-                sortedTeamMembers.length / 2 + 1,
+                sortedTeamMembers.length / 2,
                 sortedTeamMembers.length
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <div className="about-us-details">
+        <h2>Thanks to</h2>
+        <hr className="full-width-hr" />
+        <p>
+          The work the team has undertaken to produce this dashboard would not
+          be possible without the kind donations from some of our partner
+          organisations. We would like the thank the following companies for
+          donating access to their systems for the Scottish Tech Army:
+        </p>
+        <Container className="vendors">
+          <Row>
+            <Col>{sortedVendors.slice(0, sortedVendors.length / 2)}</Col>
+            <Col>
+              {sortedVendors.slice(
+                sortedVendors.length / 2,
+                sortedVendors.length
               )}
             </Col>
           </Row>

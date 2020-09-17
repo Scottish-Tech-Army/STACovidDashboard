@@ -1,4 +1,3 @@
-
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
   margin-top: 8px;
@@ -74,7 +73,6 @@
 }
 
 .team-members {
-  padding-bottom: 3vh;
   justify-content: left;
 }
 
