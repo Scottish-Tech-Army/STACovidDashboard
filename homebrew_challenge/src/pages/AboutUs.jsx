@@ -75,6 +75,10 @@ const AboutUs = () => {
       name: "Craig Climie",
       linkedinRef: "https://www.linkedin.com/in/craig-climie",
     },
+    {
+      name: "Stephen Ramsay",
+      linkedinRef: "https://www.linkedin.com/in/stephen-ramsay",
+    },
   ];
 
   const sortedTeamMembers = teamMembers
@@ -167,11 +171,11 @@ const AboutUs = () => {
         <Container className="team-members">
           <Row>
             <Col>
-              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2 + 1)}
+              {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2)}
             </Col>
             <Col>
               {sortedTeamMembers.slice(
-                sortedTeamMembers.length / 2 + 1,
+                sortedTeamMembers.length / 2,
                 sortedTeamMembers.length
               )}
             </Col>
