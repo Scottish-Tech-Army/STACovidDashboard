@@ -83,7 +83,7 @@ function Heatmap({
   areaType = AREATYPE_COUNCIL_AREAS,
 }) {
   // Remember to update the css classes if level count changes
-  const heatLevels = [0, 1, 5, 10, 100, 200];
+  const heatLevels = [0, 1, 2, 5, 10, 20, 50, 100];
 
   const [parsedHealthBoardDataset, setParsedHealthBoardDataset] = useState(
     null

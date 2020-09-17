@@ -7,14 +7,16 @@ import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
-import {
-  parse7DayWindowCsvData,
-} from "../Utils/CsvUtils";
+import { parse7DayWindowCsvData } from "../Utils/CsvUtils";
 import FullscreenControl from "./FullscreenControl";
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
 import moment from "moment";
-import { setScotlandDefaultBounds, featureCodeForFeature, MAP_TILES_URL } from "./GeoUtils";
+import {
+  setScotlandDefaultBounds,
+  featureCodeForFeature,
+  MAP_TILES_URL,
+} from "./GeoUtils";
 
 /*
   geoJSONHealthBoards data from
@@ -26,16 +28,18 @@ import { setScotlandDefaultBounds, featureCodeForFeature, MAP_TILES_URL } from "
   Additionally, the non Scotland features of the council areas data were removed.
 */
 
-const deathsHeatLevels = [0, 1, 2, 5, 10, 20];
-const casesHeatLevels = [0, 1, 5, 10, 20, 50];
+const deathsHeatLevels = [0, 1, 2, 5, 10, 20, 50, 100];
+const casesHeatLevels = [0, 1, 5, 10, 20, 50, 100, 250];
 
 const heatcolours = [
   "#e0e0e0",
-  "#fef0d9",
-  "#fdcc8a",
-  "#fc8d59",
-  "#e34a33",
-  "#b30000",
+  "#ffffb2",
+  "#fed976",
+  "#feb24c",
+  "#fd8d3c",
+  "#f03b20",
+  "#bd0026",
+  "#020202",
 ];
 
 /*
@@ -139,13 +143,10 @@ const GeoHeatMap = ({
         regionData.name +
         "</strong><br />Not available</p>";
 
-        function toTitleCase(str) {
-          return str.replace(
-              /\w\S*/g,
-              function(txt) {
-                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-              }
-          );
+      function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
       }
 
       const count =
@@ -161,7 +162,9 @@ const GeoHeatMap = ({
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
           moment(regionData.toDate).format("DD MMM") +
-          "</div> <br /><strong>" + toTitleCase(currentValueTypeRef.current) + ": </strong>" +
+          "</div> <br /><strong>" +
+          toTitleCase(currentValueTypeRef.current) +
+          ": </strong>" +
           count +
           "</div>";
       }
@@ -296,7 +299,9 @@ const GeoHeatMap = ({
           const div = L.DomUtil.create("div", "info legend");
           const grades = currentHeatLevelsRef.current;
           div.innerHTML +=
-            "<div class='legend-title'>REGION " + currentValueTypeRef.current.toUpperCase() + "<br/>(last 7 days)</div>";
+            "<div class='legend-title'>REGION " +
+            currentValueTypeRef.current.toUpperCase() +
+            "<br/>(last 7 days)</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
@@ -337,7 +342,7 @@ const GeoHeatMap = ({
           fullscreenEnabled={fullscreenEnabled}
         />
       </LeafletMap>
-      </div>
+    </div>
   );
 };
 
