@@ -111,7 +111,7 @@ const AboutUs = () => {
       logoref: "../assets/vendorLogos/slack.svg",
     },
     {
-      name: "StadiaMaps",
+      name: "Stadia Maps",
       vendorurl: "https://stadiamaps.com/",
       logoref: "../assets/vendorLogos/stadiamaps.svg",
     },
@@ -122,14 +122,13 @@ const AboutUs = () => {
     .map((data, index) => {
       return (
         <li key={index}>
-          <a href={data.vendorurl}>
-            <img
-              src={data.logoref}
-              alt={data.name}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link"
-            ></img>
+          <a
+            href={data.vendorurl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link"
+          >
+            {data.name}
           </a>
         </li>
       );
@@ -185,14 +184,14 @@ const AboutUs = () => {
             The work the team has undertaken to produce this dashboard would not
             be possible without the kind donations from some of our partner
             organisations. We would like the thank the following companies for
-            donating access to their systems for the Scottish Tech Army{" "}
+            donating access to their systems for the Scottish Tech Army:
           </p>
           <Container className="vendors">
             <Row>
-              <Col>{sortedVendors.slice(0, sortedVendors.length / 2 + 2)}</Col>
+              <Col>{sortedVendors.slice(0, sortedVendors.length)}</Col>
               <Col>
                 {sortedVendors.slice(
-                  sortedVendors.length / 2 + 2,
+                  sortedVendors.length,
                   sortedVendors.length
                 )}
               </Col>
