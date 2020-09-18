@@ -173,8 +173,8 @@ const AboutUs = () => {
         <p>
           The work the team has undertaken to produce this dashboard would not
           be possible without the kind donations from some of our partner
-          organisations. We would like the thank the following companies for
-          donating access to their systems for the Scottish Tech Army:
+          organisations. We would like to thank the following companies for
+          donating access to their systems to the Scottish Tech Army:
         </p>
         <Container className="vendors">
           <Row>
