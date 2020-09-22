@@ -1,4 +1,4 @@
-const Page = require('./page');
+import Page from './page';
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -16,19 +16,11 @@ class dashboardPage extends Page {
     get totalCases () { return $('#totalCases')} 
     get dailyDeaths () { return $('#dailyDeaths')}
     get totalDeaths () { return $('#totalDeaths')}
-    get percentageCases () { return $('#percentageCases')}
+    get percentageCases () { return $('#percentageCases')}   
     
-    
-    
-    
-    
-
-    /**
-     * overwrite specifc options to adapt it to page object
-     */
     open () {
         return super.open();
     }
 }
 
-module.exports = new dashboardPage();
+export default new dashboardPage();

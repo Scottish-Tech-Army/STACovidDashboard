@@ -1,81 +1,74 @@
-const dashboard = require('../pageobjects/dashboard.page');
-const reusableObj = require('../utilities/reusableLibrary');
+import { open, imgLogo, headingTitle, currentPhase, healthBoard, councilAreas, cases, deaths, dailyCases, totalCases, dailyDeaths, totalDeaths, percentageCases } from '../pageobjects/dashboard.page';
+import reusableObj from '../utilities/reusableLibrary';
 
 
 describe('Covid-19 Dashboard', () => {
     it('should have correct title', () => {
-        dashboard.open();
-        console.log("Url Launched....");
-        browser.pause(1000);
-        //  reusableObj.validateTitle('Covid-19 Dashboard');
-        //   expect(browser).toHaveTitle('Scottish COVID-19 Statistics');
+        open();
         title = 'Scottish COVID-19 Statistics';
         expect(browser).toHaveTitle(title);        
     });
 
       it('should display Logo', () => {
-          dashboard.open();
-          browser.pause(1000);
-          expect(dashboard.imgLogo).toBeDisplayed();
+          open();
+          expect(imgLogo).toBeDisplayed();
           
       });
   
       xit('should display correct heading title', () => {
-          dashboard.open();
-          expect(dashboard.headingTitle).toHaveTextContaining('Scottish COVID-19 Statistics');
+          open();
+          expect(headingTitle).toHaveTextContaining('Scottish COVID-19 Statistics');
       });
   
       xit('should display correct current phase', () => {     
-          dashboard.open();
-          expect(dashboard.currentPhase).toHaveTextContaining('Phase 3');
+          open();
+          expect(currentPhase).toHaveTextContaining('Phase 3');
       });
   
       it('Health Board button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.healthBoard).toBeClickable();
+          open();       
+          expect(healthBoard).toBeClickable();
       });
   
       it('council Areas button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.councilAreas).toBeClickable();
+          open();       
+          expect(councilAreas).toBeClickable();
       });
   
       it('Cases button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.cases).toBeClickable();
+          open();       
+          expect(cases).toBeClickable();
       });
   
       it('Deaths button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.deaths).toBeClickable();
+          open();       
+          expect(deaths).toBeClickable();
       });
   
       it('dailyCases button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.dailyCases).toBeClickable();
+          open();       
+          expect(dailyCases).toBeClickable();
       });
   
       it('totalCases button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.totalCases).toBeClickable();
+          open();       
+          expect(totalCases).toBeClickable();
       });
   
       it('dailyDeaths button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.dailyDeaths).toBeClickable();
+          open();       
+          expect(dailyDeaths).toBeClickable();
       });
   
       it('totalDeaths button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.totalDeaths).toBeClickable();
+          open();       
+          expect(totalDeaths).toBeClickable();
       });
   
       it('percentageCases button should be clickable', () => {
-          dashboard.open();       
-          expect(dashboard.percentageCases).toBeClickable();
+          open();       
+          expect(percentageCases).toBeClickable();
       });
-  
-
 });
 
 
