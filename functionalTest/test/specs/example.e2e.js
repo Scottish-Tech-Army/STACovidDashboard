@@ -1,6 +1,4 @@
 import { open, imgLogo, headingTitle, currentPhase, healthBoard, councilAreas, cases, deaths, dailyCases, totalCases, dailyDeaths, totalDeaths, percentageCases } from '../pageobjects/dashboard.page';
-import reusableObj from '../utilities/reusableLibrary';
-
 
 describe('Covid-19 Dashboard', () => {
     it('should have correct title', () => {
@@ -70,5 +68,3 @@ describe('Covid-19 Dashboard', () => {
           expect(percentageCases).toBeClickable();
       });
 });
-
-
