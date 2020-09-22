@@ -18,4 +18,5 @@ yarn-error.log*
 /allure-report
 /allure-results
 /WebdriverIO_Test.code-workspace
-
+debug.log*
+/test-report
