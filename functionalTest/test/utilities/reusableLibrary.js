@@ -1,9 +1,7 @@
 /**
-* main page object containing all methods, selectors and functionality
-* that is shared across all page objects
+* Created this file to include all reusable methodes in future.
 */
-class reusableLibrary{
-    // Created this file to include all reusable methodes in future. 
+class reusableLibrary{ 
 
 }
 
