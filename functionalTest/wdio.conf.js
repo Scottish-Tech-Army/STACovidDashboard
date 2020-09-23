@@ -44,7 +44,8 @@ exports.config = {
   logLevel: "info",
   bail: 0,
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-  baseUrl: "https://covid19.scottishtecharmy.org",
+  baseUrl: 'https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com',
+  //"https://covid19.scottishtecharmy.org",
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,

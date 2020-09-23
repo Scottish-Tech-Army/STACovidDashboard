@@ -7,6 +7,6 @@ export default class Page {
    * Opens base URL using ('/')
    */
   open() {
-    return browser.url("/");
+    return browser.url("/index.html");
   }
 }
