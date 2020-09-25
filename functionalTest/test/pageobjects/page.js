@@ -3,10 +3,13 @@
  * that is shared across all page objects
  */
 export default class Page {
+  get root() {
+    return $(".App");
+  }
   /**
    * Opens base URL using ('/')
    */
-  open() {
-    return browser.url("/index.html");
+  open(path = "/index.html") {
+    return browser.url(path);
   }
 }

@@ -3,7 +3,7 @@ import Page from "./page";
 /**
  * dashboard page containing specific selectors and methods for a page
  */
-class dashboardPage extends Page {
+class DashboardPage extends Page {
   get imgLogo() {
     return $('img[id="logo"]');
   }
@@ -11,7 +11,7 @@ class dashboardPage extends Page {
     return $('[class="heading heading-title"] ');
   }
   get currentPhase() {
-    return $('[class="current-phase col-12"] ');
+    return $(".current-phase");
   }
   get healthBoard() {
     return $("#healthBoards");
@@ -48,4 +48,4 @@ class dashboardPage extends Page {
   }
 }
 
-export default new dashboardPage();
+export default new DashboardPage();
