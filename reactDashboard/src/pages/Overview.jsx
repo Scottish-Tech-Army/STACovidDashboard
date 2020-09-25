@@ -9,6 +9,7 @@ import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSe
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
+import DateRangeSlider from "../components/DataCharts/DateRangeSlider";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
@@ -208,6 +209,7 @@ const Overview = ({
                 toggleFullscreen(zoomableCharts, setZoomDataCharts)
               }
             />
+            <DateRangeSlider />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">

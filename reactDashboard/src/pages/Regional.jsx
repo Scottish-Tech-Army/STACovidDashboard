@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
 import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsSelector";
+import DateRangeSlider from "../components/DataCharts/DateRangeSlider";
 import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
@@ -142,6 +143,7 @@ const Regional = ({
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
           />
+          <DateRangeSlider />
         </Col>
       </Row>
     </Container>

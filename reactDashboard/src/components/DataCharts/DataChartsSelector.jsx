@@ -54,8 +54,36 @@ function DataChartsSelector({ chartType, setChartType }) {
           </ToggleButton>
         </ToggleButtonGroup>
       </fieldset>
+      <fieldset>
+        <legend>Select Date Range:</legend>
+        <ToggleButtonGroup
+          className="toggle-button-group"
+          name="chartType"
+          type="radio"
+          vertical
+          value={chartType}
+        >
+          <ToggleButton id="all" value={""}>
+            All
+          </ToggleButton>
+          <ToggleButton id="threeMonths" value={""}>
+            3 Months
+          </ToggleButton>
+          <ToggleButton id="oneMonth" value={""}>
+            1 Month
+          </ToggleButton>
+          <ToggleButton id="twoWeeks" value={""}>
+            2 Weeks
+          </ToggleButton>
+          <ToggleButton id="oneWeek" value={""}>
+            1 Week
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </fieldset>
     </div>
   );
 }
 
 export default DataChartsSelector;
+
+// onChange={(val) => setChartType(val)}

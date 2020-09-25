@@ -37,3 +37,8 @@
   padding: 20px 10px 30px;
   margin: 0 auto;
 }
+
+legend {
+  font-size: 1rem;
+  font-weight: bold;
+}
