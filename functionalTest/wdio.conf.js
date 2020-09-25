@@ -25,7 +25,7 @@ exports.config = {
       browserName: "chrome",
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
-        // args: ['--headless', '--disable-gpu'],
+        args: ['--headless', '--disable-gpu'],
         },
       acceptInsecureCerts: true,
       // If outputDir is provided WebdriverIO can capture driver session logs
@@ -41,10 +41,11 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: "warn",
   bail: 0,
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-  baseUrl: 'https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com',
+  // baseUrl: 'https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com',
+  baseUrl: 'http://localhost:3000',
   //"https://covid19.scottishtecharmy.org",
   //
   // Default timeout for all waitFor* commands.
