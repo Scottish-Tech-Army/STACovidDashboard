@@ -104,6 +104,7 @@ export function parseNhsCsvData(csvData) {
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
   healthBoardDataset = null,
+  dateRange
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -127,6 +128,7 @@ const DataCharts = ({
   useEffect(() => {
     // Only attempt to fetch data once
     if (healthBoardDataset != null) {
+
       const {
         percentageCases,
         dailyCases,
@@ -134,6 +136,7 @@ const DataCharts = ({
         totalCases,
         totalDeaths,
       } = parseNhsCsvData(healthBoardDataset);
+
       setPercentageCasesSeriesData(percentageCases);
       setDailyCasesSeriesData(dailyCases);
       setDailyDeathsSeriesData(dailyDeaths);
@@ -153,7 +156,7 @@ const DataCharts = ({
           DATASET_COLOUR
         ),
       ];
-      const configuration = commonChartConfiguration(datasets);
+      const configuration = commonChartConfiguration(datasets, dateRange);
 
       configuration.options.scales.yAxes[0].ticks.callback = (
         value,
@@ -194,7 +197,7 @@ const DataCharts = ({
       const datasets = [
         datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
       ];
-      return commonChartConfiguration(datasets);
+      return commonChartConfiguration(datasets, dateRange);
     }
 
     if (chartInstance.current !== null) {
@@ -249,6 +252,7 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
+    dateRange
   ]);
 
   const isDataReady = () => {

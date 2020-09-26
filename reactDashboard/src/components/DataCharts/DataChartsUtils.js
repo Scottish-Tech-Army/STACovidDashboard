@@ -8,6 +8,7 @@ const keyDates = [
 ];
 
 function getDateLine({ date, name }, index) {
+
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
@@ -28,6 +29,8 @@ function getDateLine({ date, name }, index) {
     },
   };
 }
+
+
 
 export function getWhoThresholdLine() {
   return {
@@ -63,7 +66,7 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   };
 }
 
-export function commonChartConfiguration(datasets) {
+export function commonChartConfiguration(datasets, {startDate, endDate}) {
   return {
     type: "line",
 
@@ -105,6 +108,10 @@ export function commonChartConfiguration(datasets) {
             gridLines: {
               display: false,
             },
+            ticks: {
+              min: startDate,
+              max: endDate,
+            }
           },
         ],
       },
