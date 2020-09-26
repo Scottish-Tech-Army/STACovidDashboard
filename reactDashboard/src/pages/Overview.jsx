@@ -30,10 +30,8 @@ const Overview = ({
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(DAILY_CASES);
-  const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
-  const zoomableCharts = useRef();
   const zoomableMap = useRef();
 
   // Stop audio on chart change
@@ -76,7 +74,6 @@ const Overview = ({
   useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {
       if (!fullscreenEnabled) {
-        setZoomDataCharts(false);
         setZoomGeoMap(false);
       }
     }
@@ -193,7 +190,7 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row ref={zoomableCharts} className="fullscreen-charts">
+        <Row className="fullscreen-charts">
           <Col xs={12} md={3} lg={2}>
             <DataChartsSelector
               chartType={chartType}
@@ -204,12 +201,10 @@ const Overview = ({
             <DataCharts
               chartType={chartType}
               healthBoardDataset={healthBoardDataset}
-              fullscreenEnabled={zoomDataCharts}
-              toggleFullscreen={() =>
-                toggleFullscreen(zoomableCharts, setZoomDataCharts)
-              }
             />
-            <DateRangeSlider />
+            <DateRangeSlider
+              healthBoardDataset={healthBoardDataset}
+            />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">

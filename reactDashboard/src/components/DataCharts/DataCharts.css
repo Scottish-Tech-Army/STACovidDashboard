@@ -42,3 +42,7 @@ legend {
   font-size: 1rem;
   font-weight: bold;
 }
+
+.date-slider-label {
+  padding: 10px;
+}

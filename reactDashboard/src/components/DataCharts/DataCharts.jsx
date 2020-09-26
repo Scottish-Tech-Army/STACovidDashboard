@@ -104,8 +104,6 @@ export function parseNhsCsvData(csvData) {
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
   healthBoardDataset = null,
-  fullscreenEnabled = false,
-  toggleFullscreen,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -251,8 +249,6 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    fullscreenEnabled,
-    toggleFullscreen,
   ]);
 
   const isDataReady = () => {
@@ -274,20 +270,10 @@ const DataCharts = ({
     return false;
   };
 
-  function getScreenModeClassName() {
-    if (isDataReady()) {
-      return fullscreenEnabled
-        ? "full-screen chart-container"
-        : "chart-container";
-    } else {
-      return "chart-container hidden-chart";
-    }
-  }
-
   return (
     <div className="chart-border">
       <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
-      <div className={getScreenModeClassName()}>
+      <div className="chart-container">
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
@@ -25,17 +25,21 @@ function DataChartsSelector({ chartType, setChartType }) {
     throw new Error("Unrecognised setChartType: " + setChartType);
   }
 
+  const [value, setValue] = useState(1);
+
+  const handleChange = (val) => setValue(val);
+
   return (
     <div className="data-charts-selector">
       <fieldset>
         <legend>Select Chart:</legend>
         <ToggleButtonGroup
           className="toggle-button-group"
-          name="chartType"
           type="radio"
           vertical
           value={chartType}
-          onChange={(val) => setChartType(val)}
+          name="chartType"
+          onChange={handleChange}
         >
           <ToggleButton id="dailyCases" value={DAILY_CASES}>
             Daily Cases
@@ -58,24 +62,25 @@ function DataChartsSelector({ chartType, setChartType }) {
         <legend>Select Date Range:</legend>
         <ToggleButtonGroup
           className="toggle-button-group"
-          name="chartType"
           type="radio"
           vertical
-          value={chartType}
+          name="dateRange"
+          value={value}
+          onChange={(val) => setValue(val)}
         >
-          <ToggleButton id="all" value={""}>
+          <ToggleButton id="all" value={1}>
             All
           </ToggleButton>
-          <ToggleButton id="threeMonths" value={""}>
+          <ToggleButton id="threeMonths" value={2}>
             3 Months
           </ToggleButton>
-          <ToggleButton id="oneMonth" value={""}>
+          <ToggleButton id="oneMonth" value={3}>
             1 Month
           </ToggleButton>
-          <ToggleButton id="twoWeeks" value={""}>
+          <ToggleButton id="twoWeeks" value={4}>
             2 Weeks
           </ToggleButton>
-          <ToggleButton id="oneWeek" value={""}>
+          <ToggleButton id="oneWeek" value={5}>
             1 Week
           </ToggleButton>
         </ToggleButtonGroup>
