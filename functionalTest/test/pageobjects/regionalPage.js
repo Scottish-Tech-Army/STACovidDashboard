@@ -5,6 +5,10 @@ class RegionalPage extends Page {
     return $("button.selected-region");
   }
 
+  regionDropdownMenuItem(menuItemText) {
+    return $(".region-menu").$(".dropdown-item=" + menuItemText);
+  }
+
   open() {
     return super.open("/regional");
   }

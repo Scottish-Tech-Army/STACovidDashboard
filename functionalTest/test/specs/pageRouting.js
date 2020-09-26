@@ -9,7 +9,7 @@ const DATASOURCES_PAGE_TEXT = "Data sources and attributions";
 
 describe("page routing", () => {
   it("summary dashboard", () => {
-    browser.url("/index.html");
+    browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
@@ -50,12 +50,12 @@ describe("page routing", () => {
   });
 });
 
-xdescribe("page linking sitemap", () => {
+describe("page linking sitemap", () => {
   it("summary dashboard -> about us", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    $(".sitemap").$(".link=About Us").click();
+    dashboard.sitemapLinkAboutUs.click();
 
     expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
@@ -65,7 +65,7 @@ xdescribe("page linking sitemap", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    $(".sitemap").$(".link=Accessibility").click();
+    dashboard.sitemapLinkAccessibility.click();
 
     expect(dashboard.root).toHaveTextContaining(ACCESSIBILITY_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/accessibility");
@@ -75,7 +75,7 @@ xdescribe("page linking sitemap", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    $(".sitemap").$(".link=Data Sources").click();
+    dashboard.sitemapLinkDataSources.click();
 
     expect(dashboard.root).toHaveTextContaining(DATASOURCES_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/data");
@@ -85,7 +85,7 @@ xdescribe("page linking sitemap", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    $(".sitemap").$(".link=Regional Insights").click();
+    dashboard.sitemapLinkRegionalInsights.click();
 
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
@@ -95,39 +95,121 @@ xdescribe("page linking sitemap", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    $(".sitemap").$(".link=Summary Dashboard").click();
+    dashboard.sitemapLinkSummaryDashboard.click();
 
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
   });
 });
 
-xdescribe("page linking region choice", () => {
+describe("page linking region choice", () => {
   it("regional default -> regional council area", () => {
-      browser.url("/regional");
-      expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    // Todo temporary
+    browser.url("/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    dashboard.sitemapLinkRegionalInsights.click();
 
-      // TODO - Select Glasgow City
-      //$(".sitemap").$(".link=Summary Dashboard").click();
+    // Replace with
+    // browser.url("/regional");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-      expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
-      expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional/S12000049");
+    regionalInsights.selectedRegionButton.click();
+    regionalInsights.regionDropdownMenuItem("Glasgow City").click();
+
+    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
+    expect(browser.getUrl()).toBe(
+      browser.config.baseUrl + "/regional/S12000049"
+    );
   });
 
-  it("regional council area -> regional health board", () => {});
+  it("regional council area -> regional health board", () => {
+    // Todo temporary
+    browser.url("/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    dashboard.sitemapLinkRegionalInsights.click();
+    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    regionalInsights.selectedRegionButton.click();
+    regionalInsights.regionDropdownMenuItem("Glasgow City").click();
 
-  it("regional health board -> regional default", () => {});
+    // Replace with
+    // browser.url("/regional/S12000049");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
+
+    regionalInsights.selectedRegionButton.click();
+    regionalInsights.regionDropdownMenuItem("Lothian").click();
+
+    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
+    expect(browser.getUrl()).toBe(
+      browser.config.baseUrl + "/regional/S08000024"
+    );
+  });
+
+  it("regional health board -> regional default", () => {
+    // Todo temporary
+    browser.url("/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    dashboard.sitemapLinkRegionalInsights.click();
+    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    regionalInsights.selectedRegionButton.click();
+    regionalInsights.regionDropdownMenuItem("Lothian").click();
+
+    // Replace with
+    // browser.url("/regional/S08000024");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
+
+    regionalInsights.selectedRegionButton.click();
+    regionalInsights.regionDropdownMenuItem("Scotland").click();
+
+    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+  });
 });
 
-xdescribe("page linking navbar", () => {
-  it("summary dashboard -> regional default", () => {});
+describe("page linking navbar", () => {
+  it("summary dashboard -> regional default", () => {
+      browser.url("/");
+      expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-  it("regional default -> summary dashboard", () => {});
+      dashboard.navbarLinkRegionalInsights.click();
 
-  it("regional default (click logo) -> summary dashboard", () => {});
+      expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+      expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+  });
+
+  it("regional default -> summary dashboard", () => {
+      // Todo temporary
+      browser.url("/");
+      expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+      dashboard.sitemapLinkRegionalInsights.click();
+
+      // Replace with
+      // browser.url("/regional");
+      expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+
+      dashboard.navbarLinkSummaryDashboard.click();
+
+      expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+      expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+  });
+
+  it("regional default (click logo) -> summary dashboard", () => {
+      // Todo temporary
+      browser.url("/");
+      expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+      dashboard.sitemapLinkRegionalInsights.click();
+
+      // Replace with
+      // browser.url("/regional");
+      expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+
+      dashboard.navbarLinkLogo.click();
+
+      expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+      expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+  });
 });
 
-xdescribe("page routing history", () => {
+describe("page routing history", () => {
   it("history handling", () => {
     browser.url("/");
     browser.url("/about");
@@ -136,49 +218,58 @@ xdescribe("page routing history", () => {
     browser.url("/regional/S12000049");
     browser.url("/");
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/regional/S12000049");
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional/S12000049");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/regional/S08000024");
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional/S08000024");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/regional");
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    browser.clickForwardButton();
-    expect(browser.getUrl()).toBe("/regional/S08000024");
+    browser.forward();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional/S08000024");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
 
-    browser.clickForwardButton();
-    expect(browser.getUrl()).toBe("/regional/S12000049");
+    browser.forward();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional/S12000049");
+    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
 
-    browser.clickForwardButton();
-    expect(browser.getUrl()).toBe("/");
+    browser.forward();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
   it("no more forward", () => {
     browser.url("/");
     browser.url("/about");
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/");
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    browser.clickForwardButton();
-    expect(browser.getUrl()).toBe("/about");
-    expect(browser.getForwardButton()).toBeDisabled();
+    browser.forward();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
+    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
 
-    browser.clickForwardButton();
-    expect(browser.getUrl()).toBe("/about");
+    browser.forward();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
+    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
   });
 
   it("no more back", () => {
     browser.url("/");
     browser.url("/about");
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/");
-    expect(browser.getBackButton()).toBeDisabled();
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    browser.clickBackButton();
-    expect(browser.getUrl()).toBe("/");
+    browser.back();
+    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 });
