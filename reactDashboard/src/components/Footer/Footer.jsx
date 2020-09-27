@@ -4,20 +4,23 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
-  PAGE_OVERVIEW,
-  PAGE_REGIONAL,
-  PAGE_DATA_SOURCES,
-  PAGE_ABOUT_US,
-  PAGE_ACCESSIBILITY,
+  URL_ABOUT_US,
+  URL_ACCESSIBILITY,
+  URL_DATA_SOURCES,
+  URL_OVERVIEW,
+  URL_REGIONAL,
 } from "../../pages/PageConsts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedinIn, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { NavLink } from "react-router-dom";
 
-const Footer = ({ setCurrentPage }) => {
-  function sitemapEntry(key, text) {
+const Footer = () => {
+  function sitemapEntry(pageUrl, text) {
     return (
-      <div className="entry link" onClick={() => setCurrentPage(key)}>
-        {text}
+      <div className="entry link">
+        <NavLink className="entry link" to={pageUrl}>
+          {text}
+        </NavLink>
       </div>
     );
   }
@@ -52,9 +55,9 @@ const Footer = ({ setCurrentPage }) => {
           >
             <div className="sitemap">
               <div className="title">DASHBOARDS</div>
-              {sitemapEntry(PAGE_OVERVIEW, "Summary Dashboard")}
-              {sitemapEntry(PAGE_REGIONAL, "Regional Insights")}
-              {sitemapEntry(PAGE_DATA_SOURCES, "Data Sources")}
+              {sitemapEntry(URL_OVERVIEW, "Summary Dashboard")}
+              {sitemapEntry(URL_REGIONAL, "Regional Insights")}
+              {sitemapEntry(URL_DATA_SOURCES, "Data Sources")}
             </div>
             <div className="sitemap">
               <div className="title">COVID HELP</div>
@@ -73,11 +76,11 @@ const Footer = ({ setCurrentPage }) => {
                 "https://www.scottishtecharmy.org/privacy-policy",
                 "Privacy Policy"
               )}
-              {sitemapEntry(PAGE_ACCESSIBILITY, "Accessibility")}
+              {sitemapEntry(URL_ACCESSIBILITY, "Accessibility")}
             </div>
             <div className="sitemap">
               <div className="title">ABOUT</div>
-              {sitemapEntry(PAGE_ABOUT_US, "About Us")}
+              {sitemapEntry(URL_ABOUT_US, "About Us")}
             </div>
             <div className="sitemap">
               <div className="title">CONTACT</div>
@@ -92,7 +95,8 @@ const Footer = ({ setCurrentPage }) => {
                 className="sta-logo-text"
               >
                 <div className="dedication">
-                  Proudly made by volunteers from<br/>
+                  Proudly made by volunteers from
+                  <br />
                   <img
                     src="STABanner.png"
                     alt="Scottish Tech Army"

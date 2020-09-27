@@ -49,8 +49,9 @@
   text-decoration: underline;
 }
 
-.nav-link.disabled {
+.nav-link.selected {
   color: rgba(0, 0, 0, 0.9) !important;
+  text-decoration: none !important;
 }
 
 .nav-link:first-of-type {

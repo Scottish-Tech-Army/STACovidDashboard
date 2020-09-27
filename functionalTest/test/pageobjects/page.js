@@ -8,23 +8,23 @@ export default class Page {
   }
 
   get sitemapLinkAboutUs() {
-    return $(".sitemap-container").$(".link=About Us");
+    return $(".sitemap-container").$("a.link=About Us");
   }
 
   get sitemapLinkAccessibility() {
-    return $(".sitemap-container").$(".link=Accessibility");
+    return $(".sitemap-container").$("a.link=Accessibility");
   }
 
   get sitemapLinkDataSources() {
-    return $(".sitemap-container").$(".link=Data Sources");
+    return $(".sitemap-container").$("a.link=Data Sources");
   }
 
   get sitemapLinkRegionalInsights() {
-    return $(".sitemap-container").$(".link=Regional Insights");
+    return $(".sitemap-container").$("a.link=Regional Insights");
   }
 
   get sitemapLinkSummaryDashboard() {
-    return $(".sitemap-container").$(".link=Summary Dashboard");
+    return $(".sitemap-container").$("a.link=Summary Dashboard");
   }
 
   get navbarLinkRegionalInsights() {
@@ -34,7 +34,7 @@ export default class Page {
   get navbarLinkSummaryDashboard() {
     return $(".dashboard-navbar").$(".nav-link=Summary Dashboard");
   }
-  
+
   get navbarLinkLogo() {
     return $(".dashboard-navbar").$("#logo");
   }
