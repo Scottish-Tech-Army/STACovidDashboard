@@ -104,6 +104,12 @@
   }
 }
 
+@media all and (max-width: 450px) {
+  .heatmapScale span {
+    padding: 5px 5px;
+  }
+}
+
 .heatbarLine {
   border: 1px solid darkgrey;
   margin: 2px;
