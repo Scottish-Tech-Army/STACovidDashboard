@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import moment from "moment";
-import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
+import {
+  createDateAggregateValuesMap,
+  getNhsCsvDataDateRange
+} from "../Utils/CsvUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -161,47 +164,65 @@ export function parseNhsCsvData(csvData) {
   };
 }
 
-const marks = [
-  {
-    value: 1582848000000,
-    label: 1582848000000,
-  },
-  {
-    value: 1600128000000,
-    label: 1600128000000,
+export function getMarks({ startDate, endDate }) {
+  if (startDate === 0 || endDate === 0) {
+    return [];
   }
-]
+  const result = [
+    {
+      value: startDate,
+      label: moment.utc(startDate).format("DD MMM, YYYY")
+    },
+    {
+      value: endDate,
+      label: moment.utc(endDate).format("DD MMM, YYYY")
+    }
+  ];
+  let tickDate = moment.utc(startDate).startOf("month");
+  while (tickDate.isBefore(endDate)) {
+    if (tickDate.isAfter(startDate)) {
+      result.push({ value: tickDate.valueOf() });
+    }
+    tickDate = tickDate.add(1, "month");
+  }
+  return result;
+}
 
-function DateRangeSlider({ healthBoardDataset = null }) {
+function DateRangeSlider({
+  healthBoardDataset = null,
+  dateRange = { startDate: 0, endDate: 0 },
+  setDateRange
+}) {
   const classes = useStyles();
-  const [value, setValue] = useState([20200228, 20200301]);
-  const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(null);
+  const [value, setValue] = useState([]);
+
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 0
+  });
 
   useEffect(() => {
+    // Only attempt to fetch data once
     if (healthBoardDataset != null) {
-      const { dailyCases } = parseNhsCsvData(healthBoardDataset);
-      setDailyCasesSeriesData(dailyCases);
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset);
+      setMaxDateRange(parseDateRange);
     }
   }, [healthBoardDataset]);
 
-  useEffect(() => {
-    if (dailyCasesSeriesData != null) {
-      const dateArray = dailyCasesSeriesData.map(({ t, y }) => t);
-      const minDate = Math.min(...dateArray);
-      const maxDate = Math.max(...dateArray);
-      setValue([minDate, maxDate]);
-    }
-  }, [dailyCasesSeriesData]);
+  function handleDateChange(event, value) {
+    setDateRange({ startDate: value[0], endDate: value[1] });
+  }
 
   return (
     <div className={classes.root}>
       <DateSlider
         ThumbComponent={sliderThumbComponent}
         aria-label="date range slider"
-        value={value}
-        min={value[0]}
-        max={value[1]}
-        marks={marks}
+        value={[dateRange.startDate, dateRange.endDate]}
+        min={maxDateRange.startDate}
+        max={maxDateRange.endDate}
+        marks={getMarks(maxDateRange)}
+        onChange={handleDateChange}
       />
     </div>
   );

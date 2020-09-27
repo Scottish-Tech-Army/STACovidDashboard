@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
-import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
+import {
+  createDateAggregateValuesMap,
+  getNhsCsvDataDateRange
+} from "../Utils/CsvUtils";
 import moment from "moment";
 
 import {
@@ -12,22 +15,6 @@ import {
   TOTAL_CASES,
   TOTAL_DEATHS
 } from "./DataChartsConsts";
-
-// Exported for tests
-export function parseNhsCsvData(csvData) {
-  const dateAggregateValuesMap = createDateAggregateValuesMap(csvData);
-
-  const dates = [...dateAggregateValuesMap.keys()].sort();
-
-  if (dates.length === 0) {
-    return { startDate: 0, endDate: 0 };
-  }
-
-  return {
-    startDate: dates[0],
-    endDate: dates.pop()
-  };
-}
 
 const LAST_WEEK = "lastWeek";
 const LAST_TWO_WEEKS = "lastTwoWeeks";
@@ -64,7 +51,7 @@ function DataChartsSelector({
   setChartType,
   dateRange,
   setDateRange,
-  healthBoardDataset,
+  healthBoardDataset
 }) {
   if (
     chartType !== PERCENTAGE_CASES &&
@@ -88,16 +75,16 @@ function DataChartsSelector({
   useEffect(() => {
     // Only attempt to fetch data once
     if (healthBoardDataset != null) {
-      const parseDateRange = parseNhsCsvData(healthBoardDataset);
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset);
       setMaxDateRange(parseDateRange);
       setDateRange(parseDateRange);
     }
   }, [healthBoardDataset, setDateRange]);
 
-  const handleChange = (newTimePeriod) => {
+  const handleChange = newTimePeriod => {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
     setTimePeriod(newTimePeriod);
-}
+  };
 
   return (
     <div className="data-charts-selector">

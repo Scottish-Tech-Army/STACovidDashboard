@@ -210,6 +210,8 @@ const Overview = ({
               healthBoardDataset={healthBoardDataset}
             />
             <DateRangeSlider
+              dateRange={dateRange}
+              setDateRange={setDateRange}
               healthBoardDataset={healthBoardDataset}
             />
           </Col>
