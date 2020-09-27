@@ -93,7 +93,7 @@ function Heatmap({
   );
 
   function createHeatbar(elements, region, dates) {
-    const width = 300;
+    const width = 20;
     const height = 15;
     const viewBox = "0 0 " + width + " " + height;
     const count = elements.length;
