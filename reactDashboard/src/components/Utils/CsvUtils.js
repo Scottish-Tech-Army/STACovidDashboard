@@ -131,7 +131,7 @@ export function createDateAggregateValuesMap(lines) {
   return result;
 }
 
-const queryUrl = "data/";
+const queryUrl = "/data/";
 
 // Retrieve a cached csv response, do some processing on it, then store the processed result
 export async function fetchAndStore(datasetName, setDataset, processCsvData) {

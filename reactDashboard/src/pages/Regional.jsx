@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
@@ -10,8 +10,28 @@ import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsS
 import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
-import { FEATURE_CODE_SCOTLAND } from "../components/Utils/CsvUtils";
+import {
+  FEATURE_CODE_SCOTLAND,
+  FEATURE_CODE_MAP,
+} from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
+import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
+
+// Exported for unit tests
+export function getRegionCodeFromUrl(location) {
+  const initialRegionCode = location.pathname.split("/").pop();
+  if (FEATURE_CODE_MAP[initialRegionCode] !== undefined) {
+    return initialRegionCode;
+  }
+  return FEATURE_CODE_SCOTLAND;
+}
+
+// Exported for unit tests
+export function getCanonicalUrl(baseUrl, regionCode) {
+  return (
+    baseUrl + (regionCode === FEATURE_CODE_SCOTLAND ? "" : "/" + regionCode)
+  );
+}
 
 const Regional = ({
   councilAreaDataset,
@@ -19,13 +39,55 @@ const Regional = ({
   currentTotalsHealthBoardDataset,
   currentTotalsCouncilAreaDataset,
 }) => {
-  const [regionCode, setRegionCode] = useState(FEATURE_CODE_SCOTLAND);
+  const match = useRouteMatch();
+  const location = useLocation();
+  const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
   const [chartType, setChartType] = useState(DAILY_CASES);
+  const history = useHistory();
 
-  // Stop audio on chart or region change
+  const currentRegionCode = useRef(regionCode);
+  const currentLocation = useRef(match.url);
+
+  // These two effects handle the browser url and the region code selection in sync.
+  // Either location or regionCode may be changed by user action, so the currentRegionCode
+  // and currentLocation refs are used to distinguish a change by user action, or internally
+  // here to keep the location and regionCode in sync.
+  //
+  // It is complicated by handling the canonicalisation of URLs
+  // eg .../regional/unknown is redirected to .../regional
+
+  useEffect(() => {
+    if (currentRegionCode.current !== regionCode) {
+      currentRegionCode.current = regionCode;
+      // Region code has changed: update URL
+      const newUrl = getCanonicalUrl(match.url, regionCode);
+      if (currentLocation.current !== newUrl) {
+        currentLocation.current = newUrl;
+        history.push(newUrl);
+      }
+    }
+  }, [regionCode, history, match]);
+
+  useEffect(() => {
+    function setCanonicalLocation(newRegionCode) {
+      currentLocation.current = getCanonicalUrl(match.url, newRegionCode);
+      if (location.pathname !== currentLocation.current) {
+        history.push(currentLocation.current);
+      }
+    }
+
+    if (currentLocation.current !== location.pathname) {
+      // URL has changed: update regionCode
+      currentRegionCode.current = getRegionCodeFromUrl(location);
+      setRegionCode(currentRegionCode.current);
+      setCanonicalLocation(currentRegionCode.current);
+    }
+  }, [location, history, match]);
+
+  // Stop audio on chart, region or location change
   useEffect(() => {
     stopAudio();
-  }, [chartType, regionCode]);
+  }, [chartType, regionCode, location]);
 
   return (
     <Container fluid className="regional-page">

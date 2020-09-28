@@ -19,7 +19,8 @@
     "react-dom": "^16.13.1",
     "react-gtm-module": "^2.0.11",
     "react-leaflet": "^2.7.0",
-    "react-leaflet-control": "^2.1.2"
+    "react-leaflet-control": "^2.1.2",
+    "react-router-dom": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
