@@ -212,6 +212,7 @@ const Overview = ({
             <DataCharts
               chartType={chartType}
               dateRange={dateRange}
+              setDateRange={setDateRange}
               maxDateRange={maxDateRange}
               setMaxDateRange={setMaxDateRange}
               healthBoardDataset={healthBoardDataset}

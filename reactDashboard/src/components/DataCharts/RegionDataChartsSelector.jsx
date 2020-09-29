@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
 import { getNhsCsvDataDateRange } from "../Utils/CsvUtils";
-import moment from "moment";
 import {
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
-  ALL_DATES,
-  LAST_WEEK,
-  LAST_TWO_WEEKS,
-  LAST_MONTH,
-  LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
 
 function RegionDataChartsSelector({
@@ -48,7 +42,7 @@ function RegionDataChartsSelector({
       setMaxDateRange(parseDateRange);
       setDateRange(parseDateRange);
     }
-  }, [healthBoardDataset, setDateRange, councilAreaDataset]);
+  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
 
   return (
     <div className="data-charts-selector">

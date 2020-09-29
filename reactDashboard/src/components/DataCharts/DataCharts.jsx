@@ -22,7 +22,6 @@ import SonificationPlayButton from "./SonificationPlayButton";
 import QuickSelectDateRange from "./QuickSelectDateRange";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {

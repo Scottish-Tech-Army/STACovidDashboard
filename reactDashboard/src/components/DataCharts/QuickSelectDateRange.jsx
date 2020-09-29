@@ -9,12 +9,7 @@ import {
 } from "../DataCharts/DataChartsConsts";
 import { calculateDateRange } from "./DataChartsUtils";
 
-function QuickSelectDateRange({
-  dateRange,
-  setDateRange,
-  maxDateRange,
-  setMaxDateRange,
-}) {
+function QuickSelectDateRange({ dateRange, setDateRange, maxDateRange }) {
   const handleClick = (newTimePeriod) => {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
     setTimePeriod(newTimePeriod);
@@ -24,54 +19,19 @@ function QuickSelectDateRange({
 
   return (
     <>
-      <Button
-        onClick={(event) => {
-          handleClick();
-        }}
-        variant="outlined"
-        value={ALL_DATES}
-        className="quick-select-button"
-      >
+      <Button onClick={() => handleClick(ALL_DATES)} variant="outlined">
         All
       </Button>
-      <Button
-        onClick={(event) => {
-          handleClick();
-        }}
-        variant="outlined"
-        value={LAST_THREE_MONTHS}
-        className="quick-select-button"
-      >
+      <Button onClick={() => handleClick(LAST_THREE_MONTHS)} variant="outlined">
         Last 3 Months
       </Button>
-      <Button
-        onClick={(event) => {
-          handleClick();
-        }}
-        variant="outlined"
-        value={LAST_MONTH}
-        className="quick-select-button"
-      >
+      <Button onClick={() => handleClick(LAST_MONTH)} variant="outlined">
         Last Month
       </Button>
-      <Button
-        onClick={(event) => {
-          handleClick();
-        }}
-        variant="outlined"
-        value={LAST_TWO_WEEKS}
-        className="quick-select-button"
-      >
+      <Button onClick={() => handleClick(LAST_TWO_WEEKS)} variant="outlined">
         Last 2 Weeks
       </Button>
-      <Button
-        onClick={(event) => {
-          handleClick();
-        }}
-        variant="outlined"
-        value={LAST_WEEK}
-        className="quick-select-button"
-      >
+      <Button onClick={() => handleClick(LAST_WEEK)} variant="outlined">
         Last Week
       </Button>
     </>
@@ -79,31 +39,3 @@ function QuickSelectDateRange({
 }
 
 export default QuickSelectDateRange;
-
-// <fieldset>
-//   <legend>Select Date Range:</legend>
-//   <ToggleButtonGroup
-//     className="toggle-button-group"
-//     type="radio"
-//     vertical
-//     name="timePeriod"
-//     value={timePeriod}
-//     onChange={handleChange}
-//   >
-//     <ToggleButton id="allDates" value={ALL_DATES}>
-//       All
-//     </ToggleButton>
-//     <ToggleButton id="threeMonths" value={LAST_THREE_MONTHS}>
-//       Last 3 Months
-//     </ToggleButton>
-//     <ToggleButton id="oneMonth" value={LAST_MONTH}>
-//       Last Month
-//     </ToggleButton>
-//     <ToggleButton id="twoWeeks" value={LAST_TWO_WEEKS}>
-//       Last 2 Weeks
-//     </ToggleButton>
-//     <ToggleButton id="oneWeek" value={LAST_WEEK}>
-//       Last 7 days
-//     </ToggleButton>
-//   </ToggleButtonGroup>
-// </fieldset>
