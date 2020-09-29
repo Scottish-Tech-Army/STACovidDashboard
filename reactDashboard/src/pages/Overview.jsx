@@ -14,6 +14,7 @@ import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsSelector";
+import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
@@ -76,6 +77,18 @@ const Overview = ({
     startDate: 0,
     endDate: 0,
   });
+
+  useEffect(() => {
+    // Only attempt to fetch data once
+    if (healthBoardDataset != null || councilAreaDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(
+        healthBoardDataset,
+        councilAreaDataset
+      );
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
 
   useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {

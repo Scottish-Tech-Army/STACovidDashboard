@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
-import { getNhsCsvDataDateRange } from "../Utils/CsvUtils";
 import {
   DAILY_CASES,
   DAILY_DEATHS,
@@ -31,18 +30,6 @@ function RegionDataChartsSelector({
   if (setChartType === null || setChartType === undefined) {
     throw new Error("Unrecognised setChartType: " + setChartType);
   }
-
-  useEffect(() => {
-    // Only attempt to fetch data once
-    if (healthBoardDataset != null || councilAreaDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(
-        healthBoardDataset,
-        councilAreaDataset
-      );
-      setMaxDateRange(parseDateRange);
-      setDateRange(parseDateRange);
-    }
-  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
 
   return (
     <div className="data-charts-selector">
