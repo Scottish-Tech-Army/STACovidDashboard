@@ -20,30 +20,9 @@ import {
   LAST_THREE_MONTHS,
 
 } from "./DataChartsConsts";
+import {calculateDateRange} from "./DataChartsUtils";
 
-export function calculateDateRange(maxDateRange, timePeriod) {
-  if (timePeriod === ALL_DATES) {
-    return maxDateRange;
-  }
-  let startDate = 0;
-  const endDate = maxDateRange.endDate;
-  if (timePeriod === LAST_WEEK) {
-    startDate = moment(endDate).subtract(1, "weeks");
-  }
-  if (timePeriod === LAST_TWO_WEEKS) {
-    startDate = moment(endDate).subtract(2, "weeks");
-  }
-  if (timePeriod === LAST_MONTH) {
-    startDate = moment(endDate).subtract(1, "months");
-  }
-  if (timePeriod === LAST_THREE_MONTHS) {
-    startDate = moment(endDate).subtract(3, "months");
-  }
-  if (startDate < maxDateRange.startDate) {
-    startDate = maxDateRange.startDate;
-  }
-  return { startDate: startDate, endDate: endDate };
-}
+
 
 function DataChartsSelector({
   chartType,
@@ -146,5 +125,3 @@ function DataChartsSelector({
 }
 
 export default DataChartsSelector;
-
-// onChange={(val) => setChartType(val)}

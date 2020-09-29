@@ -1,3 +1,12 @@
+import moment from "moment";
+import {
+  ALL_DATES,
+  LAST_WEEK,
+  LAST_TWO_WEEKS,
+  LAST_MONTH,
+  LAST_THREE_MONTHS
+} from "../DataCharts/DataChartsConsts";
+
 const keyDates = [
   { date: Date.parse("2020-03-24"), name: "Lockdown" },
   { date: Date.parse("2020-05-29"), name: "Phase 1" },
@@ -8,7 +17,6 @@ const keyDates = [
 ];
 
 function getDateLine({ date, name }, index) {
-
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
@@ -29,8 +37,6 @@ function getDateLine({ date, name }, index) {
     },
   };
 }
-
-
 
 export function getWhoThresholdLine() {
   return {
@@ -66,7 +72,7 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   };
 }
 
-export function commonChartConfiguration(datasets, {startDate, endDate}) {
+export function commonChartConfiguration(datasets, { startDate, endDate }) {
   return {
     type: "line",
 
@@ -111,7 +117,7 @@ export function commonChartConfiguration(datasets, {startDate, endDate}) {
             ticks: {
               min: startDate,
               max: endDate,
-            }
+            },
           },
         ],
       },
@@ -136,4 +142,28 @@ export function commonChartConfiguration(datasets, {startDate, endDate}) {
       },
     },
   };
+}
+
+export function calculateDateRange(maxDateRange, timePeriod) {
+  if (timePeriod === ALL_DATES) {
+    return maxDateRange;
+  }
+  let startDate = 0;
+  const endDate = maxDateRange.endDate;
+  if (timePeriod === LAST_WEEK) {
+    startDate = moment(endDate).subtract(1, "weeks");
+  }
+  if (timePeriod === LAST_TWO_WEEKS) {
+    startDate = moment(endDate).subtract(2, "weeks");
+  }
+  if (timePeriod === LAST_MONTH) {
+    startDate = moment(endDate).subtract(1, "months");
+  }
+  if (timePeriod === LAST_THREE_MONTHS) {
+    startDate = moment(endDate).subtract(3, "months");
+  }
+  if (startDate < maxDateRange.startDate) {
+    startDate = maxDateRange.startDate;
+  }
+  return { startDate: startDate, endDate: endDate };
 }
