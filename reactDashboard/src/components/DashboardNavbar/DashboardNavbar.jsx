@@ -7,12 +7,12 @@ import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
 
 const DashboardNavbar = () => {
-  function navLink(pageUrl, title) {
+  function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
         className="nav-link"
         to={pageUrl}
-        exact
+        exact={exact}
         activeClassName="selected"
       >
         {title}
@@ -32,7 +32,7 @@ const DashboardNavbar = () => {
         </Navbar.Brand>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Dashboard")}
-          {navLink(URL_REGIONAL, "Regional Insights")}
+          {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
