@@ -19,6 +19,10 @@ import {
   getWhoThresholdLine,
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -105,6 +109,9 @@ const DataCharts = ({
   chartType = PERCENTAGE_CASES,
   healthBoardDataset = null,
   dateRange,
+  setDateRange,
+  maxDateRange,
+  setMaxDateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -128,7 +135,6 @@ const DataCharts = ({
   useEffect(() => {
     // Only attempt to fetch data once
     if (healthBoardDataset != null) {
-
       const {
         percentageCases,
         dailyCases,
@@ -275,13 +281,24 @@ const DataCharts = ({
   };
 
   return (
-    <div className="chart-border">
+    <Container className="chart-border">
+      <Row className="date-range-selector">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+
+      <Row>
       <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
       <div className="chart-container">
         <canvas ref={chartContainer} />
       </div>
       {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+      </Row>
+    </Container>
   );
 };
 

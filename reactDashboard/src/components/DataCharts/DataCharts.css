@@ -2,10 +2,18 @@
   box-shadow: 10px 10px 5px #aaaaaa;
   padding: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   background-color: #ffffff;
   position: relative;
 }
+
+.date-range-selector {
+  display: flex;
+  padding-bottom: 10px;
+  padding-left: 30px;
+}
+
 .chart-container {
   height: 100%;
   width: 100%;

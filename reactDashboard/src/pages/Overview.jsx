@@ -72,6 +72,11 @@ const Overview = ({
     }
   }
 
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 0,
+  });
+
   useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {
       if (!fullscreenEnabled) {
@@ -198,14 +203,17 @@ const Overview = ({
               setChartType={setChartType}
               dateRange={dateRange}
               setDateRange={setDateRange}
+              maxDateRange={maxDateRange}
+              setMaxDateRange={setMaxDateRange}
               healthBoardDataset={healthBoardDataset}
-
             />
           </Col>
           <Col xs={12} md={9} lg={10}>
             <DataCharts
               chartType={chartType}
               dateRange={dateRange}
+              maxDateRange={maxDateRange}
+              setMaxDateRange={setMaxDateRange}
               healthBoardDataset={healthBoardDataset}
             />
             <DateRangeSlider
