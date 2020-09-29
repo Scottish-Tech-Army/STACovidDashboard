@@ -1,6 +1,6 @@
 .chart-border {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 20px;
+  padding: 5px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,7 +10,6 @@
 
 .date-range-selector {
   display: flex;
-  padding-bottom: 10px;
   padding-left: 30px;
 }
 
