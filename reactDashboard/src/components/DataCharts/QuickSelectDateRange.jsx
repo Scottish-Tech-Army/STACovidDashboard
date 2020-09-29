@@ -20,19 +20,19 @@ function QuickSelectDateRange({ dateRange, setDateRange, maxDateRange }) {
   return (
     <>
       <Button onClick={() => handleClick(ALL_DATES)} variant="outlined">
-        All
+        ALL
       </Button>
       <Button onClick={() => handleClick(LAST_THREE_MONTHS)} variant="outlined">
-        Last 3 Months
+        Last 3M
       </Button>
       <Button onClick={() => handleClick(LAST_MONTH)} variant="outlined">
-        Last Month
+        Last 1M
       </Button>
       <Button onClick={() => handleClick(LAST_TWO_WEEKS)} variant="outlined">
-        Last 2 Weeks
+        Last 2W
       </Button>
       <Button onClick={() => handleClick(LAST_WEEK)} variant="outlined">
-        Last Week
+        Last 1W
       </Button>
     </>
   );
