@@ -8,12 +8,12 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import DateRangeSlider from "../components/DataCharts/DateRangeSlider";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsSelector";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
@@ -193,7 +193,7 @@ const Overview = ({
         </Row>
         <Row className="fullscreen-charts">
           <Col xs={12} md={3} lg={2}>
-            <DataChartsSelector
+            <RegionDataChartsSelector
               chartType={chartType}
               setChartType={setChartType}
               dateRange={dateRange}

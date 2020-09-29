@@ -32,7 +32,7 @@ test("dataCharts renders default data input dataset is null", async () => {
 
 test("dataCharts renders dynamic fetched data", async () => {
   await act(async () => {
-    render(<DataCharts healthBoardDataset={healthBoardDataset} />, container);
+    render(<DataCharts healthBoardDataset={healthBoardDataset} councilAreaDataset={councilAreaDataset}/>, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -125,3 +125,4 @@ const nhsCsvData = `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePos
 20200309,S12000013,unknown,0,0,0,0,0,0,0,78625,0`;
 
 const healthBoardDataset = readCsvData(nhsCsvData);
+const councilAreaDataset = readCsvData(nhsCsvData);
