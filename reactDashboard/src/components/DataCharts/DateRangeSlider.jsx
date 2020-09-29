@@ -23,13 +23,14 @@ const DateSlider = withStyles({
   root: {
     color: "#133a53",
     height: 3,
-    padding: "13px 0"
+    padding: "13px 0",
   },
   thumb: {
     height: 27,
     width: 27,
-    backgroundColor: "#fff",
-    border: "1px solid currentColor",
+    backgroundColor: "#ffffff",
+    color: "#6C6C6C",
+    border: "1px solid #6C6C6C",
     marginTop: -12,
     marginLeft: -13,
     boxShadow: "#ebebeb 0 2px 2px",
@@ -171,11 +172,11 @@ export function getMarks({ startDate, endDate }) {
   const result = [
     {
       value: startDate,
-      label: moment.utc(startDate).format("DD MMM, YYYY")
+      label: moment.utc(startDate).format("DD MMM YYYY")
     },
     {
       value: endDate,
-      label: moment.utc(endDate).format("DD MMM, YYYY")
+      label: moment.utc(endDate).format("DD MMM YYYY")
     }
   ];
   let tickDate = moment.utc(startDate).startOf("month");
@@ -190,11 +191,11 @@ export function getMarks({ startDate, endDate }) {
 
 function DateRangeSlider({
   healthBoardDataset = null,
+  councilAreaDataset = null,
   dateRange = { startDate: 0, endDate: 0 },
   setDateRange
 }) {
   const classes = useStyles();
-  const [value, setValue] = useState([]);
 
   const [maxDateRange, setMaxDateRange] = useState({
     startDate: 0,
@@ -203,11 +204,11 @@ function DateRangeSlider({
 
   useEffect(() => {
     // Only attempt to fetch data once
-    if (healthBoardDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset);
+    if (healthBoardDataset != null || councilAreaDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset, councilAreaDataset);
       setMaxDateRange(parseDateRange);
     }
-  }, [healthBoardDataset]);
+  }, [healthBoardDataset, councilAreaDataset]);
 
   function handleDateChange(event, value) {
     setDateRange({ startDate: value[0], endDate: value[1] });

@@ -140,6 +140,7 @@ const RegionDataCharts = ({
   healthBoardDataset = null,
   councilAreaDataset = null,
   regionCode = null,
+  dateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -251,7 +252,7 @@ const RegionDataCharts = ({
           )
         );
       }
-      const chartConfiguration = commonChartConfiguration(datasets);
+      const chartConfiguration = commonChartConfiguration(datasets, dateRange);
       chartConfiguration.options.tooltips = {
         callbacks: {
           label: (tooltipItem, data) => {
@@ -316,6 +317,7 @@ const RegionDataCharts = ({
     chartType,
     populationProportionMap,
     regionCode,
+    dateRange,
   ]);
 
   const isDataReady = () => {

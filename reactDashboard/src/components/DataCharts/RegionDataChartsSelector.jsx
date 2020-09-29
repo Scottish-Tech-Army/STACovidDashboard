@@ -1,16 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
-
+import {
+  getNhsCsvDataDateRange
+} from "../Utils/CsvUtils";
+import moment from "moment";
 import {
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
+  ALL_DATES,
+  LAST_WEEK,
+  LAST_TWO_WEEKS,
+  LAST_MONTH,
+  LAST_THREE_MONTHS
 } from "../DataCharts/DataChartsConsts";
 
-function RegionDataChartsSelector({ chartType, setChartType }) {
+export function calculateDateRange(maxDateRange, timePeriod) {
+  if (timePeriod === ALL_DATES) {
+    return maxDateRange;
+  }
+  let startDate = 0;
+  const endDate = maxDateRange.endDate;
+  if (timePeriod === LAST_WEEK) {
+    startDate = moment(endDate).subtract(1, "weeks");
+  }
+  if (timePeriod === LAST_TWO_WEEKS) {
+    startDate = moment(endDate).subtract(2, "weeks");
+  }
+  if (timePeriod === LAST_MONTH) {
+    startDate = moment(endDate).subtract(1, "months");
+  }
+  if (timePeriod === LAST_THREE_MONTHS) {
+    startDate = moment(endDate).subtract(3, "months");
+  }
+  if (startDate < maxDateRange.startDate) {
+    startDate = maxDateRange.startDate;
+  }
+  return { startDate: startDate, endDate: endDate };
+}
+
+function RegionDataChartsSelector({
+  chartType,
+  setChartType,
+  dateRange,
+  setDateRange,
+  healthBoardDataset=null,
+  councilAreaDataset=null,
+ }) {
   if (
     chartType !== DAILY_CASES &&
     chartType !== DAILY_DEATHS &&
@@ -23,6 +62,26 @@ function RegionDataChartsSelector({ chartType, setChartType }) {
     throw new Error("Unrecognised setChartType: " + setChartType);
   }
 
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 0
+  });
+  const [timePeriod, setTimePeriod] = useState(ALL_DATES);
+
+  useEffect(() => {
+    // Only attempt to fetch data once
+    if (healthBoardDataset != null || councilAreaDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset, councilAreaDataset);
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset, setDateRange, councilAreaDataset]);
+
+  const handleChange = newTimePeriod => {
+    setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
+    setTimePeriod(newTimePeriod);
+  };
+
   return (
     <div className="data-charts-selector">
       <fieldset>
@@ -33,7 +92,7 @@ function RegionDataChartsSelector({ chartType, setChartType }) {
           type="radio"
           vertical
           value={chartType}
-          onChange={(val) => setChartType(val)}
+          onChange={val => setChartType(val)}
         >
           <ToggleButton id="dailyCases" value={DAILY_CASES}>
             Daily Cases
@@ -53,25 +112,26 @@ function RegionDataChartsSelector({ chartType, setChartType }) {
         <legend>Select Date Range:</legend>
         <ToggleButtonGroup
           className="toggle-button-group"
-          name="chartType"
           type="radio"
           vertical
-          value={chartType}
+          name="timePeriod"
+          value={timePeriod}
+          onChange={handleChange}
         >
-          <ToggleButton id="all" value={""}>
+          <ToggleButton id="allDates" value={ALL_DATES}>
             All
           </ToggleButton>
-          <ToggleButton id="threeMonths" value={""}>
-            3 Months
+          <ToggleButton id="threeMonths" value={LAST_THREE_MONTHS}>
+            Last 3 Months
           </ToggleButton>
-          <ToggleButton id="oneMonth" value={""}>
-            1 Month
+          <ToggleButton id="oneMonth" value={LAST_MONTH}>
+            Last Month
           </ToggleButton>
-          <ToggleButton id="twoWeeks" value={""}>
-            2 Weeks
+          <ToggleButton id="twoWeeks" value={LAST_TWO_WEEKS}>
+            Last 2 Weeks
           </ToggleButton>
-          <ToggleButton id="oneWeek" value={""}>
-            1 Week
+          <ToggleButton id="oneWeek" value={LAST_WEEK}>
+            Last 7 days
           </ToggleButton>
         </ToggleButtonGroup>
       </fieldset>
@@ -80,5 +140,3 @@ function RegionDataChartsSelector({ chartType, setChartType }) {
 }
 
 export default RegionDataChartsSelector;
-
-// onChange={(val) => setChartType(val)}

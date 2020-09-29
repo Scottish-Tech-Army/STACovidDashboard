@@ -104,7 +104,7 @@ export function parseNhsCsvData(csvData) {
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
   healthBoardDataset = null,
-  dateRange
+  dateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -252,7 +252,7 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    dateRange
+    dateRange,
   ]);
 
   const isDataReady = () => {

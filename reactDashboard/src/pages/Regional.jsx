@@ -48,6 +48,7 @@ const Regional = ({
 
   const currentRegionCode = useRef(regionCode);
   const currentLocation = useRef(match.url);
+  const [dateRange, setDateRange] = useState("dateRange");
 
   // These two effects handle the browser url and the region code selection in sync.
   // Either location or regionCode may be changed by user action, so the currentRegionCode
@@ -134,16 +135,26 @@ const Regional = ({
           <RegionDataChartsSelector
             chartType={chartType}
             setChartType={setChartType}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            healthBoardDataset={healthBoardDataset}
+            councilAreaDataset={councilAreaDataset}
           />
         </Col>
         <Col xs={12} md={9} lg={10}>
           <RegionDataCharts
             chartType={chartType}
             regionCode={regionCode}
+            dateRange={dateRange}
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
           />
-          <DateRangeSlider />
+          <DateRangeSlider
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            healthBoardDataset={healthBoardDataset}
+            councilAreaDataset={councilAreaDataset}
+          />
         </Col>
       </Row>
     </Container>

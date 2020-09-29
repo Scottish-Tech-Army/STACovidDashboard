@@ -23,11 +23,11 @@ describe("getMarks", () => {
     const expectedResult = [
       {
         value: Date.parse("2020-02-28"),
-        label: "28 Feb, 2020"
+        label: "28 Feb 2020"
       },
       {
         value: Date.parse("2020-04-02"),
-        label: "02 Apr, 2020"
+        label: "02 Apr 2020"
       },
       {
         value: Date.parse("2020-03-01")
@@ -49,11 +49,11 @@ describe("getMarks", () => {
     const expectedResult = [
       {
         value: Date.parse("2020-02-01"),
-        label: "01 Feb, 2020"
+        label: "01 Feb 2020"
       },
       {
         value: Date.parse("2020-06-01"),
-        label: "01 Jun, 2020"
+        label: "01 Jun 2020"
       },
       {
         value: Date.parse("2020-03-01")

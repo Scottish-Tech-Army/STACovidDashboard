@@ -3,7 +3,6 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
 import {
-  createDateAggregateValuesMap,
   getNhsCsvDataDateRange
 } from "../Utils/CsvUtils";
 import moment from "moment";
@@ -13,14 +12,14 @@ import {
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
-  TOTAL_DEATHS
-} from "./DataChartsConsts";
+  TOTAL_DEATHS,
+  ALL_DATES,
+  LAST_WEEK,
+  LAST_TWO_WEEKS,
+  LAST_MONTH,
+  LAST_THREE_MONTHS,
 
-const LAST_WEEK = "lastWeek";
-const LAST_TWO_WEEKS = "lastTwoWeeks";
-const LAST_MONTH = "lastMonth";
-const LAST_THREE_MONTHS = "lastThreeMonths";
-const ALL_DATES = "allDates";
+} from "./DataChartsConsts";
 
 export function calculateDateRange(maxDateRange, timePeriod) {
   if (timePeriod === ALL_DATES) {
