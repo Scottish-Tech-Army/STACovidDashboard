@@ -98,7 +98,7 @@ const Footer = () => {
                   Proudly made by volunteers from
                   <br />
                   <img
-                    src="STABanner.png"
+                    src="/STABanner.png"
                     alt="Scottish Tech Army"
                     width="270"
                   />
