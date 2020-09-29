@@ -83,3 +83,23 @@
 button.MuiButtonBase-root {
   margin: 5px;
 }
+
+button.MuiButtonBase-root:hover {
+  box-shadow: 10px 10px 5px #aaaaaa;
+}
+
+button.MuiButtonBase-root:active {
+  border: 0;
+}
+
+button.MuiTouchRipple-root:active {
+  border: 0px;
+}
+
+.MuiTouchRipple-root:active {
+  border: 0px;
+}
+
+button.MuiButtonBase-root.MuiButton-root.MuiButton-outlined:active {
+  border: 0px;
+}
