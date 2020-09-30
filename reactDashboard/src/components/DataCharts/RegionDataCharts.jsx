@@ -18,6 +18,9 @@ import {
   commonChartConfiguration,
   datasetConfiguration,
 } from "./DataChartsUtils";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
@@ -141,6 +144,9 @@ const RegionDataCharts = ({
   councilAreaDataset = null,
   regionCode = null,
   dateRange,
+  setDateRange,
+  maxDateRange,
+  setMaxDateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -341,17 +347,28 @@ const RegionDataCharts = ({
   }
 
   return (
-    <div className="chart-border">
-      <SonificationPlayButton
-        seriesData={audio}
-        seriesTitle={seriesTitle}
-        regionCode={regionCode}
-      />
-      <div className={getScreenModeClassName()}>
-        <canvas ref={chartContainer} />
-      </div>
-      {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+    <Container className="chart-border">
+      <Row className="date-range-selector">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+
+      <Row>
+        <SonificationPlayButton
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          regionCode={regionCode}
+        />
+        <div className={getScreenModeClassName()}>
+          <canvas ref={chartContainer}/>
+        </div>
+        {isDataReady() ? <></> : <LoadingComponent />}
+      </Row>
+    </Container>
   );
 };
 

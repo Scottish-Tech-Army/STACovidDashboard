@@ -13,6 +13,16 @@
   padding-left: 30px;
 }
 
+@media screen and (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 100%;
+}
+}
+
 .chart-container {
   height: 100%;
   width: 100%;

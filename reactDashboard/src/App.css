@@ -82,6 +82,8 @@
 
 button.MuiButtonBase-root {
   margin: 5px;
+  width: 95px;
+  font-size: 0.75rem;
 }
 
 button.MuiButtonBase-root:hover {
