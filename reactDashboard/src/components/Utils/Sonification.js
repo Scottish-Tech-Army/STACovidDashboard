@@ -1,3 +1,5 @@
+import { AudioContext } from 'standardized-audio-context';
+
 const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
 const NO_OF_TONES = 33;
@@ -179,9 +181,8 @@ export function playAudio(seriesTitle, seriesData, place = "Scotland") {
 
   setPlaying(true);
   const maxDataValue = calculateMaxDataValue(seriesData);
-  console.log(window.AudioContext);
-  console.log(window.webkitAudioContext);
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  console.log(AudioContext);
+  const audioCtx = new AudioContext();
   console.log(audioCtx.state);
   audioCtx.createGain();
   console.log(audioCtx.state);
