@@ -58,13 +58,11 @@ function waitForTone(audioCtx, frequency) {
   }
   return new Promise((resolve, reject) => {
     var oscillator = audioCtx.createOscillator();
-    console.log(oscillator);
     oscillator.onended = resolve;
     oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
     oscillator.connect(audioCtx.destination);
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + getToneDuration(0.5, frequency));
-    console.log(audioCtx.state);
     if (audioCtx.state === "suspended") {
       audioCtx.resume().then(() => {
         console.log("resumed");
