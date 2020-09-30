@@ -59,25 +59,15 @@ function waitForTone(audioCtx, frequency) {
   return new Promise((resolve, reject) => {
     var oscillator = audioCtx.createOscillator();
     console.log(oscillator);
-    oscillator.onended = () => {
-      console.log("end promise");
-      resolve();
-    };
-    console.log("2");
+    oscillator.onended = resolve;
     oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-    console.log("3");
     oscillator.connect(audioCtx.destination);
-    console.log("4");
     oscillator.start();
-    console.log("5");
     oscillator.stop(audioCtx.currentTime + getToneDuration(0.5, frequency));
-    console.log("6");
     console.log(audioCtx.state);
     if (audioCtx.state === "suspended") {
-      console.log("attempting to resume");
       audioCtx.resume().then(() => {
         console.log("resumed");
-        console.log(audioCtx.state);
       });
     }
   });
@@ -94,8 +84,6 @@ webspeechAvailable();
 
 function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
   if (webspeechAvailable()) {
-    console.log("start");
-    console.log(audioCtx.state);
     return new Promise((resolve, reject) => {
       waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
         .then(() => waitForTone(audioCtx, MIN_TONE))
@@ -106,10 +94,7 @@ function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
             "From 28th February until today. Each tone represents one day."
           )
         )
-        .then(() => {
-          console.log("end .then chain");
-          resolve();
-        });
+        .then(resolve);
     });
   } else {
     console.warn(
@@ -121,7 +106,6 @@ function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
 function playDataTones(audioCtx, seriesData, maxDataValue) {
   const frequencies = convertDataToFrequencies(seriesData, maxDataValue);
   sonificationToneOscillator = audioCtx.createOscillator();
-  console.log(sonificationToneOscillator);
   // Clean up on ended
   sonificationToneOscillator.onended = () => {
     sonificationToneOscillator = null;
@@ -181,11 +165,7 @@ export function playAudio(seriesTitle, seriesData, place = "Scotland") {
 
   setPlaying(true);
   const maxDataValue = calculateMaxDataValue(seriesData);
-  console.log(AudioContext);
   const audioCtx = new AudioContext();
-  console.log(audioCtx.state);
-  audioCtx.createGain();
-  console.log(audioCtx.state);
   playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place).then(() => {
     if (sonificationPlaying) {
       playDataTones(audioCtx, seriesData, maxDataValue);
@@ -212,8 +192,6 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
-    console.log("stopping audio");
-    console.log(sonificationToneOscillator);
     sonificationToneOscillator.stop(sonificationToneOscillator.context.currentTime);
     sonificationToneOscillator = null;
   }
