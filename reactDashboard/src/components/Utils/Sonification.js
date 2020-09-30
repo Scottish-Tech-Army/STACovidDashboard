@@ -50,7 +50,7 @@ function waitForSpeech(message) {
   });
 }
 
-async function waitForTone(audioCtx, frequency) {
+function waitForTone(audioCtx, frequency) {
   if (!sonificationPlaying) {
     return;
   }
@@ -90,12 +90,7 @@ function webspeechAvailable() {
 // On Firefox this occasionally fails the first time, so call it now
 webspeechAvailable();
 
-async function playDataIntroduction(
-  audioCtx,
-  seriesTitle,
-  maxDataValue,
-  place
-) {
+function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
   if (webspeechAvailable()) {
     console.log("start");
     console.log(audioCtx.state);
@@ -176,7 +171,7 @@ export function calculateMaxDataValue(seriesData = null) {
  * @param {number[]} seriesData - Dataset to sonify.
  * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
-export async function playAudio(seriesTitle, seriesData, place = "Scotland") {
+export function playAudio(seriesTitle, seriesData, place = "Scotland") {
   if (sonificationPlaying) {
     stopAudio();
     return;
@@ -216,7 +211,9 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
-    sonificationToneOscillator.stop();
+    console.log("stopping audio");
+    console.log(sonificationToneOscillator);
+    sonificationToneOscillator.stop(sonificationToneOscillator.context.currentTime);
     sonificationToneOscillator = null;
   }
   if (window.speechSynthesis) {
