@@ -1,3 +1,5 @@
+import { AudioContext } from 'standardized-audio-context';
+
 const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
 const NO_OF_TONES = 33;
@@ -36,6 +38,7 @@ function getToneDuration(minimumDuration, frequency) {
 
 function waitForSpeech(message) {
   if (!sonificationPlaying) {
+    console.log("sonification not playing");
     return;
   }
   return new Promise((resolve, reject) => {
@@ -60,6 +63,11 @@ function waitForTone(audioCtx, frequency) {
     oscillator.connect(audioCtx.destination);
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + getToneDuration(0.5, frequency));
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume().then(() => {
+        console.log("resumed");
+      });
+    }
   });
 }
 
@@ -72,20 +80,20 @@ function webspeechAvailable() {
 // On Firefox this occasionally fails the first time, so call it now
 webspeechAvailable();
 
-async function playDataIntroduction(
-  audioCtx,
-  seriesTitle,
-  maxDataValue,
-  place
-) {
+function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
   if (webspeechAvailable()) {
-    await waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ");
-    await waitForTone(audioCtx, MIN_TONE);
-    await waitForSpeech("Maximum value " + maxDataValue + ".");
-    await waitForTone(audioCtx, MAX_TONE);
-    await waitForSpeech(
-      "From 28th February until today. Each tone represents one day."
-    );
+    return new Promise((resolve, reject) => {
+      waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
+        .then(() => waitForTone(audioCtx, MIN_TONE))
+        .then(() => waitForSpeech("Maximum value " + maxDataValue + "."))
+        .then(() => waitForTone(audioCtx, MAX_TONE))
+        .then(() =>
+          waitForSpeech(
+            "From 28th February until today. Each tone represents one day."
+          )
+        )
+        .then(resolve);
+    });
   } else {
     console.warn(
       "web speech API not available - skipping dataset introduction"
@@ -147,7 +155,7 @@ export function calculateMaxDataValue(seriesData = null) {
  * @param {number[]} seriesData - Dataset to sonify.
  * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
-export async function playAudio(seriesTitle, seriesData, place = "Scotland") {
+export function playAudio(seriesTitle, seriesData, place = "Scotland") {
   if (sonificationPlaying) {
     stopAudio();
     return;
@@ -155,11 +163,12 @@ export async function playAudio(seriesTitle, seriesData, place = "Scotland") {
 
   setPlaying(true);
   const maxDataValue = calculateMaxDataValue(seriesData);
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  await playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place);
-  if (sonificationPlaying) {
-    playDataTones(audioCtx, seriesData, maxDataValue);
-  }
+  const audioCtx = new AudioContext();
+  playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place).then(() => {
+    if (sonificationPlaying) {
+      playDataTones(audioCtx, seriesData, maxDataValue);
+    }
+  });
 }
 
 /**
@@ -181,7 +190,7 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
-    sonificationToneOscillator.stop();
+    sonificationToneOscillator.stop(sonificationToneOscillator.context.currentTime);
     sonificationToneOscillator = null;
   }
   if (window.speechSynthesis) {
