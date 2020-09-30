@@ -36,6 +36,7 @@ function getToneDuration(minimumDuration, frequency) {
 
 function waitForSpeech(message) {
   if (!sonificationPlaying) {
+    console.log("sonification not playing");
     return;
   }
   return new Promise((resolve, reject) => {
@@ -49,17 +50,34 @@ function waitForSpeech(message) {
   });
 }
 
-function waitForTone(audioCtx, frequency) {
+async function waitForTone(audioCtx, frequency) {
   if (!sonificationPlaying) {
     return;
   }
   return new Promise((resolve, reject) => {
     var oscillator = audioCtx.createOscillator();
-    oscillator.onended = resolve;
+    console.log(oscillator);
+    oscillator.onended = () => {
+      console.log("end promise");
+      resolve();
+    };
+    console.log("2");
     oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+    console.log("3");
     oscillator.connect(audioCtx.destination);
+    console.log("4");
     oscillator.start();
+    console.log("5");
     oscillator.stop(audioCtx.currentTime + getToneDuration(0.5, frequency));
+    console.log("6");
+    console.log(audioCtx.state);
+    if (audioCtx.state === "suspended") {
+      console.log("attempting to resume");
+      audioCtx.resume().then(() => {
+        console.log("resumed");
+        console.log(audioCtx.state);
+      });
+    }
   });
 }
 
@@ -79,13 +97,23 @@ async function playDataIntroduction(
   place
 ) {
   if (webspeechAvailable()) {
-    await waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ");
-    await waitForTone(audioCtx, MIN_TONE);
-    await waitForSpeech("Maximum value " + maxDataValue + ".");
-    await waitForTone(audioCtx, MAX_TONE);
-    await waitForSpeech(
-      "From 28th February until today. Each tone represents one day."
-    );
+    console.log("start");
+    console.log(audioCtx.state);
+    return new Promise((resolve, reject) => {
+      waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
+        .then(() => waitForTone(audioCtx, MIN_TONE))
+        .then(() => waitForSpeech("Maximum value " + maxDataValue + "."))
+        .then(() => waitForTone(audioCtx, MAX_TONE))
+        .then(() =>
+          waitForSpeech(
+            "From 28th February until today. Each tone represents one day."
+          )
+        )
+        .then(() => {
+          console.log("end .then chain");
+          resolve();
+        });
+    });
   } else {
     console.warn(
       "web speech API not available - skipping dataset introduction"
@@ -96,6 +124,7 @@ async function playDataIntroduction(
 function playDataTones(audioCtx, seriesData, maxDataValue) {
   const frequencies = convertDataToFrequencies(seriesData, maxDataValue);
   sonificationToneOscillator = audioCtx.createOscillator();
+  console.log(sonificationToneOscillator);
   // Clean up on ended
   sonificationToneOscillator.onended = () => {
     sonificationToneOscillator = null;
@@ -155,11 +184,17 @@ export async function playAudio(seriesTitle, seriesData, place = "Scotland") {
 
   setPlaying(true);
   const maxDataValue = calculateMaxDataValue(seriesData);
+  console.log(window.AudioContext);
+  console.log(window.webkitAudioContext);
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  await playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place);
-  if (sonificationPlaying) {
-    playDataTones(audioCtx, seriesData, maxDataValue);
-  }
+  console.log(audioCtx.state);
+  audioCtx.createGain();
+  console.log(audioCtx.state);
+  playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place).then(() => {
+    if (sonificationPlaying) {
+      playDataTones(audioCtx, seriesData, maxDataValue);
+    }
+  });
 }
 
 /**
