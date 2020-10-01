@@ -7,6 +7,7 @@ const NO_OF_TONES = 33;
 var sonificationPlaying = false;
 var sonificationToneOscillator = null;
 const playStateChangeListeners = [];
+var utterance = null;
 
 // Calculate an array of 12-TET tones on chromatic scale from given base frequency and array length
 // https://en.wikipedia.org/wiki/Equal_temperament
@@ -42,13 +43,17 @@ function waitForSpeech(message) {
     return;
   }
   return new Promise((resolve, reject) => {
-    var msg = new SpeechSynthesisUtterance(message);
-    msg.onerror = (event) => {
+    utterance = new SpeechSynthesisUtterance(message);
+    utterance.onerror = (event) => {
       console.error("web speech error");
       console.error(event);
+      utterance = null;
     };
-    msg.onend = resolve;
-    window.speechSynthesis.speak(msg);
+    utterance.onend = () => {
+      utterance = null;
+      resolve();
+    }
+    window.speechSynthesis.speak(utterance);
   });
 }
 
@@ -167,6 +172,8 @@ export function playAudio(seriesTitle, seriesData, place = "Scotland") {
   playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place).then(() => {
     if (sonificationPlaying) {
       playDataTones(audioCtx, seriesData, maxDataValue);
+    } else {
+      console.log("Play stopped before data tones");
     }
   });
 }
@@ -190,6 +197,7 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
+    sonificationToneOscillator.onended = undefined;
     sonificationToneOscillator.stop(sonificationToneOscillator.context.currentTime);
     sonificationToneOscillator = null;
   }
