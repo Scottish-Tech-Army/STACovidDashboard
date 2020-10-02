@@ -20,7 +20,7 @@ function generate12TETTones() {
   return tones.slice(3).map((v) => Math.round(v));
 }
 
-// 12-TET scale from C4 to C8
+// 12-TET scale from C4 to G#6
 const TONES = generate12TETTones();
 const MIN_TONE = TONES[0];
 const MAX_TONE = TONES[TONES.length - 1];
