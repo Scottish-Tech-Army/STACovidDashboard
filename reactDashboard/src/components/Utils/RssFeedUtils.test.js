@@ -24,9 +24,8 @@ const inputXml = `
 <link>link2</link>
 <category>Scotland</category>
 <title>title2&nbsp;</title>
-<description>
-<![CDATA[ <p><strong>description2</strong></p> ]]>
-</description>
+<description>&lt;p&gt;&lt;strong&gt;description2&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;</description>
 <pubDate>Wed, 19 Aug 2020 14:17:48 Z</pubDate>
 </item>
 <item>
@@ -146,32 +145,32 @@ test("getLatestFiveNewsItems reads feed", () => {
       title: "title1",
       description: "description1",
       link: "link1",
-      timestamp: "19 Aug 2020 14:16"
+      timestamp: "19 Aug 2020 14:16",
     },
     {
       title: "title2",
       description: "description2",
       link: "link2",
-      timestamp: "19 Aug 2020 14:17"
+      timestamp: "19 Aug 2020 14:17",
     },
     {
       title: "title3",
       description: "description3",
       link: "link3",
-      timestamp: "19 Aug 2020 14:18"
+      timestamp: "19 Aug 2020 14:18",
     },
     {
       title: "title4",
       description: "description4",
       link: "link4",
-      timestamp: "19 Aug 2020 14:19"
+      timestamp: "19 Aug 2020 14:19",
     },
     {
       title: "title5",
       description: "description5",
       link: "link5",
-      timestamp: "19 Aug 2020 14:20"
-    }
+      timestamp: "19 Aug 2020 14:20",
+    },
   ];
   expect(result).toStrictEqual(expectedResult);
 });
@@ -183,20 +182,20 @@ test("getLatestFiveNewsItems reads feed when items are less than five", () => {
       title: "title1",
       description: "description1",
       link: "link1",
-      timestamp: "19 Aug 2020 14:16"
+      timestamp: "19 Aug 2020 14:16",
     },
     {
       title: "title2",
       description: "description2",
       link: "link2",
-      timestamp: "19 Aug 2020 14:17"
+      timestamp: "19 Aug 2020 14:17",
     },
     {
       title: "title3",
       description: "description3",
       link: "link3",
-      timestamp: "19 Aug 2020 14:18"
-    }
+      timestamp: "19 Aug 2020 14:18",
+    },
   ];
   expect(result).toStrictEqual(expectedResult);
 });
@@ -208,7 +207,15 @@ test("getLatestFiveNewsItems reads feed when items are not returned", () => {
 });
 
 test("getText", () => {
+  expect(getText("")).toStrictEqual("");
   expect(getText("string1")).toStrictEqual("string1");
-  expect(getText({ p: "string1" })).toStrictEqual("string1");
-  expect(getText({ p: { strong: "string1" } })).toStrictEqual("string1");
+  expect(getText("string1&nbsp;")).toStrictEqual("string1");
+  expect(getText("<p><strong>description6</strong></p>")).toStrictEqual(
+    "description6"
+  );
+  expect(
+    getText(
+      "&lt;p&gt;&lt;strong&gt;description2&lt;/strong&gt;&lt;/p&gt;\n  &lt;p&gt;&lt;strong&gt;&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;"
+    )
+  ).toStrictEqual("description2");
 });

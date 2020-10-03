@@ -7,82 +7,81 @@
     <generator>PRgloo</generator>
     <atom:link href="https://news.gov.scot/feed/rss" rel="self" type="application/rss+xml" />
     <item>
-      <guid isPermaLink="false">5eff1688e74ad70920c25c70</guid>
-      <link>https://news.gov.scot/news/lifeline-support-for-performing-arts-venues</link>
+      <guid isPermaLink="false">5f76f230ea1f682ea4282573</guid>
+      <link>https://news.gov.scot/news/mental-health-support-for-covid-19-patients</link>
+      <title>Mental health support for COVID-19 patients</title>
+      <description><![CDATA[<p><strong>National network to ensure long-term recovery. </strong></p>]]></description>
+      <pubDate>Fri, 02 Oct 2020 09:28:59 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">5f75f3e5ea1f682ea42821a3</guid>
+      <link>https://news.gov.scot/news/supporting-education-staff</link>
       <category>Scotland</category>
-      <title>Lifeline support for Performing Arts Venues</title>
-      <description><![CDATA[<p><strong>Dedicated £10 million fund announced.</strong></p>]]></description>
-      <pubDate>Fri, 03 Jul 2020 11:54:32 Z</pubDate>
+      <title>Supporting education staff</title>
+      <description><![CDATA[<p>COVID-19 antibody survey.</p>]]></description>
+      <pubDate>Fri, 02 Oct 2020 08:55:27 Z</pubDate>
     </item>
     <item>
-      <guid isPermaLink="false">5efeed31e74ad70920c25969</guid>
-      <link>https://news.gov.scot/news/promoting-skills-and-employment</link>
+      <guid isPermaLink="false">5f760fceea1f682ea42822af</guid>
+      <link>https://news.gov.scot/news/getting-the-flu-vaccine</link>
       <category>Scotland</category>
-      <title>Promoting skills and employment</title>
-      <description><![CDATA[<p><strong>Expert report welcomed.</strong></p>]]></description>
-      <pubDate>Fri, 03 Jul 2020 08:32:48 Z</pubDate>
+      <title>Getting the flu vaccine</title>
+      <description>&lt;p&gt;&lt;strong&gt;Vaccines delivered at community facilities.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;</description>
+      <pubDate>Thu, 01 Oct 2020 17:20:13 Z</pubDate>
     </item>
     <item>
-      <guid isPermaLink="false">5efe0aace74ad70920c25846</guid>
-      <link>https://news.gov.scot/news/travel-restrictions-lifted</link>
+      <guid isPermaLink="false">5f75ff9cea1f682ea428223a</guid>
+      <link>https://news.gov.scot/news/quarantine-rules-imposed-on-travellers-from-further-destinations</link>
       <category>Scotland</category>
-      <title>Travel restrictions lifted</title>
-      <description><![CDATA[<p><strong>Tourism to benefit from further Phase 2 changes.</strong></p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 23:01:00 Z</pubDate>
+      <title>Quarantine rules imposed on travellers from further destinations</title>
+      <description><![CDATA[<p>Azores and Madeira exempt from quarantine requirements.</p>]]></description>
+      <pubDate>Thu, 01 Oct 2020 16:11:08 Z</pubDate>
     </item>
     <item>
-      <guid isPermaLink="false">5efde4c1e74ad70920c25590</guid>
-      <link>https://news.gov.scot/news/mobile-testing-units</link>
+      <guid isPermaLink="false">5f75fafbea1f682ea42821e9</guid>
+      <link>https://news.gov.scot/news/funding-for-nurse-sexual-offence-examiners</link>
+      <title>Funding for nurse sexual offence examiners</title>
+      <description><![CDATA[<p>Forensic Medical Services Bill progresses.</p>]]></description>
+      <pubDate>Thu, 01 Oct 2020 16:06:47 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">5f749894ea1f682ea428186e</guid>
+      <link>https://news.gov.scot/news/support-for-self-isolating-students</link>
+      <category>International</category>
       <category>Scotland</category>
-      <title>Mobile Testing Units</title>
-      <description><![CDATA[<p><strong>Scottish Ambulance Service to take over sites.</strong></p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 23:01:00 Z</pubDate>
+      <title>Support for self-isolating students</title>
+      <description><![CDATA[<p><strong>Minister says physical and mental wellbeing the priority</strong></p>]]></description>
+      <pubDate>Wed, 30 Sep 2020 15:22:06 Z</pubDate>
     </item>
     <item>
-      <guid isPermaLink="false">5efdcfc3e74ad70920c254aa</guid>
-      <link>https://news.gov.scot/news/final-phase-2-measures-confirmed</link>
+      <guid isPermaLink="false">5f746a0aea1f682ea4281591</guid>
+      <link>https://news.gov.scot/news/new-grant-for-those-self-isolating</link>
+      <title>New grant for those self-isolating</title>
+      <description><![CDATA[<p><strong>Supporting people to do the right thing.</strong></p>]]></description>
+      <pubDate>Wed, 30 Sep 2020 11:50:55 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">5f74474eea1f682ea428134f</guid>
+      <link>https://news.gov.scot/news/early-medical-abortion-at-home</link>
+      <title>Early medical abortion at home</title>
+      <description><![CDATA[<p><strong>Consultation on future arrangements.</strong></p>]]></description>
+      <pubDate>Wed, 30 Sep 2020 08:58:59 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">5f74426bea1f682ea428130e</guid>
+      <link>https://news.gov.scot/news/medical-degrees-at-the-university-of-st-andrews</link>
+      <title>Medical degrees at the University of St. Andrews</title>
+      <description><![CDATA[<p>Bill to remove archaic legislative prohibition.</p>]]></description>
+      <pubDate>Wed, 30 Sep 2020 08:40:15 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">5f72f033ea1f6810601213bc</guid>
+      <link>https://news.gov.scot/news/a-step-closer-to-tackling-poverty</link>
       <category>Scotland</category>
-      <title>Final Phase 2 measures confirmed</title>
-      <description><![CDATA[<p><strong>Face coverings and 2 metre rule exemptions announced in preparation for Phase 3.</strong></p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 13:45:00 Z</pubDate>
-    </item>
-    <item>
-      <guid isPermaLink="false">5efddc1de74ad70920c2553e</guid>
-      <link>https://news.gov.scot/news/management-of-local-covid-19-outbreak</link>
-      <title>Coronavirus (COVID-19): Dumfries and Galloway</title>
-      <description><![CDATA[<p>Delay to relaxation of restrictions in parts of the region.</p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 13:44:34 Z</pubDate>
-    </item>
-    <item>
-      <guid isPermaLink="false">5efdc178e74ad70920c253fd</guid>
-      <link>https://news.gov.scot/news/new-school-butterstone-2</link>
-      <category>Scotland</category>
-      <title>New School Butterstone</title>
-      <description><![CDATA[<p>Independent Review published.</p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 11:15:35 Z</pubDate>
-    </item>
-    <item>
-      <guid isPermaLink="false">5efdbbb4e74ad70920c252c5</guid>
-      <link>https://news.gov.scot/news/cross-border-operation-welcomed</link>
-      <category>Scotland</category>
-      <title>Cross border operation welcomed</title>
-      <description><![CDATA[<p><strong>Controlled drugs, cash and firearms seized.</strong></p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 11:10:00 Z</pubDate>
-    </item>
-    <item>
-      <guid isPermaLink="false">5efda1b7e74ad70920c25138</guid>
-      <link>https://news.gov.scot/news/update-to-shielding-guidance</link>
-      <title>Update to Shielding guidance</title>
-      <description><![CDATA[<p>Changes to advice for children and young people.</p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 10:49:24 Z</pubDate>
-    </item>
-    <item>
-      <guid isPermaLink="false">5efc390ee74ad70920c24096</guid>
-      <link>https://news.gov.scot/news/expert-advisory-group-on-migration-and-population</link>
-      <category>Scotland</category>
-      <title>Expert Advisory Group on migration and population</title>
-      <description><![CDATA[<p>Experts report UK plans could trigger fall in migration.</p>]]></description>
-      <pubDate>Thu, 02 Jul 2020 08:40:23 Z</pubDate>
+      <title>A step closer to tackling poverty</title>
+      <description><![CDATA[<p style="margin-bottom: .0001pt">Social Security Administration and Tribunal Membership (Scotland) Bill passes Stage 3.</p>]]></description>
+      <pubDate>Tue, 29 Sep 2020 15:57:27 Z</pubDate>
     </item>
   </channel>
 </rss>
