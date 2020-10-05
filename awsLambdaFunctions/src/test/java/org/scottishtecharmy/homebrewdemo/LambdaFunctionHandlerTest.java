@@ -28,7 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -37,7 +36,6 @@ import org.mockito.stubbing.OngoingStubbing;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
@@ -59,18 +57,12 @@ public class LambdaFunctionHandlerTest {
     @Mock
     private PutObjectResult putObjectResult;
     @Mock
-    private S3Object getObjectResult;
-    @Mock
     private CloseableHttpClient httpClient;
 
     private LambdaFunctionHandler subject;
 
-    @Captor
-    private ArgumentCaptor<GetObjectRequest> getObjectRequest;
-
     ArgumentCaptor<HttpUriRequest> httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
     ArgumentCaptor<PutObjectRequest> s3WriteCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
-    ArgumentCaptor<GetObjectRequest> s3ReadCaptor = ArgumentCaptor.forClass(GetObjectRequest.class);
 
     private static final String OLD_LAST_MODIFIED_DATE_DAILY_HB = "Mon, 10 Aug 2020 12:00:28 GMT";
     private static final String OLD_LAST_MODIFIED_DATE_DAILY_CA = "Mon, 10 Aug 2020 13:00:28 GMT";
@@ -183,6 +175,7 @@ public class LambdaFunctionHandlerTest {
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), HTTP_QUERY_RESPONSES);
     }
 
+    @SuppressWarnings("resource")
     private void mockStoredS3Object(S3Object mockS3Object, String objectKey, String content) {
         when(s3Client.doesObjectExist("dashboard.aws.scottishtecharmy.org", objectKey)).thenReturn(true);
         when(s3Client.getObject("dashboard.aws.scottishtecharmy.org", objectKey)).thenReturn(mockS3Object);
