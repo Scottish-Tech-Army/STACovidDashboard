@@ -107,6 +107,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             if (lastModifiedHeader != null) {
                 newModificationDate = lastModifiedHeader.getValue();
             }
+            
+            if (newModificationDate != null && newModificationDate.equals(modificationDate)) {
+                context.getLogger().log("NHS request not respecting If-Modified-Since - skipping\n");
+                return;
+            }
 
             // Pipe straight to S3
             ObjectMetadata metadata = new ObjectMetadata();
