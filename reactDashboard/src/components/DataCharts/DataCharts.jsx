@@ -112,7 +112,7 @@ const DataCharts = ({
   dateRange,
   setDateRange,
   maxDateRange,
-  setMaxDateRange,
+  setMaxDateRange
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -288,20 +288,20 @@ const DataCharts = ({
   return (
     <Container className="chart-border">
       <Row className="date-range-selector">
+        <ChartDropdown
+          chartType={chartType}
+          setChartType={setChartType}
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+          healthBoardDataset={healthBoardDataset}
+        />
         <QuickSelectDateRange
           dateRange={dateRange}
           setDateRange={setDateRange}
           maxDateRange={maxDateRange}
           setMaxDateRange={setMaxDateRange}
-        />
-        <ChartDropdown
-        chartType={chartType}
-        setChartType={setChartType}
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        maxDateRange={maxDateRange}
-        setMaxDateRange={setMaxDateRange}
-        healthBoardDataset={healthBoardDataset}
         />
       </Row>
       <Row>
