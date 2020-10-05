@@ -1,4 +1,5 @@
-import { AudioContext } from 'standardized-audio-context';
+import { AudioContext } from "standardized-audio-context";
+import moment from "moment";
 
 const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
@@ -16,7 +17,7 @@ function generate12TETTones() {
     tones.push(tones[tones.length - 1] * 1.059463);
   }
   // Drop A4 to B4
-  return tones.slice(3).map((v) => Math.round(v));
+  return tones.slice(3).map(v => Math.round(v));
 }
 
 // 12-TET scale from C4 to C8
@@ -26,7 +27,7 @@ const MAX_TONE = TONES[TONES.length - 1];
 
 function convertDataToFrequencies(seriesData, maxDataValue) {
   const binSize = maxDataValue / (TONES.length - 1);
-  return seriesData.map((value) => TONES[Math.ceil(value / binSize)]);
+  return seriesData.map(value => TONES[Math.ceil(value / binSize)]);
 }
 
 // Pick the nearest halfcycle time after the minimumDuration (when the waveform is at a 0 point)
@@ -43,7 +44,7 @@ function waitForSpeech(message) {
   }
   return new Promise((resolve, reject) => {
     var msg = new SpeechSynthesisUtterance(message);
-    msg.onerror = (event) => {
+    msg.onerror = event => {
       console.error("web speech error");
       console.error(event);
     };
@@ -80,8 +81,24 @@ function webspeechAvailable() {
 // On Firefox this occasionally fails the first time, so call it now
 webspeechAvailable();
 
-function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
+function playDataIntroduction(
+  audioCtx,
+  seriesTitle,
+  maxDataValue,
+  dateRange,
+  place
+) {
   if (webspeechAvailable()) {
+
+    const startDate =
+      dateRange == null
+        ? "28th February"
+        : moment.utc(dateRange.startDate).format("Do MMMM");
+    const endDate =
+      dateRange == null
+        ? "Yesterday"
+        : moment.utc(dateRange.endDate).format("Do MMMM");
+
     return new Promise((resolve, reject) => {
       waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
         .then(() => waitForTone(audioCtx, MIN_TONE))
@@ -89,7 +106,11 @@ function playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place) {
         .then(() => waitForTone(audioCtx, MAX_TONE))
         .then(() =>
           waitForSpeech(
-            "From 28th February until today. Each tone represents one day."
+            "From " +
+              startDate +
+              " until " +
+              endDate +
+              ". Each tone represents one day."
           )
         )
         .then(resolve);
@@ -155,26 +176,48 @@ export function calculateMaxDataValue(seriesData = null) {
  * @param {number[]} seriesData - Dataset to sonify.
  * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
-export function playAudio(seriesTitle, seriesData, place = "Scotland") {
+export function playAudio(
+  seriesTitle,
+  seriesData,
+  dateRange,
+  place = "Scotland"
+) {
   if (sonificationPlaying) {
     stopAudio();
     return;
   }
 
   setPlaying(true);
-  const maxDataValue = calculateMaxDataValue(seriesData);
+  const maxDataValue = calculateMaxDataValue(seriesData.map(({ t, y }) => y));
+  const truncatedSeriesData =
+    dateRange === null
+      ? seriesData
+      : seriesData.filter(
+          ({ t, y }) => t >= dateRange.startDate && t <= dateRange.endDate
+        );
+
   const audioCtx = new AudioContext();
-  playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place).then(() => {
+  playDataIntroduction(
+    audioCtx,
+    seriesTitle,
+    maxDataValue,
+    dateRange,
+    place
+  ).then(() => {
     if (sonificationPlaying) {
-      playDataTones(audioCtx, seriesData, maxDataValue);
+      playDataTones(
+        audioCtx,
+        truncatedSeriesData.map(({ t, y }) => y),
+        maxDataValue
+      );
     }
   });
 }
 
 /**
- * Return true iff audio is currently playing.
+ * Return true if audio is currently playing.
  *
- * @return {boolean} true iff audio is currently playing.
+ * @return {boolean} true if audio is currently playing.
  */
 export function isAudioPlaying() {
   return sonificationPlaying;
@@ -190,7 +233,9 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
-    sonificationToneOscillator.stop(sonificationToneOscillator.context.currentTime);
+    sonificationToneOscillator.stop(
+      sonificationToneOscillator.context.currentTime
+    );
     sonificationToneOscillator = null;
   }
   if (window.speechSynthesis) {
@@ -213,7 +258,7 @@ export function deletePlayStateChangeListener(onPlayStateChange) {
 }
 
 export function notifyPlayStateChangeListeners() {
-  playStateChangeListeners.forEach((item) => {
+  playStateChangeListeners.forEach(item => {
     item();
   });
 }

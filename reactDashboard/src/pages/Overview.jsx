@@ -13,7 +13,7 @@ import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
-import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsSelector";
+import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
@@ -211,7 +211,7 @@ const Overview = ({
         </Row>
         <Row className="fullscreen-charts">
           <Col xs={12} md={3} lg={2}>
-            <RegionDataChartsSelector
+            <DataChartsSelector
               chartType={chartType}
               setChartType={setChartType}
               dateRange={dateRange}
@@ -224,6 +224,7 @@ const Overview = ({
           <Col xs={12} md={9} lg={10}>
             <DataCharts
               chartType={chartType}
+              setChartType={setChartType}
               dateRange={dateRange}
               setDateRange={setDateRange}
               maxDateRange={maxDateRange}

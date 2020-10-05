@@ -179,12 +179,12 @@ export function getMarks({ startDate, endDate }) {
       label: moment.utc(endDate).format("DD MMM YYYY")
     }
   ];
-  let tickDate = moment.utc(startDate).startOf("month");
+  let tickDate = moment.utc(startDate).startOf("week");
   while (tickDate.isBefore(endDate)) {
     if (tickDate.isAfter(startDate)) {
       result.push({ value: tickDate.valueOf() });
     }
-    tickDate = tickDate.add(1, "month");
+    tickDate = tickDate.add(1, "week");
   }
   return result;
 }
@@ -210,7 +210,7 @@ function DateRangeSlider({
     }
   }, [healthBoardDataset, councilAreaDataset]);
 
-  function handleDateChange(event, value) {
+  function handleDateChange(value) {
     setDateRange({ startDate: value[0], endDate: value[1] });
   }
 

@@ -3,13 +3,14 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import "./DataChartsSelector.css";
 import {
+  PERCENTAGE_CASES,
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "../DataCharts/DataChartsConsts";
 
-function RegionDataChartsSelector({
+function DataChartsSelector({
   chartType,
   setChartType,
   dateRange,
@@ -20,6 +21,7 @@ function RegionDataChartsSelector({
   councilAreaDataset = null,
 }) {
   if (
+    chartType !== PERCENTAGE_CASES &&
     chartType !== DAILY_CASES &&
     chartType !== DAILY_DEATHS &&
     chartType !== TOTAL_CASES &&
@@ -55,10 +57,13 @@ function RegionDataChartsSelector({
           <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
             Total Deaths
           </ToggleButton>
+          {PERCENTAGE_CASES == null ? (<></>) : (<ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
+            % Tests Positive
+          </ToggleButton>)}
         </ToggleButtonGroup>
       </fieldset>
     </div>
   );
 }
 
-export default RegionDataChartsSelector;
+export default DataChartsSelector;

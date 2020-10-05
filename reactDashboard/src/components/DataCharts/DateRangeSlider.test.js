@@ -18,6 +18,25 @@ afterEach(() => {
   container = null;
 });
 
+const councilAreaData = [
+  ["20200902", "S12000005", "0", "204"],
+  ["20200907", "S12000008", "0", "420"],
+  ["20200904", "S12000011", "2", "415"],
+  ["20209905", "S12000014", "3", "702"],
+  ["20200906", "S12000007", "0", "553"],
+  ["20200903", "S12000006", "0", "314"],
+  ["20200908", "S12000009", "0", "570"],
+];
+const healthBoardData = [
+  ["20200902", "S12000005", "0", "204"],
+  ["20200903", "S12000006", "0", "314"],
+  ["20200904", "S12000011", "2", "415"],
+  ["20209905", "S12000014", "3", "702"],
+  ["20200906", "S12000007", "0", "553"],
+  ["20200907", "S12000008", "0", "420"],
+  ["20200908", "S12000009", "0", "570"],
+];
+
 describe("getMarks", () => {
   it("normalRange", () => {
     const expectedResult = [
@@ -34,7 +53,7 @@ describe("getMarks", () => {
       },
       {
         value: Date.parse("2020-04-01")
-      },
+      }
     ];
 
     expect(
@@ -82,6 +101,32 @@ describe("getMarks", () => {
         startDate: 0,
         endDate: 0
       })
+    ).toStrictEqual(expectedResult);
+  });
+});
+
+describe("councilAreas", () => {
+  it("", () => {
+    const expectedResult = ;
+    const value = {[dateRange.startDate, dateRange.endDate]}
+    expect(
+      handleDateChange(value);
+    ).toStrictEqual(expectedResult);
+  });
+
+  it("", () => {
+    const expectedResult = ;
+    const value = {[dateRange.startDate, dateRange.endDate]}
+    expect(
+      handleDateChange(value);
+    ).toStrictEqual(expectedResult);
+  });
+
+  it("", () => {
+    const expectedResult = [];
+    const value = {[dateRange.startDate, dateRange.endDate]}  
+    expect(
+      handleDateChange(value);
     ).toStrictEqual(expectedResult);
   });
 });

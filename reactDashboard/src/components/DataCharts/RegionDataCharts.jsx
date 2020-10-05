@@ -279,7 +279,7 @@ const RegionDataCharts = ({
 
     function setSonification(seriesData, seriesTitle) {
       if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
+        setAudio(seriesData);
         setSeriesTitle(seriesTitle);
       }
     }
@@ -356,12 +356,12 @@ const RegionDataCharts = ({
           setMaxDateRange={setMaxDateRange}
         />
       </Row>
-
       <Row>
         <SonificationPlayButton
           seriesData={audio}
           seriesTitle={seriesTitle}
           regionCode={regionCode}
+          dateRange={dateRange}
         />
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer}/>

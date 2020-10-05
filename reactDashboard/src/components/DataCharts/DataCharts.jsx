@@ -20,6 +20,7 @@ import {
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
 import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
@@ -106,6 +107,7 @@ export function parseNhsCsvData(csvData) {
 
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
+  setChartType,
   healthBoardDataset = null,
   dateRange,
   setDateRange,
@@ -211,7 +213,7 @@ const DataCharts = ({
 
     function setSonification(seriesData, seriesTitle) {
       if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
+        setAudio(seriesData);
         setSeriesTitle(seriesTitle);
       }
     }
@@ -292,15 +294,24 @@ const DataCharts = ({
           maxDateRange={maxDateRange}
           setMaxDateRange={setMaxDateRange}
         />
+        <ChartDropdown
+        chartType={chartType}
+        setChartType={setChartType}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        maxDateRange={maxDateRange}
+        setMaxDateRange={setMaxDateRange}
+        healthBoardDataset={healthBoardDataset}
+        />
       </Row>
-
       <Row>
         <SonificationPlayButton
           seriesData={audio}
           seriesTitle={seriesTitle}
+          dateRange={dateRange}
         />
         <div className={getScreenModeClassName()}>
-          <canvas ref={chartContainer}/>
+          <canvas ref={chartContainer} />
         </div>
         {isDataReady() ? <></> : <LoadingComponent />}
       </Row>

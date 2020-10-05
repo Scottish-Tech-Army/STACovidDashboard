@@ -19,6 +19,7 @@ const SonificationPlayButton = ({
   seriesData = null,
   seriesTitle = "No data",
   regionCode = null,
+  dateRange = null,
 }) => {
   const [audioPlaying, setAudioPlaying] = useState(false);
 
@@ -36,6 +37,7 @@ const SonificationPlayButton = ({
       playAudio(
         seriesTitle,
         seriesData,
+        dateRange,
         getPhoneticPlaceNameByFeatureCode(
           regionCode === null ? FEATURE_CODE_SCOTLAND : regionCode
         )
