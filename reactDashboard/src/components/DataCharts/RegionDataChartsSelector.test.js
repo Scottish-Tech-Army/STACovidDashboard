@@ -1,7 +1,7 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValue"] }] */
+DataChartsSelector/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValue"] }] */
 
 import React from "react";
-import RegionDataChartsSelector from "./RegionDataChartsSelector";
+import DataChartsSelector from "./DataChartsSelector";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { DAILY_CASES } from "./DataChartsConsts";
@@ -43,7 +43,7 @@ function click(button) {
   act(() => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     render(
-      <RegionDataChartsSelector
+      <DataChartsSelector
         chartType={storedChartType}
         setChartType={setChartType}
       />,
@@ -57,22 +57,22 @@ test("null/undefined input throws error", async () => {
 
   expect(() => {
     render(
-      <RegionDataChartsSelector chartType={null} setChartType={setChartType} />,
+      <DataChartsSelector chartType={null} setChartType={setChartType} />,
       container
     );
   }).toThrow("Unrecognised chartType: null");
 
   expect(() => {
-    render(<RegionDataChartsSelector setChartType={setChartType} />, container);
+    render(<DataChartsSelector setChartType={setChartType} />, container);
   }).toThrow("Unrecognised chartType: undefined");
 
   expect(() => {
-    render(<RegionDataChartsSelector chartType={storedChartType} />, container);
+    render(<DataChartsSelector chartType={storedChartType} />, container);
   }).toThrow("Unrecognised setChartType: undefined");
 
   expect(() => {
     render(
-      <RegionDataChartsSelector chartType="unknown" setChartType={setChartType} />,
+      <DataChartsSelector chartType="unknown" setChartType={setChartType} />,
       container
     );
   }).toThrow("Unrecognised chartType: unknown");
@@ -81,7 +81,7 @@ test("null/undefined input throws error", async () => {
 test("default render", async () => {
   act(() => {
     render(
-      <RegionDataChartsSelector
+      <DataChartsSelector
         chartType={storedChartType}
         setChartType={setChartType}
       />,

@@ -165,29 +165,6 @@ export function parseNhsCsvData(csvData) {
   };
 }
 
-export function getMarks({ startDate, endDate }) {
-  if (startDate === 0 || endDate === 0) {
-    return [];
-  }
-  const result = [
-    {
-      value: startDate,
-      label: moment.utc(startDate).format("DD MMM YYYY")
-    },
-    {
-      value: endDate,
-      label: moment.utc(endDate).format("DD MMM YYYY")
-    }
-  ];
-  let tickDate = moment.utc(startDate).startOf("week");
-  while (tickDate.isBefore(endDate)) {
-    if (tickDate.isAfter(startDate)) {
-      result.push({ value: tickDate.valueOf() });
-    }
-    tickDate = tickDate.add(1, "week");
-  }
-  return result;
-}
 
 function DateRangeSlider({
   healthBoardDataset = null,
@@ -218,11 +195,10 @@ function DateRangeSlider({
     <div className={classes.root}>
       <DateSlider
         ThumbComponent={sliderThumbComponent}
-        aria-label="date range slider"
+        get-aria-label="date range slider"
         value={[dateRange.startDate, dateRange.endDate]}
         min={maxDateRange.startDate}
         max={maxDateRange.endDate}
-        marks={getMarks(maxDateRange)}
         onChange={handleDateChange}
       />
     </div>
