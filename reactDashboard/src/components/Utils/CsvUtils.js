@@ -93,7 +93,7 @@ export function createDateAggregateValuesMap(lines) {
     (
       [
         dateString,
-        v1,
+        featureCode,
         v5,
         dailyCases,
         cumulativeCases,
@@ -106,25 +106,27 @@ export function createDateAggregateValuesMap(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-      if (!result.has(date)) {
+      if (featureCode !== FEATURE_CODE_SCOTLAND) {
+        const date = moment.utc(dateString).valueOf();
+        if (!result.has(date)) {
+          result.set(date, {
+            cases: 0,
+            deaths: 0,
+            cumulativeCases: 0,
+            cumulativeDeaths: 0,
+            cumulativeNegativeTests: 0,
+          });
+        }
+        var values = result.get(date);
         result.set(date, {
-          cases: 0,
-          deaths: 0,
-          cumulativeCases: 0,
-          cumulativeDeaths: 0,
-          cumulativeNegativeTests: 0,
+          cases: values.cases + Number(dailyCases),
+          deaths: values.deaths + Number(dailyDeaths),
+          cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
+          cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
+          cumulativeNegativeTests:
+            values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
         });
       }
-      var values = result.get(date);
-      result.set(date, {
-        cases: values.cases + Number(dailyCases),
-        deaths: values.deaths + Number(dailyDeaths),
-        cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
-        cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-        cumulativeNegativeTests:
-          values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
-      });
     }
   );
 

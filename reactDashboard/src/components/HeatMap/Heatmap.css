@@ -28,6 +28,10 @@
   vertical-align: middle;
 }
 
+.heatmap table tr.area:first-child td {
+  padding-bottom: 10px;
+}
+
 .heatmap .l-0 {
   stroke: #e0e0e0;
 }
