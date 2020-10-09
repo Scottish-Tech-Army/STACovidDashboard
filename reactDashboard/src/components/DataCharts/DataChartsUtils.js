@@ -5,6 +5,7 @@ const keyDates = [
   { date: Date.parse("2020-07-10"), name: "Phase 3" },
   { date: Date.parse("2020-07-15"), name: "Bars reopen" },
   { date: Date.parse("2020-08-11"), name: "Schools reopen" },
+  { date: Date.parse("2020-10-09"), name: "Bars close" },
 ];
 
 function getDateLine({ date, name }, index) {
