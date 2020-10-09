@@ -8,6 +8,7 @@ const NO_OF_TONES = 33;
 var sonificationPlaying = false;
 var sonificationToneOscillator = null;
 const playStateChangeListeners = [];
+var utterance = null;
 
 // Calculate an array of 12-TET tones on chromatic scale from given base frequency and array length
 // https://en.wikipedia.org/wiki/Equal_temperament
@@ -20,7 +21,7 @@ function generate12TETTones() {
   return tones.slice(3).map(v => Math.round(v));
 }
 
-// 12-TET scale from C4 to C8
+// 12-TET scale from C4 to G#6
 const TONES = generate12TETTones();
 const MIN_TONE = TONES[0];
 const MAX_TONE = TONES[TONES.length - 1];
@@ -47,9 +48,13 @@ function waitForSpeech(message) {
     msg.onerror = event => {
       console.error("web speech error");
       console.error(event);
+      utterance = null;
     };
-    msg.onend = resolve;
-    window.speechSynthesis.speak(msg);
+    utterance.onend = () => {
+      utterance = null;
+      resolve();
+    }
+    window.speechSynthesis.speak(utterance);
   });
 }
 
