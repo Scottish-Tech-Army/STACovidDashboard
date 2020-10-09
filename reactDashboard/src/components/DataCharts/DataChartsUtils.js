@@ -4,7 +4,7 @@ import {
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
-  LAST_THREE_MONTHS
+  LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
 
 const keyDates = [
@@ -13,7 +13,7 @@ const keyDates = [
   { date: Date.parse("2020-06-19"), name: "Phase 2" },
   { date: Date.parse("2020-07-10"), name: "Phase 3" },
   { date: Date.parse("2020-07-15"), name: "Bars reopen" },
-  { date: Date.parse("2020-08-11"), name: "Schools reopen" }
+  { date: Date.parse("2020-08-11"), name: "Schools reopen" },
 ];
 
 function getDateLine({ date, name }, index) {
@@ -33,8 +33,8 @@ function getDateLine({ date, name }, index) {
       position: "top",
       enabled: true,
       yAdjust: index * 20,
-      content: name
-    }
+      content: name,
+    },
   };
 }
 
@@ -54,8 +54,8 @@ export function getWhoThresholdLine() {
       yPadding: 0,
       position: "top",
       enabled: true,
-      content: "WHO recommended threshold"
-    }
+      content: "WHO recommended threshold",
+    },
   };
 }
 
@@ -68,7 +68,7 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
     fill: false,
     pointRadius: 0,
     borderWidth: 2,
-    lineTension: 0
+    lineTension: 0,
   };
 }
 
@@ -77,16 +77,16 @@ export function commonChartConfiguration(datasets, dateRange = null) {
     type: "line",
 
     data: {
-      datasets: datasets
+      datasets: datasets,
     },
     options: {
       animation: {
-        duration: 0
+        duration: 0,
       },
       hover: {
         animationDuration: 0,
         mode: "index",
-        intersect: false
+        intersect: false,
       },
       responsiveAnimationDuration: 0,
       responsive: true,
@@ -98,30 +98,30 @@ export function commonChartConfiguration(datasets, dateRange = null) {
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 20,
-              callback: function(value, index, values) {
+              callback: function (value, index, values) {
                 return Math.round(value);
-              }
-            }
-          }
+              },
+            },
+          },
         ],
         xAxes: [
           {
             type: "time",
             distribution: "series",
             time: {
-              tooltipFormat: "D MMM YYYY"
+              tooltipFormat: "D MMM YYYY",
             },
             gridLines: {
-              display: false
+              display: false,
             },
-          }
-        ]
+          },
+        ],
       },
       legend: {
-        position: "bottom"
+        position: "bottom",
       },
       annotation: {
-        annotations: keyDates.map(getDateLine)
+        annotations: keyDates.map(getDateLine),
       },
       tooltips: {
         callbacks: {
@@ -133,15 +133,15 @@ export function commonChartConfiguration(datasets, dateRange = null) {
                 ? tooltipItem.yLabel
                 : tooltipItem.yLabel.toFixed(1))
             );
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
   if (dateRange != null) {
     result.options.scales.xAxes[0].ticks = {
       min: dateRange.startDate,
-      max: dateRange.endDate
+      max: dateRange.endDate,
     };
   }
   return result;

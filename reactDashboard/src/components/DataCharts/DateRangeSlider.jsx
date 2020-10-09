@@ -4,7 +4,7 @@ import Slider from "@material-ui/core/Slider";
 import moment from "moment";
 import {
   createDateAggregateValuesMap,
-  getNhsCsvDataDateRange
+  getNhsCsvDataDateRange,
 } from "../Utils/CsvUtils";
 
 const useStyles = makeStyles({
@@ -15,8 +15,8 @@ const useStyles = makeStyles({
     marginLeft: "auto",
     marginRight: "auto",
     flexDirection: "column",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 const DateSlider = withStyles({
@@ -35,7 +35,7 @@ const DateSlider = withStyles({
     marginLeft: -13,
     boxShadow: "#ebebeb 0 2px 2px",
     "&:focus, &:hover, &$active": {
-      boxShadow: "#ccc 0 2px 3px 1px"
+      boxShadow: "#ccc 0 2px 3px 1px",
     },
     "& .bar": {
       // display: inline-block !important;
@@ -43,8 +43,8 @@ const DateSlider = withStyles({
       width: 1,
       backgroundColor: "currentColor",
       marginLeft: 1,
-      marginRight: 1
-    }
+      marginRight: 1,
+    },
   },
   active: {},
   valueLabel: {
@@ -52,27 +52,27 @@ const DateSlider = withStyles({
     top: -22,
     "& *": {
       background: "transparent",
-      color: "#000"
-    }
+      color: "#000",
+    },
   },
   track: {
-    height: 5
+    height: 5,
   },
   rail: {
     color: "#d8d8d8",
     opacity: 1,
-    height: 5
+    height: 5,
   },
   mark: {
     backgroundColor: "#bfbfbf",
     height: 15,
     width: 1,
-    marginTop: -3
+    marginTop: -3,
   },
   markActive: {
     opacity: 1,
-    backgroundColor: "currentColor"
-  }
+    backgroundColor: "currentColor",
+  },
 })(Slider);
 
 function sliderThumbComponent(props) {
@@ -108,12 +108,12 @@ export function parseNhsCsvData(csvData) {
     return valueMap.get(endDate)[key];
   }
 
-  dates.forEach(date => {
+  dates.forEach((date) => {
     const {
       cases,
       deaths,
       cumulativeCases,
-      cumulativeDeaths
+      cumulativeDeaths,
     } = dateAggregateValuesMap.get(date);
 
     const positiveCases5DayWindow = get5DayDiff(
@@ -136,23 +136,23 @@ export function parseNhsCsvData(csvData) {
       y:
         totalCases5DayWindow === 0
           ? 0
-          : (positiveCases5DayWindow * 100) / totalCases5DayWindow
+          : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
     });
     dailyCasesPoints.push({
       t: date,
-      y: cases
+      y: cases,
     });
     dailyDeathsPoints.push({
       t: date,
-      y: deaths
+      y: deaths,
     });
     totalCasesPoints.push({
       t: date,
-      y: cumulativeCases
+      y: cumulativeCases,
     });
     totalDeathsPoints.push({
       t: date,
-      y: cumulativeDeaths
+      y: cumulativeDeaths,
     });
   });
 
@@ -161,28 +161,30 @@ export function parseNhsCsvData(csvData) {
     dailyCases: dailyCasesPoints,
     dailyDeaths: dailyDeathsPoints,
     totalCases: totalCasesPoints,
-    totalDeaths: totalDeathsPoints
+    totalDeaths: totalDeathsPoints,
   };
 }
-
 
 function DateRangeSlider({
   healthBoardDataset = null,
   councilAreaDataset = null,
   dateRange = { startDate: 0, endDate: 0 },
-  setDateRange
+  setDateRange,
 }) {
   const classes = useStyles();
 
   const [maxDateRange, setMaxDateRange] = useState({
     startDate: 0,
-    endDate: 0
+    endDate: 0,
   });
 
   useEffect(() => {
     // Only attempt to fetch data once
     if (healthBoardDataset != null || councilAreaDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset, councilAreaDataset);
+      const parseDateRange = getNhsCsvDataDateRange(
+        healthBoardDataset,
+        councilAreaDataset
+      );
       setMaxDateRange(parseDateRange);
     }
   }, [healthBoardDataset, councilAreaDataset]);

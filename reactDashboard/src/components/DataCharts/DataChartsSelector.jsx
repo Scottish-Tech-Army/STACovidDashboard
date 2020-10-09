@@ -57,9 +57,13 @@ function DataChartsSelector({
           <ToggleButton id="totalDeaths" value={TOTAL_DEATHS}>
             Total Deaths
           </ToggleButton>
-          {PERCENTAGE_CASES == null ? (<></>) : (<ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
-            % Tests Positive
-          </ToggleButton>)}
+          {PERCENTAGE_CASES == null ? (
+            <></>
+          ) : (
+            <ToggleButton id="percentageCases" value={PERCENTAGE_CASES}>
+              % Tests Positive
+            </ToggleButton>
+          )}
         </ToggleButtonGroup>
       </fieldset>
     </div>

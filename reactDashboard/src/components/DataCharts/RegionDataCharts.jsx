@@ -364,7 +364,7 @@ const RegionDataCharts = ({
           dateRange={dateRange}
         />
         <div className={getScreenModeClassName()}>
-          <canvas ref={chartContainer}/>
+          <canvas ref={chartContainer} />
         </div>
         {isDataReady() ? <></> : <LoadingComponent />}
       </Row>

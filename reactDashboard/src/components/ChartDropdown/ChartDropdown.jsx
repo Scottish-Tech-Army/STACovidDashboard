@@ -11,12 +11,7 @@ import {
   TOTAL_DEATHS,
 } from "../DataCharts/DataChartsConsts";
 
-const ChartDropdown = ({
-  chartType = DAILY_CASES,
-  setChartType,
-}) => {
-  
-
+const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
   return (
     <Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
       <Dropdown.Toggle
