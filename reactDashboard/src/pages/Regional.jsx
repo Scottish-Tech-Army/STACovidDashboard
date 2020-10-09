@@ -6,7 +6,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
-import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import DateRangeSlider from "../components/DataCharts/DateRangeSlider";
 import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
@@ -148,19 +147,7 @@ const Regional = ({
         </Col>
       </Row>
       <Row className="fullscreen-charts">
-        <Col xs={12} md={3} lg={2}>
-          <DataChartsSelector
-            chartType={chartType}
-            setChartType={setChartType}
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            maxDateRange={maxDateRange}
-            setMaxDateRange={setMaxDateRange}
-            healthBoardDataset={healthBoardDataset}
-            councilAreaDataset={councilAreaDataset}
-          />
-        </Col>
-        <Col xs={12} md={9} lg={10}>
+        <Col xs={12}>
           <RegionDataCharts
             chartType={chartType}
             regionCode={regionCode}

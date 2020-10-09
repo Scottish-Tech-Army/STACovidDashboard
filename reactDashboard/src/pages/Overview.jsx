@@ -13,7 +13,6 @@ import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
-import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
@@ -31,7 +30,7 @@ const Overview = ({
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(DAILY_CASES);
-  const [dateRange, setDateRange] = useState({startDate:0, endDate:0});
+  const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 0 });
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
   const zoomableMap = useRef();
@@ -210,18 +209,7 @@ const Overview = ({
           </Col>
         </Row>
         <Row className="fullscreen-charts">
-          <Col xs={12} md={3} lg={2}>
-            <DataChartsSelector
-              chartType={chartType}
-              setChartType={setChartType}
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              maxDateRange={maxDateRange}
-              setMaxDateRange={setMaxDateRange}
-              healthBoardDataset={healthBoardDataset}
-            />
-          </Col>
-          <Col xs={12} md={9} lg={10}>
+          <Col xs={12}>
             <DataCharts
               chartType={chartType}
               setChartType={setChartType}
