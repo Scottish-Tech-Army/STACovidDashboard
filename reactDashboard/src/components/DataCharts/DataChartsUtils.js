@@ -139,7 +139,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
     }
   };
   if (dateRange != null) {
-    result.options.scales.xAxes.ticks = {
+    result.options.scales.xAxes[0].ticks = {
       min: dateRange.startDate,
       max: dateRange.endDate
     };

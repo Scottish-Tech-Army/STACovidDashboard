@@ -31,7 +31,7 @@ const Overview = ({
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(DAILY_CASES);
-  const [dateRange, setDateRange] = useState("dateRange");
+  const [dateRange, setDateRange] = useState({startDate:0, endDate:0});
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
   const zoomableMap = useRef();

@@ -187,7 +187,7 @@ function DateRangeSlider({
     }
   }, [healthBoardDataset, councilAreaDataset]);
 
-  function handleDateChange(value) {
+  function handleDateChange(event, value) {
     setDateRange({ startDate: value[0], endDate: value[1] });
   }
 
