@@ -8,7 +8,6 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import DateRangeSlider from "../components/DataCharts/DateRangeSlider";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
@@ -216,11 +215,6 @@ const Overview = ({
               setDateRange={setDateRange}
               maxDateRange={maxDateRange}
               setMaxDateRange={setMaxDateRange}
-              healthBoardDataset={healthBoardDataset}
-            />
-            <DateRangeSlider
-              dateRange={dateRange}
-              setDateRange={setDateRange}
               healthBoardDataset={healthBoardDataset}
             />
           </Col>

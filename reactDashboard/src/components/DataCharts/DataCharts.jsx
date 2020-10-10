@@ -3,6 +3,7 @@ import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
 import moment from "moment";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   PERCENTAGE_CASES,
@@ -297,11 +298,17 @@ const DataCharts = ({
         />
       </Row>
       <Row>
+      <DateRangeSlider
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        healthBoardDataset={healthBoardDataset}
+      />
         <SonificationPlayButton
           seriesData={audio}
           seriesTitle={seriesTitle}
           dateRange={dateRange}
         />
+
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />
         </div>

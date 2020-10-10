@@ -1,6 +1,6 @@
 .chart-border {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 5px 20px;
+  padding: 5px 20px 80px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,6 +42,14 @@
   left: 10px;
   border: none;
   background: none;
+}
+
+#date-range-slider-position {
+  position: absolute;
+  bottom: 0 !important;
+  width: 90%;
+  padding-top: 10px;
+  padding-bottom: 40px;
 }
 
 .full-screen {
