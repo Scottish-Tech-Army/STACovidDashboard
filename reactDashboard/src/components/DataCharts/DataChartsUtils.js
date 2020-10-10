@@ -119,6 +119,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       },
       legend: {
         position: "bottom",
+        onClick: function(event, legendItem) {}
       },
       annotation: {
         annotations: keyDates.map(getDateLine),
