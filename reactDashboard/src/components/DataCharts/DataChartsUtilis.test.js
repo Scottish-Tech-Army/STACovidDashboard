@@ -17,25 +17,3 @@ afterEach(() => {
   container.remove();
   container = null;
 });
-
-test("dataCharts renders default data input dataset is null", async () => {
-  global.suppressConsoleErrorLogs();
-
-  await act(async () => {
-    render(<DataCharts />, container);
-  });
-
-
-
-  const canvas = container.querySelector(".chart-container canvas");
-  expect(canvas).not.toBeNull();
-});
-
-
-<Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
-      <Dropdown.Toggle
-        variant="primary"
-        className="selected-chart"
-        value={chartType}
-        title={chartType}
-      ></Dropdown.Toggle>

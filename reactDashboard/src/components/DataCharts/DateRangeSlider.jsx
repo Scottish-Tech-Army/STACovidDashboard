@@ -46,16 +46,16 @@ export function getMarks({ startDate, endDate }) {
 
 const DateSlider = withStyles({
   root: {
-    color: "#bfbfbf",
+    color: "#007EB9",
     height: 3,
     padding: "13px 0"
   },
   thumb: {
-    height: 35,
-    width: 35,
+    height: 30,
+    width: 30,
     backgroundColor: "#ffffff",
-    color: "#007EB9",
-    border: "2px solid #007EB9",
+    color: "#6C6C6C",
+    border: "2px solid #6C6C6C",
     marginTop: -12,
     marginLeft: -13,
     boxShadow: "#ebebeb 0 2px 2px",
@@ -81,12 +81,12 @@ const DateSlider = withStyles({
     }
   },
   track: {
-    height: 7.5
+    height: 5
   },
   rail: {
     color: "#d8d8d8",
     opacity: 1,
-    height: 5
+    height: 2.5
   },
   mark: {
     backgroundColor: "#6C6C6C",

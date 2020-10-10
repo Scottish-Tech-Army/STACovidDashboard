@@ -1,13 +1,16 @@
 .selected-chart {
-  margin-top: 20px;
-  margin-left: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
   margin-bottom: 10px;
-  min-width: 200px;
-  height: 40px;
-  font-size: 1rem;
-  background-color: #ec6730;
-  border-color: #ec6730;
-  color: #ffffff
+  min-width: 230px;
+  height: 35px;
+  font-size: 0.75rem;
+}
+
+@media screen and (max-width: 600px) {
+  .selected-chart {
+    margin-left: 5px;
+  }
 }
 
 .selected-chart:hover {
@@ -19,7 +22,7 @@
 .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff
+  color: #ffffff;
 }
 
 .selected-chart.dropdown-toggle.btn.btn-primary:focus {

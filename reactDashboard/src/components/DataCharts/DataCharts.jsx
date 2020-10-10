@@ -10,14 +10,14 @@ import {
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
-  TOTAL_DEATHS,
+  TOTAL_DEATHS
 } from "./DataChartsConsts";
 import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
 import "chartjs-plugin-annotation";
 import {
   commonChartConfiguration,
   datasetConfiguration,
-  getWhoThresholdLine,
+  getWhoThresholdLine
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
 import QuickSelectDateRange from "./QuickSelectDateRange";
@@ -50,12 +50,12 @@ export function parseNhsCsvData(csvData) {
     return valueMap.get(endDate)[key];
   }
 
-  dates.forEach((date) => {
+  dates.forEach(date => {
     const {
       cases,
       deaths,
       cumulativeCases,
-      cumulativeDeaths,
+      cumulativeDeaths
     } = dateAggregateValuesMap.get(date);
 
     const positiveCases5DayWindow = get5DayDiff(
@@ -78,23 +78,23 @@ export function parseNhsCsvData(csvData) {
       y:
         totalCases5DayWindow === 0
           ? 0
-          : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
+          : (positiveCases5DayWindow * 100) / totalCases5DayWindow
     });
     dailyCasesPoints.push({
       t: date,
-      y: cases,
+      y: cases
     });
     dailyDeathsPoints.push({
       t: date,
-      y: deaths,
+      y: deaths
     });
     totalCasesPoints.push({
       t: date,
-      y: cumulativeCases,
+      y: cumulativeCases
     });
     totalDeathsPoints.push({
       t: date,
-      y: cumulativeDeaths,
+      y: cumulativeDeaths
     });
   });
 
@@ -103,7 +103,7 @@ export function parseNhsCsvData(csvData) {
     dailyCases: dailyCasesPoints,
     dailyDeaths: dailyDeathsPoints,
     totalCases: totalCasesPoints,
-    totalDeaths: totalDeathsPoints,
+    totalDeaths: totalDeathsPoints
   };
 }
 
@@ -114,7 +114,7 @@ const DataCharts = ({
   dateRange,
   setDateRange,
   maxDateRange,
-  setMaxDateRange,
+  setMaxDateRange
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -143,7 +143,7 @@ const DataCharts = ({
         dailyCases,
         dailyDeaths,
         totalCases,
-        totalDeaths,
+        totalDeaths
       } = parseNhsCsvData(healthBoardDataset);
 
       setPercentageCasesSeriesData(percentageCases);
@@ -163,7 +163,7 @@ const DataCharts = ({
           percentageCasesDatasetLabel,
           percentageCasesSeriesData,
           DATASET_COLOUR
-        ),
+        )
       ];
       const configuration = commonChartConfiguration(datasets, dateRange);
 
@@ -180,11 +180,11 @@ const DataCharts = ({
         bodyFontColor: "#000000",
         borderColor: "DarkGray;",
         borderWidth: 1,
-        position: "nearest",
+        position: "nearest"
       };
       configuration.options.annotation.annotations = [
         ...configuration.options.annotation.annotations,
-        getWhoThresholdLine(),
+        getWhoThresholdLine()
       ];
 
       return configuration;
@@ -192,7 +192,7 @@ const DataCharts = ({
 
     function basicChartConfiguration(datasetLabel, seriesData) {
       const datasets = [
-        datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
+        datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR)
       ];
       return commonChartConfiguration(datasets, dateRange);
     }
@@ -249,7 +249,7 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    dateRange,
+    dateRange
   ]);
 
   const isDataReady = () => {
@@ -278,21 +278,13 @@ const DataCharts = ({
   return (
     <Container className="chart-border">
       <Row className="chart-dropdown-container">
-      <Col className="chart-title">
-      <span>Scotland Total</span>
-        <ChartDropdown chartType={chartType} setChartType={setChartType} />
+        <Col className="chart-title">
+        <h2>Select Chart:</h2>
+          <ChartDropdown chartType={chartType} setChartType={setChartType} />
 
-      </Col>
-      <Col>
-        <SonificationPlayButton
-          className="sonification-play-button"
-          seriesData={audio}
-          seriesTitle={seriesTitle}
-          dateRange={dateRange}
-        />
-      </Col>
+        </Col>
       </Row>
-      <Row>
+      <Row className="chart-dropdown-container">
         <QuickSelectDateRange
           dateRange={dateRange}
           setDateRange={setDateRange}
@@ -306,6 +298,12 @@ const DataCharts = ({
           dateRange={dateRange}
           setDateRange={setDateRange}
           healthBoardDataset={healthBoardDataset}
+        />
+        <SonificationPlayButton
+          className="sonification-play-button"
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          dateRange={dateRange}
         />
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />
