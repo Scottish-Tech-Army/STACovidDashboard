@@ -24,6 +24,7 @@ import QuickSelectDateRange from "./QuickSelectDateRange";
 import ChartDropdown from "../ChartDropdown/ChartDropdown";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -180,18 +181,6 @@ const DataCharts = ({
         borderColor: "DarkGray;",
         borderWidth: 1,
         position: "nearest",
-        callbacks: {
-          label: (tooltipItem, data) => {
-            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive";
-            return chartLabel;
-          },
-          labelColor: (tooltipItem, data) => {
-            return {
-              backgroundColor: "#ec6730",
-              borderColor: "#ec6730",
-            };
-          },
-        },
       };
       configuration.options.annotation.annotations = [
         ...configuration.options.annotation.annotations,
@@ -288,8 +277,22 @@ const DataCharts = ({
 
   return (
     <Container className="chart-border">
-      <Row className="date-range-selector">
+      <Row className="chart-dropdown-container">
+      <Col className="chart-title">
+      <span>Scotland Total</span>
         <ChartDropdown chartType={chartType} setChartType={setChartType} />
+
+      </Col>
+      <Col>
+        <SonificationPlayButton
+          className="sonification-play-button"
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          dateRange={dateRange}
+        />
+      </Col>
+      </Row>
+      <Row>
         <QuickSelectDateRange
           dateRange={dateRange}
           setDateRange={setDateRange}
@@ -297,18 +300,13 @@ const DataCharts = ({
           setMaxDateRange={setMaxDateRange}
         />
       </Row>
-      <Row>
-      <DateRangeSlider
-        dateRange={dateRange}
-        setDateRange={setDateRange}
-        healthBoardDataset={healthBoardDataset}
-      />
-        <SonificationPlayButton
-          seriesData={audio}
-          seriesTitle={seriesTitle}
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
           dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
         />
-
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />
         </div>

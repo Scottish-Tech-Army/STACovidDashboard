@@ -34,7 +34,7 @@ export function getMarks({ startDate, endDate }) {
       label: moment.utc(endDate).format("DD MMM, YYYY")
     }
   ];
-  let tickDate = moment.utc(startDate).startOf("month");
+  let tickDate = moment.utc(startDate);
   while (tickDate.isBefore(endDate)) {
     if (tickDate.isAfter(startDate)) {
       result.push({ value: tickDate.valueOf() });
@@ -46,16 +46,16 @@ export function getMarks({ startDate, endDate }) {
 
 const DateSlider = withStyles({
   root: {
-    color: "#133a53",
+    color: "#bfbfbf",
     height: 3,
     padding: "13px 0"
   },
   thumb: {
-    height: 27,
-    width: 27,
+    height: 35,
+    width: 35,
     backgroundColor: "#ffffff",
-    color: "#6C6C6C",
-    border: "1px solid #6C6C6C",
+    color: "#007EB9",
+    border: "2px solid #007EB9",
     marginTop: -12,
     marginLeft: -13,
     boxShadow: "#ebebeb 0 2px 2px",
@@ -81,7 +81,7 @@ const DateSlider = withStyles({
     }
   },
   track: {
-    height: 5
+    height: 7.5
   },
   rail: {
     color: "#d8d8d8",
@@ -89,14 +89,14 @@ const DateSlider = withStyles({
     height: 5
   },
   mark: {
-    backgroundColor: "#bfbfbf",
-    height: 15,
+    backgroundColor: "#6C6C6C",
+    height: 20,
     width: 1,
-    marginTop: -3
+    marginTop: -5
   },
   markActive: {
     opacity: 1,
-    backgroundColor: "currentColor"
+    backgroundColor: "#6C6C6C"
   }
 })(Slider);
 

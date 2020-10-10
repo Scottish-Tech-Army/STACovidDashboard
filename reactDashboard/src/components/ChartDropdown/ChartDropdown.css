@@ -1,3 +1,27 @@
 .selected-chart {
-  margin: 5px;
+  margin-top: 20px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  min-width: 200px;
+  height: 40px;
+  font-size: 1rem;
+  background-color: #ec6730;
+  border-color: #ec6730;
+  color: #ffffff
+}
+
+.selected-chart:hover {
+  background-color: #ec6730;
+  border-color: #ec6730;
+  color: #ffffff
+}
+
+.selected-chart.dropdown-toggle.btn.btn-primary {
+  background-color: #ec6730;
+  border-color: #ec6730;
+  color: #ffffff
+}
+
+.selected-chart.dropdown-toggle.btn.btn-primary:focus {
+  box-shadow: none;
 }

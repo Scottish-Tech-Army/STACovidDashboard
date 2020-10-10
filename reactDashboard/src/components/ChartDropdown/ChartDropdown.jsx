@@ -32,7 +32,6 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
   return (
     <Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
       <Dropdown.Toggle
-        variant="primary"
         className="selected-chart"
         value={getChartTypeText(chartType)}
         title={getChartTypeText(chartType)}

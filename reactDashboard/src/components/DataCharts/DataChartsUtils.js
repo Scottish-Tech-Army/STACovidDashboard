@@ -8,12 +8,12 @@ import {
 } from "../DataCharts/DataChartsConsts";
 
 const keyDates = [
-  { date: Date.parse("2020-03-24"), name: "Lockdown" },
-  { date: Date.parse("2020-05-29"), name: "Phase 1" },
-  { date: Date.parse("2020-06-19"), name: "Phase 2" },
-  { date: Date.parse("2020-07-10"), name: "Phase 3" },
-  { date: Date.parse("2020-07-15"), name: "Bars reopen" },
-  { date: Date.parse("2020-08-11"), name: "Schools reopen" },
+  { date: Date.parse("2020-03-24"), name: "LOCKDOWN" },
+  { date: Date.parse("2020-05-29"), name: "PHASE 1" },
+  { date: Date.parse("2020-06-19"), name: "PHASE 2" },
+  { date: Date.parse("2020-07-10"), name: "PHASE 3" },
+  { date: Date.parse("2020-07-15"), name: "BARS REOPEN" },
+  { date: Date.parse("2020-08-11"), name: "SCHOOLS REOPEN" },
 ];
 
 function getDateLine({ date, name }, index) {
@@ -26,10 +26,12 @@ function getDateLine({ date, name }, index) {
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: "white",
-      fontColor: "black",
-      xPadding: 0,
-      yPadding: 0,
+      backgroundColor: "#007EB9",
+      fontColor: "#ffffff",
+      fontStyle: "bold",
+      cornerRadius: 2,
+      xPadding: 10,
+      yPadding: 3,
       position: "top",
       enabled: true,
       yAdjust: index * 20,
@@ -118,8 +120,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         ],
       },
       legend: {
-        position: "bottom",
-        onClick: function(event, legendItem) {}
+        display: false,
       },
       annotation: {
         annotations: keyDates.map(getDateLine),
