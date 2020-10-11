@@ -15,8 +15,11 @@
   color: #000000;
   border-radius: 10px;
   padding: 20px;
-
   border: 0.25px solid LightGray;
+}
+
+.tooltip-inner {
+  text-align: left;
 }
 
 .tooltip.show {
