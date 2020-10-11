@@ -18,7 +18,7 @@ export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
 
   return {
     startDate: dates[0],
-    endDate: dates.pop()
+    endDate: dates.pop(),
   };
 }
 
@@ -26,14 +26,14 @@ export function readCsvData(csvData) {
   var allTextLines = csvData
     .toString()
     .split(/\r\n|\n/)
-    .filter(line => line.trim().length > 0);
+    .filter((line) => line.trim().length > 0);
   var lines = [];
 
   // Remove the column header row
   allTextLines.shift();
 
-  allTextLines.forEach(line => {
-    const splitline = line.split(",").map(s => s.trim());
+  allTextLines.forEach((line) => {
+    const splitline = line.split(",").map((s) => s.trim());
     if (isValidCsvRow(splitline)) {
       lines.push(splitline);
     } else {
@@ -75,7 +75,7 @@ export function createPlaceDateValuesMap(lines) {
         crudeRatePositive,
         v3,
         dailyDeaths,
-        cumulativeDeaths
+        cumulativeDeaths,
       ],
       i
     ) => {
@@ -89,7 +89,7 @@ export function createPlaceDateValuesMap(lines) {
         deaths: Number(dailyDeaths),
         cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
-        crudeRatePositive: Number(crudeRatePositive)
+        crudeRatePositive: Number(crudeRatePositive),
       });
       dateSet.add(date);
     }
@@ -114,7 +114,7 @@ export function createDateAggregateValuesMap(lines) {
     (
       [
         dateString,
-        v1,
+        featureCode,
         v5,
         dailyCases,
         cumulativeCases,
@@ -123,29 +123,31 @@ export function createDateAggregateValuesMap(lines) {
         dailyDeaths,
         cumulativeDeaths,
         v4,
-        cumulativeNegativeTests
+        cumulativeNegativeTests,
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-      if (!result.has(date)) {
+      if (featureCode !== FEATURE_CODE_SCOTLAND) {
+        const date = moment.utc(dateString).valueOf();
+        if (!result.has(date)) {
+          result.set(date, {
+            cases: 0,
+            deaths: 0,
+            cumulativeCases: 0,
+            cumulativeDeaths: 0,
+            cumulativeNegativeTests: 0,
+          });
+        }
+        var values = result.get(date);
         result.set(date, {
-          cases: 0,
-          deaths: 0,
-          cumulativeCases: 0,
-          cumulativeDeaths: 0,
-          cumulativeNegativeTests: 0
+          cases: values.cases + Number(dailyCases),
+          deaths: values.deaths + Number(dailyDeaths),
+          cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
+          cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
+          cumulativeNegativeTests:
+            values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
         });
       }
-      var values = result.get(date);
-      result.set(date, {
-        cases: values.cases + Number(dailyCases),
-        deaths: values.deaths + Number(dailyDeaths),
-        cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
-        cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-        cumulativeNegativeTests:
-          values.cumulativeNegativeTests + Number(cumulativeNegativeTests)
-      });
     }
   );
 
@@ -157,13 +159,13 @@ const queryUrl = "/data/";
 // Retrieve a cached csv response, do some processing on it, then store the processed result
 export async function fetchAndStore(datasetName, setDataset, processCsvData) {
   fetch(queryUrl + datasetName, {
-    method: "GET"
+    method: "GET",
   })
-    .then(res => res.text())
-    .then(csvData => {
+    .then((res) => res.text())
+    .then((csvData) => {
       setDataset(processCsvData(csvData));
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
     });
 }
@@ -172,11 +174,8 @@ export async function fetchAndStore(datasetName, setDataset, processCsvData) {
 export function parse7DayWindowCsvData(csvData) {
   const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
   const endDate = dates[dates.length - 1];
-  const startDate = moment
-    .utc(endDate)
-    .subtract(6, "days")
-    .valueOf();
-  const filteredDates = dates.filter(date => date >= startDate);
+  const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
+  const filteredDates = dates.filter((date) => date >= startDate);
 
   var scotlandTotalCases = 0;
   var scotlandTotalDeaths = 0;
@@ -185,7 +184,7 @@ export function parse7DayWindowCsvData(csvData) {
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
     var regionTotalCases = 0;
     var regionTotalDeaths = 0;
-    filteredDates.forEach(date => {
+    filteredDates.forEach((date) => {
       const values = dateValuesMap.get(date);
       if (values !== undefined) {
         regionTotalCases += values.cases;
@@ -197,7 +196,7 @@ export function parse7DayWindowCsvData(csvData) {
       deaths: regionTotalDeaths,
       fromDate: filteredDates[0],
       name: getPlaceNameByFeatureCode(featureCode),
-      toDate: endDate
+      toDate: endDate,
     });
     scotlandTotalCases += regionTotalCases;
     scotlandTotalDeaths += regionTotalDeaths;
@@ -208,7 +207,7 @@ export function parse7DayWindowCsvData(csvData) {
     deaths: scotlandTotalDeaths,
     fromDate: filteredDates[0],
     name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
-    toDate: endDate
+    toDate: endDate,
   });
 
   return regions;
@@ -266,7 +265,7 @@ export const FEATURE_CODE_COUNCIL_AREAS_MAP = {
   S12000029: "South Lanarkshire",
   S12000030: "Stirling",
   S12000039: "West Dunbartonshire",
-  S12000040: "West Lothian"
+  S12000040: "West Lothian",
 };
 
 export const FEATURE_CODE_COUNCIL_AREAS = Object.keys(
@@ -287,7 +286,7 @@ export const FEATURE_CODE_HEALTH_BOARDS_MAP = {
   S08000025: "Orkney",
   S08000026: "Shetland",
   S08000030: "Tayside",
-  S08000028: "Western Isles"
+  S08000028: "Western Isles",
 };
 
 export const FEATURE_CODE_HEALTH_BOARDS = Object.keys(
@@ -297,7 +296,7 @@ export const FEATURE_CODE_HEALTH_BOARDS = Object.keys(
 export const FEATURE_CODE_MAP = {
   S92000003: "Scotland",
   ...FEATURE_CODE_HEALTH_BOARDS_MAP,
-  ...FEATURE_CODE_COUNCIL_AREAS_MAP
+  ...FEATURE_CODE_COUNCIL_AREAS_MAP,
 };
 
 export function getPlaceNameByFeatureCode(featureCode) {
