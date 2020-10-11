@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import SonificationPlayButton from "./SonificationPlayButton";
 import {
@@ -19,8 +20,10 @@ import {
   datasetConfiguration,
 } from "./DataChartsUtils";
 import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
@@ -140,6 +143,7 @@ export function parseNhsCsvData(csvData) {
 
 const RegionDataCharts = ({
   chartType = DAILY_CASES,
+  setChartType,
   healthBoardDataset = null,
   councilAreaDataset = null,
   regionCode = null,
@@ -348,7 +352,14 @@ const RegionDataCharts = ({
 
   return (
     <Container className="chart-border">
-      <Row className="date-range-selector">
+    <Row className="chart-dropdown-container">
+      <Col className="chart-title">
+      <h2>Select Chart:</h2>
+        <ChartDropdown chartType={chartType} setChartType={setChartType} />
+
+      </Col>
+    </Row>
+      <Row className="chart-dropdown-container">
         <QuickSelectDateRange
           dateRange={dateRange}
           setDateRange={setDateRange}
@@ -356,7 +367,14 @@ const RegionDataCharts = ({
           setMaxDateRange={setMaxDateRange}
         />
       </Row>
-      <Row>
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+          councilAreaDataset={councilAreaDataset}
+        />
         <SonificationPlayButton
           seriesData={audio}
           seriesTitle={seriesTitle}

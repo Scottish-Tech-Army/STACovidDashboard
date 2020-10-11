@@ -222,7 +222,6 @@ function DateRangeSlider({
         max={maxDateRange.endDate}
         onChange={handleDateChange}
         marks={getMarks(maxDateRange)}
-        onChange={handleDateChange}
       />
     </div>
   );
