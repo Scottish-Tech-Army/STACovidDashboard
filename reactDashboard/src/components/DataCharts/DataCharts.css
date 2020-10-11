@@ -63,14 +63,14 @@
 
 .sonification-play-button {
   position: absolute;
-  top: 30px;
+  top: 20px;
   right: 40px;
   background-color: #ffffff;
   font-size: 0.5rem;
   border: 1px solid #6c6c6c;
   border-radius: 10px;
   padding: 7px;
-  min-width: 50px;
+  width: 8em;
 }
 
 .sonification-play-button:hover {
@@ -131,17 +131,18 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   .sonification-play-button {
     font-size: 0.4rem;
     padding: 10px 5px;
     top: 20px;
+
   }
   .sonification-play-button h5 {
     font-size: 0.5rem;
   }
   .chart-border {
-    padding: 20px 20px 80px 20px;
+    padding: 20px 20px 80px;
   }
 }
 

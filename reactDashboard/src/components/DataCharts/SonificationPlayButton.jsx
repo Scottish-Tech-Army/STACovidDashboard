@@ -68,7 +68,7 @@ const SonificationPlayButton = ({
         size="2x"
         color="#6c6c6c"
       />
-      <h5>{audioPlaying ? "Playing" : "Listen"}</h5></span>
+      <h5>{audioPlaying ? "Stop" : "Listen"}</h5></span>
     </button>
   );
 };

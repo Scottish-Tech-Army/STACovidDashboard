@@ -355,7 +355,7 @@ const RegionDataCharts = ({
     <Row className="chart-dropdown-container">
       <Col className="chart-title">
       <h2>Select Chart:</h2>
-        <ChartDropdown chartType={chartType} setChartType={setChartType} />
+        <ChartDropdown chartType={chartType} setChartType={setChartType} showPercentageTests={false} />
 
       </Col>
     </Row>

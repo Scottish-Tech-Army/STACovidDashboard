@@ -18,7 +18,7 @@ function generate12TETTones() {
     tones.push(tones[tones.length - 1] * 1.059463);
   }
   // Drop A4 to B4
-  return tones.slice(3).map(v => Math.round(v));
+  return tones.slice(3).map((v) => Math.round(v));
 }
 
 // 12-TET scale from C4 to G#6
@@ -28,7 +28,7 @@ const MAX_TONE = TONES[TONES.length - 1];
 
 function convertDataToFrequencies(seriesData, maxDataValue) {
   const binSize = maxDataValue / (TONES.length - 1);
-  return seriesData.map(value => TONES[Math.ceil(value / binSize)]);
+  return seriesData.map((value) => TONES[Math.ceil(value / binSize)]);
 }
 
 // Pick the nearest halfcycle time after the minimumDuration (when the waveform is at a 0 point)
@@ -44,8 +44,8 @@ function waitForSpeech(message) {
     return;
   }
   return new Promise((resolve, reject) => {
-    var msg = new SpeechSynthesisUtterance(message);
-    msg.onerror = event => {
+    utterance = new SpeechSynthesisUtterance(message);
+    utterance.onerror = (event) => {
       console.error("web speech error");
       console.error(event);
       utterance = null;
@@ -53,7 +53,7 @@ function waitForSpeech(message) {
     utterance.onend = () => {
       utterance = null;
       resolve();
-    }
+    };
     window.speechSynthesis.speak(utterance);
   });
 }
@@ -94,7 +94,6 @@ function playDataIntroduction(
   place
 ) {
   if (webspeechAvailable()) {
-
     const startDate =
       dateRange == null
         ? "28th February"
@@ -220,9 +219,9 @@ export function playAudio(
 }
 
 /**
- * Return true if audio is currently playing.
+ * Return true iff audio is currently playing.
  *
- * @return {boolean} true if audio is currently playing.
+ * @return {boolean} true iff audio is currently playing.
  */
 export function isAudioPlaying() {
   return sonificationPlaying;
@@ -238,6 +237,7 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
+    sonificationToneOscillator.onended = undefined;
     sonificationToneOscillator.stop(
       sonificationToneOscillator.context.currentTime
     );
@@ -263,7 +263,7 @@ export function deletePlayStateChangeListener(onPlayStateChange) {
 }
 
 export function notifyPlayStateChangeListeners() {
-  playStateChangeListeners.forEach(item => {
+  playStateChangeListeners.forEach((item) => {
     item();
   });
 }

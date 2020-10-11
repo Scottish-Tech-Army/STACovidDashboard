@@ -11,7 +11,7 @@ import {
   TOTAL_DEATHS,
 } from "../DataCharts/DataChartsConsts";
 
-const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
+const ChartDropdown = ({ chartType = DAILY_CASES, setChartType, showPercentageTests=true }) => {
 
   function getChartTypeText(chartType) {
     let chartTypeText = "";
@@ -51,9 +51,9 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
         <Dropdown.Item id="totalDeaths" eventKey={TOTAL_DEATHS}>
           Total Deaths
         </Dropdown.Item>
-        <Dropdown.Item id="percentageCases" eventKey={PERCENTAGE_CASES}>
+        {showPercentageTests === true ? <Dropdown.Item id="percentageCases" eventKey={PERCENTAGE_CASES}>
           % Tests Positive
-        </Dropdown.Item>
+        </Dropdown.Item> : <></>}
       </Dropdown.Menu>
     </Dropdown>
   );
