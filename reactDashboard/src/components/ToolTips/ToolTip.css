@@ -11,11 +11,11 @@
 }
 
 #tooltip > .tooltip-inner {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #000000;
+  color: #ffffff;
   border-radius: 10px;
   padding: 20px;
-  border: 0.25px solid LightGray;
+  font-weight: bold;
 }
 
 .tooltip-inner {
