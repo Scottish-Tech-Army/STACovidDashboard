@@ -67,7 +67,7 @@
   right: 40px;
   background-color: #ffffff;
   font-size: 0.5rem;
-  border: 2px solid #007EB9;
+  border: 1px solid #6c6c6c;
   border-radius: 10px;
   padding: 7px;
   min-width: 50px;
@@ -86,7 +86,7 @@
 
 .sonification-play-button h5 {
   font-size: .75rem;
-  color: #007EB9;
+  color: #6c6c6c;
   margin-bottom: 0;
 }
 
@@ -124,7 +124,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 995px) {
   .sonification-play-button {
     top: 10px;
     right: 20px;

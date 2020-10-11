@@ -4,12 +4,20 @@
   margin-bottom: 10px;
   min-width: 220px;
   height: 35px;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 600px) {
   .selected-chart {
     margin-left: 5px;
+    width: 280px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .selected-chart {
+    margin-left: 5px;
+    width: 220px;
   }
 }
 
