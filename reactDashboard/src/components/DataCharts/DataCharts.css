@@ -6,7 +6,6 @@
   justify-content: center;
   background-color: #ffffff;
   position: relative;
-  width: 97.5%;
 }
 
 .chart-title h2 {
@@ -52,8 +51,8 @@
 .chart-container {
   height: 100%;
   width: 100%;
-  min-height: 450px;
-  max-height: 450px;
+  min-height: 400px;
+  max-height: 400px;
 }
 
 .region-chart-container {
@@ -64,13 +63,13 @@
 
 .sonification-play-button {
   position: absolute;
-  top: 20px;
+  top: 30px;
   right: 40px;
   background-color: #ffffff;
   font-size: 0.5rem;
-  border: 1px solid #6C6C6C;
-  border-radius: 100px;
-  padding: 10px 10px 5px;
+  border: 2px solid #007EB9;
+  border-radius: 10px;
+  padding: 7px;
   min-width: 50px;
 }
 
@@ -87,7 +86,8 @@
 
 .sonification-play-button h5 {
   font-size: .75rem;
-  color: #6C6C6C;
+  color: #007EB9;
+  margin-bottom: 0;
 }
 
 #date-range-slider-position {
@@ -126,6 +126,7 @@
 
 @media screen and (max-width: 768px) {
   .sonification-play-button {
+    top: 10px;
     right: 20px;
   }
 }
@@ -133,8 +134,14 @@
 @media screen and (max-width: 400px) {
   .sonification-play-button {
     font-size: 0.4rem;
-    padding: 10px 2px 2px;
-    border-radius: 100px;
+    padding: 10px 5px;
+    top: 20px;
+  }
+  .sonification-play-button h5 {
+    font-size: 0.5rem;
+  }
+  .chart-border {
+    padding: 20px 20px 80px 20px;
   }
 }
 

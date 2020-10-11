@@ -66,7 +66,7 @@ const SonificationPlayButton = ({
       <FontAwesomeIcon
         icon={audioPlaying ? faVolumeMute : faVolumeUp}
         size="2x"
-        color="#6C6C6C"
+        color="#007EB9"
       />
       <h5>{audioPlaying ? "Playing" : "Listen"}</h5></span>
     </button>

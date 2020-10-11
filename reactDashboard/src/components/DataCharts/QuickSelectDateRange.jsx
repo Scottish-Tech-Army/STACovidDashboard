@@ -5,12 +5,12 @@ import {
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
-  LAST_THREE_MONTHS,
+  LAST_THREE_MONTHS
 } from "../DataCharts/DataChartsConsts";
 import { calculateDateRange } from "./DataChartsUtils";
 
 function QuickSelectDateRange({ dateRange, setDateRange, maxDateRange }) {
-  const handleClick = (newTimePeriod) => {
+  const handleClick = newTimePeriod => {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
     setTimePeriod(newTimePeriod);
   };
@@ -19,19 +19,39 @@ function QuickSelectDateRange({ dateRange, setDateRange, maxDateRange }) {
 
   return (
     <>
-      <Button onClick={() => handleClick(ALL_DATES)} variant="outlined">
+      <Button
+        className="quick-select"
+        onClick={() => handleClick(ALL_DATES)}
+        variant="outlined"
+      >
         ALL
       </Button>
-      <Button onClick={() => handleClick(LAST_THREE_MONTHS)} variant="outlined">
+      <Button
+        className="quick-select"
+        onClick={() => handleClick(LAST_THREE_MONTHS)}
+        variant="outlined"
+      >
         Last 3M
       </Button>
-      <Button onClick={() => handleClick(LAST_MONTH)} variant="outlined">
+      <Button
+        className="quick-select"
+        onClick={() => handleClick(LAST_MONTH)}
+        variant="outlined"
+      >
         Last 1M
       </Button>
-      <Button onClick={() => handleClick(LAST_TWO_WEEKS)} variant="outlined">
+      <Button
+        className="quick-select"
+        onClick={() => handleClick(LAST_TWO_WEEKS)}
+        variant="outlined"
+      >
         Last 2W
       </Button>
-      <Button onClick={() => handleClick(LAST_WEEK)} variant="outlined">
+      <Button
+        className="quick-select"
+        onClick={() => handleClick(LAST_WEEK)}
+        variant="outlined"
+      >
         Last 1W
       </Button>
     </>
