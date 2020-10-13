@@ -49,7 +49,7 @@ const dropdownItem = (text) =>
 
 function click(dropDownButton) {
   act(() => {
-    dropDownButton.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    dropDownButton.dispatchEvent(new MouseEvent("click"));
     render(
       <RegionDropdown
         regionCode={storedRegionCode}
