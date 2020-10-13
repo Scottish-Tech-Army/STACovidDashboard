@@ -25,7 +25,7 @@ afterEach(() => {
 
 function click(button) {
   act(() => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    button.dispatchEvent(new MouseEvent("click"));
   });
 }
 
