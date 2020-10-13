@@ -77,6 +77,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                 OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TOTAL_COUNCIL_AREAS_URL);
         storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS,
                 OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TOTAL_HEALTH_BOARDS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS,
+                OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TESTS_HEALTH_BOARDS_URL);
     }
 
     private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
@@ -217,7 +219,9 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
     private final static String NHS_SCOT_TOTAL_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
             + "e8454cf0-1152-4bcb-b9da-4343f625dfef/download";
-
+    private final static String NHS_SCOT_TESTS_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
+            + "8da654cd-293b-4286-96a4-b3ece86225f0/download";
+    
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsDailyHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
@@ -226,6 +230,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "nhsTotalHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsTotalCouncilAreaLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsTestsHealthBoardLastModified.txt";
 
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
@@ -233,6 +239,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "currentTotalsHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS = OBJECT_FOLDER
             + "currentTotalsCouncilAreas.csv";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS = OBJECT_FOLDER
+            + "testsHealthBoards.csv";
 
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
