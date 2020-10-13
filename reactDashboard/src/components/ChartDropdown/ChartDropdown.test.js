@@ -1,5 +1,3 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValue"] }] */
-
 import React from "react";
 import ChartDropdown from "./ChartDropdown";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -35,10 +33,6 @@ function checkDropdownText() {
   expect(totalCasesDropdown().textContent).toBe("Total Cases");
   expect(totalDeathsDropdown().textContent).toBe("Total Deaths");
   expect(percentageCasesDropdown().textContent).toBe("% Tests Positive");
-}
-
-function checkStoredValue(expectedChartType) {
-  expect(storedChartType).toBe(expectedChartType);
 }
 
 const dailyCasesDropdown = () => container.querySelector("#dailyCases");
