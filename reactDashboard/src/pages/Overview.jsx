@@ -31,6 +31,10 @@ const Overview = ({
   const [chartType, setChartType] = useState(DAILY_CASES);
   const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 0 });
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 0,
+  });
 
   const zoomableMap = useRef();
 
@@ -70,11 +74,6 @@ const Overview = ({
       setter(false);
     }
   }
-
-  const [maxDateRange, setMaxDateRange] = useState({
-    startDate: 0,
-    endDate: 0,
-  });
 
   useEffect(() => {
     // Only attempt to fetch data once

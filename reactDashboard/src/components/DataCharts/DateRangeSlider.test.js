@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import DateRangeSlider from "./DateRangeSlider";
 import { readCsvData } from "../Utils/CsvUtils";
-
+import { getMarks } from "./DateRangeSlider";
 
 var container = null;
 beforeEach(() => {
@@ -46,47 +46,120 @@ const councilAreaDataset = readCsvData(nhsCouncilAreasCsvData);
 
 const dateRange = {
   startDate: Date.parse("2020-03-06"),
-  endDate: Date.parse("2020-03-06")
+  endDate: Date.parse("2020-03-06"),
 };
 
-describe("check maximum date ranges", () => {
-
-  const minimumDateValue = () =>
-    container
-      .querySelector(".MuiSlider-root .MuiSlider-thumb")
-      .getAttribute("aria-valuemin");
-
-  const maximumDateValue = () =>
-    container
-      .querySelector(".MuiSlider-root .MuiSlider-thumb")
-      .getAttribute("aria-valuemax");
-
-  it("healthBoards", async () => {
-    await act(async () => {
-      render(
-        <DateRangeSlider
-          healthBoardDataset={healthBoardDataset}
-          dateRange={dateRange}
-        />,
-        container
-      );
-    });
-    expect(minimumDateValue()).toStrictEqual(String(Date.parse("2020-03-02")));
-    expect(maximumDateValue()).toStrictEqual(String(Date.parse("2020-03-09")));
+describe("getMarks", () => {
+  it("normalRange", () => {
+    const expectedResult = [
+      {
+        value: Date.parse("2020-02-28"),
+        label: "28 Feb, 2020",
+      },
+      {
+        value: Date.parse("2020-04-02"),
+        label: "02 Apr, 2020",
+      },
+    ];
+    expect(
+      getMarks({
+        startDate: Date.parse("2020-02-28"),
+        endDate: Date.parse("2020-04-02"),
+      })
+    ).toStrictEqual(expectedResult);
+  });
+  it("firstOfMonth", () => {
+    const expectedResult = [
+      {
+        value: Date.parse("2020-02-01"),
+        label: "01 Feb, 2020",
+      },
+      {
+        value: Date.parse("2020-06-01"),
+        label: "01 Jun, 2020",
+      },
+    ];
+    expect(
+      getMarks({
+        startDate: Date.parse("2020-02-01"),
+        endDate: Date.parse("2020-06-01"),
+      })
+    ).toStrictEqual(expectedResult);
+  });
+  it("defaultValues", () => {
+    const expectedResult = [];
+    expect(
+      getMarks({
+        startDate: 0,
+        endDate: 0,
+      })
+    ).toStrictEqual(expectedResult);
   });
 
-  it("both datasets", async () => {
-    await act(async () => {
-      render(
-        <DateRangeSlider
-          healthBoardDataset={healthBoardDataset}
-          councilAreaDataset={councilAreaDataset}
-          dateRange={dateRange}
-        />,
-        container
+  describe("check maximum date ranges", () => {
+    const minimumDateValue = () =>
+      container
+        .querySelector(".MuiSlider-root .MuiSlider-thumb")
+        .getAttribute("aria-valuemin");
+
+    const maximumDateValue = () =>
+      container
+        .querySelector(".MuiSlider-root .MuiSlider-thumb")
+        .getAttribute("aria-valuemax");
+
+    it("healthBoards", async () => {
+      await act(async () => {
+        render(
+          <DateRangeSlider
+            healthBoardDataset={healthBoardDataset}
+            dateRange={dateRange}
+          />,
+          container
+        );
+      });
+      expect(minimumDateValue()).toStrictEqual(
+        String(Date.parse("2020-03-02"))
+      );
+      expect(maximumDateValue()).toStrictEqual(
+        String(Date.parse("2020-03-09"))
       );
     });
-    expect(minimumDateValue()).toStrictEqual(String(Date.parse("2020-02-28")));
-    expect(maximumDateValue()).toStrictEqual(String(Date.parse("2020-03-09")));
+
+    it("healthBoards", async () => {
+      await act(async () => {
+        render(
+          <DateRangeSlider
+            healthBoardDataset={null}
+            dateRange={dateRange}
+          />,
+          container
+        );
+      });
+      expect(minimumDateValue()).toStrictEqual(
+        "0")
+
+      expect(maximumDateValue()).toStrictEqual(
+        "0")
+
+    });
+
+    it("both datasets", async () => {
+      await act(async () => {
+        render(
+          <DateRangeSlider
+            healthBoardDataset={healthBoardDataset}
+            councilAreaDataset={councilAreaDataset}
+            dateRange={dateRange}
+          />,
+          container
+        );
+      });
+      expect(minimumDateValue()).toStrictEqual(
+        String(Date.parse("2020-02-28"))
+      );
+      expect(maximumDateValue()).toStrictEqual(
+        String(Date.parse("2020-03-09"))
+      );
+    });
   });
 });

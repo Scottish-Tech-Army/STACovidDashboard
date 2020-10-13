@@ -14,17 +14,28 @@ import {
 const ChartDropdown = ({ chartType = DAILY_CASES, setChartType, showPercentageTests=true }) => {
 
   function getChartTypeText(chartType) {
+
     let chartTypeText = "";
-    if (chartType === "dailyCases") {
-      chartTypeText = "Daily Cases";
-    } else if (chartType === "totalCases") {
-      chartTypeText = "Total Cases";
-    } else if (chartType === "dailyDeaths") {
-      chartTypeText = "Daily Deaths";
-    } else if (chartType === "totalDeaths") {
-      chartTypeText = "Total Deaths";
-    } else if (chartType === "percentCases") {
-      chartTypeText = "% Positive Cases";
+
+    switch(chartType) {
+      case "dailyCases":
+        chartTypeText = "Daily Cases";
+        break;
+      case "totalCases":
+        chartTypeText = "Total Cases";
+        break;
+      case "dailyDeaths":
+        chartTypeText = "Daily Deaths";
+        break;
+      case "totalDeaths":
+        chartTypeText = "Total Deaths";
+        break;
+      case "percentCases":
+        chartTypeText = "% Positive Cases";
+        break;
+      default:
+        throw new Error("Unrecognised chartType: " + chartType);
+
     }
     return chartTypeText;
   }

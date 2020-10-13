@@ -179,5 +179,5 @@ export function calculateDateRange(maxDateRange, timePeriod) {
   }
 
   return { startDate: startDate, endDate: endDate };
-  
+
 }

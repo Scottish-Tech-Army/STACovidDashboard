@@ -3,7 +3,6 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import moment from "moment";
 import {
-  createDateAggregateValuesMap,
   getNhsCsvDataDateRange
 } from "../Utils/CsvUtils";
 import "./DataCharts.css";
@@ -101,86 +100,6 @@ function sliderThumbComponent(props) {
       <span className="bar" />
     </span>
   );
-}
-
-export function parseNhsCsvData(csvData) {
-  const dateAggregateValuesMap = createDateAggregateValuesMap(csvData);
-
-  const dates = [...dateAggregateValuesMap.keys()].sort();
-
-  const percentageCasesPoints = [];
-  const dailyCasesPoints = [];
-  const dailyDeathsPoints = [];
-  const totalCasesPoints = [];
-  const totalDeathsPoints = [];
-
-  function get5DayDiff(valueMap, key, endDate, dateSet) {
-    const maximumStartDate = moment(endDate).subtract(5, "days");
-    for (let i = dateSet.length - 1; i >= 0; i--) {
-      if (maximumStartDate.isSameOrAfter(dateSet[i])) {
-        const startDate = dateSet[i];
-        return valueMap.get(endDate)[key] - valueMap.get(startDate)[key];
-      }
-    }
-    // Entire dataset is within the 5 day window - just return the end cumulative total
-    return valueMap.get(endDate)[key];
-  }
-
-  dates.forEach(date => {
-    const {
-      cases,
-      deaths,
-      cumulativeCases,
-      cumulativeDeaths
-    } = dateAggregateValuesMap.get(date);
-
-    const positiveCases5DayWindow = get5DayDiff(
-      dateAggregateValuesMap,
-      "cumulativeCases",
-      date,
-      dates
-    );
-    const negativeCases5DayWindow = get5DayDiff(
-      dateAggregateValuesMap,
-      "cumulativeNegativeTests",
-      date,
-      dates
-    );
-    const totalCases5DayWindow =
-      positiveCases5DayWindow + negativeCases5DayWindow;
-
-    percentageCasesPoints.push({
-      t: date,
-      y:
-        totalCases5DayWindow === 0
-          ? 0
-          : (positiveCases5DayWindow * 100) / totalCases5DayWindow
-    });
-    dailyCasesPoints.push({
-      t: date,
-      y: cases
-    });
-    dailyDeathsPoints.push({
-      t: date,
-      y: deaths
-    });
-    totalCasesPoints.push({
-      t: date,
-      y: cumulativeCases
-    });
-    totalDeathsPoints.push({
-      t: date,
-      y: cumulativeDeaths
-    });
-  });
-
-  return {
-    percentageCases: percentageCasesPoints,
-    dailyCases: dailyCasesPoints,
-    dailyDeaths: dailyDeathsPoints,
-    totalCases: totalCasesPoints,
-    totalDeaths: totalDeathsPoints
-  };
 }
 
 function DateRangeSlider({

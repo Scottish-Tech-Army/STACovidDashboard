@@ -19,11 +19,13 @@ afterEach(() => {
   container = null;
 });
 
+const MAX_DATE_RANGE = { startDate: 0, endDate: 1 };
+
 test("dataCharts renders default data input dataset is null", async () => {
   global.suppressConsoleErrorLogs();
 
   await act(async () => {
-    render(<DataCharts />, container);
+    render(<DataCharts maxDateRange={MAX_DATE_RANGE} />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -32,7 +34,13 @@ test("dataCharts renders default data input dataset is null", async () => {
 
 test("dataCharts renders dynamic fetched data", async () => {
   await act(async () => {
-    render(<DataCharts healthBoardDataset={healthBoardDataset}/>, container);
+    render(
+      <DataCharts
+        healthBoardDataset={healthBoardDataset}
+        maxDateRange={MAX_DATE_RANGE}
+      />,
+      container
+    );
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -49,9 +57,18 @@ test("parseNhsCsvData", () => {
       { t: Date.parse("2020-03-04"), y: (100 * 4) / (4 + 25) },
       { t: Date.parse("2020-03-05"), y: (100 * 8) / (8 + 125) },
       { t: Date.parse("2020-03-06"), y: (100 * 16) / (16 + 625) },
-      { t: Date.parse("2020-03-07"), y: (100 * (32 - 1)) / (32 - 1 + 3125 - 1) },
-      { t: Date.parse("2020-03-08"), y: (100 * (64 - 2)) / (64 - 2 + 15625 - 5) },
-      { t: Date.parse("2020-03-09"), y: (100 * (128 - 4)) / (128 - 4 + 78625 - 25) },
+      {
+        t: Date.parse("2020-03-07"),
+        y: (100 * (32 - 1)) / (32 - 1 + 3125 - 1),
+      },
+      {
+        t: Date.parse("2020-03-08"),
+        y: (100 * (64 - 2)) / (64 - 2 + 15625 - 5),
+      },
+      {
+        t: Date.parse("2020-03-09"),
+        y: (100 * (128 - 4)) / (128 - 4 + 78625 - 25),
+      },
     ],
     dailyCases: [
       { t: Date.parse("2020-03-02"), y: 10 },
