@@ -112,13 +112,7 @@ describe("selectDateRange", () => {
   it("missing dates", () => {
     global.suppressConsoleErrorLogs();
     expect(() => {
-      render(
-        <QuickSelectDateRange
-          setDateRange={setDateRange}
-        />,
-        container
-      );
+      render(<QuickSelectDateRange setDateRange={setDateRange} />, container);
     }).toThrow("missing maxDateRange");
   });
-
 });

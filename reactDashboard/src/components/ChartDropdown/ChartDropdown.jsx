@@ -11,13 +11,15 @@ import {
   TOTAL_DEATHS,
 } from "../DataCharts/DataChartsConsts";
 
-const ChartDropdown = ({ chartType = DAILY_CASES, setChartType, showPercentageTests=true }) => {
-
+const ChartDropdown = ({
+  chartType = DAILY_CASES,
+  setChartType,
+  showPercentageTests = true,
+}) => {
   function getChartTypeText(chartType) {
-
     let chartTypeText = "";
 
-    switch(chartType) {
+    switch (chartType) {
       case "dailyCases":
         chartTypeText = "Daily Cases";
         break;
@@ -35,7 +37,6 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType, showPercentageTe
         break;
       default:
         throw new Error("Unrecognised chartType: " + chartType);
-
     }
     return chartTypeText;
   }
@@ -62,9 +63,13 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType, showPercentageTe
         <Dropdown.Item id="totalDeaths" eventKey={TOTAL_DEATHS}>
           Total Deaths
         </Dropdown.Item>
-        {showPercentageTests === true ? <Dropdown.Item id="percentageCases" eventKey={PERCENTAGE_CASES}>
-          % Tests Positive
-        </Dropdown.Item> : <></>}
+        {showPercentageTests === true ? (
+          <Dropdown.Item id="percentageCases" eventKey={PERCENTAGE_CASES}>
+            % Tests Positive
+          </Dropdown.Item>
+        ) : (
+          <></>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );

@@ -62,13 +62,15 @@ const SonificationPlayButton = ({
       className="sonification-play-button"
       onClick={handleAudio}
       title={createTitle()}
-    ><span>
-      <FontAwesomeIcon
-        icon={audioPlaying ? faVolumeMute : faVolumeUp}
-        size="2x"
-        color="#6c6c6c"
-      />
-      <h5>{audioPlaying ? "Stop" : "Listen"}</h5></span>
+    >
+      <span>
+        <FontAwesomeIcon
+          icon={audioPlaying ? faVolumeMute : faVolumeUp}
+          size="2x"
+          color="#6c6c6c"
+        />
+        <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
+      </span>
     </button>
   );
 };

@@ -352,13 +352,16 @@ const RegionDataCharts = ({
 
   return (
     <Container className="chart-border">
-    <Row className="chart-dropdown-container">
-      <Col className="chart-title">
-      <h2>Select Chart:</h2>
-        <ChartDropdown chartType={chartType} setChartType={setChartType} showPercentageTests={false} />
-
-      </Col>
-    </Row>
+      <Row className="chart-dropdown-container">
+        <Col className="chart-title">
+          <h2>Select Chart:</h2>
+          <ChartDropdown
+            chartType={chartType}
+            setChartType={setChartType}
+            showPercentageTests={false}
+          />
+        </Col>
+      </Row>
       <Row className="chart-dropdown-container">
         <QuickSelectDateRange
           dateRange={dateRange}

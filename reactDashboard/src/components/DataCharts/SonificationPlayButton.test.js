@@ -5,7 +5,7 @@ import {
   playAudio,
   isAudioPlaying,
   addPlayStateChangeListener,
-  deletePlayStateChangeListener
+  deletePlayStateChangeListener,
 } from "../Utils/Sonification";
 import SonificationPlayButton from "./SonificationPlayButton";
 
@@ -30,12 +30,12 @@ jest.mock("../Utils/Sonification", () => {
     isAudioPlaying: jest.fn(() => {
       return storedIsAudioPlaying;
     }),
-    addPlayStateChangeListener: jest.fn(listener => {
+    addPlayStateChangeListener: jest.fn((listener) => {
       storedListener = listener;
     }),
     deletePlayStateChangeListener: jest.fn(() => {
       storedListener = null;
-    })
+    }),
   };
 });
 
@@ -52,12 +52,12 @@ const seriesData = [
   { t: Date.parse("2020-03-07"), y: 2 },
   { t: Date.parse("2020-03-08"), y: 3 },
   { t: Date.parse("2020-03-09"), y: 4 },
-  { t: Date.parse("2020-03-10"), y: 51 }
+  { t: Date.parse("2020-03-10"), y: 51 },
 ];
 
 const dateRange = {
   startDate: Date.parse("2020-03-03"),
-  endDate: Date.parse("2020-03-07")
+  endDate: Date.parse("2020-03-07"),
 };
 
 const playButton = () => container.querySelector(".sonification-play-button");
@@ -160,7 +160,12 @@ test("minimum input play/stop behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(1);
-  expect(playAudio).toHaveBeenLastCalledWith("No data", seriesData, null, "Scotland");
+  expect(playAudio).toHaveBeenLastCalledWith(
+    "No data",
+    seriesData,
+    null,
+    "Scotland"
+  );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(1);
   expect(playButton().title).toBe("Stop listening");
@@ -172,7 +177,12 @@ test("minimum input play/stop behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(2);
-  expect(playAudio).toHaveBeenLastCalledWith("No data", seriesData, null, "Scotland");
+  expect(playAudio).toHaveBeenLastCalledWith(
+    "No data",
+    seriesData,
+    null,
+    "Scotland"
+  );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(2);
   expect(playButton().title).toBe(

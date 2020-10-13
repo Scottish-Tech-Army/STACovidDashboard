@@ -128,19 +128,13 @@ describe("getMarks", () => {
     it("healthBoards", async () => {
       await act(async () => {
         render(
-          <DateRangeSlider
-            healthBoardDataset={null}
-            dateRange={dateRange}
-          />,
+          <DateRangeSlider healthBoardDataset={null} dateRange={dateRange} />,
           container
         );
       });
-      expect(minimumDateValue()).toStrictEqual(
-        "0")
+      expect(minimumDateValue()).toStrictEqual("0");
 
-      expect(maximumDateValue()).toStrictEqual(
-        "0")
-
+      expect(maximumDateValue()).toStrictEqual("0");
     });
 
     it("both datasets", async () => {

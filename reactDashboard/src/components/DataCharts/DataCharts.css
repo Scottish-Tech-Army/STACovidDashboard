@@ -45,7 +45,7 @@
   .container-sm,
   .container-xl {
     max-width: 100%;
-}
+  }
 }
 
 .chart-container {
@@ -85,7 +85,7 @@
 }
 
 .sonification-play-button h5 {
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: #6c6c6c;
   margin-bottom: 0;
 }
@@ -136,7 +136,6 @@
     font-size: 0.4rem;
     padding: 10px 5px;
     top: 20px;
-
   }
   .sonification-play-button h5 {
     font-size: 0.5rem;

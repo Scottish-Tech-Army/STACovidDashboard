@@ -5,7 +5,7 @@ import {
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
-  LAST_THREE_MONTHS
+  LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
 import { calculateDateRange } from "./DataChartsUtils";
 
@@ -13,7 +13,7 @@ function QuickSelectDateRange({ maxDateRange, setDateRange }) {
   if (maxDateRange === undefined) {
     throw new Error("missing maxDateRange");
   }
-  const handleClick = newTimePeriod => {
+  const handleClick = (newTimePeriod) => {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
   };
 

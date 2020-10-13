@@ -19,7 +19,7 @@ afterEach(() => {
   container = null;
 });
 
-const MAX_DATE_RANGE = {startDate: 0, endDate: 1}
+const MAX_DATE_RANGE = { startDate: 0, endDate: 1 };
 
 test("dataCharts renders default data input dataset is null", async () => {
   global.suppressConsoleErrorLogs();

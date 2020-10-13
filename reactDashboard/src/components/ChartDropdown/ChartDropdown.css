@@ -31,7 +31,7 @@
 .selected-chart:hover {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff
+  color: #ffffff;
 }
 
 .selected-chart.dropdown-toggle.btn.btn-primary {
