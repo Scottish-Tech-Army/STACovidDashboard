@@ -54,7 +54,6 @@ const Regional = ({
   });
 
   useEffect(() => {
-    // Only attempt to fetch data once
     if (healthBoardDataset != null || councilAreaDataset != null) {
       const parseDateRange = getNhsCsvDataDateRange(
         healthBoardDataset,
