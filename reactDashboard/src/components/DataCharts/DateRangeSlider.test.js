@@ -129,7 +129,7 @@ describe("getMarks", () => {
       );
     });
 
-    it("healthBoards", async () => {
+    it("healthBoards is null", async () => {
       await act(async () => {
         render(
           <DateRangeSlider healthBoardDataset={null} dateRange={dateRange} />,
@@ -159,6 +159,6 @@ describe("getMarks", () => {
         String(Date.parse("2020-03-09"))
       );
     });
-    
+
   });
 });

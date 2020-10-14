@@ -35,30 +35,8 @@ function checkDropdownText() {
   expect(percentageCasesDropdown().textContent).toBe("% Tests Positive");
 }
 
-const dailyCasesDropdown = () => container.querySelector("#dailyCases");
-const dailyDeathsDropdown = () => container.querySelector("#dailyDeaths");
-const totalCasesDropdown = () => container.querySelector("#totalCases");
-const totalDeathsDropdown = () => container.querySelector("#totalDeaths");
-const percentageCasesDropdown = () =>
-  container.querySelector("#percentageCases");
-
 const selectedItem = () => container.querySelector(".selected-chart");
 const dropdownItems = () => container.querySelectorAll(".chart-menu a");
-const dropdownItem = (text) =>
-  Array.from(dropdownItems()).find((el) => el.textContent === text);
-
-function click(dropDownButton) {
-  act(() => {
-    dropDownButton.dispatchEvent(new MouseEvent("click"));
-    render(
-      <RegionDropdown
-        regionCode={storedRegionCode}
-        setRegionCode={setRegionCode}
-      />,
-      container
-    );
-  });
-}
 
 test("null/undefined input throws error", async () => {
   global.suppressConsoleErrorLogs();
