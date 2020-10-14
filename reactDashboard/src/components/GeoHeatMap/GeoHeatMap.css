@@ -36,6 +36,10 @@ div.leaflet-tooltip {
   border: none;
 }
 
+div.leaflet-tooltip p {
+  margin-bottom: 0;
+}
+
 div.leaflet-tooltip-left::before {
   border-left-color: #000000;
 }
