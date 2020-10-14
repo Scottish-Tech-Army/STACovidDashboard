@@ -142,14 +142,10 @@
   }
 }
 
-.full-screen {
-  height: 80vh;
-  max-height: 80vh;
-}
-
-.data-charts {
+.data-charts-container {
   background-color: #f2f2f2;
-  padding: 20px 10px 30px;
+  padding: 20px 0 30px;
+  margin: 0;
 }
 
 legend {

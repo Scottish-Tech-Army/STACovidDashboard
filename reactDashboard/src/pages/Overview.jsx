@@ -204,7 +204,7 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="data-charts">
+        <Row className="data-charts-container">
           <Col xs={12}>
             <DataCharts
               chartType={chartType}
