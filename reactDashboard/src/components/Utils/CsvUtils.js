@@ -1,6 +1,27 @@
 import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
+export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
+  let dateAggregateValuesMap = createDateAggregateValuesMap(csvDataHB);
+
+  let dates = [...dateAggregateValuesMap.keys()].sort();
+
+  if (csvDataCA != null) {
+    dateAggregateValuesMap = createDateAggregateValuesMap(csvDataCA);
+
+    dates = [...dates, ...dateAggregateValuesMap.keys()].sort();
+  }
+
+  if (dates.length === 0) {
+    return { startDate: 0, endDate: 0 };
+  }
+
+  return {
+    startDate: dates[0],
+    endDate: dates.pop(),
+  };
+}
+
 export function readCsvData(csvData) {
   var allTextLines = csvData
     .toString()

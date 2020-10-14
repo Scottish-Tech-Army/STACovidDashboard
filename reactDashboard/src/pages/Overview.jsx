@@ -8,11 +8,11 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
 
 import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
@@ -29,10 +29,13 @@ const Overview = ({
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [chartType, setChartType] = useState(DAILY_CASES);
-  const [zoomDataCharts, setZoomDataCharts] = useState(false);
+  const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 0 });
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 0,
+  });
 
-  const zoomableCharts = useRef();
   const zoomableMap = useRef();
 
   // Stop audio on chart change
@@ -73,9 +76,19 @@ const Overview = ({
   }
 
   useEffect(() => {
+    if (healthBoardDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(
+        healthBoardDataset,
+        councilAreaDataset
+      );
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
+
+  useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {
       if (!fullscreenEnabled) {
-        setZoomDataCharts(false);
         setZoomGeoMap(false);
       }
     }
@@ -111,7 +124,6 @@ const Overview = ({
           </Col>
         </Row>
       </Container>
-
       <Container fluid>
         <Row>
           <Col>
@@ -192,21 +204,16 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row ref={zoomableCharts} className="fullscreen-charts">
-          <Col xs={12} md={3} lg={2}>
-            <DataChartsSelector
-              chartType={chartType}
-              setChartType={setChartType}
-            />
-          </Col>
-          <Col xs={12} md={9} lg={10}>
+        <Row className="data-charts-container">
+          <Col xs={12}>
             <DataCharts
               chartType={chartType}
+              setChartType={setChartType}
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              maxDateRange={maxDateRange}
+              setMaxDateRange={setMaxDateRange}
               healthBoardDataset={healthBoardDataset}
-              fullscreenEnabled={zoomDataCharts}
-              toggleFullscreen={() =>
-                toggleFullscreen(zoomableCharts, setZoomDataCharts)
-              }
             />
           </Col>
         </Row>

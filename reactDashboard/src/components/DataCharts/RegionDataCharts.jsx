@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import SonificationPlayButton from "./SonificationPlayButton";
 import {
@@ -18,6 +19,11 @@ import {
   commonChartConfiguration,
   datasetConfiguration,
 } from "./DataChartsUtils";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
@@ -137,9 +143,14 @@ export function parseNhsCsvData(csvData) {
 
 const RegionDataCharts = ({
   chartType = DAILY_CASES,
+  setChartType,
   healthBoardDataset = null,
   councilAreaDataset = null,
   regionCode = null,
+  dateRange,
+  setDateRange,
+  maxDateRange,
+  setMaxDateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -251,7 +262,7 @@ const RegionDataCharts = ({
           )
         );
       }
-      const chartConfiguration = commonChartConfiguration(datasets);
+      const chartConfiguration = commonChartConfiguration(datasets, dateRange);
       chartConfiguration.options.tooltips = {
         callbacks: {
           label: (tooltipItem, data) => {
@@ -272,7 +283,7 @@ const RegionDataCharts = ({
 
     function setSonification(seriesData, seriesTitle) {
       if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
+        setAudio(seriesData);
         setSeriesTitle(seriesTitle);
       }
     }
@@ -316,6 +327,7 @@ const RegionDataCharts = ({
     chartType,
     populationProportionMap,
     regionCode,
+    dateRange,
   ]);
 
   const isDataReady = () => {
@@ -339,17 +351,45 @@ const RegionDataCharts = ({
   }
 
   return (
-    <div className="chart-border">
-      <SonificationPlayButton
-        seriesData={audio}
-        seriesTitle={seriesTitle}
-        regionCode={regionCode}
-      />
-      <div className={getScreenModeClassName()}>
-        <canvas ref={chartContainer} />
-      </div>
-      {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+    <Container className="chart-border">
+      <Row className="chart-dropdown-container">
+        <Col className="chart-title">
+          <h2>Select Chart:</h2>
+          <ChartDropdown
+            chartType={chartType}
+            setChartType={setChartType}
+            showPercentageTests={false}
+          />
+        </Col>
+      </Row>
+      <Row className="chart-dropdown-container">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+          councilAreaDataset={councilAreaDataset}
+        />
+        <SonificationPlayButton
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          regionCode={regionCode}
+          dateRange={dateRange}
+        />
+        <div className={getScreenModeClassName()}>
+          <canvas ref={chartContainer} />
+        </div>
+        {isDataReady() ? <></> : <LoadingComponent />}
+      </Row>
+    </Container>
   );
 };
 

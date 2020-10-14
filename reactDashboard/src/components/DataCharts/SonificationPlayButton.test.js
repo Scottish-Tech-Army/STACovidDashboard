@@ -47,7 +47,19 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const seriesData = [1, 2, 3, 4, 51];
+const seriesData = [
+  { t: Date.parse("2020-03-06"), y: 1 },
+  { t: Date.parse("2020-03-07"), y: 2 },
+  { t: Date.parse("2020-03-08"), y: 3 },
+  { t: Date.parse("2020-03-09"), y: 4 },
+  { t: Date.parse("2020-03-10"), y: 51 },
+];
+
+const dateRange = {
+  startDate: Date.parse("2020-03-03"),
+  endDate: Date.parse("2020-03-07"),
+};
+
 const playButton = () => container.querySelector(".sonification-play-button");
 
 function click() {
@@ -61,6 +73,7 @@ test("default play/stop behaviour", async () => {
         seriesData={seriesData}
         seriesTitle="dataset title"
         regionCode="S12000013"
+        dateRange={dateRange}
       />,
       container
     );
@@ -82,6 +95,7 @@ test("default play/stop behaviour", async () => {
         seriesData={seriesData}
         seriesTitle="dataset title"
         regionCode="S12000013"
+        dateRange={dateRange}
       />,
       container
     );
@@ -91,6 +105,7 @@ test("default play/stop behaviour", async () => {
   expect(playAudio).toHaveBeenLastCalledWith(
     "dataset title",
     seriesData,
+    dateRange,
     "Nahelen an sheer"
   );
   // Check callback action
@@ -105,6 +120,7 @@ test("default play/stop behaviour", async () => {
         seriesData={seriesData}
         seriesTitle="dataset title"
         regionCode="S12000013"
+        dateRange={dateRange}
       />,
       container
     );
@@ -114,6 +130,7 @@ test("default play/stop behaviour", async () => {
   expect(playAudio).toHaveBeenLastCalledWith(
     "dataset title",
     seriesData,
+    dateRange,
     "Nahelen an sheer"
   );
   // Check callback action
@@ -143,7 +160,12 @@ test("minimum input play/stop behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(1);
-  expect(playAudio).toHaveBeenLastCalledWith("No data", seriesData, "Scotland");
+  expect(playAudio).toHaveBeenLastCalledWith(
+    "No data",
+    seriesData,
+    null,
+    "Scotland"
+  );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(1);
   expect(playButton().title).toBe("Stop listening");
@@ -155,7 +177,12 @@ test("minimum input play/stop behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(2);
-  expect(playAudio).toHaveBeenLastCalledWith("No data", seriesData, "Scotland");
+  expect(playAudio).toHaveBeenLastCalledWith(
+    "No data",
+    seriesData,
+    null,
+    "Scotland"
+  );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(2);
   expect(playButton().title).toBe(

@@ -19,11 +19,13 @@ afterEach(() => {
   container = null;
 });
 
+const MAX_DATE_RANGE = { startDate: 0, endDate: 1 };
+
 test("dataCharts renders default data input dataset is null", async () => {
   global.suppressConsoleErrorLogs();
 
   await act(async () => {
-    render(<RegionDataCharts />, container);
+    render(<RegionDataCharts maxDateRange={MAX_DATE_RANGE} />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -32,7 +34,13 @@ test("dataCharts renders default data input dataset is null", async () => {
 
 test("dataCharts renders dynamic fetched data", async () => {
   await act(async () => {
-    render(<RegionDataCharts healthBoardDataset={healthBoardDataset} />, container);
+    render(
+      <RegionDataCharts
+        healthBoardDataset={healthBoardDataset}
+        maxDateRange={MAX_DATE_RANGE}
+      />,
+      container
+    );
   });
 
   const canvas = container.querySelector(".chart-container canvas");

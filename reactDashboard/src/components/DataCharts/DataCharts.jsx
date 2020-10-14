@@ -3,6 +3,7 @@ import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
 import moment from "moment";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   PERCENTAGE_CASES,
@@ -19,6 +20,11 @@ import {
   getWhoThresholdLine,
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -103,9 +109,12 @@ export function parseNhsCsvData(csvData) {
 
 const DataCharts = ({
   chartType = PERCENTAGE_CASES,
+  setChartType,
   healthBoardDataset = null,
-  fullscreenEnabled = false,
-  toggleFullscreen,
+  dateRange,
+  setDateRange,
+  maxDateRange,
+  setMaxDateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -136,6 +145,7 @@ const DataCharts = ({
         totalCases,
         totalDeaths,
       } = parseNhsCsvData(healthBoardDataset);
+
       setPercentageCasesSeriesData(percentageCases);
       setDailyCasesSeriesData(dailyCases);
       setDailyDeathsSeriesData(dailyDeaths);
@@ -155,7 +165,7 @@ const DataCharts = ({
           DATASET_COLOUR
         ),
       ];
-      const configuration = commonChartConfiguration(datasets);
+      const configuration = commonChartConfiguration(datasets, dateRange);
 
       configuration.options.scales.yAxes[0].ticks.callback = (
         value,
@@ -182,7 +192,7 @@ const DataCharts = ({
               borderColor: "#ec6730",
             };
           },
-        },
+        },	
       };
       configuration.options.annotation.annotations = [
         ...configuration.options.annotation.annotations,
@@ -196,7 +206,7 @@ const DataCharts = ({
       const datasets = [
         datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
       ];
-      return commonChartConfiguration(datasets);
+      return commonChartConfiguration(datasets, dateRange);
     }
 
     if (chartInstance.current !== null) {
@@ -205,7 +215,7 @@ const DataCharts = ({
 
     function setSonification(seriesData, seriesTitle) {
       if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
+        setAudio(seriesData);
         setSeriesTitle(seriesTitle);
       }
     }
@@ -251,8 +261,7 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    fullscreenEnabled,
-    toggleFullscreen,
+    dateRange,
   ]);
 
   const isDataReady = () => {
@@ -275,23 +284,44 @@ const DataCharts = ({
   };
 
   function getScreenModeClassName() {
-    if (isDataReady()) {
-      return fullscreenEnabled
-        ? "full-screen chart-container"
-        : "chart-container";
-    } else {
-      return "chart-container hidden-chart";
-    }
+    return isDataReady() ? "chart-container" : "chart-container hidden-chart";
   }
 
   return (
-    <div className="chart-border">
-      <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
-      <div className={getScreenModeClassName()}>
-        <canvas ref={chartContainer} />
-      </div>
-      {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+    <Container className="chart-border">
+      <Row className="chart-dropdown-container">
+        <Col className="chart-title">
+          <h2>Select Chart:</h2>
+          <ChartDropdown chartType={chartType} setChartType={setChartType} />
+        </Col>
+      </Row>
+      <Row className="chart-dropdown-container">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+        />
+        <SonificationPlayButton
+          className="sonification-play-button"
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          dateRange={dateRange}
+        />
+        <div className={getScreenModeClassName()}>
+          <canvas ref={chartContainer} />
+        </div>
+        {isDataReady() ? <></> : <LoadingComponent />}
+      </Row>
+    </Container>
   );
 };
 

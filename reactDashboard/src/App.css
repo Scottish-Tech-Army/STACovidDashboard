@@ -10,8 +10,7 @@
   padding: 0;
 }
 
-.full-screen,
-.fullscreen-charts {
+.full-screen {
   background-color: White;
 }
 
@@ -79,4 +78,14 @@
 .widgets-block {
   background-color: #f2f2f2;
   padding: 0 0 40px 0;
+}
+
+button.MuiButtonBase-root {
+  margin: 5px;
+  width: 105px;
+  font-size: 0.75rem;
+}
+
+button.MuiButtonBase-root:hover {
+  box-shadow: 5px 5px 5px #aaaaaa;
 }

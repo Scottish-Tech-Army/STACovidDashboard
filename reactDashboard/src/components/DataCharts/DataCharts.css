@@ -1,11 +1,53 @@
 .chart-border {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 20px;
+  padding: 10px 50px 80px 50px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   background-color: #ffffff;
   position: relative;
 }
+
+.chart-title h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: left;
+  padding-top: 20px;
+  margin: 0 0 10px 5px;
+  color: #133a53;
+}
+
+.chart-title {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  justify-content: flex-start;
+}
+
+@media screen and (max-width: 600px) {
+  .chart-title {
+    flex-direction: column;
+  }
+}
+
+.chart-title.col {
+  padding-left: 0;
+}
+
+.date-range-selector {
+  margin: 0;
+}
+
+@media screen and (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    max-width: 100%;
+  }
+}
+
 .chart-container {
   height: 100%;
   width: 100%;
@@ -21,19 +63,105 @@
 
 .sonification-play-button {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  top: 20px;
+  right: 40px;
+  background-color: #ffffff;
+  font-size: 0.5rem;
+  border: 1px solid #6c6c6c;
+  border-radius: 10px;
+  padding: 7px;
+  width: 8em;
+}
+
+.sonification-play-button:hover {
+  box-shadow: 5px 5px 5px #aaaaaa;
+}
+
+.sonification-play-button.col {
   border: none;
+  box-shadow: none;
+  display: hidden;
   background: none;
 }
 
-.full-screen {
-  height: 90vh;
-  max-height: 90vh;
+.sonification-play-button h5 {
+  font-size: 0.75rem;
+  color: #6c6c6c;
+  margin-bottom: 0;
 }
 
-.fullscreen-charts {
-  background-color: #f2f2f2;
-  padding: 20px 10px 30px;
+#date-range-slider-position {
+  position: absolute;
+  bottom: 0 !important;
+  max-width: 85vw;
+  right: 40px;
+  left: 40px;
+  padding: 0 0 70px;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 1400px) {
+  #date-range-slider-position {
+    max-width: 80vw;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  #date-range-slider-position {
+    max-width: 70vw;
+  }
+}
+
+@media screen and (max-width: 993px) {
+  #date-range-slider-position {
+    max-width: 60vw;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #date-range-slider-position {
+    max-width: 50vw;
+  }
+}
+
+@media screen and (max-width: 995px) {
+  .sonification-play-button {
+    top: 10px;
+    right: 20px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .sonification-play-button {
+    font-size: 0.4rem;
+    padding: 10px 5px;
+    top: 20px;
+  }
+  .chart-border {
+    padding: 20px 20px 80px;
+  }
+}
+
+.data-charts-container {
+  background-color: #f2f2f2;
+  padding: 20px 0 30px;
+  margin: 0;
+}
+
+legend {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+canvas {
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.makeStyles-root-1 {
+  margin-top: 0 !important;
+}
+
+.chart-dropdown-container.row {
+  margin: 0;
 }

@@ -62,7 +62,7 @@ const RegionGeoMap = ({
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
       const content =
-        "<strong>" + getPlaceNameByFeatureCode(featureCode) + "</strong>";
+        "<p class='region-popup'><strong>" + getPlaceNameByFeatureCode(featureCode) + "</strong></p>";
       layer.bindTooltip(content).openTooltip(e.latlng);
     };
 

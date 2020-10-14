@@ -19,6 +19,7 @@ const SonificationPlayButton = ({
   seriesData = null,
   seriesTitle = "No data",
   regionCode = null,
+  dateRange = null,
 }) => {
   const [audioPlaying, setAudioPlaying] = useState(false);
 
@@ -36,6 +37,7 @@ const SonificationPlayButton = ({
       playAudio(
         seriesTitle,
         seriesData,
+        dateRange,
         getPhoneticPlaceNameByFeatureCode(
           regionCode === null ? FEATURE_CODE_SCOTLAND : regionCode
         )
@@ -61,11 +63,14 @@ const SonificationPlayButton = ({
       onClick={handleAudio}
       title={createTitle()}
     >
-      <FontAwesomeIcon
-        icon={audioPlaying ? faVolumeMute : faVolumeUp}
-        size="1x"
-        color="#9C9A97"
-      />
+      <span>
+        <FontAwesomeIcon
+          icon={audioPlaying ? faVolumeMute : faVolumeUp}
+          size="2x"
+          color="#6c6c6c"
+        />
+        <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
+      </span>
     </button>
   );
 };

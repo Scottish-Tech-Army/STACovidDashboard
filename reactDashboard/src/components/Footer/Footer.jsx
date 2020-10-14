@@ -149,7 +149,7 @@ const Footer = () => {
                 size="3x"
                 color="#133a53"
                 className="third-party-logo"
-                title="Linked to Scottish Tech Army LinkedIn account"
+                title="Link to Scottish Tech Army LinkedIn account"
               />
             )}
             {sitemapExternalLink(
