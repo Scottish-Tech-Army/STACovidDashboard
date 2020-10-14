@@ -123,6 +123,9 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       legend: {
         onClick: (e) => e.stopPropagation(),
         position: "bottom",
+        labels: {
+          boxWidth: 20,
+        }
       },
       annotation: {
         annotations: keyDates.map(getDateLine),
