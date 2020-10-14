@@ -48,7 +48,7 @@ const ChartDropdown = ({
         value={getChartTypeText(chartType)}
         title={getChartTypeText(chartType)}
       >
-        {chartType == null ? "Select a chart" : getChartTypeText(chartType)}
+        {getChartTypeText(chartType)}
       </Dropdown.Toggle>
       <Dropdown.Menu className="chart-menu">
         <Dropdown.Item id="dailyCases" eventKey={DAILY_CASES}>
