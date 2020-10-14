@@ -181,6 +181,18 @@ const DataCharts = ({
         borderColor: "DarkGray;",
         borderWidth: 1,
         position: "nearest",
+        callbacks: {
+          label: (tooltipItem, data) => {
+            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive";
+            return chartLabel;
+          },
+          labelColor: (tooltipItem, data) => {
+            return {
+              backgroundColor: "#ec6730",
+              borderColor: "#ec6730",
+            };
+          },
+        },	
       };
       configuration.options.annotation.annotations = [
         ...configuration.options.annotation.annotations,
