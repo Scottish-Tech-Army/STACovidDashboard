@@ -50,6 +50,7 @@ const dateRange = {
 };
 
 describe("getMarks", () => {
+
   it("normalRange", () => {
     const expectedResult = [
       {
@@ -68,6 +69,7 @@ describe("getMarks", () => {
       })
     ).toStrictEqual(expectedResult);
   });
+
   it("firstOfMonth", () => {
     const expectedResult = [
       {
@@ -86,6 +88,7 @@ describe("getMarks", () => {
       })
     ).toStrictEqual(expectedResult);
   });
+
   it("defaultValues", () => {
     const expectedResult = [];
     expect(
@@ -97,6 +100,7 @@ describe("getMarks", () => {
   });
 
   describe("check maximum date ranges", () => {
+
     const minimumDateValue = () =>
       container
         .querySelector(".MuiSlider-root .MuiSlider-thumb")
@@ -155,5 +159,6 @@ describe("getMarks", () => {
         String(Date.parse("2020-03-09"))
       );
     });
+    
   });
 });
