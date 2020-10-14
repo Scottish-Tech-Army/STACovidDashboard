@@ -144,7 +144,7 @@ const Regional = ({
           <hr className="full-width-hr" />
         </Col>
       </Row>
-      <Row className="fullscreen-charts">
+      <Row className="data-charts">
         <Col xs={12}>
           <RegionDataCharts
             chartType={chartType}
