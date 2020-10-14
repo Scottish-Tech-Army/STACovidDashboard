@@ -7,6 +7,7 @@ import {
   getPhoneticPlaceNameByFeatureCode,
   parse7DayWindowCsvData,
   getRelativeReportedDate,
+  getNhsCsvDataDateRange,
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
 
@@ -424,6 +425,26 @@ const dailyCasesCsvData = `
   20200306,S08000022,unknown,1,0,0,0,8,0,0,21,14.1072148327287
   20200307,S08000022,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
     `;
+
+describe("getNhsCsvDataDateRange", () => {
+
+  const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
+  const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
+  const expectedResult = {startDate: Date.parse("2020-03-06"), endDate: Date.parse("2020-03-09")}
+
+  it("happy path", () => {
+    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData, parsedDailyCouncilAreaData)).toStrictEqual(
+      expectedResult
+    );
+  })
+
+  it("default render", () => {
+    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData)).toStrictEqual(
+      expectedResult
+    );
+  })
+
+})
 
 test("parse7DayWindowCsvData", () => {
   // Grampian : 09/03 - 03/03 : 7 days of data
