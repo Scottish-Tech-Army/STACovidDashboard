@@ -177,6 +177,7 @@ export function calculateMaxDataValue(seriesData = null) {
  * If audio is already playing, stop the currently playing audio and return.
  *
  * @param {string} seriesTitle - Name of dataset to sonify (eg 'daily cases').
+ * @param {object} dateRange - startDate and endDate for intro speech.
  * @param {number[]} seriesData - Dataset to sonify.
  * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
