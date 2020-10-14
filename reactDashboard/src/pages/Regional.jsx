@@ -7,7 +7,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
 import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
-import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
@@ -15,7 +14,6 @@ import {
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
-import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
 
 // Exported for unit tests
 export function getRegionCodeFromUrl(location) {
@@ -42,27 +40,10 @@ const Regional = ({
   const match = useRouteMatch();
   const location = useLocation();
   const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
-  const [chartType, setChartType] = useState(DAILY_CASES);
   const history = useHistory();
 
   const currentRegionCode = useRef(regionCode);
   const currentLocation = useRef(match.url);
-  const [dateRange, setDateRange] = useState("dateRange");
-  const [maxDateRange, setMaxDateRange] = useState({
-    startDate: 0,
-    endDate: 0,
-  });
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(
-        healthBoardDataset,
-        councilAreaDataset
-      );
-      setMaxDateRange(parseDateRange);
-      setDateRange(parseDateRange);
-    }
-  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
 
   // These two effects handle the browser url and the region code selection in sync.
   // Either location or regionCode may be changed by user action, so the currentRegionCode
@@ -103,7 +84,7 @@ const Regional = ({
   // Stop audio on chart, region or location change
   useEffect(() => {
     stopAudio();
-  }, [chartType, regionCode, location]);
+  }, [regionCode, location]);
 
   return (
     <Container fluid className="regional-page">
@@ -147,13 +128,7 @@ const Regional = ({
       <Row className="data-charts-container">
         <Col xs={12}>
           <RegionDataCharts
-            chartType={chartType}
-            setChartType={setChartType}
             regionCode={regionCode}
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            maxDateRange={maxDateRange}
-            setMaxDateRange={setMaxDateRange}
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
           />

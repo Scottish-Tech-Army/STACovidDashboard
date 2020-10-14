@@ -12,7 +12,10 @@ import {
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
-import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
+import {
+  createDateAggregateValuesMap,
+  getNhsCsvDataDateRange,
+} from "../Utils/CsvUtils";
 import "chartjs-plugin-annotation";
 import {
   commonChartConfiguration,
@@ -25,6 +28,7 @@ import ChartDropdown from "../ChartDropdown/ChartDropdown";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { stopAudio } from "../Utils/Sonification";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -107,15 +111,7 @@ export function parseNhsCsvData(csvData) {
   };
 }
 
-const DataCharts = ({
-  chartType = PERCENTAGE_CASES,
-  setChartType,
-  healthBoardDataset = null,
-  dateRange,
-  setDateRange,
-  maxDateRange,
-  setMaxDateRange,
-}) => {
+const DataCharts = ({ healthBoardDataset = null }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
@@ -127,6 +123,12 @@ const DataCharts = ({
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
+  const [chartType, setChartType] = useState(DAILY_CASES);
+  const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 1 });
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
 
   const percentageCasesDatasetLabel =
     "% of Positive Tests (5 day moving average)";
@@ -153,6 +155,19 @@ const DataCharts = ({
       setTotalDeathsSeriesData(totalDeaths);
     }
   }, [healthBoardDataset]);
+
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset);
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset]);
+
+  // Stop audio on chart or dateRange change
+  useEffect(() => {
+    stopAudio();
+  }, [chartType, dateRange]);
 
   useEffect(() => {
     const DATASET_COLOUR = "#ec6730";
@@ -192,7 +207,7 @@ const DataCharts = ({
               borderColor: "#ec6730",
             };
           },
-        },	
+        },
       };
       configuration.options.annotation.annotations = [
         ...configuration.options.annotation.annotations,
