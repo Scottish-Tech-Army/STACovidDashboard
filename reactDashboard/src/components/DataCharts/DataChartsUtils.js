@@ -121,7 +121,8 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         ],
       },
       legend: {
-        display: false,
+        onClick: (e) => e.stopPropagation(),
+        position: "bottom",
       },
       annotation: {
         annotations: keyDates.map(getDateLine),
