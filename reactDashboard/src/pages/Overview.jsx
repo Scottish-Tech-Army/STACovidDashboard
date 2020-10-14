@@ -76,8 +76,7 @@ const Overview = ({
   }
 
   useEffect(() => {
-    // Only attempt to fetch data once
-    if (healthBoardDataset != null || councilAreaDataset != null) {
+    if (healthBoardDataset != null) {
       const parseDateRange = getNhsCsvDataDateRange(
         healthBoardDataset,
         councilAreaDataset
