@@ -13,6 +13,7 @@ import {
 } from "../DataCharts/DataChartsConsts";
 import {
   createPlaceDateValuesMap,
+  getNhsCsvDataDateRange,
   FEATURE_CODE_SCOTLAND,
 } from "../Utils/CsvUtils";
 import {
@@ -24,6 +25,7 @@ import ChartDropdown from "../ChartDropdown/ChartDropdown";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { stopAudio } from "../Utils/Sonification";
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
@@ -142,15 +144,9 @@ export function parseNhsCsvData(csvData) {
 }
 
 const RegionDataCharts = ({
-  chartType = DAILY_CASES,
-  setChartType,
   healthBoardDataset = null,
   councilAreaDataset = null,
   regionCode = null,
-  dateRange,
-  setDateRange,
-  maxDateRange,
-  setMaxDateRange,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -163,11 +159,25 @@ const RegionDataCharts = ({
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
+  const [chartType, setChartType] = useState(DAILY_CASES);
+  const [dateRange, setDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
 
   const dailyCasesDatasetLabel = "Daily Cases";
   const dailyDeathsDatasetLabel = "Daily Deaths";
   const totalCasesDatasetLabel = "Total Cases";
   const totalDeathsDatasetLabel = "Total Deaths";
+
+  // Stop audio on chart or dateRange change
+  useEffect(() => {
+    stopAudio();
+  }, [chartType, dateRange]);
 
   useEffect(() => {
     if (healthBoardDataset != null) {
@@ -222,6 +232,17 @@ const RegionDataCharts = ({
       );
     }
   }, [councilAreaDataset]);
+
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(
+        healthBoardDataset,
+        councilAreaDataset
+      );
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset, councilAreaDataset]);
 
   useEffect(() => {
     function getAverageSeriesData(seriesData, regionCode) {

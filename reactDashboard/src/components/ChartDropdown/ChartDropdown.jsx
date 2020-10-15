@@ -17,59 +17,38 @@ const ChartDropdown = ({
   showPercentageTests = true,
 }) => {
   function getChartTypeText(chartType) {
-    let chartTypeText = "";
-
     switch (chartType) {
-      case "dailyCases":
-        chartTypeText = "Daily Cases";
-        break;
-      case "totalCases":
-        chartTypeText = "Total Cases";
-        break;
-      case "dailyDeaths":
-        chartTypeText = "Daily Deaths";
-        break;
-      case "totalDeaths":
-        chartTypeText = "Total Deaths";
-        break;
-      case "percentCases":
-        chartTypeText = "% Positive Cases";
-        break;
+      case DAILY_CASES:
+        return "Daily Cases";
+      case TOTAL_CASES:
+        return "Total Cases";
+      case DAILY_DEATHS:
+        return "Daily Deaths";
+      case TOTAL_DEATHS:
+        return "Total Deaths";
+      case PERCENTAGE_CASES:
+        return "% Tests Positive";
       default:
         throw new Error("Unrecognised chartType: " + chartType);
     }
-    return chartTypeText;
+  }
+
+  function menuItem(chartType) {
+    return (
+      <Dropdown.Item key={chartType} eventKey={chartType}>
+        {getChartTypeText(chartType)}
+      </Dropdown.Item>
+    );
   }
 
   return (
     <Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
-      <Dropdown.Toggle
-        className="selected-chart"
-        value={getChartTypeText(chartType)}
-        title={getChartTypeText(chartType)}
-      >
+      <Dropdown.Toggle className="selected-chart" value={chartType}>
         {getChartTypeText(chartType)}
       </Dropdown.Toggle>
       <Dropdown.Menu className="chart-menu">
-        <Dropdown.Item id="dailyCases" eventKey={DAILY_CASES}>
-          Daily Cases
-        </Dropdown.Item>
-        <Dropdown.Item id="totalCases" eventKey={TOTAL_CASES}>
-          Total Cases
-        </Dropdown.Item>
-        <Dropdown.Item id="dailyDeaths" eventKey={DAILY_DEATHS}>
-          Daily Deaths
-        </Dropdown.Item>
-        <Dropdown.Item id="totalDeaths" eventKey={TOTAL_DEATHS}>
-          Total Deaths
-        </Dropdown.Item>
-        {showPercentageTests === true ? (
-          <Dropdown.Item id="percentageCases" eventKey={PERCENTAGE_CASES}>
-            % Tests Positive
-          </Dropdown.Item>
-        ) : (
-          <></>
-        )}
+        {[DAILY_CASES, TOTAL_CASES, DAILY_DEATHS, TOTAL_DEATHS].map(menuItem)}
+        {showPercentageTests === true ? menuItem(PERCENTAGE_CASES) : <></>}
       </Dropdown.Menu>
     </Dropdown>
   );

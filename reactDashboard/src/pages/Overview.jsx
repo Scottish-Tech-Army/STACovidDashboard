@@ -12,14 +12,10 @@ import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
-import { getNhsCsvDataDateRange } from "../components/Utils/CsvUtils";
-
-import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
 } from "../components/HeatmapDataSelector/HeatmapConsts";
-import { stopAudio } from "../components/Utils/Sonification";
 
 const Overview = ({
   councilAreaDataset,
@@ -28,20 +24,9 @@ const Overview = ({
 }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
-  const [chartType, setChartType] = useState(DAILY_CASES);
-  const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 0 });
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
-  const [maxDateRange, setMaxDateRange] = useState({
-    startDate: 0,
-    endDate: 0,
-  });
 
   const zoomableMap = useRef();
-
-  // Stop audio on chart change
-  useEffect(() => {
-    stopAudio();
-  }, [chartType]);
 
   function toggleFullscreen(element, setter) {
     var elem = element.current || document.documentElement;
@@ -74,17 +59,6 @@ const Overview = ({
       setter(false);
     }
   }
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(
-        healthBoardDataset,
-        councilAreaDataset
-      );
-      setMaxDateRange(parseDateRange);
-      setDateRange(parseDateRange);
-    }
-  }, [healthBoardDataset, setDateRange, councilAreaDataset, setMaxDateRange]);
 
   useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {
@@ -206,15 +180,7 @@ const Overview = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
-            <DataCharts
-              chartType={chartType}
-              setChartType={setChartType}
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              maxDateRange={maxDateRange}
-              setMaxDateRange={setMaxDateRange}
-              healthBoardDataset={healthBoardDataset}
-            />
+            <DataCharts healthBoardDataset={healthBoardDataset} />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">

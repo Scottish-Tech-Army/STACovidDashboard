@@ -17,48 +17,26 @@ function QuickSelectDateRange({ maxDateRange, setDateRange }) {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
   };
 
+  function createButton(id, timePeriod, buttonText) {
+    return (
+      <Button
+        id={id}
+        className="quick-select"
+        onClick={() => handleClick(timePeriod)}
+        variant="outlined"
+      >
+        {buttonText}
+      </Button>
+    );
+  }
+
   return (
     <div className="quick-select-dates">
-      <Button
-        id="select-all"
-        className="quick-select"
-        onClick={() => handleClick(ALL_DATES)}
-        variant="outlined"
-      >
-        ALL
-      </Button>
-      <Button
-        id="select-last-three-months"
-        className="quick-select"
-        onClick={() => handleClick(LAST_THREE_MONTHS)}
-        variant="outlined"
-      >
-        Last 3M
-      </Button>
-      <Button
-        id="select-last-month"
-        className="quick-select"
-        onClick={() => handleClick(LAST_MONTH)}
-        variant="outlined"
-      >
-        Last 1M
-      </Button>
-      <Button
-        id="select-last-two-weeks"
-        className="quick-select"
-        onClick={() => handleClick(LAST_TWO_WEEKS)}
-        variant="outlined"
-      >
-        Last 2W
-      </Button>
-      <Button
-        id="select-last-week"
-        className="quick-select"
-        onClick={() => handleClick(LAST_WEEK)}
-        variant="outlined"
-      >
-        Last 1W
-      </Button>
+      {createButton("select-all", ALL_DATES, "ALL")}
+      {createButton("select-last-three-months", LAST_THREE_MONTHS, "Last 3M")}
+      {createButton("select-last-month", LAST_MONTH, "Last 1M")}
+      {createButton("select-last-two-weeks", LAST_TWO_WEEKS, "Last 2W")}
+      {createButton("select-last-week", LAST_WEEK, "Last 1W")}
     </div>
   );
 }
