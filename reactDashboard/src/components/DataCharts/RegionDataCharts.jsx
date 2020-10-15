@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
+import moment from "moment";
 import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import SonificationPlayButton from "./SonificationPlayButton";
 import {
+  PERCENTAGE_CASES,
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
@@ -19,6 +21,7 @@ import {
 import {
   commonChartConfiguration,
   datasetConfiguration,
+  getWhoThresholdLine,
 } from "./DataChartsUtils";
 import QuickSelectDateRange from "./QuickSelectDateRange";
 import ChartDropdown from "../ChartDropdown/ChartDropdown";
@@ -26,13 +29,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { stopAudio } from "../Utils/Sonification";
+import "chartjs-plugin-annotation";
+
 
 // Exported for tests
 export function getPopulationMap(placeDateValuesResult) {
   const { dates, placeDateValuesMap } = placeDateValuesResult;
 
   const populationMap = new Map();
-  var populationTotal = 0;
   const finalDate = dates[dates.length - 1];
 
   const places = [...placeDateValuesMap.keys()];
@@ -44,31 +48,10 @@ export function getPopulationMap(placeDateValuesResult) {
     } else {
       const population = 100000 * (cumulativeCases / crudeRatePositive);
       populationMap.set(place, population);
-      populationTotal += population;
     }
   });
 
-  populationMap.set(FEATURE_CODE_SCOTLAND, populationTotal);
   return populationMap;
-}
-
-// Exported for tests
-export function addAggregateSeries(placeSeriesMap, key) {
-  const aggregatePoints = [];
-  const series = [...placeSeriesMap.values()];
-  const points = series[0].length;
-  for (let i = 0; i < points; i++) {
-    var sum = 0;
-    for (let j = 0; j < series.length; j++) {
-      sum += series[j][i].y;
-    }
-    aggregatePoints.push({
-      t: series[0][i].t,
-      y: sum,
-    });
-  }
-
-  placeSeriesMap.set(FEATURE_CODE_SCOTLAND, aggregatePoints);
 }
 
 // Exported for tests
@@ -79,15 +62,29 @@ export function parseNhsCsvData(csvData) {
   const regionDailyDeathsMap = new Map();
   const regionTotalCasesMap = new Map();
   const regionTotalDeathsMap = new Map();
+  const regionPercentageCasesMap = new Map();
 
   const places = [...placeDateValuesMap.keys()];
   places.forEach((place) => {
     const dateValuesMap = placeDateValuesMap.get(place);
 
+    const percentageCasesPoints = [];
     const dailyCasesPoints = [];
     const dailyDeathsPoints = [];
     const totalCasesPoints = [];
     const totalDeathsPoints = [];
+
+    function get5DayDiff(valueMap, key, endDate, dateSet) {
+      const maximumStartDate = moment(endDate).subtract(5, "days");
+      for (let i = dateSet.length - 1; i >= 0; i--) {
+        if (maximumStartDate.isSameOrAfter(dateSet[i])) {
+          const startDate = dateSet[i];
+          return valueMap.get(endDate)[key] - valueMap.get(startDate)[key];
+        }
+      }
+      // Entire dataset is withing the 5 day window - just return the end cumulative total
+      return valueMap.get(endDate)[key];
+    }
 
     dates.forEach((date) => {
       const {
@@ -97,6 +94,28 @@ export function parseNhsCsvData(csvData) {
         cumulativeDeaths,
       } = dateValuesMap.get(date);
 
+      const positiveCases5DayWindow = get5DayDiff(
+        dateValuesMap,
+        "cumulativeCases",
+        date,
+        dates
+      );
+      const negativeCases5DayWindow = get5DayDiff(
+        dateValuesMap,
+        "cumulativeNegativeTests",
+        date,
+        dates
+      );
+      const totalCases5DayWindow =
+        positiveCases5DayWindow + negativeCases5DayWindow;
+
+      percentageCasesPoints.push({
+        t: date,
+        y:
+          totalCases5DayWindow === 0
+            ? 0
+            : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
+      });
       dailyCasesPoints.push({
         t: date,
         y: cases,
@@ -114,6 +133,7 @@ export function parseNhsCsvData(csvData) {
         y: cumulativeDeaths,
       });
     });
+    regionPercentageCasesMap.set(place, percentageCasesPoints);
     regionDailyCasesMap.set(place, dailyCasesPoints);
     regionDailyDeathsMap.set(place, dailyDeathsPoints);
     regionTotalCasesMap.set(place, totalCasesPoints);
@@ -121,41 +141,50 @@ export function parseNhsCsvData(csvData) {
   });
 
   const populationMap = getPopulationMap({ dates, placeDateValuesMap });
-  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
-  const populationProportionMap = new Map();
-  places.forEach((place) => {
-    const population = populationMap.get(place);
-    populationProportionMap.set(place, population / scotlandPopulation);
-  });
-
-  addAggregateSeries(regionDailyCasesMap);
-  addAggregateSeries(regionDailyDeathsMap);
-  addAggregateSeries(regionTotalCasesMap);
-  addAggregateSeries(regionTotalDeathsMap);
 
   return {
+    regionPercentageCasesMap: regionPercentageCasesMap,
     regionDailyCasesMap: regionDailyCasesMap,
     regionDailyDeathsMap: regionDailyDeathsMap,
     regionTotalCasesMap: regionTotalCasesMap,
     regionTotalDeathsMap: regionTotalDeathsMap,
     populationMap: populationMap,
-    populationProportionMap: populationProportionMap,
   };
+}
+
+// Exported for tests
+export function calculatePopulationProportionMap(populationMap) {
+  const result = new Map();
+
+  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
+  if (scotlandPopulation !== undefined) {
+    const places = [...populationMap.keys()];
+    places.forEach((place) => {
+      const population = populationMap.get(place);
+      result.set(place, population / scotlandPopulation);
+    });
+  }
+  return result;
 }
 
 const RegionDataCharts = ({
   healthBoardDataset = null,
   councilAreaDataset = null,
-  regionCode = null,
+  regionCode = FEATURE_CODE_SCOTLAND,
+  showPercentageTests = true,
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
+  const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
+    new Map()
+  );
   const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(new Map());
   const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(new Map());
   const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(new Map());
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(new Map());
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
+  const [populationMap, setPopulationMap] = useState(new Map());
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
@@ -169,6 +198,8 @@ const RegionDataCharts = ({
     endDate: 1,
   });
 
+  const percentageCasesDatasetLabel =
+    "% of Positive Tests (5 day moving average)";
   const dailyCasesDatasetLabel = "Daily Cases";
   const dailyDeathsDatasetLabel = "Daily Deaths";
   const totalCasesDatasetLabel = "Total Cases";
@@ -182,12 +213,17 @@ const RegionDataCharts = ({
   useEffect(() => {
     if (healthBoardDataset != null) {
       const {
+        regionPercentageCasesMap,
         regionDailyCasesMap,
         regionDailyDeathsMap,
         regionTotalCasesMap,
         regionTotalDeathsMap,
-        populationProportionMap,
+        populationMap,
       } = parseNhsCsvData(healthBoardDataset);
+
+      setPercentageCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionPercentageCasesMap])
+      );
       setDailyCasesSeriesData(
         (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
       );
@@ -200,8 +236,8 @@ const RegionDataCharts = ({
       setTotalDeathsSeriesData(
         (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
       );
-      setPopulationProportionMap(
-        (existingMap) => new Map([...existingMap, ...populationProportionMap])
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
       );
     }
   }, [healthBoardDataset]);
@@ -209,12 +245,17 @@ const RegionDataCharts = ({
   useEffect(() => {
     if (councilAreaDataset != null) {
       const {
+        regionPercentageCasesMap,
         regionDailyCasesMap,
         regionDailyDeathsMap,
         regionTotalCasesMap,
         regionTotalDeathsMap,
-        populationProportionMap,
+        populationMap,
       } = parseNhsCsvData(councilAreaDataset);
+
+      setPercentageCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionPercentageCasesMap])
+      );
       setDailyCasesSeriesData(
         (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
       );
@@ -227,11 +268,15 @@ const RegionDataCharts = ({
       setTotalDeathsSeriesData(
         (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
       );
-      setPopulationProportionMap(
-        (existingMap) => new Map([...existingMap, ...populationProportionMap])
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
       );
     }
   }, [councilAreaDataset]);
+
+  useEffect(() => {
+    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
+  }, [populationMap]);
 
   useEffect(() => {
     if (healthBoardDataset != null) {
@@ -266,7 +311,13 @@ const RegionDataCharts = ({
     const REGION_DATASET_COLOUR = "#ec6730";
     const AVERAGE_DATASET_COLOUR = "blue";
 
-    function setChart(datasetLabel, seriesData, regionCode) {
+    function setChart(
+      datasetLabel,
+      seriesData,
+      regionCode,
+      additionalConfiguration,
+      sonificationLabel
+    ) {
       const datasets = [
         datasetConfiguration(
           datasetLabel,
@@ -298,8 +349,30 @@ const RegionDataCharts = ({
         },
       };
 
+      if (additionalConfiguration) {
+          console.log(chartConfiguration.options.annotation.annotations.length)
+        additionalConfiguration(chartConfiguration);
+        console.log(chartConfiguration.options.annotation.annotations.length)
+      }
+
       const chartRef = chartContainer.current.getContext("2d");
       chartInstance.current = new Chart(chartRef, chartConfiguration);
+
+      setSonification(
+        seriesData.get(regionCode),
+        sonificationLabel !== undefined ? sonificationLabel : datasetLabel
+      );
+    }
+
+    function percentageCasesChartConfiguration(configuration) {
+      configuration.options.scales.yAxes[0].ticks.callback = (
+        value,
+        index,
+        values
+      ) => {
+        return Math.round(value) + "%";
+      };
+      configuration.options.annotation.annotations.push(getWhoThresholdLine());
     }
 
     function setSonification(seriesData, seriesTitle) {
@@ -315,32 +388,23 @@ const RegionDataCharts = ({
 
     if (chartType === DAILY_CASES) {
       setChart(dailyCasesDatasetLabel, dailyCasesSeriesData, regionCode);
-      setSonification(
-        dailyCasesSeriesData.get(regionCode),
-        dailyCasesDatasetLabel
-      );
     } else if (chartType === DAILY_DEATHS) {
       setChart(dailyDeathsDatasetLabel, dailyDeathsSeriesData, regionCode);
-      setSonification(
-        dailyDeathsSeriesData.get(regionCode),
-        dailyDeathsDatasetLabel
-      );
     } else if (chartType === TOTAL_CASES) {
       setChart(totalCasesDatasetLabel, totalCasesSeriesData, regionCode);
-      setSonification(
-        totalCasesSeriesData.get(regionCode),
-        totalCasesDatasetLabel
-      );
     } else if (chartType === TOTAL_DEATHS) {
       setChart(totalDeathsDatasetLabel, totalDeathsSeriesData, regionCode);
-      if (totalDeathsSeriesData.get(regionCode) !== undefined) {
-        setSonification(
-          totalDeathsSeriesData.get(regionCode),
-          totalDeathsDatasetLabel
-        );
-      }
+    } else if (chartType === PERCENTAGE_CASES) {
+      setChart(
+        percentageCasesDatasetLabel,
+        percentageCasesSeriesData,
+        regionCode,
+        percentageCasesChartConfiguration,
+        "Percentage tests positive"
+      );
     }
   }, [
+    percentageCasesSeriesData,
     dailyCasesSeriesData,
     dailyDeathsSeriesData,
     totalCasesSeriesData,
@@ -364,6 +428,9 @@ const RegionDataCharts = ({
     if (chartType === TOTAL_DEATHS) {
       return totalDeathsSeriesData !== null;
     }
+    if (chartType === PERCENTAGE_CASES) {
+      return percentageCasesSeriesData !== null;
+    }
     return false;
   };
 
@@ -379,7 +446,7 @@ const RegionDataCharts = ({
           <ChartDropdown
             chartType={chartType}
             setChartType={setChartType}
-            showPercentageTests={false}
+            showPercentageTests={showPercentageTests}
           />
         </Col>
       </Row>

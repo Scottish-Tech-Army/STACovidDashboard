@@ -1,8 +1,12 @@
 import React from "react";
-import RegionDataCharts, { parseNhsCsvData } from "./RegionDataCharts";
+import RegionDataCharts, {
+  parseNhsCsvData,
+  getPopulationMap,
+  calculatePopulationProportionMap,
+} from "./RegionDataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { readCsvData } from "../Utils/CsvUtils";
+import { readCsvData, createPlaceDateValuesMap } from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -55,10 +59,83 @@ test("parseNhsCsvData", () => {
       .set("S08000022", 200000)
       .set("S12000013", 500000)
       .set("S92000003", 800000),
-    populationProportionMap: new Map()
-      .set("S08000031", 0.125)
-      .set("S08000022", 0.25)
-      .set("S12000013", 0.625),
+    regionPercentageCasesMap: new Map()
+      .set("S08000031", [
+        { t: Date.parse("2020-03-02"), y: (100 * 2) / (2 + 8) },
+        { t: Date.parse("2020-03-03"), y: (100 * 32) / (32 + 38) },
+        { t: Date.parse("2020-03-04"), y: (100 * 62) / (62 + 68) },
+        { t: Date.parse("2020-03-05"), y: (100 * 92) / (92 + 98) },
+        { t: Date.parse("2020-03-06"), y: (100 * 122) / (122 + 128) },
+        {
+          t: Date.parse("2020-03-07"),
+          y: (100 * (152 - 2)) / (152 - 2 + 158 - 8),
+        },
+        {
+          t: Date.parse("2020-03-08"),
+          y: (100 * (182 - 32)) / (182 - 32 + 188 - 38),
+        },
+        {
+          t: Date.parse("2020-03-09"),
+          y: (100 * (212 - 62)) / (212 - 62 + 218 - 68),
+        },
+      ])
+      .set("S08000022", [
+        { t: Date.parse("2020-03-02"), y: (100 * 12) / (12 + 18) },
+        { t: Date.parse("2020-03-03"), y: (100 * 42) / (42 + 48) },
+        { t: Date.parse("2020-03-04"), y: (100 * 72) / (72 + 78) },
+        { t: Date.parse("2020-03-05"), y: (100 * 102) / (102 + 108) },
+        { t: Date.parse("2020-03-06"), y: (100 * 132) / (132 + 138) },
+        {
+          t: Date.parse("2020-03-07"),
+          y: (100 * (162 - 12)) / (162 - 12 + 168 - 18),
+        },
+        {
+          t: Date.parse("2020-03-08"),
+          y: (100 * (192 - 42)) / (192 - 42 + 198 - 48),
+        },
+        {
+          t: Date.parse("2020-03-09"),
+          y: (100 * (222 - 72)) / (222 - 72 + 228 - 78),
+        },
+      ])
+      .set("S12000013", [
+        { t: Date.parse("2020-03-02"), y: (100 * 22) / (22 + 28) },
+        { t: Date.parse("2020-03-03"), y: (100 * 52) / (52 + 58) },
+        { t: Date.parse("2020-03-04"), y: (100 * 82) / (82 + 88) },
+        { t: Date.parse("2020-03-05"), y: (100 * 112) / (112 + 118) },
+        { t: Date.parse("2020-03-06"), y: (100 * 142) / (142 + 148) },
+        {
+          t: Date.parse("2020-03-07"),
+          y: (100 * (172 - 22)) / (172 - 22 + 178 - 28),
+        },
+        {
+          t: Date.parse("2020-03-08"),
+          y: (100 * (202 - 52)) / (202 - 52 + 208 - 58),
+        },
+        {
+          t: Date.parse("2020-03-09"),
+          y: (100 * (232 - 82)) / (232 - 82 + 238 - 88),
+        },
+      ])
+      .set("S92000003", [
+        { t: Date.parse("2020-03-02"), y: (100 * 36) / (36 + 54) },
+        { t: Date.parse("2020-03-03"), y: (100 * 126) / (126 + 144) },
+        { t: Date.parse("2020-03-04"), y: (100 * 216) / (216 + 234) },
+        { t: Date.parse("2020-03-05"), y: (100 * 306) / (306 + 324) },
+        { t: Date.parse("2020-03-06"), y: (100 * 396) / (396 + 414) },
+        {
+          t: Date.parse("2020-03-07"),
+          y: (100 * (486 - 36)) / (486 - 36 + 504 - 54),
+        },
+        {
+          t: Date.parse("2020-03-08"),
+          y: (100 * (576 - 126)) / (576 - 126 + 594 - 144),
+        },
+        {
+          t: Date.parse("2020-03-09"),
+          y: (100 * (888 - 216)) / (888 - 216 + 684 - 234),
+        },
+      ]),
     regionDailyCasesMap: new Map()
       .set("S08000031", [
         { t: Date.parse("2020-03-02"), y: 1 },
@@ -180,7 +257,7 @@ test("parseNhsCsvData", () => {
         { t: Date.parse("2020-03-06"), y: 396 },
         { t: Date.parse("2020-03-07"), y: 486 },
         { t: Date.parse("2020-03-08"), y: 576 },
-        { t: Date.parse("2020-03-09"), y: 666 },
+        { t: Date.parse("2020-03-09"), y: 888 },
       ]),
     regionTotalDeathsMap: new Map()
       .set("S08000031", [
@@ -228,30 +305,88 @@ test("parseNhsCsvData", () => {
   expect(parseNhsCsvData(healthBoardDataset)).toStrictEqual(expectedResult);
 });
 
+test("getPopulationMap", () => {
+  const expectedResult = new Map()
+    .set("S08000031", 100000)
+    .set("S08000022", 200000)
+    .set("S12000013", 500000)
+    .set("S92000003", 800000);
+
+  expect(
+    getPopulationMap(createPlaceDateValuesMap(healthBoardDataset))
+  ).toStrictEqual(expectedResult);
+});
+
+describe("calculatePopulationProportionMap", () => {
+  it("empty populationMap", () => {
+    expect(calculatePopulationProportionMap(new Map())).toStrictEqual(
+      new Map()
+    );
+  });
+
+  it("without Scotland", () => {
+    const populationMap = new Map()
+      .set("S08000031", 100000)
+      .set("S08000022", 200000)
+      .set("S12000013", 500000);
+
+    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
+      new Map()
+    );
+  });
+
+  it("with Scotland", () => {
+    const populationMap = new Map()
+      .set("S08000031", 100000)
+      .set("S08000022", 200000)
+      .set("S12000013", 500000)
+      .set("S92000003", 800000);
+
+    const expectedResult = new Map()
+      .set("S08000031", 0.125)
+      .set("S08000022", 0.25)
+      .set("S12000013", 0.625)
+      .set("S92000003", 1);
+
+    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
+      expectedResult
+    );
+  });
+});
+
 const nhsCsvData = `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
 20200302,S08000031,unknown,1,2,2,4,5,6,7,8,9
 20200302,S08000022,unknown,11,12,6,14,15,16,17,18,19
 20200302,S12000013,unknown,21,22,4.4,24,25,26,27,28,29
+20200302,S92000003,Scotland,33,36,4.133333333333334,42,45,48,17,54,19
 20200303,S08000031,unknown,31,32,32,34,35,36,37,38,39
 20200303,S08000022,unknown,41,42,21,44,45,46,47,48,49
 20200303,S12000013,unknown,51,52,10.4,54,55,56,57,58,59
+20200303,S92000003,Scotland,123,126,21.133333333333333,132,135,138,47,144,49
 20200304,S08000031,unknown,61,62,62,64,65,66,67,68,69
 20200304,S08000022,unknown,71,72,36,74,75,76,77,78,79
 20200304,S12000013,unknown,81,82,16.4,84,85,86,87,88,89
+20200304,S92000003,Scotland,213,216,38.13333333333333,222,225,228,77,234,79
 20200305,S08000031,unknown,91,92,92,94,95,96,97,98,99
 20200305,S08000022,unknown,101,102,51,104,105,106,107,108,109
 20200305,S12000013,unknown,111,112,22.4,114,115,116,117,118,119
+20200305,S92000003,Scotland,303,306,55.13333333333333,312,315,318,107,324,109
 20200306,S08000031,unknown,121,122,122,124,125,126,127,128,129
 20200306,S08000022,unknown,131,132,66,134,135,136,137,138,139
 20200306,S12000013,unknown,141,142,28.4,144,145,146,147,148,149
+20200306,S92000003,Scotland,393,396,72.13333333333334,402,405,408,137,414,139
 20200307,S08000031,unknown,151,152,152,154,155,156,157,158,159
 20200307,S08000022,unknown,161,162,81,164,165,166,167,168,169
 20200307,S12000013,unknown,171,172,34.4,174,175,176,177,178,179
+20200307,S92000003,Scotland,483,486,89.13333333333333,492,495,498,167,504,169
 20200308,S08000031,unknown,181,182,182,184,185,186,187,188,189
 20200308,S08000022,unknown,191,192,96,194,195,196,197,198,199
 20200308,S12000013,unknown,201,202,40.4,204,205,206,207,208,209
+20200308,S92000003,Scotland,573,576,106.13333333333333,582,585,588,197,594,199
 20200309,S08000031,unknown,211,212,212,214,215,216,217,218,219
 20200309,S08000022,unknown,221,222,111,224,225,226,227,228,229
-20200309,S12000013,unknown,231,232,46.4,234,235,236,237,238,239`;
+20200309,S12000013,unknown,231,232,46.4,234,235,236,237,238,239
+20200309,S92000003,Scotland,663,888,111,672,675,678,227,684,229
+`;
 
 const healthBoardDataset = readCsvData(nhsCsvData);

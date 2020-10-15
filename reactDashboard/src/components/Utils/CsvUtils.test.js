@@ -185,6 +185,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 10,
             cumulativeCases: 21,
             crudeRatePositive: 0.21,
+            cumulativeNegativeTests: 31,
           })
           .set(Date.parse("2020-03-07"), {
             cases: 0,
@@ -192,6 +193,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 0,
             cumulativeCases: 0,
             crudeRatePositive: 0,
+            cumulativeNegativeTests: 0,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 0,
@@ -199,6 +201,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 70,
             cumulativeCases: 27,
             crudeRatePositive: 0.27,
+            cumulativeNegativeTests: 37,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 0,
@@ -206,6 +209,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 40,
             cumulativeCases: 24,
             crudeRatePositive: 0.24,
+            cumulativeNegativeTests: 34,
           })
       )
       .set(
@@ -217,6 +221,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 20,
             cumulativeCases: 22,
             crudeRatePositive: 0.22,
+            cumulativeNegativeTests: 32,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -224,6 +229,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -10,
             cumulativeCases: -21,
             crudeRatePositive: -0.21,
+            cumulativeNegativeTests: -31,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 201,
@@ -231,6 +237,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 80,
             cumulativeCases: 28,
             crudeRatePositive: 0.28,
+            cumulativeNegativeTests: 38,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 300,
@@ -238,6 +245,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 50,
             cumulativeCases: 25,
             crudeRatePositive: 0.25,
+            cumulativeNegativeTests: 35,
           })
       )
       .set(
@@ -249,6 +257,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
+            cumulativeNegativeTests: 33,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -256,6 +265,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
+            cumulativeNegativeTests: -32,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -263,6 +273,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
+            cumulativeNegativeTests: 39,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -270,6 +281,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
+            cumulativeNegativeTests: 36,
           })
       )
       .set(
@@ -281,6 +293,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
+            cumulativeNegativeTests: 33,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -288,6 +301,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
+            cumulativeNegativeTests: -32,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -295,6 +309,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
+            cumulativeNegativeTests: 39,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -302,6 +317,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
+            cumulativeNegativeTests: 36,
           })
       ),
   };
