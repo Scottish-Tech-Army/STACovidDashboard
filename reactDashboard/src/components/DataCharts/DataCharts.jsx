@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
-import moment from "moment";
 import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import SonificationPlayButton from "./SonificationPlayButton";
@@ -318,7 +317,7 @@ const DataCharts = ({
     ) {
       const datasets = [];
       const currentSeriesData = seriesData.get(regionCode);
-      if (currentSeriesData != undefined) {
+      if (currentSeriesData !== undefined) {
         datasets.push(
           datasetConfiguration(
             datasetLabel,

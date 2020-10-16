@@ -1,5 +1,5 @@
 import moment from "moment";
-import { differenceInDays, format, set } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 
 export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
   let dates = [...createDateSet(csvDataHB)];
