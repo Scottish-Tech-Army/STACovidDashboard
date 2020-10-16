@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
+import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
@@ -180,7 +180,7 @@ const Overview = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
-            <RegionDataCharts healthBoardDataset={healthBoardDataset} />
+            <DataCharts healthBoardDataset={healthBoardDataset} />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">
