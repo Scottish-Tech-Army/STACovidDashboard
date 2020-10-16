@@ -8,48 +8,48 @@ const ACCESSIBILITY_PAGE_TEXT = "Conformance Statement";
 const DATASOURCES_PAGE_TEXT = "Data sources and attributions";
 
 describe("page routing", () => {
-  xit("summary dashboard", () => {
+  it("summary dashboard", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
-  xit("about us page", () => {
+  it("about us page", () => {
     browser.url("/about");
     expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
   });
 
-  xit("accessibility page", () => {
+  it("accessibility page", () => {
     browser.url("/accessibility");
     expect(dashboard.root).toHaveTextContaining(ACCESSIBILITY_PAGE_TEXT);
   });
 
-  xit("data sources page", () => {
+  it("data sources page", () => {
     browser.url("/data");
     expect(dashboard.root).toHaveTextContaining(DATASOURCES_PAGE_TEXT);
   });
 
-  xit("regional insights default", () => {
+  it("regional insights default", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
   });
 
-  xit("regional insights health board", () => {
+  it("regional insights health board", () => {
     browser.url("/regional/S08000024");
     expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
   });
 
-  xit("regional insights council area", () => {
+  it("regional insights council area", () => {
     browser.url("/regional/S12000049");
     expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
   });
 
-  xit("unknown url -> summary dashboard", () => {
+  it("unknown url -> summary dashboard", () => {
     browser.url("/unknown");
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
-  xit("unknown regional url -> regional insights default", () => {
+  it("unknown regional url -> regional insights default", () => {
     browser.url("/regional/unknown");
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
@@ -57,7 +57,7 @@ describe("page routing", () => {
 });
 
 describe("page linking sitemap", () => {
-  xit("summary dashboard -> about us", () => {
+  it("summary dashboard -> about us", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
@@ -67,7 +67,7 @@ describe("page linking sitemap", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
   });
 
-  xit("summary dashboard -> accessibility", () => {
+  it("summary dashboard -> accessibility", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
@@ -77,7 +77,7 @@ describe("page linking sitemap", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/accessibility");
   });
 
-  xit("summary dashboard -> data sources", () => {
+  it("summary dashboard -> data sources", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
@@ -87,7 +87,7 @@ describe("page linking sitemap", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/data");
   });
 
-  xit("summary dashboard -> regional default", () => {
+  it("summary dashboard -> regional default", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
@@ -97,7 +97,7 @@ describe("page linking sitemap", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
   });
 
-  xit("regional default -> summary dashboard", () => {
+  it("regional default -> summary dashboard", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
@@ -109,7 +109,7 @@ describe("page linking sitemap", () => {
 });
 
 describe("page linking region choice", () => {
-  xit("regional default -> regional council area", () => {
+  it("regional default -> regional council area", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
@@ -122,7 +122,7 @@ describe("page linking region choice", () => {
     );
   });
 
-  xit("regional council area -> regional health board", () => {
+  it("regional council area -> regional health board", () => {
     browser.url("/regional/S12000049");
     expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
 
@@ -135,7 +135,7 @@ describe("page linking region choice", () => {
     );
   });
 
-  xit("regional health board -> regional default", () => {
+  it("regional health board -> regional default", () => {
     browser.url("/regional/S08000024");
     expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
 
@@ -148,7 +148,7 @@ describe("page linking region choice", () => {
 });
 
 describe("page linking navbar", () => {
-  xit("summary dashboard -> regional default", () => {
+  it("summary dashboard -> regional default", () => {
     browser.url("/");
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
@@ -158,7 +158,7 @@ describe("page linking navbar", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
   });
 
-  xit("regional default -> summary dashboard", () => {
+  it("regional default -> summary dashboard", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
@@ -168,7 +168,7 @@ describe("page linking navbar", () => {
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
   });
 
-  xit("regional default (click logo) -> summary dashboard", () => {
+  it("regional default (click logo) -> summary dashboard", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
@@ -180,7 +180,7 @@ describe("page linking navbar", () => {
 });
 
 describe("page routing history from urls", () => {
-  xit("history handling", () => {
+  it("history handling", () => {
     // Create a history
     browser.url("/");
     browser.url("/about");
@@ -224,7 +224,7 @@ describe("page routing history from urls", () => {
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
-  xit("no more forward", () => {
+  it("no more forward", () => {
     // Create a history
     browser.url("/");
     browser.url("/about");
@@ -246,7 +246,7 @@ describe("page routing history from urls", () => {
 });
 
 describe("page routing history following links", () => {
-  xit("history handling", () => {
+  it("history handling", () => {
     // Create a history
     browser.url("/");
     dashboard.sitemapLinkAboutUs.click();
@@ -292,7 +292,7 @@ describe("page routing history following links", () => {
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
-  xit("no more forward", () => {
+  it("no more forward", () => {
     // Create a history
     browser.url("/");
     dashboard.sitemapLinkAboutUs.click();

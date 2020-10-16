@@ -32,6 +32,103 @@ class DashboardPage extends Page {
     return $("#percentageCases");
   }
   // Heatmap selector
+  // Table cells for counts
+  get tableRow02Count() {
+    return $("//tbody/tr[2]/td[2]");
+  }
+  get tableRow03Count() {
+    return $("//tbody/tr[3]/td[2]");
+  }
+  get tableRow04Count() {
+    return $("//tbody/tr[4]/td[2]");
+  }
+  get tableRow05Count() {
+    return $("//tbody/tr[5]/td[2]");
+  }
+  get tableRow06Count() {
+    return $("//tbody/tr[6]/td[2]");
+  }
+  get tableRow07Count() {
+    return $("//tbody/tr[7]/td[2]");
+  }
+  get tableRow08Count() {
+    return $("//tbody/tr[8]/td[2]");
+  }
+  get tableRow09Count() {
+    return $("//tbody/tr[9]/td[2]");
+  }
+  get tableRow10Count() {
+    return $("//tbody/tr[10]/td[2]");
+  }
+  get tableRow11Count() {
+    return $("//tbody/tr[11]/td[2]");
+  }
+  get tableRow12Count() {
+    return $("//tbody/tr[12]/td[2]");
+  }
+  get tableRow13Count() {
+    return $("//tbody/tr[13]/td[2]");
+  }
+  get tableRow14Count() {
+    return $("//tbody/tr[14]/td[2]");
+  }
+  get tableRow15Count() {
+    return $("//tbody/tr[15]/td[2]");
+  }
+  get tableRow16Count() {
+    return $("//tbody/tr[16]/td[2]");
+  }
+  get tableRow17Count() {
+    return $("//tbody/tr[17]/td[2]");
+  }
+  get tableRow18Count() {
+    return $("//tbody/tr[18]/td[2]");
+  }
+  get tableRow19Count() {
+    return $("//tbody/tr[19]/td[2]");
+  }
+  get tableRow20Count() {
+    return $("//tbody/tr[20]/td[2]");
+  }
+  get tableRow21Count() {
+    return $("//tbody/tr[21]/td[2]");
+  }
+  get tableRow22Count() {
+    return $("//tbody/tr[22]/td[2]");
+  }
+  get tableRow23Count() {
+    return $("//tbody/tr[23]/td[2]");
+  }
+  get tableRow24Count() {
+    return $("//tbody/tr[24]/td[2]");
+  }
+  get tableRow25Count() {
+    return $("//tbody/tr[25]/td[2]");
+  }
+  get tableRow26Count() {
+    return $("//tbody/tr[26]/td[2]");
+  }
+  get tableRow27Count() {
+    return $("//tbody/tr[27]/td[2]");
+  }
+  get tableRow28Count() {
+    return $("//tbody/tr[28]/td[2]");
+  }
+  get tableRow29Count() {
+    return $("//tbody/tr[29]/td[2]");
+  }
+  get tableRow30Count() {
+    return $("//tbody/tr[30]/td[2]");
+  }
+  get tableRow31Count() {
+    return $("//tbody/tr[31]/td[2]");
+  }
+  get tableRow32Count() {
+    return $("//tbody/tr[32]/td[2]");
+  }
+  get tableRow33Count() {
+    return $("//tbody/tr[33]/td[2]");
+  }
   // Health Boards
   get healthBoard() {
     return $("#healthBoards");
@@ -95,48 +192,6 @@ class DashboardPage extends Page {
   }
   get healthBoard14Name() {
     return $("//td[text()='Western Isles']");
-  }
-  get healthBoard01Count() {
-    return $("//tbody/tr[2]/td[2]");
-  }
-  get healthBoard02Count() {
-    return $("//tbody/tr[3]/td[2]");
-  }
-  get healthBoard03Count() {
-    return $("//tbody/tr[4]/td[2]");
-  }
-  get healthBoard04Count() {
-    return $("//tbody/tr[5]/td[2]");
-  }
-  get healthBoard05Count() {
-    return $("//tbody/tr[6]/td[2]");
-  }
-  get healthBoard06Count() {
-    return $("//tbody/tr[7]/td[2]");
-  }
-  get healthBoard07Count() {
-    return $("//tbody/tr[8]/td[2]");
-  }
-  get healthBoard08Count() {
-    return $("//tbody/tr[9]/td[2]");
-  }
-  get healthBoard09Count() {
-    return $("//tbody/tr[10]/td[2]");
-  }
-  get healthBoard10Count() {
-    return $("//tbody/tr[11]/td[2]");
-  }
-  get healthBoard11Count() {
-    return $("//tbody/tr[12]/td[2]");
-  }
-  get healthBoard12Count() {
-    return $("//tbody/tr[13]/td[2]");
-  }
-  get healthBoard13Count() {
-    return $("//tbody/tr[14]/td[2]");
-  }
-  get healthBoard14Count() {
-    return $("//tbody/tr[15]/td[2]");
   }
   // Council Areas
   get councilAreas() {
@@ -250,102 +305,7 @@ class DashboardPage extends Page {
   get councilArea32Name() {
     return $("//td[text()='West Lothian']");
   }
-  get councilArea01Count() {
-    return $("//tbody/tr[2]/td[2]");
-  }
-  get councilArea02Count() {
-    return $("//tbody/tr[3]/td[2]");
-  }
-  get councilArea03Count() {
-    return $("//tbody/tr[4]/td[2]");
-  }
-  get councilArea04Count() {
-    return $("//tbody/tr[5]/td[2]");
-  }
-  get councilArea05Count() {
-    return $("//tbody/tr[6]/td[2]");
-  }
-  get councilArea06Count() {
-    return $("//tbody/tr[7]/td[2]");
-  }
-  get councilArea07Count() {
-    return $("//tbody/tr[8]/td[2]");
-  }
-  get councilArea08Count() {
-    return $("//tbody/tr[9]/td[2]");
-  }
-  get councilArea09Count() {
-    return $("//tbody/tr[10]/td[2]");
-  }
-  get councilArea10Count() {
-    return $("//tbody/tr[11]/td[2]");
-  }
-  get councilArea11Count() {
-    return $("//tbody/tr[12]/td[2]");
-  }
-  get councilArea12Count() {
-    return $("//tbody/tr[13]/td[2]");
-  }
-  get councilArea13Count() {
-    return $("//tbody/tr[14]/td[2]");
-  }
-  get councilArea14Count() {
-    return $("//tbody/tr[15]/td[2]");
-  }
-  get councilArea15Count() {
-    return $("//tbody/tr[16]/td[2]");
-  }
-  get councilArea16Count() {
-    return $("//tbody/tr[17]/td[2]");
-  }
-  get councilArea17Count() {
-    return $("//tbody/tr[18]/td[2]");
-  }
-  get councilArea18Count() {
-    return $("//tbody/tr[19]/td[2]");
-  }
-  get councilArea19Count() {
-    return $("//tbody/tr[20]/td[2]");
-  }
-  get councilArea20Count() {
-    return $("//tbody/tr[21]/td[2]");
-  }
-  get councilArea21Count() {
-    return $("//tbody/tr[22]/td[2]");
-  }
-  get councilArea22Count() {
-    return $("//tbody/tr[23]/td[2]");
-  }
-  get councilArea23Count() {
-    return $("//tbody/tr[24]/td[2]");
-  }
-  get councilArea24Count() {
-    return $("//tbody/tr[25]/td[2]");
-  }
-  get councilArea25Count() {
-    return $("//tbody/tr[26]/td[2]");
-  }
-  get councilArea26Count() {
-    return $("//tbody/tr[27]/td[2]");
-  }
-  get councilArea27Count() {
-    return $("//tbody/tr[28]/td[2]");
-  }
-  get councilArea28Count() {
-    return $("//tbody/tr[29]/td[2]");
-  }
-  get councilArea29Count() {
-    return $("//tbody/tr[30]/td[2]");
-  }
-  get councilArea30Count() {
-    return $("//tbody/tr[31]/td[2]");
-  }
-  get councilArea31Count() {
-    return $("//tbody/tr[32]/td[2]");
-  }
-  get councilArea32Count() {
-    return $("//tbody/tr[33]/td[2]");
-  } // Cases & Deaths buttons
+  // Cases & Deaths buttons
   get cases() {
     return $("#cases");
   }
