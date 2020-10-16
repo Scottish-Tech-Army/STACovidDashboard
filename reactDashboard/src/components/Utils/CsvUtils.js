@@ -106,7 +106,6 @@ export function createPlaceDateValuesMap(lines) {
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
 //
 
-// Returns a map of dates->summed values over all places
 function createDateSet(lines) {
   const result = new Set();
   lines.forEach(([dateString]) => {
