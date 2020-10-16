@@ -125,10 +125,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         position: "bottom",
         labels: {
           boxWidth: 20,
-        }
-      },
-      annotation: {
-        annotations: keyDates.map(getDateLine),
+        },
       },
       tooltips: {
         callbacks: {
@@ -145,6 +142,10 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       },
     },
   };
+  if (datasets.length > 0) {
+    result.options.annotation = { annotations: keyDates.map(getDateLine) };
+  }
+
   if (dateRange != null) {
     result.options.scales.xAxes[0].ticks = {
       min: dateRange.startDate,
@@ -155,27 +156,26 @@ export function commonChartConfiguration(datasets, dateRange = null) {
 }
 
 export function calculateDateRange(maxDateRange, timePeriod) {
-
   let startDate = 0;
   const endDate = maxDateRange.endDate;
 
-  switch(timePeriod) {
-  case ALL_DATES:
-    return maxDateRange;
-  case LAST_WEEK:
-    startDate = moment(endDate).subtract(1, "weeks").valueOf();
-    break;
-  case LAST_TWO_WEEKS:
-    startDate = moment(endDate).subtract(2, "weeks").valueOf();
-    break;
-  case LAST_MONTH:
-    startDate = moment(endDate).subtract(1, "months").valueOf();
-    break;
-  case LAST_THREE_MONTHS:
-    startDate = moment(endDate).subtract(3, "months").valueOf();
-    break;
-  default:
-    throw new Error("timePeriod invalid: " + timePeriod)
+  switch (timePeriod) {
+    case ALL_DATES:
+      return maxDateRange;
+    case LAST_WEEK:
+      startDate = moment(endDate).subtract(1, "weeks").valueOf();
+      break;
+    case LAST_TWO_WEEKS:
+      startDate = moment(endDate).subtract(2, "weeks").valueOf();
+      break;
+    case LAST_MONTH:
+      startDate = moment(endDate).subtract(1, "months").valueOf();
+      break;
+    case LAST_THREE_MONTHS:
+      startDate = moment(endDate).subtract(3, "months").valueOf();
+      break;
+    default:
+      throw new Error("timePeriod invalid: " + timePeriod);
   }
 
   if (startDate < maxDateRange.startDate) {
@@ -183,5 +183,4 @@ export function calculateDateRange(maxDateRange, timePeriod) {
   }
 
   return { startDate: startDate, endDate: endDate };
-
 }

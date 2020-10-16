@@ -316,21 +316,25 @@ const DataCharts = ({
       additionalConfiguration,
       sonificationLabel
     ) {
-      const datasets = [
-        datasetConfiguration(
-          datasetLabel,
-          seriesData.get(regionCode),
-          REGION_DATASET_COLOUR
-        ),
-      ];
-      if (regionCode !== FEATURE_CODE_SCOTLAND) {
+      const datasets = [];
+      const currentSeriesData = seriesData.get(regionCode);
+      if (currentSeriesData != undefined) {
         datasets.push(
           datasetConfiguration(
-            datasetLabel + " (Scotland average adjusted for population)",
-            getAverageSeriesData(seriesData, regionCode),
-            AVERAGE_DATASET_COLOUR
+            datasetLabel,
+            currentSeriesData,
+            REGION_DATASET_COLOUR
           )
         );
+        if (regionCode !== FEATURE_CODE_SCOTLAND) {
+          datasets.push(
+            datasetConfiguration(
+              datasetLabel + " (Scotland average adjusted for population)",
+              getAverageSeriesData(seriesData, regionCode),
+              AVERAGE_DATASET_COLOUR
+            )
+          );
+        }
       }
       const chartConfiguration = commonChartConfiguration(datasets, dateRange);
       chartConfiguration.options.tooltips = {
