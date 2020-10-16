@@ -3,7 +3,7 @@ import Page from "./page";
 /**
  * dashboard page containing specific selectors and methods for a page
  */
-class dashboardPage extends Page {
+class DashboardPage extends Page {
   get imgLogo() {
     return $('img[id="logo"]');
   }
@@ -360,4 +360,4 @@ class dashboardPage extends Page {
   }
 }
 
-export default new dashboardPage();
+export default new DashboardPage();
