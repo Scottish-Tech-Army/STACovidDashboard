@@ -9,7 +9,7 @@ class DashboardPage extends Page {
   }
   // Header
   get headingTitle() {
-    return $('[class="heading heading-title"] ');
+    return $(".navbar").$(".heading");
   }
   // Current phase banner
   get currentPhase() {
@@ -32,6 +32,35 @@ class DashboardPage extends Page {
     return $("#percentageCases");
   }
   // Heatmap selector
+  get heatmapHeaderRow() {
+    return $(".heatmap thead tr");
+  }
+
+  get heatmapBoundariesTitle() {
+    return this.heatmapHeaderRow.$("th:nth-child(1) div:nth-child(1)");
+  }
+  get heatmapBoundariesCount() {
+    return this.heatmapHeaderRow.$("th:nth-child(1) div.subheading");
+  }
+  get selectHealthBoardsButton() {
+    return $(".heatmap-selector #healthBoards");
+  }
+  get selectCouncilAreasButton() {
+    return $(".heatmap-selector #councilAreas");
+  }
+  get heatmapValueTypeTitle() {
+    return this.heatmapHeaderRow.$("th:nth-child(2) div:nth-child(1)");
+  }
+  get heatmapValueTypeCount() {
+    return this.heatmapHeaderRow.$("th:nth-child(2) div.subheading");
+  }
+  get selectCasesButton() {
+    return $(".heatmap-selector #cases");
+  }
+  get selectDeathsButton() {
+    return $(".heatmap-selector #deaths");
+  }
+
   // Table cells for counts
   get tableRow02Count() {
     return $("//tbody/tr[2]/td[2]");
@@ -129,10 +158,10 @@ class DashboardPage extends Page {
   get tableRow33Count() {
     return $("//tbody/tr[33]/td[2]");
   }
+  //
+
   // Health Boards
-  get healthBoard() {
-    return $("#healthBoards");
-  }
+
   get healthBoardTitleText() {
     return $("//div[text()='HEALTH BOARDS']");
   }
@@ -194,9 +223,7 @@ class DashboardPage extends Page {
     return $("//td[text()='Western Isles']");
   }
   // Council Areas
-  get councilAreas() {
-    return $("#councilAreas");
-  }
+
   get councilAreasTitleText() {
     return $("//div[text()='COUNCIL AREAS']");
   }
@@ -306,12 +333,7 @@ class DashboardPage extends Page {
     return $("//td[text()='West Lothian']");
   }
   // Cases & Deaths buttons
-  get cases() {
-    return $("#cases");
-  }
-  get deaths() {
-    return $("#deaths");
-  }
+
   /**
    * open base URL
    */

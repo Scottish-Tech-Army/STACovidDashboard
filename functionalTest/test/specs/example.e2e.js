@@ -1,89 +1,70 @@
 import dashboard from "../pageobjects/dashboardPage";
 
-describe("Covid-19 Dashboard", () => {
+xdescribe("Covid-19 Dashboard", () => {
   it("should have correct title", () => {
     dashboard.open();
     let title = "Scottish COVID-19 Statistics";
     expect(browser).toHaveTitle(title);
-  });
-
-  it("should display Logo", () => {
-    dashboard.open();
     expect(dashboard.imgLogo).toBeDisplayed();
-  });
-
-  // 16/10/2020 Did not pass
-  xit("should display correct heading title", () => {
-    dashboard.open();
-    expect(dashboard.headingTitle).toHaveTextContaining(
-      "Scottish COVID-19 Statistics"
-    );
-  });
-
-  it("should display correct current phase", () => {
-    dashboard.open();
+    expect(dashboard.headingTitle).toHaveText("Scottish COVID-19 Statistics");
     expect(dashboard.currentPhase).toHaveTextContaining("Phase 3");
   });
+});
 
-  it("Health Board button should be clickable", () => {
+describe("heatmap selection", () => {
+  it("default view", () => {
     dashboard.open();
-    expect(dashboard.healthBoard).toBeClickable();
+
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
+    expect(dashboard.heatmapBoundariesCount).toHaveText("14 Boards");
+    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
+    expect(dashboard.heatmapValueTypeCount).toHaveText("34760");
   });
 
-  it("council Areas button should be clickable", () => {
+  xit("council areas title text and total areas should be displayed", () => {
     dashboard.open();
-    expect(dashboard.councilAreas).toBeClickable();
+
+    dashboard.selectCouncilAreasButton.click();
+
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+    expect(dashboard.heatmapBoundariesCount).toHaveText("32 Areas");
   });
 
-  it("Cases button should be clickable", () => {
+  xit("health boards title text and total areas should be displayed", () => {
     dashboard.open();
-    expect(dashboard.cases).toBeClickable();
+    dashboard.selectCouncilAreasButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+
+    dashboard.selectHealthBoardsButton.click();
+
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
+    expect(dashboard.heatmapBoundariesCount).toHaveText("14 Boards");
   });
 
-  it("Deaths button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.deaths).toBeClickable();
-  });
+  xit("council areas deaths", () => {});
 
-  it("dailyCases button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.dailyCases).toBeClickable();
-  });
+  xit("health boards deaths", () => {});
+});
 
-  it("totalCases button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.totalCases).toBeClickable();
-  });
-
-  // 16/10/2020 Did not pass
-  xit("dailyDeaths button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.dailyDeaths).toBeClickable();
-  });
-
-  // 16/10/2020 Did not pass
-  xit("totalDeaths button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.totalDeaths).toBeClickable();
-  });
-
-  // 16/10/2020 Did not pass
-  xit("percentageCases button should be clickable", () => {
-    dashboard.open();
-    expect(dashboard.percentageCases).toBeClickable();
-  });
-
+xdescribe("Health Boards and Council Areas buttons display the correct data", () => {
   // Health Boards
   it("health board title text and total boards should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
-    expect(dashboard.healthBoardTitleText).toBeDisplayed();
-    expect(dashboard.healthBoardSubheadingCount).toBeDisplayed();
+    dashboard.selectHealthBoardsButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
+    expect(dashboard.heatmapBoundariesCount).toHaveText("14 Boards");
+  });
+
+  it("council areas title text and total areas should be displayed", () => {
+    dashboard.open();
+    dashboard.selectCouncilAreasButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+    expect(dashboard.heatmapBoundariesCount).toHaveText("32 Areas");
   });
 
   it("health board total cases text and total cases count should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
+    dashboard.selectHealthBoardsButton.click();
     dashboard.cases.click();
     expect(dashboard.healthBoardTotalCasesText).toBeDisplayed();
     expect(dashboard.healthBoardTotalCasesCount).toBeDisplayed();
@@ -91,7 +72,7 @@ describe("Covid-19 Dashboard", () => {
 
   it("health board total deaths text and total deaths count should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
+    dashboard.selectHealthBoardsButton.click();
     dashboard.deaths.click();
     expect(dashboard.healthBoardTotalDeathsText).toBeDisplayed();
     expect(dashboard.healthBoardTotalDeathsCount).toBeDisplayed();
@@ -99,7 +80,7 @@ describe("Covid-19 Dashboard", () => {
 
   it("health board names should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
+    dashboard.selectHealthBoardsButton.click();
     expect(dashboard.healthBoard01Name).toBeDisplayed();
     expect(dashboard.healthBoard02Name).toBeDisplayed();
     expect(dashboard.healthBoard03Name).toBeDisplayed();
@@ -118,7 +99,7 @@ describe("Covid-19 Dashboard", () => {
 
   it("health board cases should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
+    dashboard.selectHealthBoardsButton.click();
     dashboard.cases.click();
     expect(dashboard.tableRow02Count).toHaveTextContaining("1995");
     expect(dashboard.tableRow03Count).toHaveTextContaining("549");
@@ -138,7 +119,7 @@ describe("Covid-19 Dashboard", () => {
 
   it("health board deaths should be displayed", () => {
     dashboard.open();
-    dashboard.healthBoard.click();
+    dashboard.selectHealthBoardsButton.click();
     dashboard.deaths.click();
     expect(dashboard.tableRow02Count).toHaveTextContaining("173");
     expect(dashboard.tableRow03Count).toHaveTextContaining("40");
@@ -157,12 +138,6 @@ describe("Covid-19 Dashboard", () => {
   });
 
   // Council Areas
-  it("council areas title text and total areas should be displayed", () => {
-    dashboard.open();
-    dashboard.councilAreas.click();
-    expect(dashboard.councilAreasTitleText).toBeDisplayed();
-    expect(dashboard.councilAreasSubheadingCount).toBeDisplayed();
-  });
 
   it("council areas total cases text and total count should be displayed", () => {
     dashboard.open();
