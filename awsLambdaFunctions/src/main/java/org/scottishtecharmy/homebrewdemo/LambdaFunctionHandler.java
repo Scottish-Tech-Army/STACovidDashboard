@@ -77,6 +77,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                 OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TOTAL_COUNCIL_AREAS_URL);
         storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS,
                 OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TOTAL_HEALTH_BOARDS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS,
+                OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TESTS_HEALTH_BOARDS_URL);
     }
 
     private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
@@ -89,8 +91,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             request.addHeader("If-Modified-Since", modificationDate);
         }
 
-        CloseableHttpClient client = createHttpClient();
-        try (CloseableHttpResponse response = client.execute(request)) {
+        try (CloseableHttpClient client = createHttpClient();
+                CloseableHttpResponse response = client.execute(request)) {
             int statusCode = response.getStatusLine().getStatusCode();
             if (HttpStatus.SC_NOT_MODIFIED == statusCode) {
                 context.getLogger().log("NHS data not updated - skipping\n");
@@ -106,6 +108,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             String newModificationDate = null;
             if (lastModifiedHeader != null) {
                 newModificationDate = lastModifiedHeader.getValue();
+            }
+
+            if (newModificationDate != null && newModificationDate.equals(modificationDate)) {
+                context.getLogger().log("NHS request not respecting If-Modified-Since - skipping\n");
+                return;
             }
 
             // Pipe straight to S3
@@ -146,8 +153,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             throws UnsupportedOperationException, IOException {
         context.getLogger().log("Call request\n");
 
-        CloseableHttpClient client = createHttpClient();
-        try (CloseableHttpResponse response = client.execute(request)) {
+        try (CloseableHttpClient client = createHttpClient();
+                CloseableHttpResponse response = client.execute(request)) {
             context.getLogger().log("Response received\n");
 
             // Pipe straight to S3
@@ -185,6 +192,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         context.getLogger().log("Object stored in S3 at " + objectKeyName + "\n");
     }
 
+    @SuppressWarnings("resource")
     private String getObject(Context context, String objectKeyName)
             throws UnsupportedOperationException, AmazonServiceException, SdkClientException, IOException {
         if (!s3.doesObjectExist(BUCKET_NAME, objectKeyName)) {
@@ -211,6 +219,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
     private final static String NHS_SCOT_TOTAL_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
             + "e8454cf0-1152-4bcb-b9da-4343f625dfef/download";
+    private final static String NHS_SCOT_TESTS_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
+            + "8da654cd-293b-4286-96a4-b3ece86225f0/download";
     
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsDailyHealthBoardLastModified.txt";
@@ -220,6 +230,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "nhsTotalHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsTotalCouncilAreaLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsTestsHealthBoardLastModified.txt";
 
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
@@ -227,6 +239,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "currentTotalsHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS = OBJECT_FOLDER
             + "currentTotalsCouncilAreas.csv";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS = OBJECT_FOLDER
+            + "testsHealthBoards.csv";
 
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 

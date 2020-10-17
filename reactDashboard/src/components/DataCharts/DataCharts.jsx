@@ -3,6 +3,7 @@ import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
 import moment from "moment";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
   PERCENTAGE_CASES,
@@ -11,7 +12,10 @@ import {
   TOTAL_CASES,
   TOTAL_DEATHS,
 } from "./DataChartsConsts";
-import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
+import {
+  createDateAggregateValuesMap,
+  getNhsCsvDataDateRange,
+} from "../Utils/CsvUtils";
 import "chartjs-plugin-annotation";
 import {
   commonChartConfiguration,
@@ -19,6 +23,12 @@ import {
   getWhoThresholdLine,
 } from "./DataChartsUtils";
 import SonificationPlayButton from "./SonificationPlayButton";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { stopAudio } from "../Utils/Sonification";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
@@ -101,12 +111,7 @@ export function parseNhsCsvData(csvData) {
   };
 }
 
-const DataCharts = ({
-  chartType = PERCENTAGE_CASES,
-  healthBoardDataset = null,
-  fullscreenEnabled = false,
-  toggleFullscreen,
-}) => {
+const DataCharts = ({ healthBoardDataset = null }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
   const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
@@ -118,6 +123,12 @@ const DataCharts = ({
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
+  const [chartType, setChartType] = useState(DAILY_CASES);
+  const [dateRange, setDateRange] = useState({ startDate: 0, endDate: 1 });
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
 
   const percentageCasesDatasetLabel =
     "% of Positive Tests (5 day moving average)";
@@ -136,6 +147,7 @@ const DataCharts = ({
         totalCases,
         totalDeaths,
       } = parseNhsCsvData(healthBoardDataset);
+
       setPercentageCasesSeriesData(percentageCases);
       setDailyCasesSeriesData(dailyCases);
       setDailyDeathsSeriesData(dailyDeaths);
@@ -143,6 +155,19 @@ const DataCharts = ({
       setTotalDeathsSeriesData(totalDeaths);
     }
   }, [healthBoardDataset]);
+
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(healthBoardDataset);
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset]);
+
+  // Stop audio on chart or dateRange change
+  useEffect(() => {
+    stopAudio();
+  }, [chartType, dateRange]);
 
   useEffect(() => {
     const DATASET_COLOUR = "#ec6730";
@@ -155,7 +180,7 @@ const DataCharts = ({
           DATASET_COLOUR
         ),
       ];
-      const configuration = commonChartConfiguration(datasets);
+      const configuration = commonChartConfiguration(datasets, dateRange);
 
       configuration.options.scales.yAxes[0].ticks.callback = (
         value,
@@ -196,7 +221,7 @@ const DataCharts = ({
       const datasets = [
         datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
       ];
-      return commonChartConfiguration(datasets);
+      return commonChartConfiguration(datasets, dateRange);
     }
 
     if (chartInstance.current !== null) {
@@ -205,7 +230,7 @@ const DataCharts = ({
 
     function setSonification(seriesData, seriesTitle) {
       if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
+        setAudio(seriesData);
         setSeriesTitle(seriesTitle);
       }
     }
@@ -251,8 +276,7 @@ const DataCharts = ({
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    fullscreenEnabled,
-    toggleFullscreen,
+    dateRange,
   ]);
 
   const isDataReady = () => {
@@ -275,23 +299,44 @@ const DataCharts = ({
   };
 
   function getScreenModeClassName() {
-    if (isDataReady()) {
-      return fullscreenEnabled
-        ? "full-screen chart-container"
-        : "chart-container";
-    } else {
-      return "chart-container hidden-chart";
-    }
+    return isDataReady() ? "chart-container" : "chart-container hidden-chart";
   }
 
   return (
-    <div className="chart-border">
-      <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
-      <div className={getScreenModeClassName()}>
-        <canvas ref={chartContainer} />
-      </div>
-      {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+    <Container className="chart-border">
+      <Row className="chart-dropdown-container">
+        <Col className="chart-title">
+          <h2>Select Chart:</h2>
+          <ChartDropdown chartType={chartType} setChartType={setChartType} />
+        </Col>
+      </Row>
+      <Row className="chart-dropdown-container">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+        />
+        <SonificationPlayButton
+          className="sonification-play-button"
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          dateRange={dateRange}
+        />
+        <div className={getScreenModeClassName()}>
+          <canvas ref={chartContainer} />
+        </div>
+        {isDataReady() ? <></> : <LoadingComponent />}
+      </Row>
+    </Container>
   );
 };
 

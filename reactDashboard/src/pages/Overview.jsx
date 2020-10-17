@@ -8,18 +8,14 @@ import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import DataChartsSelector from "../components/DataCharts/DataChartsSelector";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
-
-import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
 } from "../components/HeatmapDataSelector/HeatmapConsts";
-import { stopAudio } from "../components/Utils/Sonification";
 
 const Overview = ({
   councilAreaDataset,
@@ -28,17 +24,9 @@ const Overview = ({
 }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
-  const [chartType, setChartType] = useState(DAILY_CASES);
-  const [zoomDataCharts, setZoomDataCharts] = useState(false);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
 
-  const zoomableCharts = useRef();
   const zoomableMap = useRef();
-
-  // Stop audio on chart change
-  useEffect(() => {
-    stopAudio();
-  }, [chartType]);
 
   function toggleFullscreen(element, setter) {
     var elem = element.current || document.documentElement;
@@ -75,7 +63,6 @@ const Overview = ({
   useEffect(() => {
     function setFullscreenMode(fullscreenEnabled) {
       if (!fullscreenEnabled) {
-        setZoomDataCharts(false);
         setZoomGeoMap(false);
       }
     }
@@ -111,7 +98,6 @@ const Overview = ({
           </Col>
         </Row>
       </Container>
-
       <Container fluid>
         <Row>
           <Col>
@@ -192,22 +178,9 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row ref={zoomableCharts} className="fullscreen-charts">
-          <Col xs={12} md={3} lg={2}>
-            <DataChartsSelector
-              chartType={chartType}
-              setChartType={setChartType}
-            />
-          </Col>
-          <Col xs={12} md={9} lg={10}>
-            <DataCharts
-              chartType={chartType}
-              healthBoardDataset={healthBoardDataset}
-              fullscreenEnabled={zoomDataCharts}
-              toggleFullscreen={() =>
-                toggleFullscreen(zoomableCharts, setZoomDataCharts)
-              }
-            />
+        <Row className="data-charts-container">
+          <Col xs={12}>
+            <DataCharts healthBoardDataset={healthBoardDataset} />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">

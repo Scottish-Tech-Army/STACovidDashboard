@@ -6,9 +6,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
-import RegionDataChartsSelector from "../components/DataCharts/RegionDataChartsSelector";
 import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
-import { DAILY_CASES } from "../components/DataCharts/DataChartsConsts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
@@ -42,7 +40,6 @@ const Regional = ({
   const match = useRouteMatch();
   const location = useLocation();
   const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
-  const [chartType, setChartType] = useState(DAILY_CASES);
   const history = useHistory();
 
   const currentRegionCode = useRef(regionCode);
@@ -87,7 +84,7 @@ const Regional = ({
   // Stop audio on chart, region or location change
   useEffect(() => {
     stopAudio();
-  }, [chartType, regionCode, location]);
+  }, [regionCode, location]);
 
   return (
     <Container fluid className="regional-page">
@@ -128,16 +125,9 @@ const Regional = ({
           <hr className="full-width-hr" />
         </Col>
       </Row>
-      <Row className="fullscreen-charts">
-        <Col xs={12} md={3} lg={2}>
-          <RegionDataChartsSelector
-            chartType={chartType}
-            setChartType={setChartType}
-          />
-        </Col>
-        <Col xs={12} md={9} lg={10}>
+      <Row className="data-charts-container">
+        <Col xs={12}>
           <RegionDataCharts
-            chartType={chartType}
             regionCode={regionCode}
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}

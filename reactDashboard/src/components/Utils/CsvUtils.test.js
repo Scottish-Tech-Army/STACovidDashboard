@@ -7,6 +7,7 @@ import {
   getPhoneticPlaceNameByFeatureCode,
   parse7DayWindowCsvData,
   getRelativeReportedDate,
+  getNhsCsvDataDateRange,
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
 
@@ -142,15 +143,19 @@ const dailyNHSCsvData = `
 20200306,S08000031,place 1,0,21,0.21,0,1,10,0,31,0
 20200306,S08000022,place 2,1,22,0.22,0,2,20,0,32,0
 20200306,S12000013,place 3,1,23,0.23,0,3,30,0,33,0
+20200306,S92000003,Scotland,1,23,0.23,0,3,30,0,33,0
 20200309,S08000031,place 1,0,24,0.24,0,4,40,0,34,0
 20200309,S08000022,place 2,300,25,0.25,0,5,50,0,35,0
 20200309,S12000013,place 3,-8,26,0.26,0,6,60,0,36,0
+20200309,S92000003,Scotland,-8,26,0.26,0,6,60,0,36,0
 20200308,S08000031,place 1,0,27,0.27,0,7,70,0,37,0
 20200308,S08000022,place 2,201,28,0.28,0,8,80,0,38,0
 20200308,S12000013,place 3,26,29,0.29,0,9,90,0,39,0
+20200308,S92000003,Scotland,26,29,0.29,0,9,90,0,39,0
 20200307,S08000031,place 1,0,0,0,0,0,0,0,0,0
 20200307,S08000022,place 2,-1,-21,-0.21,0,-1,-10,0,-31,0
 20200307,S12000013,place 3,-1,-22,-0.22,0,-2,-20,0,-32,0
+20200307,S92000003,Scotland,-1,-22,-0.22,0,-2,-20,0,-32,0
 `;
 
 const dailyHealthBoardCsvLabels =
@@ -237,6 +242,38 @@ describe("createPlaceDateValuesMap", () => {
       )
       .set(
         "S12000013",
+        new Map()
+          .set(Date.parse("2020-03-06"), {
+            cases: 1,
+            deaths: 3,
+            cumulativeDeaths: 30,
+            cumulativeCases: 23,
+            crudeRatePositive: 0.23,
+          })
+          .set(Date.parse("2020-03-07"), {
+            cases: -1,
+            deaths: -2,
+            cumulativeDeaths: -20,
+            cumulativeCases: -22,
+            crudeRatePositive: -0.22,
+          })
+          .set(Date.parse("2020-03-08"), {
+            cases: 26,
+            deaths: 9,
+            cumulativeDeaths: 90,
+            cumulativeCases: 29,
+            crudeRatePositive: 0.29,
+          })
+          .set(Date.parse("2020-03-09"), {
+            cases: -8,
+            deaths: 6,
+            cumulativeDeaths: 60,
+            cumulativeCases: 26,
+            crudeRatePositive: 0.26,
+          })
+      )
+      .set(
+        "S92000003",
         new Map()
           .set(Date.parse("2020-03-06"), {
             cases: 1,
@@ -388,6 +425,26 @@ const dailyCasesCsvData = `
   20200306,S08000022,unknown,1,0,0,0,8,0,0,21,14.1072148327287
   20200307,S08000022,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
     `;
+
+describe("getNhsCsvDataDateRange", () => {
+
+  const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
+  const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
+  const expectedResult = {startDate: Date.parse("2020-03-06"), endDate: Date.parse("2020-03-09")}
+
+  it("happy path", () => {
+    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData, parsedDailyCouncilAreaData)).toStrictEqual(
+      expectedResult
+    );
+  })
+
+  it("default render", () => {
+    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData)).toStrictEqual(
+      expectedResult
+    );
+  })
+
+})
 
 test("parse7DayWindowCsvData", () => {
   // Grampian : 09/03 - 03/03 : 7 days of data

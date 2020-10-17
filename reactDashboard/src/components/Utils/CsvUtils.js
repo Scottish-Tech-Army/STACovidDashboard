@@ -1,6 +1,27 @@
 import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
+export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
+  let dateAggregateValuesMap = createDateAggregateValuesMap(csvDataHB);
+
+  let dates = [...dateAggregateValuesMap.keys()].sort();
+
+  if (csvDataCA != null) {
+    dateAggregateValuesMap = createDateAggregateValuesMap(csvDataCA);
+
+    dates = [...dates, ...dateAggregateValuesMap.keys()].sort();
+  }
+
+  if (dates.length === 0) {
+    return { startDate: 0, endDate: 0 };
+  }
+
+  return {
+    startDate: dates[0],
+    endDate: dates.pop(),
+  };
+}
+
 export function readCsvData(csvData) {
   var allTextLines = csvData
     .toString()
@@ -93,7 +114,7 @@ export function createDateAggregateValuesMap(lines) {
     (
       [
         dateString,
-        v1,
+        featureCode,
         v5,
         dailyCases,
         cumulativeCases,
@@ -106,25 +127,27 @@ export function createDateAggregateValuesMap(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-      if (!result.has(date)) {
+      if (featureCode !== FEATURE_CODE_SCOTLAND) {
+        const date = moment.utc(dateString).valueOf();
+        if (!result.has(date)) {
+          result.set(date, {
+            cases: 0,
+            deaths: 0,
+            cumulativeCases: 0,
+            cumulativeDeaths: 0,
+            cumulativeNegativeTests: 0,
+          });
+        }
+        var values = result.get(date);
         result.set(date, {
-          cases: 0,
-          deaths: 0,
-          cumulativeCases: 0,
-          cumulativeDeaths: 0,
-          cumulativeNegativeTests: 0,
+          cases: values.cases + Number(dailyCases),
+          deaths: values.deaths + Number(dailyDeaths),
+          cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
+          cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
+          cumulativeNegativeTests:
+            values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
         });
       }
-      var values = result.get(date);
-      result.set(date, {
-        cases: values.cases + Number(dailyCases),
-        deaths: values.deaths + Number(dailyDeaths),
-        cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
-        cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-        cumulativeNegativeTests:
-          values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
-      });
     }
   );
 
