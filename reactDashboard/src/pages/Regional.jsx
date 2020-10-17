@@ -6,7 +6,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
-import RegionDataCharts from "../components/DataCharts/RegionDataCharts";
+import DataCharts from "../components/DataCharts/DataCharts";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
@@ -127,10 +127,11 @@ const Regional = ({
       </Row>
       <Row className="data-charts-container">
         <Col xs={12}>
-          <RegionDataCharts
+          <DataCharts
             regionCode={regionCode}
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
+            showPercentageTests={false}
           />
         </Col>
       </Row>

@@ -1,6 +1,7 @@
 import {
   commonChartConfiguration,
   calculateDateRange,
+  datasetConfiguration,
 } from "./DataChartsUtils";
 import {
   ALL_DATES,
@@ -11,8 +12,10 @@ import {
 } from "../DataCharts/DataChartsConsts";
 
 describe("commonChartConfiguration", () => {
+  const mockData = [datasetConfiguration("testLabel", undefined, "blue")];
+
   it("with date range", () => {
-    const result = commonChartConfiguration("mockData", {
+    const result = commonChartConfiguration(mockData, {
       startDate: 0,
       endDate: 1,
     });
@@ -20,8 +23,16 @@ describe("commonChartConfiguration", () => {
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
   it("without date range", () => {
-    const result = commonChartConfiguration("mockData");
+    const result = commonChartConfiguration(mockData);
     expect(result.options.scales.xAxes[0].ticks).toBeUndefined();
+  });
+  it("annotations with dataset", () => {
+    const result = commonChartConfiguration(mockData);
+    expect(result.options.annotation).not.toBeUndefined();
+  });
+  it("annotations without dataset", () => {
+    const result = commonChartConfiguration([]);
+    expect(result.options.annotation).toBeUndefined();
   });
 });
 
@@ -92,5 +103,4 @@ describe("calculateDateRange", () => {
     const result = calculateDateRange(EMPTY_DATE_RANGE, LAST_WEEK);
     expect(result).toStrictEqual(EMPTY_DATE_RANGE);
   });
-
 });

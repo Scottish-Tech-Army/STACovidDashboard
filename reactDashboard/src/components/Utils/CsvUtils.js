@@ -2,16 +2,12 @@ import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
 export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
-  let dateAggregateValuesMap = createDateAggregateValuesMap(csvDataHB);
-
-  let dates = [...dateAggregateValuesMap.keys()].sort();
+  let dates = [...createDateSet(csvDataHB)];
 
   if (csvDataCA != null) {
-    dateAggregateValuesMap = createDateAggregateValuesMap(csvDataCA);
-
-    dates = [...dates, ...dateAggregateValuesMap.keys()].sort();
+    dates = [...dates, ...createDateSet(csvDataCA)];
   }
-
+  dates.sort();
   if (dates.length === 0) {
     return { startDate: 0, endDate: 0 };
   }
@@ -76,6 +72,8 @@ export function createPlaceDateValuesMap(lines) {
         v3,
         dailyDeaths,
         cumulativeDeaths,
+        v4,
+        cumulativeNegativeTests,
       ],
       i
     ) => {
@@ -90,6 +88,7 @@ export function createPlaceDateValuesMap(lines) {
         cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
         crudeRatePositive: Number(crudeRatePositive),
+        cumulativeNegativeTests: Number(cumulativeNegativeTests),
       });
       dateSet.add(date);
     }
@@ -106,50 +105,12 @@ export function createPlaceDateValuesMap(lines) {
 // Daily Case Trends By Council Area
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
 //
-// Returns a map of dates->summed values over all places
-export function createDateAggregateValuesMap(lines) {
-  const result = new Map();
 
-  lines.forEach(
-    (
-      [
-        dateString,
-        featureCode,
-        v5,
-        dailyCases,
-        cumulativeCases,
-        v2,
-        v3,
-        dailyDeaths,
-        cumulativeDeaths,
-        v4,
-        cumulativeNegativeTests,
-      ],
-      i
-    ) => {
-      if (featureCode !== FEATURE_CODE_SCOTLAND) {
-        const date = moment.utc(dateString).valueOf();
-        if (!result.has(date)) {
-          result.set(date, {
-            cases: 0,
-            deaths: 0,
-            cumulativeCases: 0,
-            cumulativeDeaths: 0,
-            cumulativeNegativeTests: 0,
-          });
-        }
-        var values = result.get(date);
-        result.set(date, {
-          cases: values.cases + Number(dailyCases),
-          deaths: values.deaths + Number(dailyDeaths),
-          cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
-          cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-          cumulativeNegativeTests:
-            values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
-        });
-      }
-    }
-  );
+function createDateSet(lines) {
+  const result = new Set();
+  lines.forEach(([dateString]) => {
+    result.add(moment.utc(dateString).valueOf());
+  });
 
   return result;
 }
