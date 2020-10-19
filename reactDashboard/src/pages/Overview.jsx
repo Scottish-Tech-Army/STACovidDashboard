@@ -11,7 +11,7 @@ import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
-import NationalRouteMapRules from "../components/RouteMapRules/NationalRouteMapRules";
+import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
@@ -94,7 +94,14 @@ const Overview = ({
       <Container fluid>
         <Row className="justify-content-center align-items-center route-map-rules">
           <Col>
-            <NationalRouteMapRules />
+            <RouteMapRules
+              bannerPt1={"We are currently in "}
+              bannerPt2={"Phase 3"}
+              bannerPt3={`of the
+    Scottish Government's `}
+              url={"https://www.gov.scot/coronavirus-covid-19/"}
+              bannerPt4={"COVID-19 Route Map"}
+            />
           </Col>
         </Row>
       </Container>

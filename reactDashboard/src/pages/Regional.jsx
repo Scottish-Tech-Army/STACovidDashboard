@@ -14,7 +14,7 @@ import {
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
-import RegionalRouteMapRules from "../components/RouteMapRules/RegionalRouteMapRules";
+import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
 // Exported for unit tests
 export function getRegionCodeFromUrl(location) {
@@ -92,7 +92,15 @@ const Regional = ({
       <Container fluid>
         <Row className="justify-content-center align-items-center route-map-rules">
           <Col>
-            <RegionalRouteMapRules />
+            <RouteMapRules
+              bannerPt1={"There are a number of "}
+              bannerPt2={"Regional Restrictions "}
+              bannerPt3={"to help fight the pandemic. See the "}
+              url={
+                "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/"
+              }
+              bannerPt4={"latest Scottish Government guidance"}
+            />
           </Col>
         </Row>
       </Container>

@@ -4,22 +4,23 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const RegionalRouteMapRules = () => {
+const RouteMapRules = ({ bannerPt1, bannerPt2, bannerPt3, bannerPt4, url }) => {
   return (
     <Container fluid className="d-flex flex-column">
       <Row>
         <Col xs="12" className="current-phase">
           <h2>
-            There are a number of Regional restrictions to help fight the
-            pandemic. See the{" "}
+            {bannerPt1}
+            <span className="current-phase-number">{bannerPt2}</span>{" "}
+            {bannerPt3}
             <a
               className="link"
               id="link"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.gov.scot/publications/coronavirus-covid-19-local-measures/"
+              href={url}
             >
-              latest Scottish Government guidance
+              {bannerPt4}
             </a>
             .
           </h2>
@@ -29,4 +30,4 @@ const RegionalRouteMapRules = () => {
   );
 };
 
-export default RegionalRouteMapRules;
+export default RouteMapRules;
