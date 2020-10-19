@@ -11,7 +11,7 @@ import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
-import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import NationalRouteMapRules from "../components/RouteMapRules/NationalRouteMapRules";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
@@ -94,7 +94,7 @@ const Overview = ({
       <Container fluid>
         <Row className="justify-content-center align-items-center route-map-rules">
           <Col>
-            <RouteMapRules />
+            <NationalRouteMapRules />
           </Col>
         </Row>
       </Container>

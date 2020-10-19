@@ -1,7 +1,7 @@
 .current-phase {
   background-color: #133a53;
   color: #ffffff;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .current-phase-number {
@@ -14,10 +14,6 @@
     height: auto;
     padding: 3%;
   }
-
-  h2 {
-    font-size: 1.2em;
-  }
 }
 
 #link {
@@ -27,4 +23,8 @@
 #link:hover {
   color: #fc8d59;
   cursor: pointer;
+}
+
+h2 {
+  font-size: 1.7em;
 }
