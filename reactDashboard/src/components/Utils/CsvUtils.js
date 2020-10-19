@@ -69,7 +69,6 @@ export function createPlaceDateValuesMap(lines) {
         dailyCases,
         cumulativeCases,
         crudeRatePositive,
-        v3,
         dailyDeaths,
         cumulativeDeaths,
         v4,
