@@ -66,7 +66,7 @@ const InfoBar = () => {
       </div>
       <div className="message-container d-flex justify-content-end">
         <span className="message">
-          ...more from{" "}
+          find more news on{" "}
           <a
             className="link scot-gov-link"
             target="_blank"
