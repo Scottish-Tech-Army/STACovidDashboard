@@ -8,22 +8,10 @@ class DashboardPage extends Page {
     return $('img[id="logo"]');
   }
   get headingTitle() {
-    return $('[class="heading heading-title"] ');
+    return $(".navbar").$(".heading");
   }
   get currentPhase() {
-    return $(".current-phase");
-  }
-  get healthBoard() {
-    return $("#healthBoards");
-  }
-  get councilAreas() {
-    return $("#councilAreas");
-  }
-  get cases() {
-    return $("#cases");
-  }
-  get deaths() {
-    return $("#deaths");
+    return $('[class="current-phase col-12"] ');
   }
   get dailyCases() {
     return $("#dailyCases");
@@ -40,6 +28,40 @@ class DashboardPage extends Page {
   get percentageCases() {
     return $("#percentageCases");
   }
+  get heatmapHeaderRow() {
+    return $(".heatmap thead tr");
+  }
+  get heatmapBoundariesTitle() {
+    return this.heatmapHeaderRow.$("th:nth-child(1) div:nth-child(1)");
+  }
+  get heatmapBoundariesCount() {
+    return this.heatmapHeaderRow.$("th:nth-child(1) div.subheading");
+  }
+  get selectHealthBoardsButton() {
+    return $(".heatmap-selector #healthBoards");
+  }
+  get selectCouncilAreasButton() {
+    return $(".heatmap-selector #councilAreas");
+  }
+  get heatmapValueTypeTitle() {
+    return this.heatmapHeaderRow.$("th:nth-child(2) div:nth-child(1)");
+  }
+  get heatmapValueTypeCount() {
+    return this.heatmapHeaderRow.$("th:nth-child(2) div.subheading");
+  }
+  get selectCasesButton() {
+    return $(".heatmap-selector #cases");
+  }
+  get selectDeathsButton() {
+    return $(".heatmap-selector #deaths");
+  }
+  get heatmapBoundariesValues() {
+    return $$(".heatmap tbody tr.area td:nth-child(1)");
+  }
+  get heatmapValueTypeValues() {
+    return $$(".heatmap tbody tr.area td:nth-child(2)");
+  }
+
   /**
    * open base URL
    */

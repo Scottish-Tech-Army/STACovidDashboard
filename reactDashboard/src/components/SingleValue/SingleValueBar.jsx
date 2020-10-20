@@ -25,7 +25,6 @@ export function parseNhsCsvData(lines) {
         dailyCases,
         cumulativeCases,
         v2,
-        v3,
         dailyDeaths,
         cumulativeDeaths,
       ],

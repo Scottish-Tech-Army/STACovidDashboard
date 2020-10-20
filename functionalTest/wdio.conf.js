@@ -23,10 +23,10 @@ exports.config = {
       maxInstances: 5,
       //
       browserName: "chrome",
-      'goog:chromeOptions': {
+      "goog:chromeOptions": {
         // to run chrome headless the following flags are required
-        args: ['--headless', '--disable-gpu'],
-        },
+        args: ["--headless", "--disable-gpu", "--window-size=1000,1080"],
+      },
       acceptInsecureCerts: true,
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
@@ -45,7 +45,7 @@ exports.config = {
   bail: 0,
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
   // baseUrl: 'https://sta-homebrew-iteam.s3.eu-west-2.amazonaws.com',
-  baseUrl: 'http://localhost:3000',
+  baseUrl: "http://localhost:3000",
   //"https://covid19.scottishtecharmy.org",
   //
   // Default timeout for all waitFor* commands.
