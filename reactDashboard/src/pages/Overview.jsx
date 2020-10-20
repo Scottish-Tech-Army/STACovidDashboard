@@ -189,29 +189,9 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="d-none d-sm-flex justify-content-center align-items-center">
-          <Col>
-            <Facts />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex">
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex justify-content-center align-items-center">
-          <Col>
-            <InfoBar />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex">
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
         <Row className="d-none d-sm-flex">
           <Col className="footnote-container">
-            <h6>Understanding the dates:</h6>
+            <h6 className="footnote-heading">Understanding the dates:</h6>
             <p>
               There may be some minor fluctuations in the daily number of cases
               due to laboratory reporting delays for specimen dates and
@@ -229,13 +209,13 @@ const Overview = ({
             </p>
             <ul>
               <li>
-                Reported Dates: Since the time taken to test samples and report
+                <span className="defined-term">Reported Dates</span>: Since the time taken to test samples and report
                 the results varies, new cases reported on a daily basis in the
                 headline summary figures above may be distributed across a range
                 of Specimen Dates.
               </li>
               <li>
-                Specimen Dates: The specimen date is the date the sample was
+                <span className="defined-term">Specimen Dates</span>: The specimen date is the date the sample was
                 collected from the patient. The specimen date is used in the
                 map, heatmap table and chart components within the STA Summary
                 Dashboard Page to show the number of test samples taken and %
@@ -244,6 +224,31 @@ const Overview = ({
               </li>
             </ul>
           </Col>
+        </Row>
+        <Row className="d-none d-sm-flex">
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row className="d-none d-sm-flex justify-content-center align-items-center">
+          <Col>
+            <Facts />
+          </Col>
+        </Row>
+        <Row className="d-none d-sm-flex">
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row className="d-none d-sm-flex justify-content-center align-items-center">
+          <Col>
+            <InfoBar />
+          </Col>
+          <Row className="d-none d-sm-flex">
+            <Col>
+              <hr className="full-width-hr" />
+            </Col>
+          </Row>
         </Row>
       </Container>
     </>

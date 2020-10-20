@@ -91,20 +91,41 @@ button.MuiButtonBase-root:hover {
 }
 
 .footnote-container {
-  padding: 10px 20px;
-  margin: 0 15px;
+  padding: 0 15px 5px;
+  margin: 0;
   font-size: 0.75rem;
+  width: 100%;
 }
 
 .footnote-container ul {
-  padding-left: 15px;
+  padding-left: 25px;
+  margin-bottom: 0;
   margin-bottom: 0;
 }
 
 .footnote-container h6 {
-  font-weight: bold;
+  padding: 10px;
+}
+
+.footnote-container p {
+  padding: 0 10px 5px;
+  margin: 0;
+}
+
+.footnote-container li {
+  padding-bottom: 5px;
 }
 
 .footer-link {
   color: #2a84bb;
+}
+
+.footnote-heading {
+  color: #ffffff !important;
+  background-color: #133a53 !important;
+}
+
+.defined-term,
+.footer-link {
+  font-weight: bold;
 }
