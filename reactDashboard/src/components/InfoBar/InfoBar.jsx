@@ -8,13 +8,13 @@ const InfoBar = () => {
 
   useEffect(() => {
     fetch(rssFeedUrl, {
-      method: "GET"
+      method: "GET",
     })
-      .then(res => res.text())
-      .then(rssFeed => {
+      .then((res) => res.text())
+      .then((rssFeed) => {
         setCovidNews(getLatestFiveNewsItems(rssFeed));
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
@@ -23,7 +23,9 @@ const InfoBar = () => {
     covidNews === null || covidNews.length === 0 ? (
       <>
         <p className="news-item news-item-title">NO NEWS AVAILABLE</p>
-        <p className="news-item">Oops, something went wrong. Please check back again later.</p>
+        <p className="news-item">
+          Oops, something went wrong. Please check back again later.
+        </p>
       </>
     ) : (
       covidNews.map((item, index) => {
@@ -52,7 +54,11 @@ const InfoBar = () => {
     <div className="info-bar d-flex flex-column">
       <div className="d-flex flex-row">
         <div className="icon-container">
-          <img className="more-info-icon" src="./assets/more_info.png" alt="" />
+          <img
+            className="more-info-icon"
+            src="./assets/more_info.png"
+            alt="Latest Covid-19 news from Scottish Government"
+          />
         </div>
         <div className="news-items-block justify-content-start">
           <ul className="list-items">{covidNewsItems}</ul>

@@ -1,7 +1,6 @@
 import {
   readCsvData,
   createPlaceDateValuesMap,
-  createDateAggregateValuesMap,
   fetchAndStore,
   getPlaceNameByFeatureCode,
   getPhoneticPlaceNameByFeatureCode,
@@ -117,19 +116,25 @@ test("getPhoneticPlaceNameByFeatureCode", async () => {
     "Dumfries & Galloway"
   );
   // Council area
-  expect(getPhoneticPlaceNameByFeatureCode("S12000040")).toStrictEqual("West Lothian");
+  expect(getPhoneticPlaceNameByFeatureCode("S12000040")).toStrictEqual(
+    "West Lothian"
+  );
   expect(getPhoneticPlaceNameByFeatureCode("S12000013")).toStrictEqual(
     "Nahelen an sheer"
   );
   // Country
-  expect(getPhoneticPlaceNameByFeatureCode("S92000003")).toStrictEqual("Scotland");
+  expect(getPhoneticPlaceNameByFeatureCode("S92000003")).toStrictEqual(
+    "Scotland"
+  );
   expect(() => getPhoneticPlaceNameByFeatureCode("S12345678")).toThrow(
     "Unknown feature code: S12345678"
   );
   expect(() => getPhoneticPlaceNameByFeatureCode("unknown")).toThrow(
     "Unknown feature code: unknown"
   );
-  expect(() => getPhoneticPlaceNameByFeatureCode("")).toThrow("Unknown feature code: ");
+  expect(() => getPhoneticPlaceNameByFeatureCode("")).toThrow(
+    "Unknown feature code: "
+  );
   expect(() => getPhoneticPlaceNameByFeatureCode(null)).toThrow(
     "Unknown feature code: null"
   );
@@ -140,29 +145,29 @@ test("getPhoneticPlaceNameByFeatureCode", async () => {
 
 // Contains both health board and council area feature codes
 const dailyNHSCsvData = `
-20200306,S08000031,place 1,0,21,0.21,0,1,10,0,31,0
-20200306,S08000022,place 2,1,22,0.22,0,2,20,0,32,0
-20200306,S12000013,place 3,1,23,0.23,0,3,30,0,33,0
-20200306,S92000003,Scotland,1,23,0.23,0,3,30,0,33,0
-20200309,S08000031,place 1,0,24,0.24,0,4,40,0,34,0
-20200309,S08000022,place 2,300,25,0.25,0,5,50,0,35,0
-20200309,S12000013,place 3,-8,26,0.26,0,6,60,0,36,0
-20200309,S92000003,Scotland,-8,26,0.26,0,6,60,0,36,0
-20200308,S08000031,place 1,0,27,0.27,0,7,70,0,37,0
-20200308,S08000022,place 2,201,28,0.28,0,8,80,0,38,0
-20200308,S12000013,place 3,26,29,0.29,0,9,90,0,39,0
-20200308,S92000003,Scotland,26,29,0.29,0,9,90,0,39,0
-20200307,S08000031,place 1,0,0,0,0,0,0,0,0,0
-20200307,S08000022,place 2,-1,-21,-0.21,0,-1,-10,0,-31,0
-20200307,S12000013,place 3,-1,-22,-0.22,0,-2,-20,0,-32,0
-20200307,S92000003,Scotland,-1,-22,-0.22,0,-2,-20,0,-32,0
+20200306,S08000031,place 1,0,21,0.21,1,10,0,31,0
+20200306,S08000022,place 2,1,22,0.22,2,20,0,32,0
+20200306,S12000013,place 3,1,23,0.23,3,30,0,33,0
+20200306,S92000003,Scotland,1,23,0.23,3,30,0,33,0
+20200309,S08000031,place 1,0,24,0.24,4,40,0,34,0
+20200309,S08000022,place 2,300,25,0.25,5,50,0,35,0
+20200309,S12000013,place 3,-8,26,0.26,6,60,0,36,0
+20200309,S92000003,Scotland,-8,26,0.26,6,60,0,36,0
+20200308,S08000031,place 1,0,27,0.27,7,70,0,37,0
+20200308,S08000022,place 2,201,28,0.28,8,80,0,38,0
+20200308,S12000013,place 3,26,29,0.29,9,90,0,39,0
+20200308,S92000003,Scotland,26,29,0.29,9,90,0,39,0
+20200307,S08000031,place 1,0,0,0,0,0,0,0,0
+20200307,S08000022,place 2,-1,-21,-0.21,-1,-10,0,-31,0
+20200307,S12000013,place 3,-1,-22,-0.22,-2,-20,0,-32,0
+20200307,S92000003,Scotland,-1,-22,-0.22,-2,-20,0,-32,0
 `;
 
 const dailyHealthBoardCsvLabels =
-  "Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+  "Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
 
 const dailyCouncilAreaCsvLabels =
-  "Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+  "Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
 
 const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
 const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
@@ -185,6 +190,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 10,
             cumulativeCases: 21,
             crudeRatePositive: 0.21,
+            cumulativeNegativeTests: 31,
           })
           .set(Date.parse("2020-03-07"), {
             cases: 0,
@@ -192,6 +198,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 0,
             cumulativeCases: 0,
             crudeRatePositive: 0,
+            cumulativeNegativeTests: 0,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 0,
@@ -199,6 +206,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 70,
             cumulativeCases: 27,
             crudeRatePositive: 0.27,
+            cumulativeNegativeTests: 37,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 0,
@@ -206,6 +214,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 40,
             cumulativeCases: 24,
             crudeRatePositive: 0.24,
+            cumulativeNegativeTests: 34,
           })
       )
       .set(
@@ -217,6 +226,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 20,
             cumulativeCases: 22,
             crudeRatePositive: 0.22,
+            cumulativeNegativeTests: 32,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -224,6 +234,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -10,
             cumulativeCases: -21,
             crudeRatePositive: -0.21,
+            cumulativeNegativeTests: -31,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 201,
@@ -231,6 +242,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 80,
             cumulativeCases: 28,
             crudeRatePositive: 0.28,
+            cumulativeNegativeTests: 38,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 300,
@@ -238,6 +250,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 50,
             cumulativeCases: 25,
             crudeRatePositive: 0.25,
+            cumulativeNegativeTests: 35,
           })
       )
       .set(
@@ -249,6 +262,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
+            cumulativeNegativeTests: 33,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -256,6 +270,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
+            cumulativeNegativeTests: -32,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -263,6 +278,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
+            cumulativeNegativeTests: 39,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -270,6 +286,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
+            cumulativeNegativeTests: 36,
           })
       )
       .set(
@@ -281,6 +298,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
+            cumulativeNegativeTests: 33,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -288,6 +306,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
+            cumulativeNegativeTests: -32,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -295,6 +314,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
+            cumulativeNegativeTests: 39,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -302,6 +322,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
+            cumulativeNegativeTests: 36,
           })
       ),
   };
@@ -318,52 +339,6 @@ describe("createPlaceDateValuesMap", () => {
     expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toStrictEqual(
       expectedPlaceDateValuesMap
     );
-  });
-});
-
-describe("createDateAggregateValuesMap", () => {
-  const expectedDateAggregateValuesMap = new Map()
-    .set(Date.parse("2020-03-06"), {
-      cases: 2,
-      deaths: 6,
-      cumulativeCases: 66,
-      cumulativeDeaths: 60,
-      cumulativeNegativeTests: 96,
-    })
-    .set(Date.parse("2020-03-07"), {
-      cases: -2,
-      deaths: -3,
-      cumulativeCases: -43,
-      cumulativeDeaths: -30,
-      cumulativeNegativeTests: -63,
-    })
-    .set(Date.parse("2020-03-08"), {
-      cases: 227,
-      deaths: 24,
-      cumulativeCases: 84,
-      cumulativeDeaths: 240,
-      cumulativeNegativeTests: 114,
-    })
-    .set(Date.parse("2020-03-09"), {
-      cases: 292,
-      deaths: 15,
-      cumulativeCases: 75,
-      cumulativeDeaths: 150,
-      cumulativeNegativeTests: 105,
-    });
-
-  it("health boards", () => {
-    const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
-    expect(
-      createDateAggregateValuesMap(parsedDailyHealthBoardData)
-    ).toStrictEqual(expectedDateAggregateValuesMap);
-  });
-
-  it("council areas", () => {
-    const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
-    expect(
-      createDateAggregateValuesMap(parsedDailyCouncilAreaData)
-    ).toStrictEqual(expectedDateAggregateValuesMap);
   });
 });
 
@@ -400,51 +375,60 @@ test("getRelativeReportedDate", () => {
 });
 
 const dailyCasesCsvData = `
-  Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CumulativePositivePercent,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-  20200309,S08000020,unknown,-8,0,0,0,-2,0,0,28,7.58068009529998
-  20200308,S08000020,unknown,26,0,0,0,0,0,0,28,7.58068009529998
-  20200307,S08000020,unknown,-1,0,0,0,-1,0,0,28,7.58068009529998
-  20200306,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200305,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200304,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200303,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200302,S08000020,unknown,-6,0,0,0,-2,0,0,28,7.58068009529998
-  20200301,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200229,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200308,S08000031,unknown,0,0,0,0,11,0,0,26,22.5088736905896
-  20200307,S08000031,unknown,400,0,0,0,10,0,0,26,22.5088736905896
-  20200306,S08000031,unknown,300,0,0,0,9,0,0,26,22.5088736905896
-  20200305,S08000031,unknown,200,0,0,0,8,0,0,26,22.5088736905896
-  20200304,S08000031,unknown,100,0,0,0,7,0,0,26,22.5088736905896
-  20200303,S08000031,unknown,50,0,0,0,6,0,0,26,22.5088736905896
-  20200226,S08000031,unknown,20,0,0,0,5,0,0,26,22.5088736905896
-  20200225,S08000031,unknown,0,0,0,0,4,0,0,26,22.5088736905896
-  20200224,S08000031,unknown,10,0,0,0,3,0,0,26,22.5088736905896
-  20200309,S08000022,unknown,300,0,0,0,10,0,0,21,14.1072148327287
-  20200308,S08000022,unknown,201,0,0,0,9,0,0,21,14.1072148327287
-  20200306,S08000022,unknown,1,0,0,0,8,0,0,21,14.1072148327287
-  20200307,S08000022,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
+  Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+  20200309,S08000020,unknown,-8,0,0,-2,0,0,28,7.58068009529998
+  20200308,S08000020,unknown,26,0,0,0,0,0,28,7.58068009529998
+  20200307,S08000020,unknown,-1,0,0,-1,0,0,28,7.58068009529998
+  20200306,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200305,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200304,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200303,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200302,S08000020,unknown,-6,0,0,-2,0,0,28,7.58068009529998
+  20200301,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200229,S08000020,unknown,1,0,0,1,0,0,28,7.58068009529998
+  20200308,S08000031,unknown,0,0,0,11,0,0,26,22.5088736905896
+  20200307,S08000031,unknown,400,0,0,10,0,0,26,22.5088736905896
+  20200306,S08000031,unknown,300,0,0,9,0,0,26,22.5088736905896
+  20200305,S08000031,unknown,200,0,0,8,0,0,26,22.5088736905896
+  20200304,S08000031,unknown,100,0,0,7,0,0,26,22.5088736905896
+  20200303,S08000031,unknown,50,0,0,6,0,0,26,22.5088736905896
+  20200226,S08000031,unknown,20,0,0,5,0,0,26,22.5088736905896
+  20200225,S08000031,unknown,0,0,0,4,0,0,26,22.5088736905896
+  20200224,S08000031,unknown,10,0,0,3,0,0,26,22.5088736905896
+  20200309,S08000022,unknown,300,0,0,10,0,0,21,14.1072148327287
+  20200308,S08000022,unknown,201,0,0,9,0,0,21,14.1072148327287
+  20200306,S08000022,unknown,1,0,0,8,0,0,21,14.1072148327287
+  20200307,S08000022,unknown,-1,0,0,7,0,0,21,14.1072148327287
     `;
 
 describe("getNhsCsvDataDateRange", () => {
-
   const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
-  const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
-  const expectedResult = {startDate: Date.parse("2020-03-06"), endDate: Date.parse("2020-03-09")}
+  const parsedDailyCouncilAreaData = readCsvData(
+    dailyCouncilAreaCsvData +
+      `
+  20200408,S08000031,place 1,0,27,0.27,0,7,70,0,37,0
+  `
+  );
 
-  it("happy path", () => {
-    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData, parsedDailyCouncilAreaData)).toStrictEqual(
-      expectedResult
-    );
-  })
+  it("health board and council area", () => {
+    expect(
+      getNhsCsvDataDateRange(
+        parsedDailyHealthBoardData,
+        parsedDailyCouncilAreaData
+      )
+    ).toStrictEqual({
+      startDate: Date.parse("2020-03-06"),
+      endDate: Date.parse("2020-04-08"),
+    });
+  });
 
-  it("default render", () => {
-    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData)).toStrictEqual(
-      expectedResult
-    );
-  })
-
-})
+  it("health board", () => {
+    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData)).toStrictEqual({
+      startDate: Date.parse("2020-03-06"),
+      endDate: Date.parse("2020-03-09"),
+    });
+  });
+});
 
 test("parse7DayWindowCsvData", () => {
   // Grampian : 09/03 - 03/03 : 7 days of data
