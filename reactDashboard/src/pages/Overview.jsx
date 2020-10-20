@@ -89,18 +89,24 @@ const Overview = ({
       false
     );
   }, []);
+
+  const bannerPt1 = "We are currently in ";
+  const bannerPt2 = "Phase 3";
+  const bannerPt3 = `of the Scottish Government's `;
+  const url = "https://www.gov.scot/coronavirus-covid-19/";
+  const bannerPt4 = "COVID-19 Route Map";
+
   return (
     <>
       <Container fluid>
         <Row className="justify-content-center align-items-center route-map-rules">
           <Col>
             <RouteMapRules
-              bannerPt1={"We are currently in "}
-              bannerPt2={"Phase 3"}
-              bannerPt3={`of the
-    Scottish Government's `}
-              url={"https://www.gov.scot/coronavirus-covid-19/"}
-              bannerPt4={"COVID-19 Route Map"}
+              bannerPt1={bannerPt1}
+              bannerPt2={bannerPt2}
+              bannerPt3={bannerPt3}
+              url={url}
+              bannerPt4={bannerPt4}
             />
           </Col>
         </Row>
