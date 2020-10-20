@@ -10,8 +10,8 @@ class DashboardPage extends Page {
   get headingTitle() {
     return $(".navbar").$(".heading");
   }
-  get currentPhase() {
-    return $('[class="current-phase col-12"] ');
+  get headlineBanner() {
+    return $('[class="headline-banner col-12"] ');
   }
   get dailyCases() {
     return $("#dailyCases");
