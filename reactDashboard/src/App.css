@@ -89,3 +89,22 @@ button.MuiButtonBase-root {
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
 }
+
+.footnote-container {
+  padding: 10px 20px;
+  margin: 0 15px;
+  font-size: 0.75rem;
+}
+
+.footnote-container ul {
+  padding-left: 15px;
+  margin-bottom: 0;
+}
+
+.footnote-container h6 {
+  font-weight: bold;
+}
+
+.footer-link {
+  color: #2a84bb;
+}
