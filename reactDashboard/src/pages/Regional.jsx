@@ -87,25 +87,12 @@ const Regional = ({
     stopAudio();
   }, [regionCode, location]);
 
-  const bannerPt1 = "There are a number of ";
-  const bannerPt2 = "Regional Restrictions ";
-  const bannerPt3 = "to help fight the pandemic. See the ";
-  const url =
-    "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/";
-  const bannerPt4 = "latest Scottish Government guidance";
-
   return (
     <>
       <Container fluid>
         <Row className="justify-content-center align-items-center route-map-rules">
           <Col>
-            <RouteMapRules
-              bannerPt1={bannerPt1}
-              bannerPt2={bannerPt2}
-              bannerPt3={bannerPt3}
-              url={url}
-              bannerPt4={bannerPt4}
-            />
+            <RouteMapRules />
           </Col>
         </Row>
       </Container>

@@ -1,21 +1,21 @@
-.current-phase {
+.headline-banner {
   background-color: #133a53;
   color: #ffffff;
   padding: 1rem;
 }
 
-.current-phase-number {
+.headline-banner-highlight {
   font-weight: bold;
   color: #fc8d59;
 }
 
 @media screen and (max-width: 768px) {
-  .current-phase {
+  .headline-banner {
     height: auto;
     padding: 3%;
   }
 
-  .current-phase h2 {
+  .headline-banner h2 {
     font-size: 1.2rem;
   }
 }
