@@ -112,7 +112,7 @@ const DataSources = () => {
             rel="noopener noreferrer"
             className="footer-link"
           >
-            Click here for further information relating to accuracy and
+            Click here for further information relating to the accuracy and
             completeness of the Public Health Scotland Covid-19 dataset.
           </a>
 
