@@ -14,6 +14,7 @@ import {
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
+import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
 // Exported for unit tests
 export function getRegionCodeFromUrl(location) {
@@ -87,55 +88,64 @@ const Regional = ({
   }, [regionCode, location]);
 
   return (
-    <Container fluid className="regional-page">
-      <Row className="d-none d-lg-block">
-        <Col>
-          <hr className="full-width-hr" />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} lg={4}>
-          <RegionGeoMap
-            councilAreaDataset={councilAreaDataset}
-            healthBoardDataset={healthBoardDataset}
-            regionCode={regionCode}
-            setRegionCode={setRegionCode}
-          />
-        </Col>
-        <Col xs={12} lg={8}>
-          <hr className="d-flex d-md-none full-width-hr" />
-          <strong>Select region (or select on map):</strong>
+    <>
+      <Container fluid>
+        <Row className="justify-content-center align-items-center route-map-rules">
+          <Col>
+            <RouteMapRules />
+          </Col>
+        </Row>
+      </Container>
+      <Container fluid className="regional-page">
+        <Row className="d-none d-lg-block">
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} lg={4}>
+            <RegionGeoMap
+              councilAreaDataset={councilAreaDataset}
+              healthBoardDataset={healthBoardDataset}
+              regionCode={regionCode}
+              setRegionCode={setRegionCode}
+            />
+          </Col>
+          <Col xs={12} lg={8}>
+            <hr className="d-flex d-md-none full-width-hr" />
+            <strong>Select region (or select on map):</strong>
 
-          <RegionDropdown
-            regionCode={regionCode}
-            setRegionCode={setRegionCode}
-          />
-          <hr className="full-width-hr" />
-          <RegionSingleValueBar
-            regionCode={regionCode}
-            councilAreaDataset={councilAreaDataset}
-            healthBoardDataset={healthBoardDataset}
-            currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-            currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <hr className="full-width-hr" />
-        </Col>
-      </Row>
-      <Row className="data-charts-container">
-        <Col xs={12}>
-          <DataCharts
-            regionCode={regionCode}
-            councilAreaDataset={councilAreaDataset}
-            healthBoardDataset={healthBoardDataset}
-            showPercentageTests={false}
-          />
-        </Col>
-      </Row>
-    </Container>
+            <RegionDropdown
+              regionCode={regionCode}
+              setRegionCode={setRegionCode}
+            />
+            <hr className="full-width-hr" />
+            <RegionSingleValueBar
+              regionCode={regionCode}
+              councilAreaDataset={councilAreaDataset}
+              healthBoardDataset={healthBoardDataset}
+              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <hr className="full-width-hr" />
+          </Col>
+        </Row>
+        <Row className="data-charts-container">
+          <Col xs={12}>
+            <DataCharts
+              regionCode={regionCode}
+              councilAreaDataset={councilAreaDataset}
+              healthBoardDataset={healthBoardDataset}
+              showPercentageTests={false}
+            />
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 
