@@ -120,7 +120,7 @@ const DataSources = () => {
           <li>
             <span className="defined-term">Reported Dates</span>: Since the time
             taken to test samples and report the results varies, new cases
-            reported on a daily basis in the headline summary figures above may
+            reported on a daily basis in the headline summary figures on the pages may
             be distributed across a range of Specimen Dates.
           </li>
           <li>
