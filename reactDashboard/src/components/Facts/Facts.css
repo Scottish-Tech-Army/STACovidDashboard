@@ -59,8 +59,10 @@
   line-height: 30px;
   position: relative;
   top: 2px;
+  text-decoration: none;
+  display: inline-block;
 }
 
-#test-link{
+#test-link {
   color: #2a84bb;
 }
