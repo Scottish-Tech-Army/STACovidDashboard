@@ -11,6 +11,7 @@ import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataCharts from "../components/DataCharts/DataCharts";
 import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
+import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 import {
   AREATYPE_HEALTH_BOARDS,
@@ -186,6 +187,8 @@ const Overview = ({
         </Row>
         <Row className="d-none d-sm-flex">
           <Col>
+            <hr className="full-width-hr" />
+            <DataDefinitions />
             <hr className="full-width-hr" />
           </Col>
         </Row>

@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
 import DataCharts from "../components/DataCharts/DataCharts";
+import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
@@ -97,7 +98,7 @@ const Regional = ({
         </Row>
       </Container>
       <Container fluid className="regional-page">
-        <Row className="d-none d-lg-block">
+        <Row>
           <Col>
             <hr className="full-width-hr" />
           </Col>
@@ -115,36 +116,42 @@ const Regional = ({
             <hr className="d-flex d-md-none full-width-hr" />
             <strong>Select region (or select on map):</strong>
 
-            <RegionDropdown
-              regionCode={regionCode}
-              setRegionCode={setRegionCode}
-            />
-            <hr className="full-width-hr" />
-            <RegionSingleValueBar
-              regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
-        <Row className="data-charts-container">
-          <Col xs={12}>
-            <DataCharts
-              regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              showPercentageTests={false}
-            />
-          </Col>
-        </Row>
-      </Container>
+          <RegionDropdown
+            regionCode={regionCode}
+            setRegionCode={setRegionCode}
+          />
+          <hr className="full-width-hr" />
+          <RegionSingleValueBar
+            regionCode={regionCode}
+            councilAreaDataset={councilAreaDataset}
+            healthBoardDataset={healthBoardDataset}
+            currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+            currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr className="full-width-hr" />
+        </Col>
+      </Row>
+      <Row className="data-charts-container">
+        <Col xs={12}>
+          <DataCharts
+            regionCode={regionCode}
+            councilAreaDataset={councilAreaDataset}
+            healthBoardDataset={healthBoardDataset}
+            showPercentageTests={false}
+          />
+        </Col>
+      </Row>
+      <Row className="d-none d-sm-flex">
+        <Col>
+          <hr className="full-width-hr" />
+          <DataDefinitions />
+        </Col>
+      </Row>
+    </Container>
     </>
   );
 };

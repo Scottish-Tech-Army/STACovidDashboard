@@ -1,0 +1,55 @@
+.data-definitions .data-accordion-toggle-down {
+  color: #ffffff;
+  color: #c1def1;
+  border: 2px solid #c1def1;
+  border-radius: 50%;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.data-definitions .accordion-header {
+  color: #ffffff;
+  background-color: #133a53;
+}
+
+.data-definitions button.btn.btn-link {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.data-definitions button.btn:active,
+.data-definitions button.btn:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.data-definitions .data-accordion-toggle-down:hover {
+  color: #fd8d3c;
+  border-color: #fd8d3c;
+}
+
+.data-definitions .data-definitions-body {
+  padding: 15px 15px 5px;
+  margin: 0;
+  width: 100%;
+}
+
+.data-definitions .data-definitions-body p {
+  padding: 0 10px 5px;
+  margin: 0;
+}
+
+.data-definitions .data-definitions-body li {
+  padding-bottom: 5px;
+}
+
+.data-definitions .data-definitions-link {
+  color: #2a84bb;
+}
+
+.data-definitions .defined-term,
+.data-definitions .data-definitions-link {
+  font-weight: bold;
+}

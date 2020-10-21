@@ -143,7 +143,6 @@ const App = () => {
           </Route>
           <Route path="*">{() =>  <Redirect to="/" />}</Route>
         </Switch>
-
         <Footer />
       </Router>
     </div>

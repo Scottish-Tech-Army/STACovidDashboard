@@ -1,4 +1,5 @@
 import React from "react";
+import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -98,6 +99,8 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
+      <hr />
+      <DataDefinitions />
     </div>
   );
 };

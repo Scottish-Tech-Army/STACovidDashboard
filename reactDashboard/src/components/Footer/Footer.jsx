@@ -146,7 +146,7 @@ const Footer = () => {
               "https://www.linkedin.com/company/scottish-tech-army-limited",
               <FontAwesomeIcon
                 icon={faLinkedinIn}
-                size="3x"
+                size="2x"
                 color="#133a53"
                 className="third-party-logo"
                 title="Link to Scottish Tech Army LinkedIn account"
