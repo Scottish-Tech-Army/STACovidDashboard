@@ -185,14 +185,10 @@ const Overview = ({
             <DataCharts healthBoardDataset={healthBoardDataset} />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
-        <DataDefinitions />
         <Row className="d-none d-sm-flex">
           <Col>
+            <hr className="full-width-hr" />
+            <DataDefinitions />
             <hr className="full-width-hr" />
           </Col>
         </Row>
@@ -210,11 +206,6 @@ const Overview = ({
           <Col>
             <InfoBar />
           </Col>
-          <Row className="d-none d-sm-flex">
-            <Col>
-              <hr className="full-width-hr" />
-            </Col>
-          </Row>
         </Row>
       </Container>
     </>

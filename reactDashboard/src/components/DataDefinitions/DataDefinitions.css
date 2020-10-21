@@ -1,65 +1,55 @@
-.data-accordion-toggle-down {
+.data-definitions .data-accordion-toggle-down {
   color: #ffffff;
-  font-size: 4rem;
   color: #c1def1;
   border: 2px solid #c1def1;
   border-radius: 50%;
-  padding: 10px;
-  width: 50px;
-  height: 40px;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
 }
 
-.accordion-header {
+.data-definitions .accordion-header {
   color: #ffffff;
   background-color: #133a53;
 }
 
-button.btn.btn-link {
+.data-definitions button.btn.btn-link {
   color: #ffffff;
   font-weight: bold;
   text-decoration: none;
 }
 
-button.btn:active,
-button.btn:focus {
+.data-definitions button.btn:active,
+.data-definitions button.btn:focus {
   outline: none !important;
   box-shadow: none;
 }
 
-.data-accordion-toggle-down:hover {
+.data-definitions .data-accordion-toggle-down:hover {
   color: #fd8d3c;
   border-color: #fd8d3c;
 }
 
-.footnote-container {
-  padding: 0 15px 5px;
+.data-definitions .data-definitions-body {
+  padding: 15px 15px 5px;
   margin: 0;
   width: 100%;
 }
 
-.footnote-container h5 {
-  padding: 10px;
-}
-
-.footnote-container p {
+.data-definitions .data-definitions-body p {
   padding: 0 10px 5px;
   margin: 0;
 }
 
-.footnote-container li {
+.data-definitions .data-definitions-body li {
   padding-bottom: 5px;
 }
 
-.footer-link {
+.data-definitions .data-definitions-link {
   color: #2a84bb;
 }
 
-.footnote-heading {
-  color: #ffffff !important;
-  background-color: #133a53 !important;
-}
-
-.defined-term,
-.footer-link {
+.data-definitions .defined-term,
+.data-definitions .data-definitions-link {
   font-weight: bold;
 }

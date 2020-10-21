@@ -98,7 +98,7 @@ const Regional = ({
         </Row>
       </Container>
       <Container fluid className="regional-page">
-        <Row className="d-none d-lg-block">
+        <Row>
           <Col>
             <hr className="full-width-hr" />
           </Col>
@@ -148,9 +148,9 @@ const Regional = ({
       <Row className="d-none d-sm-flex">
         <Col>
           <hr className="full-width-hr" />
+          <DataDefinitions />
         </Col>
       </Row>
-      <DataDefinitions />
     </Container>
     </>
   );
