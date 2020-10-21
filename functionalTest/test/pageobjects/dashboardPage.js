@@ -61,7 +61,55 @@ class DashboardPage extends Page {
   get heatmapValueTypeValues() {
     return $$(".heatmap tbody tr.area td:nth-child(2)");
   }
-
+  get geoMapHealthBoardArea() {
+    return $$(
+      "#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path"
+    );
+  }
+  get geoMapCouncilArea() {
+    return $$(
+      "#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path"
+    );
+  }
+  get singleValueBar() {
+    return $(".single-value-bar");
+  }
+  get dailyCases() {
+    return $("#dailyCases");
+  }
+  get totalCases() {
+    return $("#totalCases");
+  }
+  get dailyFatalities() {
+    return $("#dailyFatalities");
+  }
+  get totalFatalities() {
+    return $("#totalFatalities");
+  }
+  get fatalityCaseRatio() {
+    return $("#fatalityCaseRatio");
+  }
+  get chartDropdown() {
+    return $("//div[@class='dropdown']/button");
+  }
+  selectDropdownOpt(option) {
+    return $("//*/div/a[contains(text(),'" + option + "')]");
+  }
+  selectTimeSpan(time) {
+    return $("//*[contains(text(),'" + time + "')]/ancestor::button");
+  }
+  get sliderTrack() {
+    return $('//*[@id="date-range-slider-position"]/span[7]');
+  }
+  get factsContainer() {
+    return $(".facts-container");
+  }
+  get newsContainer() {
+    return $("div.d-flex.flex-row");
+  }
+  get newsContainerGovLink() {
+    return $("div.message-container.d-flex.justify-content-end > span > a");
+  }
   /**
    * open base URL
    */
