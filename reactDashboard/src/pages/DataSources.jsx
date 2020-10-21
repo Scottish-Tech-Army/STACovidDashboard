@@ -98,14 +98,14 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
-      <hr/>
-      <h6>Understanding the dates:</h6>
-      <p>
-
-          There may be some minor fluctuations in the daily number of
-          cases due to laboratory reporting delays for specimen dates
-          and additional information becoming available, in which case
-          the data is revised in a future next update.{" "}
+      <hr />
+      <div className="footnote-container">
+        <h5 className="footnote-heading">Understanding the dates:</h5>
+        <p>
+          There may be some minor fluctuations in the daily number of cases due
+          to laboratory reporting delays for specimen dates and additional
+          information becoming available, in which case the data is revised in a
+          future next update.{" "}
           <a
             href="https://www.opendata.nhs.scot/dataset/covid-19-in-scotland"
             target="_blank"
@@ -115,30 +115,26 @@ const DataSources = () => {
             Click here for further information relating to the accuracy and
             completeness of the Public Health Scotland Covid-19 dataset.
           </a>
-
-      </p>
+        </p>
         <ul>
-
           <li>
-
-              Reported Dates: Since the time taken to test samples and report
-              the results varies, new cases reported on a daily basis in the
-              headline summary figures above may be distributed across a
-              range of Specimen Dates.
-
+            <span className="defined-term">Reported Dates</span>: Since the time
+            taken to test samples and report the results varies, new cases
+            reported on a daily basis in the headline summary figures above may
+            be distributed across a range of Specimen Dates.
           </li>
           <li>
-
-              Specimen Dates: The specimen date is the date the sample was
-              collected from the patient. The specimen date is used in the
-              map, heatmap table and chart components within the STA Summary
-              Dashboard Page, and the chart component within the Regional Insights Dashboard Page to show the number of test samples taken and %
-              positive samples for each day. This is the date most suited
-              for surveillance to show trends of COVID-19 over a period of
-              time.
-
+            <span className="defined-term">Specimen Dates</span>: The specimen
+            date is the date the sample was collected from the patient. The
+            specimen date is used in the map, heatmap table and chart components
+            within the STA Summary Dashboard Page, and the chart component
+            within the Regional Insights Dashboard Page to show the number of
+            test samples taken and % positive samples for each day. This is the
+            date most suited for surveillance to show trends of COVID-19 over a
+            period of time.
           </li>
         </ul>
+      </div>
     </div>
   );
 };

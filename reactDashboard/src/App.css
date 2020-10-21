@@ -93,7 +93,7 @@ button.MuiButtonBase-root:hover {
 .footnote-container {
   padding: 0 15px 5px;
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   width: 100%;
 }
 
@@ -103,7 +103,7 @@ button.MuiButtonBase-root:hover {
   margin-bottom: 0;
 }
 
-.footnote-container h6 {
+.footnote-container h5 {
   padding: 10px;
 }
 

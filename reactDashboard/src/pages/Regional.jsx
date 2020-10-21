@@ -151,7 +151,7 @@ const Regional = ({
       </Row>
       <Row className="d-none d-sm-flex">
         <Col className="footnote-container">
-        <h6 className="footnote-heading">Understanding the dates:</h6>
+        <h5 className="footnote-heading">Understanding the dates:</h5>
         <p>
 
             There may be some minor fluctuations in the daily number of
