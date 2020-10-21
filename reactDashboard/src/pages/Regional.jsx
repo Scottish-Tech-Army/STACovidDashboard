@@ -184,8 +184,7 @@ const Regional = ({
                 <span className="defined-term">Specimen Dates</span>: The specimen date is the date the sample was
                 collected from the patient. The specimen date is used in the
                 chart component within the STA Regional Insights
-                Dashboard Page to show the number of test samples taken and %
-                positive samples for each day. This is the date most suited
+                Dashboard Page to show the number of test samples taken. This is the date most suited
                 for surveillance to show trends of COVID-19 over a period of
                 time.
 
