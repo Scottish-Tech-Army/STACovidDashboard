@@ -55,8 +55,7 @@ const Facts = () => {
           />
           <div className="facts-guidance">
             <div>
-              <span className="highlight-facts">S</span>elf-isolate and, if you
-              have COVID-19 symptoms,{" "}
+              <span className="highlight-facts">S</span>
               <a
                 className="link"
                 id="test-link"
@@ -64,8 +63,8 @@ const Facts = () => {
                 rel="noopener noreferrer"
                 href="https://www.gov.scot/coronavirus-covid-19/"
               >
-                book a test
-              </a>.
+                elf-isolate and book a test if you have COVID-19 symptoms.
+              </a>
             </div>
           </div>
         </div>
