@@ -98,6 +98,7 @@ function DataDefinitions() {
                 "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
               )}
             </p>
+            <br/>
           </Card.Body>
         </Accordion.Collapse>
       </Card>
