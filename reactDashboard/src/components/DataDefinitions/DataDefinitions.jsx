@@ -104,7 +104,7 @@ function DataDefinitions() {
                 </a>
               </span>
             </p>
-            <br />
+            <hr />
             <p className="definitions-heading">Total Counts for Health Boards and Council Areas</p>
             <hr />
             <p>
