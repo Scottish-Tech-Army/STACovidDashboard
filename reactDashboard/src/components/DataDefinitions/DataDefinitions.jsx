@@ -76,28 +76,28 @@ function DataDefinitions() {
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
             <p>
-              There may be some minor fluctuations in the daily number of cases
-              due to laboratory reporting delays for specimen dates and
-              additional information becoming available, in which case the data
-              is revised in a future next update.{" "}
-              {createLink(
-                "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
-                "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
-              )}
+              There can be reporting delays by NHS Labs or UK Government Testing into the HPS database.  On average it is a 2-3 day lag for 90% of tests.  Positive results with a specimen date during the most recent 10 day period may be subject to change due to re-testing in some instances to ensure that an initially detected positive result is a true positive.
             </p>
+            <hr/>
             <ul>
               <li>
                 <span className="defined-term">Reported Dates</span>: Since the
                 time taken to test samples and report the results varies, new
                 cases reported on a daily basis in the headline summary figures
                 on the dashboard pages may be distributed across a range of
-                Specimen Dates.
+                specimen dates.
               </li>
               <li>
                 <span className="defined-term">Specimen Dates</span>:{" "}
                 {specimenDateDefinition()}
               </li>
             </ul>
+            <p>
+              {createLink(
+                "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
+                "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
+              )}
+            </p>
           </Card.Body>
         </Accordion.Collapse>
       </Card>
