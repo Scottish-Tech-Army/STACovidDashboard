@@ -5,8 +5,6 @@ describe("Covid-19 Dashboard", () => {
   it("should have correct title", () => {
     dashboard.open();
     let title = "Scottish COVID-19 Statistics";
-    let headline = dashboard.headlineBanner.getText();
-    console.log(headline);
     expect(browser).toHaveTitle(title);
     expect(dashboard.imgLogo).toBeDisplayed();
     expect(dashboard.headingTitle).toHaveText("Scottish COVID-19 Statistics");
