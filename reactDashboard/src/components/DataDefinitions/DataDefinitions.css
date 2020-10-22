@@ -47,11 +47,11 @@
 
 .data-definitions .data-definitions-link {
   color: #2a84bb;
-  margin-left: 5px;
 }
 
 .data-definitions .defined-term,
-.data-definitions .data-definitions-link {
+.data-definitions .data-definitions-link,
+.data-definitions .definitions-heading {
   font-weight: bold;
 }
 

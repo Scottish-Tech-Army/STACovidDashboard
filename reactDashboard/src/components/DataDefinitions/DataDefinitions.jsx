@@ -62,7 +62,7 @@ function DataDefinitions() {
       <Card>
         <Card.Header className="accordion-header">
           <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            Understanding the dates
+            Understanding the data
           </Accordion.Toggle>
           <Accordion.Toggle as={Button} variant="link" eventKey="0">
             <FontAwesomeIcon
@@ -75,10 +75,8 @@ function DataDefinitions() {
         </Card.Header>
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
-            <p>
-              There is a reporting delay in testing results, so data on tests carried out in the most recent 2-3 days will be incomplete.  On average 90% of tests carried out are reported in the system within 2 days.  Positive results with a specimen date during the most recent 10 day period may be subject to change due to re-testing in some instances to ensure that an initially detected positive result is a true positive. <span><a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview"><sup>Source PHS</sup></a></span>
-            </p>
-            <hr/>
+            <p className="definitions-heading">Reporting and Specimen Dates</p>
+            <hr />
             <ul>
               <li>
                 <span className="defined-term">Reported Dates</span>: Since the
@@ -92,14 +90,51 @@ function DataDefinitions() {
                 {specimenDateDefinition()}
               </li>
             </ul>
-            <hr/>
+            <p>
+              There is a reporting delay in testing results, so data on tests
+              carried out in the most recent 2-3 days will be incomplete. On
+              average 90% of tests carried out are reported in the system within
+              2 days. Positive results with a specimen date during the most
+              recent 10 day period may be subject to change due to re-testing in
+              some instances to ensure that an initially detected positive
+              result is a true positive.{" "}
+              <span>
+                <a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview">
+                  <sup>Source PHS</sup>
+                </a>
+              </span>
+            </p>
+            <br />
+            <p className="definitions-heading">Total Counts for Health Boards and Council Areas</p>
+            <hr />
+            <p>
+              NHS Board is assigned in the laboratory dataset and is based on
+              postcode of residence, or if postcode is missing to the NHS Board
+              of submitting laboratory. Where NHS Board and Local Authorities
+              have the same boundaries, the dashboard displays the NHS Board
+              count sourced from the laboratory dataset. Otherwise, Local
+              Authority has been derived from residential postcode; we will try
+              to determine postcode via CHI linkage, but where postcode is
+              missing no Local Authority is assigned. This approach means that
+              in a small number of cases, the Local Authority total may not be
+              exactly the same as the sum of neighbourhood totals within it. The
+              CHI database is updated monthly, which can affect the allocation
+              of individuals to areas. This may affect trend comparisons for the
+              numbers of cases tested by Local Authority.
+              <span>
+                <a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview">
+                  <sup>Source PHS</sup>
+                </a>
+              </span>
+            </p>
+            <br/>
             <p>
               {createLink(
                 "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
                 "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
               )}
             </p>
-            <br/>
+            <br />
           </Card.Body>
         </Accordion.Collapse>
       </Card>
