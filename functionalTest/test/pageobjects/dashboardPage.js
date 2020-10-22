@@ -1,5 +1,4 @@
 import Page from "./page";
-
 /**
  * dashboard page containing specific selectors and methods for a page
  */
@@ -11,7 +10,9 @@ class DashboardPage extends Page {
     return $(".navbar").$(".heading");
   }
   get headlineBanner() {
-    return $('[class="headline-banner col-12"] ');
+    return $(
+      "(//*[@id='root']/div[@class='App']/div[@class='container-fluid'])[1]"
+    );
   }
   get dailyCases() {
     return $("#dailyCases");
@@ -61,42 +62,35 @@ class DashboardPage extends Page {
   get heatmapValueTypeValues() {
     return $$(".heatmap tbody tr.area td:nth-child(2)");
   }
-  get geoMapHealthBoardArea() {
-    return $$(
-      "#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path"
-    );
-  }
-  get geoMapCouncilArea() {
-    return $$(
-      "#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path"
-    );
+  get geoMapArea() {
+    return $$(" div.leaflet-pane > svg > g > path");
   }
   get singleValueBar() {
     return $(".single-value-bar");
   }
   get dailyCases() {
-    return $("#dailyCases");
+    return $(".single-value-bar #dailyCases");
   }
   get totalCases() {
-    return $("#totalCases");
+    return $(".single-value-bar #totalCases");
   }
   get dailyFatalities() {
-    return $("#dailyFatalities");
+    return $(".single-value-bar #dailyFatalities");
   }
   get totalFatalities() {
-    return $("#totalFatalities");
+    return $(".single-value-bar #totalFatalities");
   }
   get fatalityCaseRatio() {
-    return $("#fatalityCaseRatio");
+    return $(".single-value-bar #fatalityCaseRatio");
   }
   get chartDropdown() {
-    return $("//div[@class='dropdown']/button");
+    return $("button.selected-chart");
   }
-  selectDropdownOpt(option) {
-    return $("//*/div/a[contains(text(),'" + option + "')]");
+  selectChartDropdownOption(option) {
+    return $(".chart-menu").$(".dropdown-item=" + option);
   }
   selectTimeSpan(time) {
-    return $("//*[contains(text(),'" + time + "')]/ancestor::button");
+    return $(".quick-select-dates button#" + time);
   }
   get sliderTrack() {
     return $('//*[@id="date-range-slider-position"]/span[7]');
@@ -105,10 +99,10 @@ class DashboardPage extends Page {
     return $(".facts-container");
   }
   get newsContainer() {
-    return $("div.d-flex.flex-row");
+    return $("div.info-bar");
   }
   get newsContainerGovLink() {
-    return $("div.message-container.d-flex.justify-content-end > span > a");
+    return $(".info-bar a.scot-gov-link");
   }
   /**
    * open base URL

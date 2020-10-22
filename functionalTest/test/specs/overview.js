@@ -5,12 +5,12 @@ describe("Covid-19 Dashboard", () => {
   it("should have correct title", () => {
     dashboard.open();
     let title = "Scottish COVID-19 Statistics";
+    let headline = dashboard.headlineBanner.getText();
+    console.log(headline);
     expect(browser).toHaveTitle(title);
     expect(dashboard.imgLogo).toBeDisplayed();
     expect(dashboard.headingTitle).toHaveText("Scottish COVID-19 Statistics");
-    expect(dashboard.headlineBanner).toHaveTextContaining(
-      "Regional Restrictions to help fight the pandemic"
-    );
+    expect(dashboard.headlineBanner).toHaveTextContaining("Phase 3");
   });
 });
 
@@ -18,29 +18,37 @@ describe("geoHeatMap Area Count", () => {
   it("Health Board Area geoHeatMap-->Cases", () => {
     dashboard.open();
     dashboard.selectHealthBoardsButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
     dashboard.selectCasesButton.click();
-    expect(dashboard.geoMapHealthBoardArea).toBeElementsArrayOfSize(14);
+    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
   });
 
   it("Health Board Area geoHeatMap-->Deaths", () => {
     dashboard.open();
     dashboard.selectHealthBoardsButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
     dashboard.selectDeathsButton.click();
-    expect(dashboard.geoMapHealthBoardArea).toBeElementsArrayOfSize(14);
+    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
   });
 
   it("Council Area geoHeatMap-->Cases", () => {
     dashboard.open();
     dashboard.selectCouncilAreasButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
     dashboard.selectCasesButton.click();
-    expect(dashboard.geoMapHealthBoardArea).toBeElementsArrayOfSize(32);
+    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
   });
 
   it("Council Area geoHeatMap-->Deaths", () => {
     dashboard.open();
     dashboard.selectCouncilAreasButton.click();
+    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
     dashboard.selectDeathsButton.click();
-    expect(dashboard.geoMapHealthBoardArea).toBeElementsArrayOfSize(32);
+    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
   });
 });
 
@@ -59,35 +67,35 @@ describe("Analitycal Chart with timeSpan", () => {
   it("Analitycal charts-->Daily Cases", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
-    dashboard.selectDropdownOpt("Daily Cases").click();
+    dashboard.selectChartDropdownOption("Daily Cases").click();
     reusable.sliderTrackResult();
   });
 
   it("Analitycal charts-->Total Cases", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
-    dashboard.selectDropdownOpt("Total Cases").click();
+    dashboard.selectChartDropdownOption("Total Cases").click();
     reusable.sliderTrackResult();
   });
 
   it("Analitycal charts-->Daily Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
-    dashboard.selectDropdownOpt("Daily Deaths").click();
+    dashboard.selectChartDropdownOption("Daily Deaths").click();
     reusable.sliderTrackResult();
   });
 
   it("Analitycal charts-->Total Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
-    dashboard.selectDropdownOpt("Total Deaths").click();
+    dashboard.selectChartDropdownOption("Total Deaths").click();
     reusable.sliderTrackResult();
   });
 
   it("Analitycal charts-->% Tests Positive", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
-    dashboard.selectDropdownOpt("% Tests Positive").click();
+    dashboard.selectChartDropdownOption("% Tests Positive").click();
     reusable.sliderTrackResult();
   });
 });
