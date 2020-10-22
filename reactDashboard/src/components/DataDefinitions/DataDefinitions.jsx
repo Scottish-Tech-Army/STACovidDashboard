@@ -76,7 +76,7 @@ function DataDefinitions() {
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
             <p>
-              There can be reporting delays by NHS Labs or UK Government Testing into the HPS database.  On average it is a 2-3 day lag for 90% of tests.  Positive results with a specimen date during the most recent 10 day period may be subject to change due to re-testing in some instances to ensure that an initially detected positive result is a true positive.
+              There is a reporting delay in testing results, so data on tests carried out in the most recent 2-3 days will be incomplete.  On average 90% of tests carried out are reported in the system within 2 days.  Positive results with a specimen date during the most recent 10 day period may be subject to change due to re-testing in some instances to ensure that an initially detected positive result is a true positive. <span><a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview"><sup>Source PHS</sup></a></span>
             </p>
             <hr/>
             <ul>

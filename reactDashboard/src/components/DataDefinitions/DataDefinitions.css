@@ -54,3 +54,7 @@
 .data-definitions .data-definitions-link {
   font-weight: bold;
 }
+
+.data-definitions-body sup {
+  color: #2a84bb;
+}
