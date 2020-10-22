@@ -110,10 +110,8 @@ function DataDefinitions() {
             <p>
               NHS Board is assigned in the laboratory dataset and is based on
               postcode of residence, or if postcode is missing to the NHS Board
-              of submitting laboratory. Where NHS Board and Local Authorities
-              have the same boundaries, the dashboard displays the NHS Board
-              count sourced from the laboratory dataset. Otherwise, Local
-              Authority has been derived from residential postcode; we will try
+              of submitting laboratory. Otherwise, Local
+              Authority has been derived from residential postcode. PHS will try
               to determine postcode via CHI linkage, but where postcode is
               missing no Local Authority is assigned. This approach means that
               in a small number of cases, the Local Authority total may not be
