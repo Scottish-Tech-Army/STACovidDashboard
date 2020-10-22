@@ -118,7 +118,7 @@ function DataDefinitions() {
               exactly the same as the sum of neighbourhood totals within it. The
               CHI database is updated monthly, which can affect the allocation
               of individuals to areas. This may affect trend comparisons for the
-              numbers of cases tested by Local Authority.
+              numbers of cases tested by Local Authority.{" "}
               <span>
                 <a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview">
                   <sup>Source PHS</sup>
