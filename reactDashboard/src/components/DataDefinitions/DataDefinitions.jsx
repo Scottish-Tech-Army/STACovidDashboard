@@ -76,28 +76,30 @@ function DataDefinitions() {
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
             <p>
-              There may be some minor fluctuations in the daily number of cases
-              due to laboratory reporting delays for specimen dates and
-              additional information becoming available, in which case the data
-              is revised in a future next update.{" "}
-              {createLink(
-                "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
-                "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
-              )}
+              There is a reporting delay in testing results, so data on tests carried out in the most recent 2-3 days will be incomplete.  On average 90% of tests carried out are reported in the system within 2 days.  Positive results with a specimen date during the most recent 10 day period may be subject to change due to re-testing in some instances to ensure that an initially detected positive result is a true positive. <span><a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview"><sup>Source PHS</sup></a></span>
             </p>
+            <hr/>
             <ul>
               <li>
                 <span className="defined-term">Reported Dates</span>: Since the
                 time taken to test samples and report the results varies, new
                 cases reported on a daily basis in the headline summary figures
                 on the dashboard pages may be distributed across a range of
-                Specimen Dates.
+                specimen dates.
               </li>
               <li>
                 <span className="defined-term">Specimen Dates</span>:{" "}
                 {specimenDateDefinition()}
               </li>
             </ul>
+            <hr/>
+            <p>
+              {createLink(
+                "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
+                "Click here for further information relating to the accuracy and completeness of the Public Health Scotland Covid-19 dataset."
+              )}
+            </p>
+            <br/>
           </Card.Body>
         </Accordion.Collapse>
       </Card>

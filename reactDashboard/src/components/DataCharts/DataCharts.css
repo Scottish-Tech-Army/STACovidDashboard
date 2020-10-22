@@ -165,3 +165,7 @@ canvas {
 .chart-dropdown-container.row {
   margin: 0;
 }
+
+.jss1 {
+  display: none;
+}
