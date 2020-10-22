@@ -92,6 +92,7 @@ function DataDefinitions() {
                 {specimenDateDefinition()}
               </li>
             </ul>
+            <hr/>
             <p>
               {createLink(
                 "https://www.opendata.nhs.scot/dataset/covid-19-in-scotland",
