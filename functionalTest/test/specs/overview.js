@@ -12,42 +12,15 @@ describe("Covid-19 Dashboard", () => {
   });
 });
 
-describe("geoHeatMap Area Count", () => {
-  it("Health Board Area geoHeatMap-->Cases", () => {
+test("geoHeatMap Area Count", () => {
     dashboard.open();
-    dashboard.selectHealthBoardsButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
-    dashboard.selectCasesButton.click();
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
     expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
-  });
 
-  it("Health Board Area geoHeatMap-->Deaths", () => {
-    dashboard.open();
+    dashboard.selectCouncilAreasButton.click();
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
+
     dashboard.selectHealthBoardsButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
-    dashboard.selectDeathsButton.click();
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
-  });
-
-  it("Council Area geoHeatMap-->Cases", () => {
-    dashboard.open();
-    dashboard.selectCouncilAreasButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    dashboard.selectCasesButton.click();
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
-    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
-  });
-
-  it("Council Area geoHeatMap-->Deaths", () => {
-    dashboard.open();
-    dashboard.selectCouncilAreasButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    dashboard.selectDeathsButton.click();
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
-  });
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);  
 });
 
 describe("Verify Single Value Bar Visibility", () => {

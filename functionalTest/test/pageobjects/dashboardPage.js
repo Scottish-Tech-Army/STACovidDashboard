@@ -10,9 +10,7 @@ class DashboardPage extends Page {
     return $(".navbar").$(".heading");
   }
   get headlineBanner() {
-    return $(
-      "(//*[@id='root']/div[@class='App']/div[@class='container-fluid'])[1]"
-    );
+    return $(".headline-banner");
   }
   get dailyCases() {
     return $("#dailyCases");
