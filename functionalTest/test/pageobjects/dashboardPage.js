@@ -61,6 +61,9 @@ class DashboardPage extends Page {
   get heatmapValueTypeValues() {
     return $$(".heatmap tbody tr.area td:nth-child(2)");
   }
+  get heatmapHeatbarValues() {
+    return $$(".heatmap tbody tr.area td:nth-child(3)");
+  }
 
   /**
    * open base URL

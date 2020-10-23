@@ -1,14 +1,17 @@
 import dashboard from "../pageobjects/dashboardPage";
 
+// Heatbar column: thead - DAILY COUNT, subheading (date range) and heatmapScale aren't affected by the user clicking buttons
+// subheading (date range) will be updated with new data coming in
+
 describe("heatmap selection", () => {
-  it("default view", () => {
+  xit("default view", () => {
     dashboard.open();
 
     checkHeatmapHealthBoardsBoundaries();
     checkHeatmapHealthBoardsCasesValues();
   });
 
-  it("council areas cases", () => {
+  xit("council areas cases", () => {
     dashboard.open();
     dashboard.selectDeathsButton.click();
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
@@ -43,9 +46,21 @@ describe("heatmap selection", () => {
 
     checkHeatmapHealthBoardsBoundaries();
     checkHeatmapHealthBoardsCasesValues();
+
+    const heatmapHeatbarValues = dashboard.heatmapHeatbarValues;
+    expect(heatmapHeatbarValues).toHaveLength(15);
+    // Scotland total: check colour for heatmapHeatbarValues[0] first <line> - check number of cases for earliest date from data, determine what colour that should on the scale (function pseudocode at bottom of file), check against colour of first <line> on bar
+    // checkExpectedColor(Scotland total on first date from data);
+    // expect(heatmapValueTypeValues[0] first <line> colour).toBe(expectedColour);
+
+    // Scotland total: check colour for heatmapHeatbarValues[0] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
+    // First row: check colour for heatmapHeatbarValues[1] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
+    // Last row: check colour for heatmapHeatbarValues[1] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
+    // First row: checkColour for heatmapHeatbarValues[15] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
+    // Last row: checkColour for heatmapHeatbarValues[15] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
   });
 
-  it("health boards deaths", () => {
+  xit("health boards deaths", () => {
     dashboard.open();
     dashboard.selectCouncilAreasButton.click();
     expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
@@ -68,7 +83,7 @@ describe("heatmap selection", () => {
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 0, 50);
   });
 
-  it("council areas deaths", () => {
+  xit("council areas deaths", () => {
     dashboard.open();
 
     dashboard.selectCouncilAreasButton.click();
@@ -128,3 +143,24 @@ function checkValueWithin(value, lower, upper) {
   expect(value).toBeGreaterThanOrEqual(lower);
   expect(value).toBeLessThanOrEqual(upper);
 }
+
+// Colours:
+// >=0 = #e0e0e0;
+// >=1 = #ffffb2;
+// >=2 = #fed976;
+// >=5 = #feb24c;
+// >=10 = #fd8d3c;
+// >=20 = #f03b20;
+// >=50 = #bd0026;
+// >=100 = #020202;
+
+// function checkExpectedColor(date.numberOfCases) {
+//   if 0, expectedColour = #e0e0e0;
+//   if 1, expectedColour = #ffffb2;
+//   if 2, expectedColour = #fed976;
+//   if 3-5, expectedColour = #feb24c;
+//   if 6-10, expectedColour = #fd8d3c;
+//   if 11-20, expectedColour = #f03b20;
+//   if 21-50, expectedColour = #bd0026;
+//   if >=100, expectedColour = #020202;
+// }
