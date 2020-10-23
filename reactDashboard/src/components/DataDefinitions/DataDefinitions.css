@@ -37,7 +37,7 @@
 }
 
 .data-definitions .data-definitions-body p {
-  padding: 0 10px 5px;
+  padding: 0 10px;
   margin: 0;
 }
 
@@ -50,6 +50,15 @@
 }
 
 .data-definitions .defined-term,
-.data-definitions .data-definitions-link {
+.data-definitions .data-definitions-link,
+.data-definitions .definitions-heading {
   font-weight: bold;
+}
+
+.data-definitions-body .source-attribution {
+  color: #2a84bb;
+}
+
+.data-definitions .definition-paragraph {
+  padding-bottom: 20px !important;
 }
