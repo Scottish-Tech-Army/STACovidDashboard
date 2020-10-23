@@ -55,6 +55,10 @@
   font-weight: bold;
 }
 
-.data-definitions-body sup {
+.data-definitions-body .source-attribution {
   color: #2a84bb;
+}
+
+.definition-paragraph {
+  padding-bottom: 10px;
 }
