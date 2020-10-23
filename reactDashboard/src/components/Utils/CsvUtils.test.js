@@ -7,6 +7,8 @@ import {
   parse7DayWindowCsvData,
   getRelativeReportedDate,
   getNhsCsvDataDateRange,
+  calculatePopulationProportionMap,
+  getPopulationMap,
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
 
@@ -467,6 +469,92 @@ test("parse7DayWindowCsvData", () => {
   expect(parse7DayWindowCsvData(readCsvData(dailyCasesCsvData))).toStrictEqual(
     expectedResult
   );
+});
+
+test("getPopulationMap", () => {
+  const nhsCsvData = `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200302,S08000031,unknown,1,2,2,5,6,7,8,9
+    20200302,S08000022,unknown,11,12,6,15,16,17,18,19
+    20200302,S12000013,unknown,21,22,4.4,25,26,27,28,29
+    20200302,S92000003,Scotland,33,36,4.133333333333334,45,48,17,54,19
+    20200303,S08000031,unknown,31,32,32,35,36,37,38,39
+    20200303,S08000022,unknown,41,42,21,45,46,47,48,49
+    20200303,S12000013,unknown,51,52,10.4,55,56,57,58,59
+    20200303,S92000003,Scotland,123,126,21.133333333333333,135,138,47,144,49
+    20200304,S08000031,unknown,61,62,62,65,66,67,68,69
+    20200304,S08000022,unknown,71,72,36,75,76,77,78,79
+    20200304,S12000013,unknown,81,82,16.4,85,86,87,88,89
+    20200304,S92000003,Scotland,213,216,38.13333333333333,225,228,77,234,79
+    20200305,S08000031,unknown,91,92,92,95,96,97,98,99
+    20200305,S08000022,unknown,101,102,51,105,106,107,108,109
+    20200305,S12000013,unknown,111,112,22.4,115,116,117,118,119
+    20200305,S92000003,Scotland,303,306,55.13333333333333,315,318,107,324,109
+    20200306,S08000031,unknown,121,122,122,125,126,127,128,129
+    20200306,S08000022,unknown,131,132,66,135,136,137,138,139
+    20200306,S12000013,unknown,141,142,28.4,145,146,147,148,149
+    20200306,S92000003,Scotland,393,396,72.13333333333334,405,408,137,414,139
+    20200307,S08000031,unknown,151,152,152,155,156,157,158,159
+    20200307,S08000022,unknown,161,162,81,165,166,167,168,169
+    20200307,S12000013,unknown,171,172,34.4,175,176,177,178,179
+    20200307,S92000003,Scotland,483,486,89.13333333333333,495,498,167,504,169
+    20200308,S08000031,unknown,181,182,182,185,186,187,188,189
+    20200308,S08000022,unknown,191,192,96,195,196,197,198,199
+    20200308,S12000013,unknown,201,202,40.4,205,206,207,208,209
+    20200308,S92000003,Scotland,573,576,106.13333333333333,585,588,197,594,199
+    20200309,S08000031,unknown,211,212,212,215,216,217,218,219
+    20200309,S08000022,unknown,221,222,111,225,226,227,228,229
+    20200309,S12000013,unknown,231,232,46.4,235,236,237,238,239
+    20200309,S92000003,Scotland,663,888,111,675,678,227,684,229
+    `;
+
+  const healthBoardDataset = readCsvData(nhsCsvData);
+
+  const expectedResult = new Map()
+    .set("S08000031", 100000)
+    .set("S08000022", 200000)
+    .set("S12000013", 500000)
+    .set("S92000003", 800000);
+
+  expect(
+    getPopulationMap(createPlaceDateValuesMap(healthBoardDataset))
+  ).toStrictEqual(expectedResult);
+});
+
+describe("calculatePopulationProportionMap", () => {
+  it("empty populationMap", () => {
+    expect(calculatePopulationProportionMap(new Map())).toStrictEqual(
+      new Map()
+    );
+  });
+
+  it("without Scotland", () => {
+    const populationMap = new Map()
+      .set("S08000031", 100000)
+      .set("S08000022", 200000)
+      .set("S12000013", 500000);
+
+    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
+      new Map()
+    );
+  });
+
+  it("with Scotland", () => {
+    const populationMap = new Map()
+      .set("S08000031", 100000)
+      .set("S08000022", 200000)
+      .set("S12000013", 500000)
+      .set("S92000003", 800000);
+
+    const expectedResult = new Map()
+      .set("S08000031", 0.125)
+      .set("S08000022", 0.25)
+      .set("S12000013", 0.625)
+      .set("S92000003", 1);
+
+    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
+      expectedResult
+    );
+  });
 });
 
 function setMockDate(date) {

@@ -38,6 +38,7 @@ const Regional = ({
   healthBoardDataset,
   currentTotalsHealthBoardDataset,
   currentTotalsCouncilAreaDataset,
+  populationProportionMap,
 }) => {
   const match = useRouteMatch();
   const location = useLocation();
@@ -142,6 +143,7 @@ const Regional = ({
             councilAreaDataset={councilAreaDataset}
             healthBoardDataset={healthBoardDataset}
             showPercentageTests={false}
+            populationProportionMap={populationProportionMap}
           />
         </Col>
       </Row>
