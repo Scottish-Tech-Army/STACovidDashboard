@@ -251,7 +251,7 @@ const DataCharts = ({
     }
 
     const REGION_DATASET_COLOUR = "#ec6730";
-    const AVERAGE_DATASET_COLOUR = "blue";
+    const AVERAGE_DATASET_COLOUR = "#767676";
 
     function setChart(
       datasetLabel,
