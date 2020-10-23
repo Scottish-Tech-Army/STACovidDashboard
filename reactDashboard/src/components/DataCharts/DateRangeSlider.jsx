@@ -8,7 +8,6 @@ import "./DataCharts.css";
 const useStyles = makeStyles({
   root: {
     width: "90%",
-    marginTop: 30,
     display: "flex",
     marginLeft: "auto",
     marginRight: "auto",
