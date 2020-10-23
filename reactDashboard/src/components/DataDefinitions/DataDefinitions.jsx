@@ -37,7 +37,7 @@ function DataDefinitions() {
           each day. This is the date most suited for surveillance to show trends
           of COVID-19 over a period of time.
         </Route>
-        <Route exact path={URL_REGIONAL}>
+        <Route path={URL_REGIONAL}>
           The specimen date is the date the sample was collected from the
           patient. The specimen date is used in the chart component within the
           STA Regional Insights Dashboard Page to show the number of test
