@@ -59,6 +59,6 @@
   color: #2a84bb;
 }
 
-.definition-paragraph {
-  padding-bottom: 10px;
+.data-definitions .definition-paragraph {
+  padding-bottom: 20px !important;
 }
