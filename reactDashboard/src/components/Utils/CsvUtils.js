@@ -191,6 +191,43 @@ export function getRelativeReportedDate(date) {
   return "reported on " + format(date, "dd MMMM, yyyy");
 }
 
+export function getPopulationMap(placeDateValuesResult) {
+  const { dates, placeDateValuesMap } = placeDateValuesResult;
+
+  const populationMap = new Map();
+  const finalDate = dates[dates.length - 1];
+
+  const places = [...placeDateValuesMap.keys()];
+  places.forEach((place) => {
+    const dateValuesMap = placeDateValuesMap.get(place);
+    const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
+    if (crudeRatePositive === 0) {
+      populationMap.set(place, 0);
+    } else {
+      const population = 100000 * (cumulativeCases / crudeRatePositive);
+      populationMap.set(place, population);
+    }
+  });
+
+  return populationMap;
+}
+
+// Exported for tests
+export function calculatePopulationProportionMap(populationMap) {
+  const result = new Map();
+
+  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
+  if (scotlandPopulation !== undefined) {
+    const places = [...populationMap.keys()];
+    places.forEach((place) => {
+      const population = populationMap.get(place);
+      result.set(place, population / scotlandPopulation);
+    });
+  }
+  return result;
+}
+
+
 export const FEATURE_CODE_SCOTLAND = "S92000003";
 
 export const FEATURE_CODE_COUNCIL_AREAS_MAP = {

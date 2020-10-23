@@ -22,6 +22,7 @@ const Overview = ({
   councilAreaDataset,
   healthBoardDataset,
   currentTotalsHealthBoardDataset,
+  populationProportionMap,
 }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
@@ -182,7 +183,10 @@ const Overview = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
-            <DataCharts healthBoardDataset={healthBoardDataset} />
+            <DataCharts
+              healthBoardDataset={healthBoardDataset}
+              populationProportionMap={populationProportionMap}
+            />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex">
