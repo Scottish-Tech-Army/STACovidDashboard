@@ -251,7 +251,7 @@ const DataCharts = ({
     }
 
     const REGION_DATASET_COLOUR = "#ec6730";
-    const AVERAGE_DATASET_COLOUR = "blue";
+    const AVERAGE_DATASET_COLOUR = "#767676";
 
     function setChart(
       datasetLabel,
@@ -273,7 +273,7 @@ const DataCharts = ({
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
           datasets.push(
             datasetConfiguration(
-              datasetLabel + " (Scotland average adjusted for population)",
+              "Scotland average (adjusted for population)",
               getAverageSeriesData(seriesData, regionCode),
               AVERAGE_DATASET_COLOUR
             )

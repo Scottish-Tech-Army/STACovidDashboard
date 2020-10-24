@@ -12,7 +12,7 @@ import {
 } from "../DataCharts/DataChartsConsts";
 
 describe("commonChartConfiguration", () => {
-  const mockData = [datasetConfiguration("testLabel", undefined, "blue")];
+  const mockData = [datasetConfiguration("testLabel", undefined, "#767676")];
 
   it("with date range", () => {
     const result = commonChartConfiguration(mockData, {
