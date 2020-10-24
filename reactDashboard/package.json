@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
+    "darkmode-js": "^1.5.7",
     "date-fns": "^2.16.1",
     "leaflet": "^1.7.1",
     "moment": "^2.28.0",

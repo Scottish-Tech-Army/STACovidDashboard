@@ -321,8 +321,12 @@ const GeoHeatMap = ({
     }
   }, [currentHeatLevels]);
 
+  const classNameIncDarkmode = `darkmode-ignore + ${
+    fullscreenEnabled ? "full-screen-geo-map" : "geo-map"
+  }`;
+
   return (
-    <div className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
+    <div className={classNameIncDarkmode}>
       <LeafletMap
         ref={mapRef}
         id="map"

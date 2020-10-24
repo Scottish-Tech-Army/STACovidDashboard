@@ -3,8 +3,8 @@
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #287DB2;
-  border-color: #287DB2;
+  background-color: #287db2;
+  border-color: #287db2;
   font-weight: bold;
 }
 
@@ -33,4 +33,14 @@
 
 .hidden-chart {
   display: none;
+}
+
+.darkmode-layer,
+.darkmode-toggle {
+  z-index: 500;
+  position: static;
+}
+
+.darkmode-toggle--white .darkmode-toggle--black {
+  border: none;
 }

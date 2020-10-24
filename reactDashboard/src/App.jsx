@@ -31,6 +31,7 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
+import Darkmode from "darkmode-js";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -141,6 +142,20 @@ const App = () => {
   useEffect(() => {
     setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
   }, [populationMap]);
+
+  const options = {
+    time: "0.5s",
+    mixColor: "#fff",
+    backgroundColor: "#fff",
+    buttonColorDark: "#100f2c",
+    buttonColorLight: "#fff",
+    saveInCookies: true,
+    label: "🌓",
+    autoMatchOsTheme: true,
+  };
+
+  const darkmode = new Darkmode(options);
+  darkmode.showWidget();
 
   return (
     <div className="App">
