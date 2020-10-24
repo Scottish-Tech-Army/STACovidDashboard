@@ -273,7 +273,7 @@ const DataCharts = ({
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
           datasets.push(
             datasetConfiguration(
-              datasetLabel + " (Scotland average adjusted for population)",
+              "Scotland average (adjusted for population)",
               getAverageSeriesData(seriesData, regionCode),
               AVERAGE_DATASET_COLOUR
             )
