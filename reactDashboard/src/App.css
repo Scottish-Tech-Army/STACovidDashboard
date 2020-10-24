@@ -89,3 +89,38 @@ button.MuiButtonBase-root {
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
 }
+/* darkmode setup */
+
+/* .App,
+.navbar-link,
+.avbar-links,
+.navbar-nav,
+.heading-container,
+h1,
+h2,
+h3,
+h4,
+header,
+.single-value-number,
+.dashboard-navbar,
+.single-value-number,
+.single-value-container,
+.single-value,
+.single-value-bar,
+a,
+link,
+.p-2,
+.info-bar,
+.facts-container,
+.facts-component,
+div,
+.subheading,
+th,
+.area {
+  color: white !important;
+  background-color: black !important;
+}
+
+.nav-link.selected {
+  color: aqua !important;
+} */

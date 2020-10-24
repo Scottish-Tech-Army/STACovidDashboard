@@ -50,7 +50,7 @@
 }
 
 .nav-link.selected {
-  color: rgba(0, 0, 0, 0.9) !important;
+  color: rgba(0, 0, 0, 0.9) ;
   text-decoration: none !important;
 }
 

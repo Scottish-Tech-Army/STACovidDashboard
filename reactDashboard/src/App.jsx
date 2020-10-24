@@ -31,6 +31,7 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
+import Darkmode from "./components/Darkmode";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -150,6 +151,7 @@ const App = () => {
 
         <header>
           <DashboardNavbar />
+          <Darkmode />
         </header>
 
         <Switch>
