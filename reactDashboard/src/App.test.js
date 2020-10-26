@@ -11,7 +11,7 @@ test("renders learn react link", async () => {
   await act(async () => {
     result = render(<App />);
   });
-  //const { getByText } = render(<App />);
-  const linkElement = result.getByText(/Area/i);
+  // const { getByText } = render(<App />);
+  const linkElement = result.getByText(/Unless otherwise stated, this webpage contains public sector information licensed under/i);
   expect(linkElement).toBeInTheDocument();
 });
