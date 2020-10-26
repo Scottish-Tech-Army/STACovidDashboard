@@ -1,12 +1,8 @@
 import React from "react";
-import DataCharts, {
-  parseNhsCsvData,
-  getPopulationMap,
-  calculatePopulationProportionMap,
-} from "./DataCharts";
+import DataCharts, { parseNhsCsvData } from "./DataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { readCsvData, createPlaceDateValuesMap } from "../Utils/CsvUtils";
+import { readCsvData } from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -54,11 +50,6 @@ test("dataCharts renders dynamic fetched data", async () => {
 
 test("parseNhsCsvData", () => {
   const expectedResult = {
-    populationMap: new Map()
-      .set("S08000031", 100000)
-      .set("S08000022", 200000)
-      .set("S12000013", 500000)
-      .set("S92000003", 800000),
     regionPercentageCasesMap: new Map()
       .set("S08000031", [
         { t: Date.parse("2020-03-02"), y: (100 * 2) / (2 + 8) },
@@ -303,55 +294,6 @@ test("parseNhsCsvData", () => {
   };
 
   expect(parseNhsCsvData(healthBoardDataset)).toStrictEqual(expectedResult);
-});
-
-test("getPopulationMap", () => {
-  const expectedResult = new Map()
-    .set("S08000031", 100000)
-    .set("S08000022", 200000)
-    .set("S12000013", 500000)
-    .set("S92000003", 800000);
-
-  expect(
-    getPopulationMap(createPlaceDateValuesMap(healthBoardDataset))
-  ).toStrictEqual(expectedResult);
-});
-
-describe("calculatePopulationProportionMap", () => {
-  it("empty populationMap", () => {
-    expect(calculatePopulationProportionMap(new Map())).toStrictEqual(
-      new Map()
-    );
-  });
-
-  it("without Scotland", () => {
-    const populationMap = new Map()
-      .set("S08000031", 100000)
-      .set("S08000022", 200000)
-      .set("S12000013", 500000);
-
-    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
-      new Map()
-    );
-  });
-
-  it("with Scotland", () => {
-    const populationMap = new Map()
-      .set("S08000031", 100000)
-      .set("S08000022", 200000)
-      .set("S12000013", 500000)
-      .set("S92000003", 800000);
-
-    const expectedResult = new Map()
-      .set("S08000031", 0.125)
-      .set("S08000022", 0.25)
-      .set("S12000013", 0.625)
-      .set("S92000003", 1);
-
-    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
-      expectedResult
-    );
-  });
 });
 
 const nhsCsvData = `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
