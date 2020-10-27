@@ -20,7 +20,7 @@ input:before {
 }
 
 input:checked {
-  background-color: red;
+  background-color: #121212;
 }
 
 input:checked:before {

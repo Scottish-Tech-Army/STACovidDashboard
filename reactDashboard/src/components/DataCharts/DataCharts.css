@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.darkmode .chart-border {
+  background-color: #0b0a0a;
+}
+
 .chart-title h2 {
   font-size: 1.25rem;
   font-weight: bold;
@@ -22,6 +26,10 @@
   flex-direction: row;
   margin: 0;
   justify-content: flex-start;
+}
+
+.darkmode h2 {
+  color: #2c7aaa;
 }
 
 @media screen and (max-width: 600px) {
@@ -72,6 +80,7 @@
   padding: 7px;
   width: 7em;
   height: 7em;
+  color: black;
 }
 
 .sonification-play-button:hover {
@@ -147,6 +156,10 @@
   background-color: #f2f2f2;
   padding: 20px 0 30px;
   margin: 0;
+}
+
+.darkmode .data-charts-container {
+  background-color: #121212;
 }
 
 legend {

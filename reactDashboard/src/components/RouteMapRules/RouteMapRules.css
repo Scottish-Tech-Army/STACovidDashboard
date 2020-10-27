@@ -4,6 +4,11 @@
   padding: 1rem;
 }
 
+.darkmode .headline-banner {
+  background-color: #133a53;
+  color: #c1def1;
+}
+
 .headline-banner-highlight {
   font-weight: bold;
   color: #fc8d59;

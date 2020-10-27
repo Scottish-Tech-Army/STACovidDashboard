@@ -9,8 +9,15 @@
 }
 
 .data-definitions .accordion-header {
-  color: #ffffff;
-  background-color: #133a53;
+  color: #133a53;
+}
+
+.darkmode  .accordion-header {
+  color: #133a53;
+}
+
+.darkmode .data-definitions {
+  color: #133a53;
 }
 
 .data-definitions button.btn.btn-link {

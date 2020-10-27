@@ -20,6 +20,10 @@
   text-decoration: none;
 }
 
+.darkmode .link {
+  color: #d0d0e6;
+}
+
 .about-us,
 .accessibility-page,
 .data-sources {
@@ -29,8 +33,16 @@
   padding-left: 15px;
 }
 
+.accessibility-page {
+  background-color: #121212;
+}
+
 .data-sources {
   padding-bottom: 3vh;
+}
+
+.darkmode .data-sources {
+  background-color: #121212;
 }
 
 .about-us-details,
@@ -44,6 +56,10 @@
 .accessibility-page h1,
 .data-sources h1 {
   padding-top: 2vh;
+}
+
+.darkmode .about-us {
+  background-color: #121212;
 }
 
 .accessibility-page ul {
@@ -89,38 +105,16 @@ button.MuiButtonBase-root {
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
 }
-/* darkmode setup */
 
-/* .App,
-.navbar-link,
-.avbar-links,
-.navbar-nav,
-.heading-container,
-h1,
-h2,
-h3,
-h4,
-header,
-.single-value-number,
-.dashboard-navbar,
-.single-value-number,
-.single-value-container,
-.single-value,
-.single-value-bar,
-a,
-link,
-.p-2,
-.info-bar,
-.facts-container,
-.facts-component,
-div,
-.subheading,
-th,
-.area {
-  color: white !important;
-  background-color: black !important;
+.selected-chart {
+  margin-left: 5px;
+  width: 280px;
 }
 
-.nav-link.selected {
-  color: aqua !important;
-} */
+.darkmode .container-fluid {
+  background-color: #121212;
+}
+
+.darkmode div {
+  color: #d0d0e6;
+}

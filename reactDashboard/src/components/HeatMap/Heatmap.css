@@ -5,6 +5,10 @@
   background-color: #ffffff;
 }
 
+.darkmode .heatmap {
+  background-color: #121212;
+}
+
 .heatmap table {
   overflow-y: auto;
 }
@@ -18,6 +22,10 @@
   color: #133a53;
 }
 
+.darkmode .heatmap table th {
+  background-color: #121212;
+}
+
 .heatmap table th .subheading {
   font-weight: normal;
 }
@@ -26,6 +34,10 @@
   border: 0;
   padding: 0;
   vertical-align: middle;
+}
+
+.darkmode .area {
+  color: #d0d0e6;
 }
 
 .heatmap table tr.area:first-child td {
@@ -122,4 +134,12 @@
 svg.heatbar {
   height: 1.5em;
   width: 100%;
+}
+
+.darkmode .tr {
+  background-color: #121212;
+}
+
+.darkmode .th {
+  background-color: #121212;
 }

@@ -31,7 +31,7 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
-import Darkmode from "./components/Darkmode";
+import "./darkmodeButton.css";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -75,6 +75,7 @@ const App = () => {
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
+  const [toggleDarkmode, setToggleDarkmode] = useState(true);
 
   // Load and parse datasets
   useEffect(() => {
@@ -144,16 +145,18 @@ const App = () => {
   }, [populationMap]);
 
   return (
-    <div className="App">
+    <div className={toggleDarkmode ? "App darkmode" : "App"}>
       <Router>
         <ScrollToTop />
         <StopAudio />
 
         <header>
           <DashboardNavbar />
-          <Darkmode />
+          <input
+            type="checkbox"
+            onChange={() => setToggleDarkmode((value) => !value)}
+          ></input>
         </header>
-
         <Switch>
           <Route exact path={URL_OVERVIEW}>
             <Overview

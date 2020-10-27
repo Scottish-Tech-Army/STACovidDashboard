@@ -21,7 +21,7 @@ const DashboardNavbar = () => {
   }
 
   return (
-    <Navbar className="dashboard-navbar" bg="white" expand="sm">
+    <Navbar className="dashboard-navbar" expand="sm">
       <Link to={URL_OVERVIEW}>
         <img id="logo" src="/STALogo.png" alt="Scottish Tech Army Logo" />
       </Link>

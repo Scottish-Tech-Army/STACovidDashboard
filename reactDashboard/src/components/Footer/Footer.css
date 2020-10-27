@@ -66,3 +66,11 @@
 footer {
   padding-bottom: 30px;
 }
+
+.darkmode footer {
+  background-color: #121212;
+}
+
+.darkmode header {
+  background-color: #121212;
+}
