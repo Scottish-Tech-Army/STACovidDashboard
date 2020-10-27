@@ -21,8 +21,8 @@ describe("geoHeatMap Area Count", () => {
     expect(dashboard.geoMapArea).toBeElementsArrayOfSize(32);
 
     dashboard.selectHealthBoardsButton.click();
-    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);  
-});
+    expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
+  });
 });
 
 describe("Verify Single Value Bar Visibility", () => {

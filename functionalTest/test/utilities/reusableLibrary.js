@@ -1,78 +1,75 @@
 import dashboard from "../pageobjects/dashboardPage";
+import moment from "moment";
 
 class reusableLibrary {
-  calculatePercent(fromDate, toDate, factor) {
-    var d1 = new Date(fromDate);
-    var d2 = new Date(toDate);
-    let days = (d2 - d1) / 86400000;
-    let perDayFactor = 100 / days;
-    let interval = 1;
-    var weekOrMonth = factor.charAt(1);
-    let numrOfWeekOrMonth = factor.charAt(0);
-    let letMonthCorrectionFactor = 0;
-    if (weekOrMonth == "W") {
-      interval = 7;
-    } else if (weekOrMonth == "Y") {
-      interval = 365;
-    } else {
-      if (numrOfWeekOrMonth > 1) {
-        letMonthCorrectionFactor =
-          numrOfWeekOrMonth / (numrOfWeekOrMonth + numrOfWeekOrMonth / 2);
-      }
-      interval = 30 + letMonthCorrectionFactor;
-    }
-    let leftPercent = 100 - perDayFactor * interval * numrOfWeekOrMonth;
-    return leftPercent;
-  }
-
-  retrieveLeftWidth(inputStr, requiredParam) {
-    let returnValue = "";
-    const paramArr = inputStr.split(";");
-    for (let i = 0; i < paramArr.length; i++) {
-      if (paramArr[i].includes(requiredParam)) {
-        const valueArr = paramArr[i].split(":");
-        returnValue = valueArr[1];
-        returnValue = returnValue.replace(" ", "").replace("%", "");
-      }
-    }
-    return returnValue;
-  }
-
-  valueCheck(expectedValue) {
-    var Style = dashboard.sliderTrack.getAttribute("style");
-    var actualValue = this.retrieveLeftWidth(Style, "left");
-    let diff = Math.abs(expectedValue - actualValue);
-    if (diff < 1) {
-      expectedValue = actualValue;
-    }
-    expect(actualValue).toBe(expectedValue);
-  }
-
   sliderTrackResult() {
     var fromDate = dashboard.fromDate.getText();
     var toDate = dashboard.toDate.getText();
 
-    dashboard.selectTimeSpan("select-all").click();
-    expect(dashboard.sliderTrack).toHaveAttributeContaining(
-      "style",
-      "left: 0%;"
-    );
+    const TIMESPAN_ALL = "select-all";
+    const TIMESPAN_THREE_MONTHS = "select-last-three-months";
+    const TIMESPAN_ONE_MONTH = "select-last-month";
+    const TIMESPAN_TWO_WEEKS = "select-last-two-weeks";
+    const TIMESPAN_ONE_WEEK = "select-last-week";
 
-    dashboard.selectTimeSpan("select-last-three-months").click();
-    var expectedValue = this.calculatePercent(fromDate, toDate, "3M");
-    this.valueCheck(expectedValue);
+    function calculateLeftButtonPercentage(fromDate, toDate, timespan) {
+      let totalDays = moment(toDate).diff(moment(fromDate), "days") + 1;
+      let expectedDays;
+      switch (timespan) {
+        case TIMESPAN_ALL:
+          expectedDays = totalDays;
+          break;
+        case TIMESPAN_THREE_MONTHS:
+          expectedDays = 365 / 4;
+          break;
+        case TIMESPAN_ONE_MONTH:
+          expectedDays = 365 / 12;
+          break;
+        case TIMESPAN_TWO_WEEKS:
+          expectedDays = 14;
+          break;
+        case TIMESPAN_ONE_WEEK:
+          expectedDays = 7;
+          break;
+        default:
+          throw new Error("timespan invalid: " + timespan);
+      }
+      const timePeriodPercentage = (100 * expectedDays) / totalDays;
+      let leftPercent = 100 - timePeriodPercentage;
+      return leftPercent;
+    }
 
-    dashboard.selectTimeSpan("select-last-month").click();
-    var expectedValue = this.calculatePercent(fromDate, toDate, "1M");
-    this.valueCheck(expectedValue);
+    function valueCheck(expectedValue) {
+      var Style = dashboard.sliderTrack.getAttribute("style");
+      var actualValue = retrieveLeftWidth(Style, "left");
+      let diff = Math.abs(expectedValue - actualValue);
+      if (diff < 1) {
+        expectedValue = actualValue;
+      }
+      expect(actualValue).toBe(expectedValue);
+    }
 
-    dashboard.selectTimeSpan("select-last-two-weeks").click();
-    var expectedValue = this.calculatePercent(fromDate, toDate, "2W");
-    this.valueCheck(expectedValue);
+    function retrieveLeftWidth(inputStr) {
+      let start = inputStr.indexOf("left:") + 5;
+      let end = inputStr.indexOf("%", start);
+      let returnValue = inputStr.substring(start, end).trim();
+      return returnValue;
+    }
+    function checkSliderValue(timeSpan) {
+      dashboard.selectTimeSpan(timeSpan).click();
+      var expectedValue = calculateLeftButtonPercentage(
+        fromDate,
+        toDate,
+        timeSpan
+      );
+      valueCheck(expectedValue);
+    }
 
-    dashboard.selectTimeSpan("select-last-week").click();
-    var expectedValue = this.calculatePercent(fromDate, toDate, "1W");
-    this.valueCheck(expectedValue);
+    checkSliderValue(TIMESPAN_ALL);
+    checkSliderValue(TIMESPAN_THREE_MONTHS);
+    checkSliderValue(TIMESPAN_ONE_MONTH);
+    checkSliderValue(TIMESPAN_TWO_WEEKS);
+    checkSliderValue(TIMESPAN_ONE_WEEK);
   }
 }
 export default new reusableLibrary();
