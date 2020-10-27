@@ -91,7 +91,13 @@ class DashboardPage extends Page {
     return $(".quick-select-dates button#" + time);
   }
   get sliderTrack() {
-    return $('//*[@id="date-range-slider-position"]/span[7]');
+    return $('span.MuiSlider-track');
+  }
+  get fromDate() {
+    return $$("span.MuiSlider-markLabel")[0];
+  }
+  get toDate() {
+    return $$("span.MuiSlider-markLabel")[1];
   }
   get factsContainer() {
     return $(".facts-container");

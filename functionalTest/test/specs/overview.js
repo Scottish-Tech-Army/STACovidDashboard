@@ -12,7 +12,8 @@ describe("Covid-19 Dashboard", () => {
   });
 });
 
-test("geoHeatMap Area Count", () => {
+describe("geoHeatMap Area Count", () => {
+  it("geoHeatMap Area Check", () => {
     dashboard.open();
     expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);
 
@@ -21,6 +22,7 @@ test("geoHeatMap Area Count", () => {
 
     dashboard.selectHealthBoardsButton.click();
     expect(dashboard.geoMapArea).toBeElementsArrayOfSize(14);  
+});
 });
 
 describe("Verify Single Value Bar Visibility", () => {
