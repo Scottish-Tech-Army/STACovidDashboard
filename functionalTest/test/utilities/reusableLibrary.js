@@ -41,12 +41,9 @@ class reusableLibrary {
 
     function valueCheck(expectedValue) {
       var Style = dashboard.sliderTrack.getAttribute("style");
-      var actualValue = retrieveLeftWidth(Style, "left");
+      var actualValue = retrieveLeftWidth(Style);
       let diff = Math.abs(expectedValue - actualValue);
-      if (diff < 1) {
-        expectedValue = actualValue;
-      }
-      expect(actualValue).toBe(expectedValue);
+      expect(diff).toBeLessThan(1);
     }
 
     function retrieveLeftWidth(inputStr) {
