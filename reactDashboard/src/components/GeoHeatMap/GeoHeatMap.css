@@ -57,7 +57,7 @@ div.leaflet-popup-content-wrapper {
 .legend {
   line-height: 18px;
   color: #555;
-  background: white;
+  background: rgb(56, 56, 56);
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
@@ -92,5 +92,5 @@ div.leaflet-popup-content-wrapper {
 .darkmode .leaflet-container .leaflet-control-attribution,
 .darkmode .leaflet-container .leaflet-control-attribution a {
   background: #0b0a0a;
-  color: #d0d0e6;
+  color: #f2f2f2;
 }

@@ -30,7 +30,8 @@
 }
 
 .darkmode .facts-component {
-  background-color: #0b0a0a;
+  background-color: rgb(56, 56, 56);
+  box-shadow: none;
 }
 
 .facts-icon {

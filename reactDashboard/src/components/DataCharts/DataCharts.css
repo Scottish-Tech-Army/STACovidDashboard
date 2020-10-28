@@ -9,7 +9,8 @@
 }
 
 .darkmode .chart-border {
-  background-color: #0b0a0a;
+  background-color: rgb(56, 56, 56);
+  box-shadow: none;
 }
 
 .chart-title h2 {
@@ -29,7 +30,7 @@
 }
 
 .darkmode h2 {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 @media screen and (max-width: 600px) {
@@ -89,11 +90,17 @@
 
 .sonification-play-button {
   background-color: inherit;
-  border-color: #d0d0e6;
+  border-color: #f2f2f2;
 }
 
 .sonification-play-button:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
+}
+
+.darkmode .sonification-play-button:hover {
+  box-shadow: none;
+  background-color: #f2f2f2;
+  color: rgb(56, 56, 56);
 }
 
 .sonification-play-button.col {
@@ -107,14 +114,6 @@
   font-size: 0.75rem;
   color: #6c6c6c;
   margin-bottom: 0;
-}
-
-.sonification-play-button h5 {
-  color: #6c6c6c;
-}
-
-.darkmode .sonification-play-button h5 {
-  color: #d0d0e6;
 }
 
 #date-range-slider-position {
@@ -198,5 +197,5 @@ canvas {
 }
 
 .darkmode .MuiSlider-markLabel {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }

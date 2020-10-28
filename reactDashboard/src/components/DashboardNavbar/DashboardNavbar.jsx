@@ -5,6 +5,9 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
+import { faCloudMoon } from "@fortawesome/free-solid-svg-icons";
 
 const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   function navLink(pageUrl, title, exact = true) {
@@ -39,12 +42,12 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
           {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
-      <input
-        type="button"
-        value={darkmode ? "\u2600" : "\u1F311"}
-        className="darkmode-button"
-        onClick={() => setDarkmode((value) => !value)}
-      ></input>
+      <FontAwesomeIcon
+        icon={faCloudSun}
+        className="dark-mode-btn"
+        size="2x"
+        color="#f2f2f2"
+      />
     </Navbar>
   );
 };

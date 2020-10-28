@@ -5,7 +5,7 @@
 }
 
 .darkmode .subtitle {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 .single-value-heading {
@@ -22,8 +22,12 @@
 }
 
 .darkmode .single-value-number {
-  color: #d0d0e6;
+  color: #f2f2f2;
+}
 
+.darkmode .single-value {
+  background-color: rgb(56, 56, 56) !important;
+  box-shadow: none;
 }
 
 .single-value-line {
@@ -57,6 +61,10 @@
 
 .darkmode .single-value{
   background-color: #0b0a0a;
+}
+
+.darkmode .single-value-hr {
+  border: 1px solid #121212;
 }
 
 .single-value-container {
@@ -105,4 +113,3 @@
     font-size: 2rem;
   }
 }
-

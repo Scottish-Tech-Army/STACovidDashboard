@@ -23,11 +23,11 @@ function getDateLine( { date, name }, index, darkmode) {
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
     scaleID: "x-axis-0",
-    borderColor: darkmode ? "#d0d0e6" : "rgba(0,0,0,0.25)",
+    borderColor: darkmode ? "#f2f2f2" : "rgba(0,0,0,0.25)",
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: "#007EB9",
+      backgroundColor: darkmode? "#3075ec" : "#007EB9",
       fontColor: "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
@@ -98,6 +98,9 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
         yAxes: [
           {
             id: "y-axis-0",
+            gridLines: {
+              color: darkmode ? "#121212" : "#767676",
+            },
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 20,
