@@ -1,5 +1,4 @@
 import Page from "./page";
-
 /**
  * dashboard page containing specific selectors and methods for a page
  */
@@ -11,7 +10,7 @@ class DashboardPage extends Page {
     return $(".navbar").$(".heading");
   }
   get headlineBanner() {
-    return $('[class="headline-banner col-12"] ');
+    return $(".headline-banner");
   }
   get dailyCases() {
     return $("#dailyCases");
@@ -61,7 +60,54 @@ class DashboardPage extends Page {
   get heatmapValueTypeValues() {
     return $$(".heatmap tbody tr.area td:nth-child(2)");
   }
-
+  get geoMapArea() {
+    return $$(" div.leaflet-pane > svg > g > path");
+  }
+  get singleValueBar() {
+    return $(".single-value-bar");
+  }
+  get dailyCases() {
+    return $(".single-value-bar #dailyCases");
+  }
+  get totalCases() {
+    return $(".single-value-bar #totalCases");
+  }
+  get dailyFatalities() {
+    return $(".single-value-bar #dailyFatalities");
+  }
+  get totalFatalities() {
+    return $(".single-value-bar #totalFatalities");
+  }
+  get fatalityCaseRatio() {
+    return $(".single-value-bar #fatalityCaseRatio");
+  }
+  get chartDropdown() {
+    return $("button.selected-chart");
+  }
+  selectChartDropdownOption(option) {
+    return $(".chart-menu").$(".dropdown-item=" + option);
+  }
+  selectTimeSpan(time) {
+    return $(".quick-select-dates button#" + time);
+  }
+  get sliderTrack() {
+    return $('span.MuiSlider-track');
+  }
+  get fromDate() {
+    return $$("span.MuiSlider-markLabel")[0];
+  }
+  get toDate() {
+    return $$("span.MuiSlider-markLabel")[1];
+  }
+  get factsContainer() {
+    return $(".facts-container");
+  }
+  get newsContainer() {
+    return $("div.info-bar");
+  }
+  get newsContainerGovLink() {
+    return $(".info-bar a.scot-gov-link");
+  }
   /**
    * open base URL
    */
