@@ -146,6 +146,7 @@ const Regional = ({
               healthBoardDataset={healthBoardDataset}
               showPercentageTests={false}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Col>
         </Row>

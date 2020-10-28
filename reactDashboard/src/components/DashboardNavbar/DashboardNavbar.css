@@ -42,12 +42,11 @@
 
 .darkmode .navbar-light .navbar-nav .nav-link {
   color: #d0d0e6;
-
 }
 
 .darkmode .navbar-link {
   color: #d0d0e6;
-  }
+}
 
 .nav-link {
   font-size: 1.5rem;
@@ -57,7 +56,6 @@
   flex-basis: 0;
   border-left: 2px solid #3c3c3b;
 }
-
 
 .nav-link:hover {
   text-decoration: underline;
@@ -99,20 +97,18 @@
   }
 }
 
-.toggleDarkmodeButton {
-  /* content: "Turn darkmode on"; */
-  font-size: 10px;
-  width: 80px;
-  height: 80px;
+.darkmode-button {
+  font-size: 30px;
+  width: 60px;
+  height: 60px;
   background-color: #121212;
   color: white;
-  border-radius: 20px;
+  border-radius: 15px 40px;
+  box-shadow: 2px 4px 4px grey;
   outline: none;
 }
 
-.darkmode .toggleDarkmodeButton {
-  content: "Turn darkmode off";
-  font-size: 10px;
-  background-color: #d0d0e6;
+.darkmode .darkmode-button {
+  background-color: #133a53;
   color: black;
 }

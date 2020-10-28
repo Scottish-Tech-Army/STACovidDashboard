@@ -127,6 +127,10 @@
   margin: 0 auto;
 }
 
+.darkmode .MuiSlider-track  {
+color: #3075ec;
+}
+
 @media screen and (max-width: 1400px) {
   #date-range-slider-position {
     max-width: 80vw;
@@ -194,5 +198,5 @@ canvas {
 }
 
 .darkmode .MuiSlider-markLabel {
-  color: red;
+  color: #d0d0e6;
 }

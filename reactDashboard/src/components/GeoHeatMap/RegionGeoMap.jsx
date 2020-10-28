@@ -44,7 +44,7 @@ const RegionGeoMap = ({
   healthBoardDataset,
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode = null,
-  darkmode = true,
+  darkmode,
 }) => {
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null

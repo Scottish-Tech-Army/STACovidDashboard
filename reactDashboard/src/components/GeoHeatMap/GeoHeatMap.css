@@ -84,10 +84,13 @@ div.leaflet-popup-content-wrapper {
   padding-bottom: 5px;
 }
 
-.darkmode .leaflet-left .leaflet-control {
-  background-color: #121212;
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-attribution a {
+  color: black;
 }
 
-.darkmode .leaflet-container {
-  color-adjust: red;
+.darkmode .leaflet-container .leaflet-control-attribution,
+.darkmode .leaflet-container .leaflet-control-attribution a {
+  background: #0b0a0a;
+  color: #d0d0e6;
 }

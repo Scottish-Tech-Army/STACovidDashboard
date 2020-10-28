@@ -143,6 +143,7 @@ const App = () => {
     setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
   }, [populationMap]);
 
+
   return (
     <div className={darkmode ? "App darkmode" : "App"}>
       <Router>
@@ -150,10 +151,7 @@ const App = () => {
         <StopAudio />
 
         <header>
-          <DashboardNavbar
-            toggleDarkmode={darkmode}
-            setToggleDarkmode={setDarkmode}
-          />
+          <DashboardNavbar darkmode={darkmode} setDarkmode={setDarkmode} />
         </header>
         <Switch>
           <Route exact path={URL_OVERVIEW}>
@@ -162,6 +160,7 @@ const App = () => {
               healthBoardDataset={healthBoardDataset}
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Route>
           <Route path={URL_REGIONAL}>
@@ -185,7 +184,7 @@ const App = () => {
           </Route>
           <Route path="*">{() => <Redirect to="/" />}</Route>
         </Switch>
-        <Footer />
+        <Footer darkmode={darkmode} />
       </Router>
     </div>
   );

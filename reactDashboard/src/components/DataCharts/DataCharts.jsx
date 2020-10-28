@@ -126,10 +126,11 @@ export function parseNhsCsvData(csvData) {
 
 const DataCharts = ({
   healthBoardDataset = null,
+  darkmode,
   councilAreaDataset = null,
   regionCode = FEATURE_CODE_SCOTLAND,
   showPercentageTests = true,
-  populationProportionMap = new Map()
+  populationProportionMap = new Map(),
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -280,8 +281,14 @@ const DataCharts = ({
           );
         }
       }
-      const chartConfiguration = commonChartConfiguration(datasets, dateRange);
+      const chartConfiguration = commonChartConfiguration(
+        datasets,
+        darkmode,
+        dateRange
+      );
+
       chartConfiguration.options.tooltips = {
+        
         callbacks: {
           label: (tooltipItem, data) => {
             return (

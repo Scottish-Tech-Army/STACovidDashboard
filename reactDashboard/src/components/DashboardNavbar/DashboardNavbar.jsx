@@ -6,7 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
 
-const DashboardNavbar = ({ toggleDarkmode, setToggleDarkmode }) => {
+const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
@@ -19,14 +19,6 @@ const DashboardNavbar = ({ toggleDarkmode, setToggleDarkmode }) => {
       </NavLink>
     );
   }
-
-  const darkmodeButtonValue = () => {
-    if (toggleDarkmode === true) {
-      return "Turn Off";
-    } else if (toggleDarkmode === false) {
-      return "Turn On";
-    }
-  };
 
   return (
     <Navbar className="dashboard-navbar" expand="sm">
@@ -42,17 +34,17 @@ const DashboardNavbar = ({ toggleDarkmode, setToggleDarkmode }) => {
         <Navbar.Brand className="heading">
           <h1>Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
-        <input
-          type="button"
-          value={darkmodeButtonValue()}
-          className="toggleDarkmodeButton"
-          onClick={() => setToggleDarkmode((value) => !value)}
-        ></input>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Dashboard")}
           {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
+      <input
+        type="button"
+        value={darkmode ? "\u2600" : "\u1F311"}
+        className="darkmode-button"
+        onClick={() => setDarkmode((value) => !value)}
+      ></input>
     </Navbar>
   );
 };

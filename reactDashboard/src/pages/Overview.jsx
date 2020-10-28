@@ -23,6 +23,7 @@ const Overview = ({
   healthBoardDataset,
   currentTotalsHealthBoardDataset,
   populationProportionMap,
+  darkmode,
 }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
@@ -152,6 +153,7 @@ const Overview = ({
                     toggleFullscreen(zoomableMap, setZoomGeoMap)
                   }
                   fullscreenEnabled={zoomGeoMap}
+                  darkmode={darkmode}
                 />
               </Col>
               <Col className="d-block d-lg-none">
@@ -186,6 +188,7 @@ const Overview = ({
             <DataCharts
               healthBoardDataset={healthBoardDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Col>
         </Row>

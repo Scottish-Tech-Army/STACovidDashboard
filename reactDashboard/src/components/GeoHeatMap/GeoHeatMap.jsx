@@ -16,6 +16,7 @@ import {
   setScotlandDefaultBounds,
   featureCodeForFeature,
   MAP_TILES_URL,
+  DARK_MAP_TILES_URL,
 } from "./GeoUtils";
 
 /*
@@ -61,6 +62,7 @@ const GeoHeatMap = ({
   fullscreenEnabled = false,
   setAreaType,
   setValueType,
+  darkmode,
 }) => {
   const [healthBoard7DayDataset, setHealthBoard7DayDataset] = useState(null);
   const [councilArea7DayDataset, setCouncilArea7DayDataset] = useState(null);
@@ -240,6 +242,10 @@ const GeoHeatMap = ({
     function getRegionColour(count) {
       return heatcolours[getHeatLevel(count)];
     }
+  console.log(darkmode);
+   
+    const BORDER_COLOUR = "black";
+    const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
       const regionData = current7DayDataset.get(featureCode);
@@ -248,9 +254,9 @@ const GeoHeatMap = ({
         count =
           VALUETYPE_DEATHS === valueType ? regionData.deaths : regionData.cases;
       }
-
+   
       return {
-        color: "black",
+        color: darkmode ?  "white" : "black",
         fillColor: getRegionColour(count),
         opacity: 0.5,
         fillOpacity: 0.5,
@@ -333,7 +339,7 @@ const GeoHeatMap = ({
         zoomControl={false}
       >
         <TileLayer
-          url={MAP_TILES_URL}
+          url={darkmode ? DARK_MAP_TILES_URL : MAP_TILES_URL}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         <ZoomControl position="topright" />

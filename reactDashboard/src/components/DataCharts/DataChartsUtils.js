@@ -17,13 +17,13 @@ const keyDates = [
   { date: Date.parse("2020-10-09"), name: "BARS CLOSE" },
 ];
 
-function getDateLine({ date, name }, index) {
+function getDateLine( { date, name }, index, darkmode) {
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
     scaleID: "x-axis-0",
-    borderColor: "rgba(0,0,0,0.25)",
+    borderColor: darkmode ? "#d0d0e6" : "rgba(0,0,0,0.25)",
     borderWidth: 2,
     value: date,
     label: {
@@ -75,9 +75,7 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   };
 }
 
-
-
-export function commonChartConfiguration(datasets, dateRange = null) {
+export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
   let result = {
     type: "line",
 
@@ -146,7 +144,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
     },
   };
   if (datasets.length > 0) {
-    result.options.annotation = { annotations: keyDates.map(getDateLine) };
+    result.options.annotation = { annotations: keyDates.map((date, i)=>getDateLine(date, i, darkmode)) };
   }
 
   if (dateRange != null) {
