@@ -39,6 +39,7 @@ const Regional = ({
   currentTotalsHealthBoardDataset,
   currentTotalsCouncilAreaDataset,
   populationProportionMap,
+  darkmode,
 }) => {
   const match = useRouteMatch();
   const location = useLocation();
@@ -111,6 +112,7 @@ const Regional = ({
               healthBoardDataset={healthBoardDataset}
               regionCode={regionCode}
               setRegionCode={setRegionCode}
+              darkmode={darkmode}
             />
           </Col>
           <Col xs={12} lg={8}>

@@ -75,6 +75,8 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   };
 }
 
+
+
 export function commonChartConfiguration(datasets, dateRange = null) {
   let result = {
     type: "line",

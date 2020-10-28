@@ -9,6 +9,8 @@ const SCOTLAND_MAX_BOUNDS = [
 
 export const MAP_TILES_URL =
   "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
+export const DARK_MAP_TILES_URL =
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png";
 
 // Fit bounds and restrict the panning
 export function setScotlandDefaultBounds(leafletMap) {

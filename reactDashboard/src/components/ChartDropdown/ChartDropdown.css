@@ -40,6 +40,18 @@
   color: #ffffff;
 }
 
+.darkmode .selected-chart:hover {
+  background-color: #3075ec;
+  border-color: #3075ec;
+  color: #ffffff;
+}
+
+.darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
+  background-color: #3075ec;
+  border-color: #3075ec;
+  color: #ffffff;
+}
+
 .selected-chart.dropdown-toggle.btn.btn-primary:focus {
   box-shadow: none;
 }

@@ -114,6 +114,14 @@
   }
 }
 
+.darkmode .heatmapScale {
+  color: black;
+}
+
+.darkmode .heatmapScale .l-7 {
+  color: white;
+}
+
 @media all and (max-width: 600px) {
   .heatmap {
     font-size: 80%;
@@ -129,6 +137,11 @@
 .heatbarLine {
   border: 1px solid darkgrey;
   margin: 2px;
+}
+
+.darkmode .heatbarLine {
+background-color: darkgrey;
+
 }
 
 svg.heatbar {

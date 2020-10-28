@@ -1,9 +1,9 @@
 .dashboard-navbar {
-  margin: 0 1px 4px 1px;
+  margin: 0 1px 0px 1px;
 }
 
 .dashboard-navbar img#logo {
-  height: 100px;
+  height: 130px;
   margin-right: 20px;
 }
 
@@ -26,11 +26,11 @@
   padding-right: 20px;
 }
 
-.dashboard-navbar .heading .h1 {
+.dashboard-navbar .heading h1 {
   display: inline-block;
 }
 
-.darkmode .heading {
+.darkmode .dashboard-navbar .heading h1 {
   color: #d0d0e6;
 }
 
@@ -97,4 +97,22 @@
   .nav-link {
     border-left: none;
   }
+}
+
+.toggleDarkmodeButton {
+  /* content: "Turn darkmode on"; */
+  font-size: 10px;
+  width: 80px;
+  height: 80px;
+  background-color: #121212;
+  color: white;
+  border-radius: 20px;
+  outline: none;
+}
+
+.darkmode .toggleDarkmodeButton {
+  content: "Turn darkmode off";
+  font-size: 10px;
+  background-color: #d0d0e6;
+  color: black;
 }

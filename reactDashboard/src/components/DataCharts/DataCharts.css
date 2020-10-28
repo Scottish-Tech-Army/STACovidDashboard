@@ -29,7 +29,7 @@
 }
 
 .darkmode h2 {
-  color: #2c7aaa;
+  color: #d0d0e6;
 }
 
 @media screen and (max-width: 600px) {
@@ -83,6 +83,15 @@
   color: black;
 }
 
+.sonification-play-button {
+  background-color: inherit;
+}
+
+.sonification-play-button {
+  background-color: inherit;
+  border-color: #d0d0e6;
+}
+
 .sonification-play-button:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
 }
@@ -98,6 +107,14 @@
   font-size: 0.75rem;
   color: #6c6c6c;
   margin-bottom: 0;
+}
+
+.sonification-play-button h5 {
+  color: #6c6c6c;
+}
+
+.darkmode .sonification-play-button h5 {
+  color: #d0d0e6;
 }
 
 #date-range-slider-position {
@@ -174,4 +191,8 @@ canvas {
 
 .chart-dropdown-container.row {
   margin: 0;
+}
+
+.darkmode .MuiSlider-markLabel {
+  color: red;
 }

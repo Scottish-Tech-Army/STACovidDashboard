@@ -9,15 +9,8 @@
 }
 
 .data-definitions .accordion-header {
-  color: #133a53;
-}
-
-.darkmode  .accordion-header {
-  color: #133a53;
-}
-
-.darkmode .data-definitions {
-  color: #133a53;
+  color: #ffffff;
+  background-color: #133a53;
 }
 
 .data-definitions button.btn.btn-link {
@@ -64,6 +57,14 @@
 
 .data-definitions-body .source-attribution {
   color: #2a84bb;
+}
+
+.darkmode .card-body {
+  background-color: #121212;
+}
+
+.card {
+  border: none;
 }
 
 .data-definitions .definition-paragraph {

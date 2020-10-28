@@ -102,13 +102,14 @@ button.MuiButtonBase-root {
   font-size: 0.75rem;
 }
 
-button.MuiButtonBase-root:hover {
-  box-shadow: 5px 5px 5px #aaaaaa;
+.darkmode button.MuiButtonBase-root {
+  background-color: inherit;
+  color: #d0d0e6;
+  border-color: #d0d0e6;
 }
 
-.selected-chart {
-  margin-left: 5px;
-  width: 280px;
+button.MuiButtonBase-root:hover {
+  box-shadow: 5px 5px 5px #aaaaaa;
 }
 
 .darkmode .container-fluid {
