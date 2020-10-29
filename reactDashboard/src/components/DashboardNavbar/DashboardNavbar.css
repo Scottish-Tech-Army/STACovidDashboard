@@ -101,3 +101,12 @@
   background-color: #121212;
   color: black;
 }
+
+.dark-mode-btn {
+  color: "#f2f2f2";
+  cursor: pointer;
+}
+
+.darkmode .dark-mode-btn {
+  color: white;
+}
