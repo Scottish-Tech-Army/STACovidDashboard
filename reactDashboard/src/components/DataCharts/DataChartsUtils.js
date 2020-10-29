@@ -103,6 +103,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
             },
             ticks: {
               beginAtZero: true,
+              fontColor: darkmode ? "#f2f2f2" : "#767676",
               maxTicksLimit: 20,
               callback: function (value, index, values) {
                 return Math.round(value);
@@ -129,6 +130,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
         labels: {
           boxWidth: 20,
           fontSize: 14,
+          fontColor: darkmode ? "#f2f2f2" : "#767676",
         },
       },
       tooltips: {
