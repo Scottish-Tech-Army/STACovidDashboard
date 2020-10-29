@@ -48,10 +48,14 @@ describe("heatmap selection", () => {
     checkHeatmapHealthBoardsCasesValues();
 
     const heatmapHeatbarValues = dashboard.heatmapHeatbarValues;
+    const heatmapHeatbarLine = dashboard.heatmapHeatbarLine;
     expect(heatmapHeatbarValues).toHaveLength(15);
-    // Scotland total: check colour for heatmapHeatbarValues[0] first <line> - check number of cases for earliest date from data, determine what colour that should on the scale (function pseudocode at bottom of file), check against colour of first <line> on bar
+    // Scotland total: check colour for heatmapHeatbarValues[0] - check number of cases for earliest date from data, determine what colour that should on the scale (function pseudocode at bottom of file), check against colour
     // checkExpectedColor(Scotland total on first date from data);
     // expect(heatmapValueTypeValues[0] first <line> colour).toBe(expectedColour);
+    // let lineColor = getCSSProperty("stroke");
+    console.log(heatmapHeatbarLine[0].getCSSProperty("stroke"));
+    // expect(heatmapHeatbarLine[0].lineColor).toBe();
 
     // Scotland total: check colour for heatmapHeatbarValues[0] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
     // First row: check colour for heatmapHeatbarValues[1] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
