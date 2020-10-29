@@ -63,6 +63,14 @@
   background-color: #121212;
 }
 
+.darkmode hr {
+  background-color: #f2f2f2;
+}
+
+.darkmode .accordion-header {
+  background-color: #3075ec;
+}
+
 .card {
   border: none;
 }

@@ -31,7 +31,7 @@
 }
 
 .darkmode .dashboard-navbar .heading h1 {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 .navbar-links {
@@ -41,11 +41,11 @@
 }
 
 .darkmode .navbar-light .navbar-nav .nav-link {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 .darkmode .navbar-link {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 .nav-link {
@@ -97,18 +97,7 @@
   }
 }
 
-.darkmode-button {
-  font-size: 30px;
-  width: 60px;
-  height: 60px;
+.darkmode {
   background-color: #121212;
-  color: white;
-  border-radius: 15px 40px;
-  box-shadow: 2px 4px 4px grey;
-  outline: none;
-}
-
-.darkmode .darkmode-button {
-  background-color: #133a53;
   color: black;
 }

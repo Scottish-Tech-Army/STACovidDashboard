@@ -21,7 +21,7 @@
 }
 
 .darkmode .link {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }
 
 .about-us,
@@ -104,12 +104,14 @@ button.MuiButtonBase-root {
 
 .darkmode button.MuiButtonBase-root {
   background-color: inherit;
-  color: #d0d0e6;
-  border-color: #d0d0e6;
+  color: #f2f2f2;
+  border-color: #f2f2f2;
 }
 
 button.MuiButtonBase-root:hover {
-  box-shadow: 5px 5px 5px #aaaaaa;
+  box-shadow: none;
+  background-color: #f2f2f2;
+  color: rgb(56, 56, 56)
 }
 
 .darkmode .container-fluid {
@@ -117,5 +119,5 @@ button.MuiButtonBase-root:hover {
 }
 
 .darkmode div {
-  color: #d0d0e6;
+  color: #f2f2f2;
 }

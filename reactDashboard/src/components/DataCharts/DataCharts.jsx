@@ -288,7 +288,7 @@ const DataCharts = ({
       );
 
       chartConfiguration.options.tooltips = {
-        
+
         callbacks: {
           label: (tooltipItem, data) => {
             return (

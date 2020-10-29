@@ -34,3 +34,7 @@
 .hidden-chart {
   display: none;
 }
+
+.darkmode .full-width-hr {
+  border: 1px solid #f2f2f2;
+}
