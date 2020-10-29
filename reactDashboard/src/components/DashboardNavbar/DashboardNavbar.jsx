@@ -46,7 +46,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
         icon={faCloudSun}
         className="dark-mode-btn"
         size="2x"
-        color="#f2f2f2"
+        onClick={() => setDarkmode((value) => !value)}
       />
     </Navbar>
   );

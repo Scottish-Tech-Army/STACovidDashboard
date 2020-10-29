@@ -143,7 +143,7 @@ const App = () => {
     setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
   }, [populationMap]);
 
-
+console.log(darkmode);
   return (
     <div className={darkmode ? "App darkmode" : "App"}>
       <Router>
