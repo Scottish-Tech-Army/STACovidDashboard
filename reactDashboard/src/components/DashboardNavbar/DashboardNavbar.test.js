@@ -95,3 +95,26 @@ describe("nav links content and highlighting", () => {
     expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
   });
 });
+
+describe("darkmode button", () => {
+  var storedDarkmode = false;
+  const setDarkmode = (value) => (storedDarkmode = value(storedDarkmode));
+  const darkmodeButton = () => container.querySelector(".dark-mode-btn");
+
+  it("darkmode button", () => {
+    act(() => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <DashboardNavbar setDarkmode={setDarkmode} />
+        </MemoryRouter>,
+        container
+      );
+    });
+    expect(storedDarkmode).toStrictEqual(false);
+
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(true);
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(false);
+  });
+});

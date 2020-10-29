@@ -242,8 +242,7 @@ const GeoHeatMap = ({
     function getRegionColour(count) {
       return heatcolours[getHeatLevel(count)];
     }
-  console.log(darkmode);
-   
+
     const BORDER_COLOUR = "black";
     const DARK_BORDER_COLOUR = "white";
 
@@ -254,9 +253,9 @@ const GeoHeatMap = ({
         count =
           VALUETYPE_DEATHS === valueType ? regionData.deaths : regionData.cases;
       }
-   
+
       return {
-        color: darkmode ?  "white" : "black",
+        color: darkmode ? "white" : "black",
         fillColor: getRegionColour(count),
         opacity: 0.5,
         fillOpacity: 0.5,
