@@ -56,7 +56,7 @@ const InfoBar = () => {
         <div className="icon-container">
           <img
             className="more-info-icon"
-            src="./assets/info_no_bg.png"
+            src="./assets/more_info.png"
             alt="Latest Covid-19 news from Scottish Government"
           />
         </div>

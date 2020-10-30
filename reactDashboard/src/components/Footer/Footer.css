@@ -71,6 +71,11 @@ footer {
   background-color: #121212;
 }
 
-.darkmode header {
-  background-color: #121212;
+footer .third-party-logo {
+  color: black;
+}
+
+.darkmode footer .third-party-logo,
+.darkmode .sta-logo-text {
+  color: #f2f2f2;
 }

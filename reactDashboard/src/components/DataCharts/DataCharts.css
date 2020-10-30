@@ -74,7 +74,7 @@
   position: absolute;
   top: 20px;
   right: 40px;
-  background-color: #ffffff;
+  background-color: inherit;
   font-size: 0.5rem;
   border: 1px solid #6c6c6c;
   border-radius: 10px;
@@ -84,13 +84,12 @@
   color: black;
 }
 
-.sonification-play-button {
-  background-color: inherit;
+.darkmode .sonification-play-button h5 {
+  color: #f2f2f2;
 }
 
-.sonification-play-button {
-  background-color: inherit;
-  border-color: #f2f2f2;
+.darkmode svg:not(:root).svg-inline--fa {
+  color: #f2f2f2;
 }
 
 .sonification-play-button:hover {

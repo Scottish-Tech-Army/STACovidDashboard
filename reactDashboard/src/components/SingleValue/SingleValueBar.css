@@ -25,22 +25,21 @@
   color: #f2f2f2;
 }
 
-.darkmode .single-value {
-  background-color: rgb(56, 56, 56) !important;
-  box-shadow: none;
-}
-
 .single-value-line {
   margin: 0;
 }
 
 .single-value {
-  box-shadow: 10px 10px 5px #aaaaaa;
   padding: 10px 0 0;
   height: 100%;
   background-color: #ffffff;
   color: #133a53;
   position: relative;
+}
+
+.darkmode .single-value {
+  background-color: rgb(56, 56, 56);
+  color: #f2f2f2;
 }
 
 .region-single-value-bar,
@@ -54,7 +53,6 @@
   position: relative;
 }
 .darkmode .region-single-value-bar,
-.darkmode .single-value,
 .darkmode .single-value-bar {
   background-color: #121212;
 }

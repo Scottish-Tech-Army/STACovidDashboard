@@ -33,16 +33,16 @@
   padding-left: 15px;
 }
 
-.accessibility-page {
+.darkmode .about-us,
+.darkmode .accessibility-page,
+.darkmode .data-sources,
+.darkmode .container-fluid {
   background-color: #121212;
+  color: #f2f2f2;
 }
 
 .data-sources {
   padding-bottom: 3vh;
-}
-
-.darkmode .data-sources {
-  background-color: #121212;
 }
 
 .about-us-details,
@@ -56,10 +56,6 @@
 .accessibility-page h1,
 .data-sources h1 {
   padding-top: 2vh;
-}
-
-.darkmode .about-us {
-  background-color: #121212;
 }
 
 .accessibility-page ul {
@@ -111,13 +107,9 @@ button.MuiButtonBase-root {
 button.MuiButtonBase-root:hover {
   box-shadow: none;
   background-color: #f2f2f2;
-  color: rgb(56, 56, 56)
+  color: rgb(56, 56, 56);
 }
 
-.darkmode .container-fluid {
-  background-color: #121212;
-}
-
-.darkmode div {
+/* .darkmode div {
   color: #f2f2f2;
-}
+} */

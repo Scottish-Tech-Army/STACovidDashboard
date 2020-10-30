@@ -6,7 +6,7 @@ const Facts = () => {
     <div className="facts-container">
       <div className="facts-row">
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/wear_face_coverings_no_bg.png" alt="" />
+          <img className="facts-icon" src="./assets/face_covering.png" alt="" />
           <div className="facts-guidance">
             <div>
               Wear a <span className="highlight-facts">F</span>ace covering.
@@ -16,7 +16,7 @@ const Facts = () => {
         <div className="facts-component">
           <img
             className="facts-icon"
-            src="./assets/avoid_crovded_places_no_bg.png"
+            src="./assets/larger_gatherings_alt.png"
             alt=""
           />
           <div className="facts-guidance">
@@ -26,7 +26,7 @@ const Facts = () => {
           </div>
         </div>
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/clean_hands_no_bg.png" alt="" />
+          <img className="facts-icon" src="./assets/washing_hands.png" alt="" />
           <div className="facts-guidance">
             <div>
               <span className="highlight-facts">C</span>lean hands and surfaces
@@ -37,7 +37,7 @@ const Facts = () => {
         <div className="facts-component">
           <img
             className="facts-icon"
-            src="./assets/stay_2_m_apart_no_bg.png"
+            src="./assets/physical_distancing.png"
             alt=""
           />
           <div className="facts-guidance">
@@ -50,7 +50,7 @@ const Facts = () => {
         <div className="facts-component">
           <img
             className="facts-icon"
-            src="./assets/self_isolat_book_test_no_bg.png"
+            src="./assets/public_health_advice.png"
             alt=""
           />
           <div className="facts-guidance">

@@ -25,9 +25,6 @@ const Footer = ({ darkmode }) => {
     );
   }
 
-  const SOCIAL_LOGO = "black";
-  const DARK_SOCIAL_LOGO = "#9cd7ff";
-
   function sitemapExternalLink(href, content) {
     return (
       <div className="entry link">
@@ -101,7 +98,7 @@ const Footer = ({ darkmode }) => {
                   Proudly made by volunteers from
                   <br />
                   <img
-                    src="/STABanner2.png"
+                    src="/STABanner.png"
                     alt="Scottish Tech Army"
                     width="270"
                   />
@@ -150,7 +147,6 @@ const Footer = ({ darkmode }) => {
               <FontAwesomeIcon
                 icon={faLinkedinIn}
                 size="2x"
-                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army LinkedIn account"
               />
@@ -160,7 +156,6 @@ const Footer = ({ darkmode }) => {
               <FontAwesomeIcon
                 icon={faTwitter}
                 size="2x"
-                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army Twitter account"
               />
@@ -170,7 +165,6 @@ const Footer = ({ darkmode }) => {
               <FontAwesomeIcon
                 icon={faInstagram}
                 size="2x"
-                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army Instagram account"
               />

@@ -28,6 +28,7 @@
 
 .darkmode .heatmap table th {
   background-color: rgb(56, 56, 56);
+  color: #f2f2f2;
 }
 
 .heatmap table th .subheading {

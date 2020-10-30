@@ -150,7 +150,7 @@ const App = () => {
         <StopAudio />
 
         <header>
-          <DashboardNavbar darkmode={darkmode} setDarkmode={setDarkmode} />
+          <DashboardNavbar setDarkmode={setDarkmode} />
         </header>
         <Switch>
           <Route exact path={URL_OVERVIEW}>
