@@ -38,7 +38,6 @@
 }
 
 .darkmode .single-value {
-  background-color: rgb(56, 56, 56);
   color: #f2f2f2;
 }
 
@@ -57,7 +56,7 @@
   background-color: #121212;
 }
 
-.darkmode .single-value{
+.darkmode .single-value {
   background-color: #0b0a0a;
 }
 
@@ -71,6 +70,10 @@
 
 .region-single-value-container {
   width: 33%;
+}
+
+.darkmode .single-value {
+  background-color: rgb(56, 56, 56) !important;
 }
 
 .single-value-hr {
