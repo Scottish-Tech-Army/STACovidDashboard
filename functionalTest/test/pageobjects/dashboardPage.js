@@ -64,11 +64,15 @@ class DashboardPage extends Page {
   get heatmapHeatbarValues() {
     return $$(".heatmap tbody tr.area td:nth-child(3)");
   }
-  get heatmapHeatbarLine() {
+  get heatmapHeatbarLineFirstRow() {
     return $$(
-      ".heatmap tbody tr.area td:nth-child(3) .heatbarLine .heatbar line:nth-child(1)"
+      ".heatmap tbody tr.area:nth-child(1) td:nth-child(3) .heatbarLine .heatbar line:nth-child(1)"
     );
-  }
+  // get heatmapHeatbarLine() {
+  //   return $$(
+  //     ".heatmap tbody tr.area td:nth-child(3) .heatbarLine .heatbar line:nth-child(1)"
+  //   );
+  // }
 
   // get heatmapHeatbarFirstEntryFirstLine() {
   //   return $$(
