@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./DashboardNavbar.css";
 import Navbar from "react-bootstrap/Navbar";
@@ -26,11 +26,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   return (
     <Navbar className="dashboard-navbar" expand="sm">
       <Link to={URL_OVERVIEW}>
-        <img
-          id="logo"
-          src="/STALogoSquare.svg"
-          alt="Scottish Tech Army Logo"
-        />
+        <img id="logo" src="/STALogoSquare.svg" alt="Scottish Tech Army Logo" />
       </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="heading-container">

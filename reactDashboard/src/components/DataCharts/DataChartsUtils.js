@@ -18,7 +18,6 @@ const keyDates = [
 ];
 
 function getDateLine( { date, name }, index, darkmode) {
-  console.log(darkmode);
   
   return {
     type: "line",
