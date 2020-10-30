@@ -5,8 +5,14 @@
 }
 
 .darkmode .headline-banner {
-  background-color: #3075ec;
-  color: #c1def1;
+  background-color: rgb(56, 56, 56);
+}
+
+.darkmode .headline-banner h2 {
+  color: #f2f2f2;
+}
+.headline-banner h2 {
+  font-size: 1.5rem;
 }
 
 .headline-banner-highlight {
@@ -14,26 +20,33 @@
   color: #fc8d59;
 }
 
+.darkmode .headline-banner-highlight {
+  color: #f2f2f2;
+}
+
 @media screen and (max-width: 768px) {
   .headline-banner {
     height: auto;
     padding: 3%;
   }
-
   .headline-banner h2 {
     font-size: 1.2rem;
   }
+}
+
+.hr-container {
+  padding: 0;
 }
 
 #link {
   color: #c1def1;
 }
 
+.darkmode #link {
+  color: #f2f2f2;
+}
+
 #link:hover {
   color: #fc8d59;
   cursor: pointer;
-}
-
-h2 {
-  font-size: 1.7rem;
 }

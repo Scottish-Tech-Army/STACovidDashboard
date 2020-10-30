@@ -91,22 +91,6 @@ const Footer = ({ darkmode }) => {
                 "mailto:info@scottishtecharmy.org?subject=Covid-19%20Dashboard%20Feedback",
                 "info@scottishtecharmy.org"
               )}
-              <a
-                href="https://www.scottishtecharmy.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sta-logo-text"
-              >
-                <div className="dedication">
-                  Proudly made by volunteers from
-                  <br />
-                  <img
-                    src="/STABanner.svg"
-                    alt="Scottish Tech Army"
-                    width="270"
-                  />
-                </div>
-              </a>
             </div>
           </Col>
         </Row>

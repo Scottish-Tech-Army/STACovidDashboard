@@ -127,7 +127,8 @@
 }
 
 .darkmode .MuiSlider-track  {
-color: #3075ec;
+color: #225ea8
+;
 }
 
 @media screen and (max-width: 1400px) {

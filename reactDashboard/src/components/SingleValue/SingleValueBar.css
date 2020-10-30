@@ -26,7 +26,7 @@
 }
 
 .darkmode .single-value {
-  background-color: rgb(56, 56, 56) !important;
+  background-color: #737373 !important;
   box-shadow: none;
 }
 
@@ -56,7 +56,7 @@
 .darkmode .region-single-value-bar,
 .darkmode .single-value,
 .darkmode .single-value-bar {
-  background-color: #121212;
+  background-color: #262626;
 }
 
 .darkmode .single-value{

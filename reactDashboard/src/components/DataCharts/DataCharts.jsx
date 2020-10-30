@@ -251,8 +251,8 @@ const DataCharts = ({
       return scaledSeries;
     }
 
-    const REGION_DATASET_COLOUR = "#ec6730";
-    const AVERAGE_DATASET_COLOUR = "#767676";
+    const REGION_DATASET_COLOUR = darkmode ? "f2f2f2" : "#ec6730";
+    const AVERAGE_DATASET_COLOUR = darkmode ? "f2f2f2" : "#767676";
 
     function setChart(
       datasetLabel,

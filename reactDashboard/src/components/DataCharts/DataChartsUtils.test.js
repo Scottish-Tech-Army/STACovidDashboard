@@ -44,7 +44,8 @@ describe("commonChartConfiguration", () => {
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor
-    ).toStrictEqual("#3075ec");
+    ).toStrictEqual("#225ea8
+");
   });
   it("darkmode false", () => {
     const result = commonChartConfiguration(mockData, false);

@@ -60,7 +60,7 @@
 }
 
 .darkmode .card-body {
-  background-color: #121212;
+  background-color: rgb(56, 56, 56);
 }
 
 .darkmode hr {
@@ -68,7 +68,7 @@
 }
 
 .darkmode .accordion-header {
-  background-color: #3075ec;
+  background-color: rgb(56, 56, 56);
 }
 
 .card {

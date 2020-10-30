@@ -6,10 +6,10 @@ import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
-import { faCloudMoon } from "@fortawesome/free-solid-svg-icons";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
 
-const DashboardNavbar = ({ setDarkmode }) => {
+const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
@@ -43,7 +43,7 @@ const DashboardNavbar = ({ setDarkmode }) => {
         </Nav>
       </Navbar.Collapse>
       <FontAwesomeIcon
-        icon={faCloudSun}
+        icon={darkmode ? faSun : faMoon}
         className="dark-mode-btn"
         size="2x"
         onClick={() => setDarkmode((value) => !value)}
