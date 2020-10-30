@@ -28,7 +28,7 @@ const DashboardNavbar = ({ setDarkmode }) => {
       <Link to={URL_OVERVIEW}>
         <img
           id="logo"
-          src="/Square avatar trimmed.svg"
+          src="/STALogoSquare.svg"
           alt="Scottish Tech Army Logo"
         />
       </Link>
