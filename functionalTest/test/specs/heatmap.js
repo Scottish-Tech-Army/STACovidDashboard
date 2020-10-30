@@ -51,23 +51,16 @@ describe("heatmap selection", () => {
     const heatmapHeatbarLineFirstRow = dashboard.heatmapHeatbarLineFirstRow;
     expect(heatmapHeatbarValues).toHaveLength(15);
     // Scotland total: check colour for heatmapHeatbarValues[0] - check number of cases for earliest date from data, determine what colour that should on the scale (function pseudocode at bottom of file), check against colour
-    // checkExpectedColor(Scotland total on first date from data);
-    // expect(heatmapValueTypeValues[0] first <line> colour).toBe(expectedColour);
-    // let lineColor = getCSSProperty("stroke");
-    console.log(heatmapHeatbarLineFirstRow[0].getCSSProperty("stroke"));
 
     // FIRST ROW - NUMBER OF CASES
-
-    // FIRST ROW - COLOR SHOWN FOR THAT NUMBER
-    let expectedColor = "#ffffb2";
-
-    // FIRST ROW - COLOR OF FIRST LINE IN BAR
-    let renderedColor = heatmapHeatbarLineFirstRow[0].getCSSProperty("stroke")
-      .parsed.hex;
+    let earliestDateCases;
+    // TODO: create function to pull number of cases from data
+    earliestDateCases = 1;
 
     // FIRST ROW - expect(COLOR OF FIRST LINE IN BAR).toBe(COLOR SHOWN FOR THAT NUMBER)
-    expect(renderedColor).toBe(expectedColor);
-    // expect(heatmapHeatbarLine[0].lineColor).toBe();
+    expect(renderedColor(heatmapHeatbarLineFirstRow[0])).toBe(
+      expectedColor(earliestDateCases)
+    );
 
     // Scotland total: check colour for heatmapHeatbarValues[0] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
     // First row: check colour for heatmapHeatbarValues[1] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
@@ -160,23 +153,26 @@ function checkValueWithin(value, lower, upper) {
   expect(value).toBeLessThanOrEqual(upper);
 }
 
-// Colours:
-// >=0 = #e0e0e0;
-// >=1 = #ffffb2;
-// >=2 = #fed976;
-// >=5 = #feb24c;
-// >=10 = #fd8d3c;
-// >=20 = #f03b20;
-// >=50 = #bd0026;
-// >=100 = #020202;
+function renderedColor(element) {
+  return element.getCSSProperty("stroke").parsed.hex;
+}
 
-// function checkExpectedColor(casesValue) {
-//   if 0, expectedColour = #e0e0e0;
-//   if 1, expectedColour = #ffffb2;
-//   if 2, expectedColour = #fed976;
-//   if 3-5, expectedColour = #feb24c;
-//   if 6-10, expectedColour = #fd8d3c;
-//   if 11-20, expectedColour = #f03b20;
-//   if 21-50, expectedColour = #bd0026;
-//   if >=100, expectedColour = #020202;
-// }
+function expectedColor(cases) {
+  if (cases === 0) {
+    return "#e0e0e0";
+  } else if (cases === 1) {
+    return "#ffffb2";
+  } else if (cases >= 2 && cases <= 4) {
+    return "#fed976";
+  } else if (cases >= 5 && cases <= 9) {
+    return "#feb24c";
+  } else if (cases >= 10 && cases <= 19) {
+    return "#fd8d3c";
+  } else if (cases >= 20 && cases <= 49) {
+    return "#f03b20";
+  } else if (cases >= 50 && cases <= 99) {
+    return "#bd0026";
+  } else if (cases >= 100) {
+    return "#020202";
+  }
+}
