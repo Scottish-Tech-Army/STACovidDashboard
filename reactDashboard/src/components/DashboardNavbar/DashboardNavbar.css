@@ -16,6 +16,10 @@
   flex-grow: 1;
 }
 
+.darkmode .navbar-toggler {
+  background-color: rgb(56, 56, 56);
+}
+
 .dashboard-navbar .heading-container.collapse:not(.show) {
   display: none;
 }
@@ -95,11 +99,6 @@
   .nav-link {
     border-left: none;
   }
-}
-
-.darkmode {
-  background-color: #121212;
-  color: black;
 }
 
 .dark-mode-btn {

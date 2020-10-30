@@ -101,7 +101,7 @@ const Footer = ({ darkmode }) => {
                   Proudly made by volunteers from
                   <br />
                   <img
-                    src="/STABanner.svg"
+                    src="/STABanner2.png"
                     alt="Scottish Tech Army"
                     width="270"
                   />
