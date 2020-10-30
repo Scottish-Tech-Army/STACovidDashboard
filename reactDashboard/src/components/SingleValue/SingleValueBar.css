@@ -64,7 +64,7 @@
 }
 
 .darkmode .single-value-hr {
-  border: inherit;
+  border: 1px solid #262626;
 }
 
 .single-value-container {

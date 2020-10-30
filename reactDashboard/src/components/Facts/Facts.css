@@ -9,7 +9,7 @@
 }
 
 .darkmode .facts-container {
-  background-color: #121212;
+  background-color: #262626;
 }
 
 .facts-row {
@@ -30,7 +30,7 @@
 }
 
 .darkmode .facts-component {
-  background-color: rgb(56, 56, 56);
+  background-color: #737373;
   box-shadow: none;
 }
 
