@@ -40,7 +40,7 @@ describe("commonChartConfiguration", () => {
       "#121212"
     );
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "#f2f2f2"
+      "#3075ec80"
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor
@@ -52,7 +52,7 @@ describe("commonChartConfiguration", () => {
       "#767676"
     );
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "rgba(0,0,0,0.25)"
+      "#3075ec80"
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor
