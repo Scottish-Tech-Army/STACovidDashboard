@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 import { faCloudMoon } from "@fortawesome/free-solid-svg-icons";
 
-const DashboardNavbar = ({ setDarkmode }) => {
+const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
@@ -43,7 +43,7 @@ const DashboardNavbar = ({ setDarkmode }) => {
         </Nav>
       </Navbar.Collapse>
       <FontAwesomeIcon
-        icon={faCloudSun}
+        icon={darkmode ? faCloudSun : faCloudMoon}
         className="dark-mode-btn"
         size="2x"
         onClick={() => setDarkmode((value) => !value)}
