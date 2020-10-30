@@ -18,12 +18,14 @@ const keyDates = [
 ];
 
 function getDateLine( { date, name }, index, darkmode) {
+  console.log(darkmode);
+  
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
     scaleID: "x-axis-0",
-    borderColor: darkmode ? "#f2f2f2" : "rgba(0,0,0,0.25)",
+    borderColor: "#3075ec80",
     borderWidth: 2,
     value: date,
     label: {
