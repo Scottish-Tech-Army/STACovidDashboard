@@ -109,3 +109,10 @@ button.MuiButtonBase-root:hover {
   background-color: #f2f2f2;
   color: rgb(56, 56, 56);
 }
+
+.darkmode {
+  transition-property: all;
+  transition-duration: 2s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 1s;
+}
