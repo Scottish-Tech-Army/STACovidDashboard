@@ -255,7 +255,7 @@ const GeoHeatMap = ({
       }
 
       return {
-        color: darkmode ? "white" : "black",
+        color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
         fillColor: getRegionColour(count),
         opacity: 0.5,
         fillOpacity: 0.5,
@@ -277,6 +277,7 @@ const GeoHeatMap = ({
     currentBoundariesLayer,
     currentHeatLevels,
     current7DayDataset,
+    darkmode,
   ]);
 
   // Create legend

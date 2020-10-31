@@ -20,9 +20,9 @@
   color: #fc8d59;
 }
 
-.darkmode .headline-banner-highlight {
+/* .darkmode .headline-banner-highlight {
   color: #f2f2f2;
-}
+} */
 
 @media screen and (max-width: 768px) {
   .headline-banner {
@@ -42,9 +42,9 @@
   color: #c1def1;
 }
 
-.darkmode #link {
+/* .darkmode #link {
   color: #f2f2f2;
-}
+} */
 
 #link:hover {
   color: #fc8d59;

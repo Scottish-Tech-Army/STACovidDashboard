@@ -6,7 +6,6 @@ import {
   Map as LeafletMap,
   TileLayer,
   ZoomControl,
-  ColorFilter,
 } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
