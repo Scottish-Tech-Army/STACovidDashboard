@@ -4,14 +4,16 @@ import dashboard from "../pageobjects/dashboardPage";
 // subheading (date range) will be updated with new data coming in
 
 describe("heatmap selection", () => {
-  xit("default view", () => {
+  it("default view", () => {
     dashboard.open();
 
     checkHeatmapHealthBoardsBoundaries();
     checkHeatmapHealthBoardsCasesValues();
+    checkHeatmapHealthBoardsCasesHeatbar();
+    expect(dashboard.heatmapHeatbarValues).toHaveLength(15);
   });
 
-  xit("council areas cases", () => {
+  it("council areas cases", () => {
     dashboard.open();
     dashboard.selectDeathsButton.click();
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
@@ -32,6 +34,30 @@ describe("heatmap selection", () => {
     expect(heatmapValueTypeValues[0]).toHaveText("");
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 500, 10000);
+
+    checkScotlandCasesHeatbar();
+
+    // City of Edinburgh heatbar
+    const expectedValues1 = [
+      { l: 0, w: 5 },
+      { l: 1, w: 3 },
+      { l: 2, w: 2 },
+      { l: 1, w: 2 },
+      { l: 2, w: 1 },
+    ];
+
+    checkHeatbarValues(5, expectedValues1);
+
+    // Orkney Islands
+    const expectedValues2 = [
+      { l: 0, w: 29 },
+      { l: 1, w: 2 },
+      { l: 0, w: 1 },
+      { l: 1, w: 1 },
+      { l: 0, w: 1 },
+    ];
+
+    checkHeatbarValues(23, expectedValues2);
   });
 
   it("health boards cases", () => {
@@ -46,30 +72,11 @@ describe("heatmap selection", () => {
 
     checkHeatmapHealthBoardsBoundaries();
     checkHeatmapHealthBoardsCasesValues();
-
-    const heatmapHeatbarValues = dashboard.heatmapHeatbarValues;
-    const heatmapHeatbarLineFirstRow = dashboard.heatmapHeatbarLineFirstRow;
-    expect(heatmapHeatbarValues).toHaveLength(15);
-    // Scotland total: check colour for heatmapHeatbarValues[0] - check number of cases for earliest date from data, determine what colour that should on the scale (function pseudocode at bottom of file), check against colour
-
-    // FIRST ROW - NUMBER OF CASES
-    let earliestDateCases;
-    // TODO: create function to pull number of cases from data
-    earliestDateCases = 1;
-
-    // FIRST ROW - expect(COLOR OF FIRST LINE IN BAR).toBe(COLOR SHOWN FOR THAT NUMBER)
-    expect(renderedColor(heatmapHeatbarLineFirstRow[0])).toBe(
-      expectedColor(earliestDateCases)
-    );
-
-    // Scotland total: check colour for heatmapHeatbarValues[0] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
-    // First row: check colour for heatmapHeatbarValues[1] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
-    // Last row: check colour for heatmapHeatbarValues[1] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
-    // First row: checkColour for heatmapHeatbarValues[15] first <line> - check number of cases for earliest date on data, determine what colour that should on the scale, check against colour of first <line> on bar
-    // Last row: checkColour for heatmapHeatbarValues[15] last <line> - check number of cases for latest date from data, determine what colour that should on the scale, check against colour of last <line> on bar
+    checkHeatmapHealthBoardsCasesHeatbar();
+    expect(dashboard.heatmapHeatbarValues).toHaveLength(15);
   });
 
-  xit("health boards deaths", () => {
+  it("health boards deaths", () => {
     dashboard.open();
     dashboard.selectCouncilAreasButton.click();
     expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
@@ -90,9 +97,33 @@ describe("heatmap selection", () => {
     expect(heatmapValueTypeValues[0]).toHaveText("");
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 0, 50);
+
+    checkScotlandDeathsHeatbar();
+
+    // Greater Glasgow & Clyde heatbar
+    const expectedValues2 = [
+      { l: 0, w: 15 },
+      { l: 2, w: 1 },
+      { l: 0, w: 4 },
+      { l: 1, w: 1 },
+      { l: 2, w: 1 },
+    ];
+
+    checkHeatbarValues(7, expectedValues2);
+
+    // Shetland heatbar
+    const expectedValues3 = [
+      { l: 0, w: 34 },
+      { l: 1, w: 1 },
+      { l: 0, w: 3 },
+      { l: 2, w: 1 },
+      { l: 0, w: 2 },
+    ];
+
+    checkHeatbarValues(12, expectedValues3);
   });
 
-  xit("council areas deaths", () => {
+  it("council areas deaths", () => {
     dashboard.open();
 
     dashboard.selectCouncilAreasButton.click();
@@ -111,6 +142,30 @@ describe("heatmap selection", () => {
     expect(heatmapValueTypeValues[0]).toHaveText("");
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
     checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 50, 500);
+
+    checkScotlandDeathsHeatbar();
+
+    // City of Edinburgh heatbar
+    const expectedValues1 = [
+      { l: 0, w: 13 },
+      { l: 1, w: 1 },
+      { l: 0, w: 8 },
+      { l: 1, w: 1 },
+      { l: 0, w: 3 },
+    ];
+
+    checkHeatbarValues(5, expectedValues1);
+
+    // Perth & Kinross
+    const expectedValues2 = [
+      { l: 0, w: 27 },
+      { l: 1, w: 1 },
+      { l: 0, w: 3 },
+      { l: 1, w: 2 },
+      { l: 0, w: 1 },
+    ];
+
+    checkHeatbarValues(24, expectedValues2);
   });
 
   function checkHeatmapHealthBoardsBoundaries() {
@@ -146,33 +201,75 @@ describe("heatmap selection", () => {
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 50, 1000);
   }
+
+  function checkHeatmapHealthBoardsCasesHeatbar() {
+    checkScotlandCasesHeatbar();
+
+    // Greater Glasgow & Clyde heatbar
+    const expectedValues2 = [
+      { l: 0, w: 4 },
+      { l: 1, w: 1 },
+      { l: 0, w: 1 },
+      { l: 1, w: 2 },
+      { l: 0, w: 2 },
+    ];
+
+    checkHeatbarValues(7, expectedValues2);
+
+    // Western Isles heatbar
+    const expectedValues3 = [
+      { l: 0, w: 27 },
+      { l: 1, w: 1 },
+      { l: 0, w: 2 },
+      { l: 1, w: 2 },
+      { l: 0, w: 2 },
+    ];
+
+    checkHeatbarValues(14, expectedValues3);
+  }
+
+  function checkScotlandCasesHeatbar() {
+    const expectedValues = [
+      { l: 1, w: 1 },
+      { l: 0, w: 1 },
+      { l: 2, w: 1 },
+      { l: 1, w: 1 },
+      { l: 2, w: 1 },
+    ];
+
+    checkHeatbarValues(0, expectedValues);
+  }
+
+  function checkScotlandDeathsHeatbar() {
+    const expectedValues = [
+      { l: 0, w: 13 },
+      { l: 1, w: 1 },
+      { l: 0, w: 1 },
+      { l: 2, w: 1 },
+      { l: 0, w: 1 },
+    ];
+
+    checkHeatbarValues(0, expectedValues);
+  }
+
+  function checkHeatbarValues(rowIndex, expectedValues) {
+    const strokes = dashboard.heatbarLines(rowIndex);
+    expectedValues.forEach((element, i) => {
+      expect(strokes[i]).toHaveElementClass("l-" + element.l);
+    });
+
+    const calculatedDayWidth =
+      Number(strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
+    expectedValues.forEach((element, i) => {
+      expect(Number(strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
+        calculatedDayWidth * expectedValues[i].w,
+        4
+      );
+    });
+  }
 });
 
 function checkValueWithin(value, lower, upper) {
   expect(value).toBeGreaterThanOrEqual(lower);
   expect(value).toBeLessThanOrEqual(upper);
-}
-
-function renderedColor(element) {
-  return element.getCSSProperty("stroke").parsed.hex;
-}
-
-function expectedColor(cases) {
-  if (cases === 0) {
-    return "#e0e0e0";
-  } else if (cases === 1) {
-    return "#ffffb2";
-  } else if (cases >= 2 && cases <= 4) {
-    return "#fed976";
-  } else if (cases >= 5 && cases <= 9) {
-    return "#feb24c";
-  } else if (cases >= 10 && cases <= 19) {
-    return "#fd8d3c";
-  } else if (cases >= 20 && cases <= 49) {
-    return "#f03b20";
-  } else if (cases >= 50 && cases <= 99) {
-    return "#bd0026";
-  } else if (cases >= 100) {
-    return "#020202";
-  }
 }

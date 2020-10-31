@@ -64,22 +64,9 @@ class DashboardPage extends Page {
   get heatmapHeatbarValues() {
     return $$(".heatmap tbody tr.area td:nth-child(3)");
   }
-  get heatmapHeatbarLineFirstRow() {
-    return $$(
-      ".heatmap tbody tr.area:nth-child(1) td:nth-child(3) .heatbarLine .heatbar line:nth-child(1)"
-    );
+  heatbarLines(rowIndex) {
+    return this.heatmapHeatbarValues[rowIndex].$(".heatbar").$$("line");
   }
-  // get heatmapHeatbarLine() {
-  //   return $$(
-  //     ".heatmap tbody tr.area td:nth-child(3) .heatbarLine .heatbar line:nth-child(1)"
-  //   );
-  // }
-
-  // get heatmapHeatbarFirstEntryFirstLine() {
-  //   return $$(
-  //     ".heatmap tbody tr.area:nth-child(1) td.heatbarCell .heatbarLine svg:nth-child(1)"
-  //   );
-  // }
 
   /**
    * open base URL
