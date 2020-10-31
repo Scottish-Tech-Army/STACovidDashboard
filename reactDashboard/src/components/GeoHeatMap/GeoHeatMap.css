@@ -100,3 +100,7 @@ div.leaflet-popup-content-wrapper {
   background: #0b0a0a;
   color: #f2f2f2;
 }
+
+legend {
+  color: #c1def1;
+}

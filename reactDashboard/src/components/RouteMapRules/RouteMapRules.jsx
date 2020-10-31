@@ -47,7 +47,7 @@ const RouteMapRules = () => {
                 <span className="headline-banner-highlight">
                   Regional Restrictions
                 </span>{" "}
-                to help fight the pandemic. See the{" "}
+                in place to help fight the pandemic. See the{" "}
                 {createLink(
                   "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
                   "latest Scottish Government guidance"

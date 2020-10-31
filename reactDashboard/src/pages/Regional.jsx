@@ -117,7 +117,7 @@ const Regional = ({
           </Col>
           <Col xs={12} lg={8}>
             <hr className="d-flex d-md-none full-width-hr" />
-            <strong>Select region (or select on map):</strong>
+            <strong className="region-selector-label">Select region (or select on map):</strong>
 
             <RegionDropdown
               regionCode={regionCode}

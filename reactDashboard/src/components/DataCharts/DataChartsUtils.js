@@ -99,7 +99,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
           {
             id: "y-axis-0",
             gridLines: {
-              color: darkmode ? "#121212" : "#767676",
+              color: darkmode ? "#121212" : "#cccccc",
             },
             ticks: {
               beginAtZero: true,
