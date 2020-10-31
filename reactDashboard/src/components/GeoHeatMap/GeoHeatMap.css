@@ -57,9 +57,15 @@ div.leaflet-popup-content-wrapper {
 .legend {
   line-height: 18px;
   color: #555;
-  background: rgb(56, 56, 56);
+  background: #ffffff;
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
+}
+.darkmode .legend {
+  background-color: rgb(56,56,56);
+  color: #f2f2f2;
+  border: 1px solid #b3b3b3;
+  border-radius: 10px;
 }
 .legend .legend-title {
   font-weight: bold;

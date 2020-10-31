@@ -5,7 +5,7 @@
 }
 
 .darkmode .underHeatmapSelector {
-  border: 1px solid #f2f2f2;
+  border: 1px solid #cccccc;
 }
 
 .full-width-hr {
@@ -15,17 +15,13 @@
 }
 
 .full-screen {
-  background-color: White;
+  background-color: #ffffff;
 }
 
 .link {
   color: #3c3c3b;
   font-weight: bold;
   text-decoration: none;
-}
-
-.darkmode .link {
-  color: #f2f2f2;
 }
 
 .about-us,
@@ -122,6 +118,17 @@ button.MuiButtonBase-root:hover {
   background-color: #121212;
 }
 
-.darkmode div {
-  color: #f2f2f2;
+.heatmaps-row {
+  background-color: #f2f2f2;
+  padding: 20px 10px;
+  margin: 0;
+}
+
+.darkmode .heatmaps-row {
+  background-color: #262626;
+}
+
+.darkmode header {
+  background-color: #121212;
+  padding-top: 10px;
 }
