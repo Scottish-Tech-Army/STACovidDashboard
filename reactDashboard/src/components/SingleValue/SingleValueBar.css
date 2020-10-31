@@ -26,7 +26,7 @@
 }
 
 .darkmode .single-value {
-  background-color: #737373 !important;
+  background-color: #737373;
   box-shadow: none;
 }
 
@@ -54,13 +54,8 @@
   position: relative;
 }
 .darkmode .region-single-value-bar,
-.darkmode .single-value,
 .darkmode .single-value-bar {
   background-color: #262626;
-}
-
-.darkmode .single-value{
-  background-color: #0b0a0a;
 }
 
 .darkmode .single-value-hr {
