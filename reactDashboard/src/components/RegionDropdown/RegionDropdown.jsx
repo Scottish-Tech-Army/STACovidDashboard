@@ -4,15 +4,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
   FEATURE_CODE_SCOTLAND,
-  FEATURE_CODE_MAP,
   FEATURE_CODE_HEALTH_BOARDS,
   FEATURE_CODE_COUNCIL_AREAS,
   getPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
 import "../../common.css";
 
-const RegionDropdown = ({ regionCode = FEATURE_CODE_SCOTLAND, setRegionCode }) => {
-  if (regionCode === undefined || FEATURE_CODE_MAP[regionCode] === undefined) {
+const RegionDropdown = ({
+  regionCode = FEATURE_CODE_SCOTLAND,
+  setRegionCode,
+  showCouncilAreas = true,
+}) => {
+  function isValidRegionCode(regionCode) {
+    return (
+      regionCode !== null &&
+      (FEATURE_CODE_SCOTLAND === regionCode ||
+        FEATURE_CODE_HEALTH_BOARDS.includes(regionCode) ||
+        (showCouncilAreas && FEATURE_CODE_COUNCIL_AREAS.includes(regionCode)))
+    );
+  }
+
+  if (!isValidRegionCode(regionCode)) {
     throw new Error("Unrecognised regionCode: " + regionCode);
   }
   if (setRegionCode === null || setRegionCode === undefined) {
@@ -40,13 +52,19 @@ const RegionDropdown = ({ regionCode = FEATURE_CODE_SCOTLAND, setRegionCode }) =
             {getPlaceNameByFeatureCode(featureCode)}
           </Dropdown.Item>
         ))}
-        <Dropdown.Divider />
-        <Dropdown.Header>Council Areas</Dropdown.Header>
-        {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
-          <Dropdown.Item key={featureCode} eventKey={featureCode}>
-            {getPlaceNameByFeatureCode(featureCode)}
-          </Dropdown.Item>
-        ))}
+        {showCouncilAreas ? (
+          <>
+            <Dropdown.Divider />
+            <Dropdown.Header>Council Areas</Dropdown.Header>
+            {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
+              <Dropdown.Item key={featureCode} eventKey={featureCode}>
+                {getPlaceNameByFeatureCode(featureCode)}
+              </Dropdown.Item>
+            ))}
+          </>
+        ) : (
+          <></>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );

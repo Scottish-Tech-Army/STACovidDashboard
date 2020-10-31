@@ -125,6 +125,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         position: "bottom",
         labels: {
           boxWidth: 20,
+          fontSize: 14,
         },
       },
       tooltips: {

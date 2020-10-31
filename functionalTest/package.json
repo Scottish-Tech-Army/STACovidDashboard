@@ -21,5 +21,8 @@
     "@wdio/sync": "^6.4.7",
     "chromedriver": "^86.0.0",
     "wdio-chromedriver-service": "^6.0.4"
+  },
+  "dependencies": {
+    "moment": "^2.29.1"
   }
 }

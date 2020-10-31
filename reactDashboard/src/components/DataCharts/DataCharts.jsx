@@ -31,28 +31,6 @@ import { stopAudio } from "../Utils/Sonification";
 import "chartjs-plugin-annotation";
 
 // Exported for tests
-export function getPopulationMap(placeDateValuesResult) {
-  const { dates, placeDateValuesMap } = placeDateValuesResult;
-
-  const populationMap = new Map();
-  const finalDate = dates[dates.length - 1];
-
-  const places = [...placeDateValuesMap.keys()];
-  places.forEach((place) => {
-    const dateValuesMap = placeDateValuesMap.get(place);
-    const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
-    if (crudeRatePositive === 0) {
-      populationMap.set(place, 0);
-    } else {
-      const population = 100000 * (cumulativeCases / crudeRatePositive);
-      populationMap.set(place, population);
-    }
-  });
-
-  return populationMap;
-}
-
-// Exported for tests
 export function parseNhsCsvData(csvData) {
   const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
@@ -137,31 +115,13 @@ export function parseNhsCsvData(csvData) {
     regionTotalDeathsMap.set(place, totalDeathsPoints);
   });
 
-  const populationMap = getPopulationMap({ dates, placeDateValuesMap });
-
   return {
     regionPercentageCasesMap: regionPercentageCasesMap,
     regionDailyCasesMap: regionDailyCasesMap,
     regionDailyDeathsMap: regionDailyDeathsMap,
     regionTotalCasesMap: regionTotalCasesMap,
     regionTotalDeathsMap: regionTotalDeathsMap,
-    populationMap: populationMap,
   };
-}
-
-// Exported for tests
-export function calculatePopulationProportionMap(populationMap) {
-  const result = new Map();
-
-  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
-  if (scotlandPopulation !== undefined) {
-    const places = [...populationMap.keys()];
-    places.forEach((place) => {
-      const population = populationMap.get(place);
-      result.set(place, population / scotlandPopulation);
-    });
-  }
-  return result;
 }
 
 const DataCharts = ({
@@ -169,6 +129,7 @@ const DataCharts = ({
   councilAreaDataset = null,
   regionCode = FEATURE_CODE_SCOTLAND,
   showPercentageTests = true,
+  populationProportionMap = new Map()
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -181,10 +142,6 @@ const DataCharts = ({
   const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(new Map());
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
-  const [populationMap, setPopulationMap] = useState(new Map());
-  const [populationProportionMap, setPopulationProportionMap] = useState(
-    new Map()
-  );
   const [chartType, setChartType] = useState(DAILY_CASES);
   const [dateRange, setDateRange] = useState({
     startDate: 0,
@@ -215,7 +172,6 @@ const DataCharts = ({
         regionDailyDeathsMap,
         regionTotalCasesMap,
         regionTotalDeathsMap,
-        populationMap,
       } = parseNhsCsvData(healthBoardDataset);
 
       setPercentageCasesSeriesData(
@@ -233,9 +189,6 @@ const DataCharts = ({
       setTotalDeathsSeriesData(
         (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
       );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
-      );
     }
   }, [healthBoardDataset]);
 
@@ -247,7 +200,6 @@ const DataCharts = ({
         regionDailyDeathsMap,
         regionTotalCasesMap,
         regionTotalDeathsMap,
-        populationMap,
       } = parseNhsCsvData(councilAreaDataset);
 
       setPercentageCasesSeriesData(
@@ -265,15 +217,8 @@ const DataCharts = ({
       setTotalDeathsSeriesData(
         (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
       );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
-      );
     }
   }, [councilAreaDataset]);
-
-  useEffect(() => {
-    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
-  }, [populationMap]);
 
   useEffect(() => {
     if (healthBoardDataset != null) {
@@ -306,7 +251,7 @@ const DataCharts = ({
     }
 
     const REGION_DATASET_COLOUR = "#ec6730";
-    const AVERAGE_DATASET_COLOUR = "blue";
+    const AVERAGE_DATASET_COLOUR = "#767676";
 
     function setChart(
       datasetLabel,
@@ -328,7 +273,7 @@ const DataCharts = ({
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
           datasets.push(
             datasetConfiguration(
-              datasetLabel + " (Scotland average adjusted for population)",
+              "Scotland average (adjusted for population)",
               getAverageSeriesData(seriesData, regionCode),
               AVERAGE_DATASET_COLOUR
             )

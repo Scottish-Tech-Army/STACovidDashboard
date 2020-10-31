@@ -15,7 +15,13 @@ import {
 } from "./pages/PageConsts";
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
-import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
+import {
+  readCsvData,
+  fetchAndStore,
+  calculatePopulationProportionMap,
+  getPopulationMap,
+  createPlaceDateValuesMap,
+} from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 import {
@@ -64,6 +70,10 @@ const App = () => {
     currentTotalsCouncilAreaDataset,
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
+  const [populationMap, setPopulationMap] = useState(new Map());
+  const [populationProportionMap, setPopulationProportionMap] = useState(
+    new Map()
+  );
 
   // Load and parse datasets
   useEffect(() => {
@@ -106,6 +116,32 @@ const App = () => {
     }
   }, [currentTotalsHealthBoardDataset]);
 
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const populationMap = getPopulationMap(
+        createPlaceDateValuesMap(healthBoardDataset)
+      );
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
+      );
+    }
+  }, [healthBoardDataset]);
+
+  useEffect(() => {
+    if (councilAreaDataset != null) {
+      const populationMap = getPopulationMap(
+        createPlaceDateValuesMap(councilAreaDataset)
+      );
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
+      );
+    }
+  }, [councilAreaDataset]);
+
+  useEffect(() => {
+    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
+  }, [populationMap]);
+
   return (
     <div className="App">
       <Router>
@@ -122,6 +158,7 @@ const App = () => {
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+              populationProportionMap={populationProportionMap}
             />
           </Route>
           <Route path={URL_REGIONAL}>
@@ -130,6 +167,7 @@ const App = () => {
               healthBoardDataset={healthBoardDataset}
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
+              populationProportionMap={populationProportionMap}
             />
           </Route>
           <Route path={URL_ACCESSIBILITY}>
@@ -141,7 +179,7 @@ const App = () => {
           <Route path={URL_ABOUT_US}>
             <AboutUs />
           </Route>
-          <Route path="*">{() =>  <Redirect to="/" />}</Route>
+          <Route path="*">{() => <Redirect to="/" />}</Route>
         </Switch>
         <Footer />
       </Router>
