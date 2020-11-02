@@ -4,6 +4,10 @@
   margin-bottom: 8px;
 }
 
+.darkmode .underHeatmapSelector {
+  border: 1px solid #cccccc;
+}
+
 .full-width-hr {
   border: 1px solid #2a84bb;
   margin: 10px 0;
@@ -11,17 +15,13 @@
 }
 
 .full-screen {
-  background-color: White;
+  background-color: #ffffff;
 }
 
 .link {
   color: #3c3c3b;
   font-weight: bold;
   text-decoration: none;
-}
-
-.darkmode .link {
-  color: #f2f2f2;
 }
 
 .about-us,
@@ -33,16 +33,16 @@
   padding-left: 15px;
 }
 
-.darkmode .about-us,
-.darkmode .accessibility-page,
-.darkmode .data-sources,
-.darkmode .container-fluid {
+.accessibility-page {
   background-color: #121212;
-  color: #f2f2f2;
 }
 
 .data-sources {
   padding-bottom: 3vh;
+}
+
+.darkmode .data-sources {
+  background-color: #121212;
 }
 
 .about-us-details,
@@ -56,6 +56,10 @@
 .accessibility-page h1,
 .data-sources h1 {
   padding-top: 2vh;
+}
+
+.darkmode .about-us {
+  background-color: #121212;
 }
 
 .accessibility-page ul {
@@ -107,12 +111,28 @@ button.MuiButtonBase-root {
 button.MuiButtonBase-root:hover {
   box-shadow: none;
   background-color: #f2f2f2;
-  color: rgb(56, 56, 56);
+  color: rgb(56, 56, 56)
 }
 
-.darkmode {
-  transition-property: all;
-  transition-duration: 2s;
-  transition-timing-function: ease-in-out;
-  transition-delay: 1s;
+.darkmode .container-fluid {
+  background-color: #121212;
+}
+
+.heatmaps-row {
+  background-color: #f2f2f2;
+  padding: 20px 10px;
+  margin: 0;
+}
+
+.darkmode .heatmaps-row {
+  background-color: #262626;
+}
+
+.darkmode header {
+  background-color: #121212;
+  padding-top: 10px;
+}
+
+.darkmode .region-selector-label {
+  color: #c1def1;
 }

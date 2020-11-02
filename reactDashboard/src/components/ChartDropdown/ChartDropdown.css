@@ -41,14 +41,16 @@
 }
 
 .darkmode .selected-chart:hover {
-  background-color: #3075ec;
-  border-color: #3075ec;
+  background-color: rgb(56, 56, 56);
+
+  border-color: rgb(56, 56, 56);
+
   color: #ffffff;
 }
 
 .darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
-  background-color: #3075ec;
-  border-color: #3075ec;
+  background-color: #ec6730;
+  border-color: #ec6730;
   color: #ffffff;
 }
 

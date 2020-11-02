@@ -5,7 +5,7 @@
 }
 
 .darkmode .subtitle {
-  color: #f2f2f2;
+  color: #b3b3b3;
 }
 
 .single-value-heading {
@@ -25,11 +25,17 @@
   color: #f2f2f2;
 }
 
+.darkmode .single-value {
+  background-color: rgb(56,56,56);
+  box-shadow: none;
+}
+
 .single-value-line {
   margin: 0;
 }
 
 .single-value {
+  box-shadow: 10px 10px 5px #aaaaaa;
   padding: 10px 0 0;
   height: 100%;
   background-color: #ffffff;
@@ -38,7 +44,7 @@
 }
 
 .darkmode .single-value {
-  color: #f2f2f2;
+  color: #c1def1;
 }
 
 .region-single-value-bar,
@@ -56,12 +62,8 @@
   background-color: #121212;
 }
 
-.darkmode .single-value {
-  background-color: #0b0a0a;
-}
-
 .darkmode .single-value-hr {
-  border: inherit;
+  border: 1px solid #262626;
 }
 
 .single-value-container {
@@ -70,10 +72,6 @@
 
 .region-single-value-container {
   width: 33%;
-}
-
-.darkmode .single-value {
-  background-color: rgb(56, 56, 56) !important;
 }
 
 .single-value-hr {

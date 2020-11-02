@@ -3,14 +3,11 @@
   max-height: 600px;
   height: 100%;
   background-color: #ffffff;
+  box-shadow: 10px 10px 5px #aaaaaa;
 }
 
-.darkmode .heatmap {
-  background-color: #121212;
-}
-
-.heatmap table {
-  overflow-y: auto;
+.heatmap-container {
+  padding-bottom: 15px;
 }
 
 .heatmap table th {
@@ -18,17 +15,32 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: white;
+  background-color: #ffffff;
   color: #133a53;
+  padding: 10px 20px 0;
+}
+
+.darkmode .table thead th {
+  border-bottom: none;
+  color: #f2f2f2;
+}
+
+.darkmode .table td, .table th {
+  border-top: none;
 }
 
 .darkmode .heatmap {
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(56,56,56);
+  box-shadow: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .darkmode .heatmap table th {
-  background-color: rgb(56, 56, 56);
-  color: #f2f2f2;
+  background-color: rgb(56,56,56);
+  padding: 0 20px;
 }
 
 .heatmap table th .subheading {
@@ -37,16 +49,18 @@
 
 .heatmap table tr.area td {
   border: 0;
-  padding: 0;
+  padding: 0 20px;
   vertical-align: middle;
 }
 
 .darkmode .area {
   color: #f2f2f2;
+  background-color: rgb(56,56,56);
+  border-top: 1px solid #020202;
 }
 
-.heatmap table tr.area:first-child td {
-  padding-bottom: 10px;
+.area {
+  border-top: 1px solid #f2f2f2;
 }
 
 .heatmap .l-0 {
@@ -95,36 +109,56 @@
 .heatmapScale .l-6 {
   background-color: #bd0026;
 }
+
+.darkmode .heatmapScale .l-0,
+.darkmode .heatmapScale .l-1,
+.darkmode .heatmapScale .l-2,
+.darkmode .heatmapScale .l-3 {
+  color: #020202;
+}
+
 .heatmapScale .l-7 {
   background-color: #020202;
-  color: white;
+  color: #ffffff;
 }
 
 .heatmapScale {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 10px;
+  border: 1px solid darkgrey;
 }
-.heatmapScale span {
-  padding: 5px 10px;
+
+.heatmapScale .row {
+  flex-wrap: nowrap;
 }
-.heatmapScale span.smallscale {
+
+.darkmode .heatmapScale {
+  border: 1px solid #f2f2f2;
+  background-color: #f2f2f2;
+}
+
+.heatmapScale .col {
+  padding: 2px 15px;
+}
+.heatmapScale .col.smallscale {
   display: none;
 }
 @media all and (max-width: 810px) {
-  .heatmapScale span.smallscale {
+  .heatmapScale .col.smallscale {
     display: inline;
   }
-  .heatmapScale span.largescale {
+  .heatmapScale .col.largescale {
     display: none;
   }
 }
 
 .darkmode .heatmapScale {
-  color: black;
+  color: #020202;
 }
 
 .darkmode .heatmapScale .l-7 {
-  color: white;
+  color: #ffffff;
 }
 
 @media all and (max-width: 600px) {
@@ -134,7 +168,7 @@
 }
 
 @media all and (max-width: 450px) {
-  .heatmapScale span {
+  .heatmapScale .col {
     padding: 5px 5px;
   }
 }
@@ -145,8 +179,7 @@
 }
 
 .darkmode .heatbarLine {
-background-color: darkgrey;
-
+  background-color: #ffffff;
 }
 
 svg.heatbar {
@@ -154,10 +187,10 @@ svg.heatbar {
   width: 100%;
 }
 
-.darkmode .tr {
-  background-color: #121212;
+.scotland-total {
+  font-weight: bold;
 }
 
-.darkmode .th {
-  background-color: #121212;
+.darkmode .scotland-total {
+  color: #c1def1;
 }

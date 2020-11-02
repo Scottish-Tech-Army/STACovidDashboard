@@ -142,7 +142,7 @@ const Overview = ({
                 <hr className="underHeatmapSelector" />
               </Col>
             </Row>
-            <Row>
+            <Row className="heatmaps-row">
               <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
                 <GeoHeatMap
                   councilAreaDataset={councilAreaDataset}

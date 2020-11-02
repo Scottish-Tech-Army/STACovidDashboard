@@ -6,7 +6,6 @@ import {
   Map as LeafletMap,
   TileLayer,
   ZoomControl,
-  ColorFilter,
 } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
@@ -149,8 +148,8 @@ const RegionGeoMap = ({
     const SELECTED_COLOUR = "red";
     const UNSELECTED_COLOUR = "black";
     const BORDER_COLOUR = "black";
-    const DARK_SELECTED_COLOUR = "blue";
-    const DARK_BORDER_COLOUR = "white";
+    const DARK_SELECTED_COLOUR = "#c1def1";
+    const DARK_BORDER_COLOUR = "ffffff";
 
     function getRegionStyle(featureCode) {
       return {

@@ -22,6 +22,11 @@ const RouteMapRules = () => {
   }
   return (
     <Container fluid className="d-flex flex-column">
+      <Row fluid>
+        <Col className="hr-container">
+          <hr className="full-width-hr" />
+        </Col>
+      </Row>
       <Row>
         <Col xs="12" className="headline-banner">
           <Switch>
@@ -34,7 +39,6 @@ const RouteMapRules = () => {
                   "https://www.gov.scot/coronavirus-covid-19/",
                   "COVID-19 Route Map"
                 )}
-                .
               </h2>
             </Route>
             <Route path={URL_REGIONAL}>
@@ -43,7 +47,7 @@ const RouteMapRules = () => {
                 <span className="headline-banner-highlight">
                   Regional Restrictions
                 </span>{" "}
-                to help fight the pandemic. See the{" "}
+                in place to help fight the pandemic. See the{" "}
                 {createLink(
                   "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
                   "latest Scottish Government guidance"

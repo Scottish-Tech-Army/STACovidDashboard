@@ -243,6 +243,9 @@ const GeoHeatMap = ({
       return heatcolours[getHeatLevel(count)];
     }
 
+    const BORDER_COLOUR = "black";
+    const DARK_BORDER_COLOUR = "white";
+
     function getRegionStyle(featureCode) {
       const regionData = current7DayDataset.get(featureCode);
       var count = 0;
@@ -252,7 +255,7 @@ const GeoHeatMap = ({
       }
 
       return {
-        color: darkmode ? "white" : "black",
+        color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
         fillColor: getRegionColour(count),
         opacity: 0.5,
         fillOpacity: 0.5,
@@ -274,6 +277,7 @@ const GeoHeatMap = ({
     currentBoundariesLayer,
     currentHeatLevels,
     current7DayDataset,
+    darkmode,
   ]);
 
   // Create legend
@@ -303,7 +307,7 @@ const GeoHeatMap = ({
           div.innerHTML +=
             "<div class='legend-title'>REGION " +
             currentValueTypeRef.current.toUpperCase() +
-            "<br/>(Last 7 Days)</div>";
+            "<br/>(last 7 days)</div>";
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=

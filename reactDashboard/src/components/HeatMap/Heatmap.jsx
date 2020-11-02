@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Heatmap.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -183,10 +186,11 @@ function Heatmap({
   ) {
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
+    const scotlandTotal = totalCount();
     return (
       <tr className="area" key={index}>
-        <td>{name}</td>
-        <td>{featureCode === FEATURE_CODE_SCOTLAND ? "" : total}</td>
+        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{name}</td>
+        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
@@ -273,37 +277,30 @@ function Heatmap({
       : "HEALTH BOARDS";
   }
 
-  function areaSubTitle() {
-    const dataset = getDataSet();
-    return (
-      dataset.regions.length +
-      " " +
-      (AREATYPE_COUNCIL_AREAS === areaType ? "Areas" : "Boards")
-    );
-  }
-
   function valueTitle() {
     return VALUETYPE_DEATHS === valueType ? "TOTAL DEATHS" : "TOTAL CASES";
   }
 
   function heatbarScale() {
     return (
-      <div className="heatmapScale">
+      <Container fluid className="heatmapScale">
+      <Row>
         {heatLevels.map((value, index) => {
           return (
-            <span key={"small" + index} className={"smallscale l-" + index}>
+            <Col key={"small" + index} className={"smallscale l-" + index}>
               {value}
-            </span>
+            </Col>
           );
         })}
         {heatLevels.map((value, index) => {
           return (
-            <span key={"large" + index} className={"largescale l-" + index}>
+            <Col key={"large" + index} className={"largescale l-" + index}>
               &ge;&nbsp;{value}
-            </span>
+            </Col>
           );
         })}
-      </div>
+        </Row>
+      </Container>
     );
   }
 
@@ -318,11 +315,9 @@ function Heatmap({
           <tr>
             <th>
               <div>{areaTitle()}</div>
-              <div className="subheading">{areaSubTitle()}</div>
             </th>
             <th>
               <div>{valueTitle()}</div>
-              <div className="subheading">{totalCount()}</div>
             </th>
             <th>
               <div>DAILY COUNT</div>

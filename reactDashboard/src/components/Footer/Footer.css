@@ -40,6 +40,10 @@
   padding: 0 5px;
 }
 
+.darkmode .third-party-logo {
+  color: #121212;
+}
+
 .sitemap {
   margin-right: 20px;
   margin-left: 20px;
@@ -71,11 +75,29 @@ footer {
   background-color: #121212;
 }
 
-footer .third-party-logo {
-  color: black;
+.darkmode footer .sitemap .entry {
+  color: #f2f2f2;
+  font-weight: normal;
 }
 
-.darkmode footer .third-party-logo,
-.darkmode .sta-logo-text {
-  color: #f2f2f2;
+.darkmode footer .sitemap .title {
+  color: #c1def1;
+}
+
+.darkmode .footer-base {
+  background-color: #f2f2f2;
+  color: #121212;
+  margin: 0;
+  padding: 20px 0 40px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.darkmode .footer-main {
+  background-color: rgb(56,56,56);
+  margin: 0;
+}
+
+.darkmode header {
+  background-color: #121212;
 }

@@ -74,7 +74,7 @@
   position: absolute;
   top: 20px;
   right: 40px;
-  background-color: inherit;
+  background-color: #ffffff;
   font-size: 0.5rem;
   border: 1px solid #6c6c6c;
   border-radius: 10px;
@@ -84,11 +84,12 @@
   color: black;
 }
 
-.darkmode .sonification-play-button h5 {
-  color: #f2f2f2;
+.sonification-play-button {
+  background-color: inherit;
+  border-color: #cccccc;
 }
 
-.darkmode svg:not(:root).svg-inline--fa {
+.darkmode .sonification-play-button h5 {
   color: #f2f2f2;
 }
 
@@ -125,9 +126,10 @@
   margin: 0 auto;
 }
 
-.darkmode .MuiSlider-track  {
-color: #3075ec;
-}
+/* .darkmode .MuiSlider-track  {
+color: #225ea8
+;
+} */
 
 @media screen and (max-width: 1400px) {
   #date-range-slider-position {
@@ -178,7 +180,7 @@ color: #3075ec;
 }
 
 .darkmode .data-charts-container {
-  background-color: #121212;
+  background-color: #262626;
 }
 
 legend {

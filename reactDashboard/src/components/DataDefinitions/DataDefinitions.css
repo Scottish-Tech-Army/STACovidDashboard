@@ -13,10 +13,6 @@
   background-color: #133a53;
 }
 
-.darkmode .accordion-header {
-  background-color: #3075ec;
-}
-
 .data-definitions button.btn.btn-link {
   color: #ffffff;
   font-weight: bold;
@@ -61,6 +57,22 @@
 
 .data-definitions-body .source-attribution {
   color: #2a84bb;
+}
+
+.darkmode .card-body {
+  background-color: rgb(56, 56, 56);
+}
+
+.darkmode hr {
+  background-color: #f2f2f2;
+}
+
+.darkmode .accordion-header {
+  background-color: rgb(56, 56, 56);
+}
+
+.card {
+  border: none;
 }
 
 .data-definitions .definition-paragraph {

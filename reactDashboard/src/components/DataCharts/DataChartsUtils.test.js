@@ -40,11 +40,12 @@ describe("commonChartConfiguration", () => {
       "#121212"
     );
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "#3075ec80"
+      "#f2f2f2"
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor
-    ).toStrictEqual("#3075ec");
+    ).toStrictEqual("#225ea8
+");
   });
   it("darkmode false", () => {
     const result = commonChartConfiguration(mockData, false);
@@ -52,7 +53,7 @@ describe("commonChartConfiguration", () => {
       "#767676"
     );
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "#3075ec80"
+      "rgba(0,0,0,0.25)"
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor

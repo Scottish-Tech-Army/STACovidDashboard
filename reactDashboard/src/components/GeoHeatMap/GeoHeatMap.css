@@ -56,17 +56,17 @@ div.leaflet-popup-content-wrapper {
 
 .legend {
   line-height: 18px;
-  background-color: #fff;
   color: #555;
+  background: #ffffff;
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
-
 .darkmode .legend {
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(56,56,56);
   color: #f2f2f2;
+  border: 1px solid #b3b3b3;
+  border-radius: 10px;
 }
-
 .legend .legend-title {
   font-weight: bold;
 }
@@ -99,4 +99,8 @@ div.leaflet-popup-content-wrapper {
 .darkmode .leaflet-container .leaflet-control-attribution a {
   background: #0b0a0a;
   color: #f2f2f2;
+}
+
+legend {
+  color: #c1def1;
 }

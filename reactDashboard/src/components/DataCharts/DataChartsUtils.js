@@ -18,17 +18,16 @@ const keyDates = [
 ];
 
 function getDateLine( { date, name }, index, darkmode) {
-  
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
     scaleID: "x-axis-0",
-    borderColor: "#3075ec80",
+    borderColor: darkmode ? "#f2f2f2" : "rgba(0,0,0,0.25)",
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: darkmode? "#3075ec" : "#007EB9",
+      backgroundColor: darkmode? "#225ea8" : "#007EB9",
       fontColor: "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
@@ -100,7 +99,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
           {
             id: "y-axis-0",
             gridLines: {
-              color: darkmode ? "#121212" : "#767676",
+              color: darkmode ? "#121212" : "#cccccc",
             },
             ticks: {
               beginAtZero: true,
@@ -121,6 +120,9 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
             },
             gridLines: {
               display: false,
+            },
+            ticks: {
+              fontColor: darkmode ? "#f2f2f2" : "#767676",
             },
           },
         ],
@@ -155,6 +157,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
 
   if (dateRange != null) {
     result.options.scales.xAxes[0].ticks = {
+      ...result.options.scales.xAxes[0].ticks,
       min: dateRange.startDate,
       max: dateRange.endDate,
     };

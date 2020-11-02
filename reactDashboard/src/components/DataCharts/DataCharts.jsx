@@ -364,6 +364,7 @@ const DataCharts = ({
     populationProportionMap,
     regionCode,
     dateRange,
+    darkmode,
   ]);
 
   const isDataReady = () => {

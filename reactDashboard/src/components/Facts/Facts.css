@@ -9,7 +9,7 @@
 }
 
 .darkmode .facts-container {
-  background-color: #121212;
+  background-color: #262626;
 }
 
 .facts-row {
@@ -32,6 +32,7 @@
 .darkmode .facts-component {
   background-color: rgb(56, 56, 56);
   box-shadow: none;
+  color: #f2f2f2;
 }
 
 .facts-icon {
@@ -44,6 +45,7 @@
   margin: 0 5px 0 10px;
   padding-right: 5px;
   width: 100%;
+  background-color: inherit;
   text-align: left;
   display: flex;
   flex-direction: row;

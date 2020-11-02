@@ -2,9 +2,19 @@
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
-  color: white;
+  color: #ffffff;
   background-color: #287db2;
   border-color: #287db2;
+  font-weight: bold;
+}
+
+.darkmode .btn-primary,
+.darkmode .btn-primary:hover,
+.darkmode .btn-primary:active,
+.darkmode .btn-primary:focus {
+  color: #ffffff;
+  background-color: rgb(56, 56, 56);
+  border-color: rgb(56, 56, 56);
   font-weight: bold;
 }
 
@@ -12,9 +22,19 @@
 .btn-primary:not(:disabled):not(.disabled).active:hover,
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active:focus {
-  color: white;
+  color: #ffffff;
   background-color: #133a53;
   border-color: #133a53;
+  font-weight: bold;
+}
+
+.darkmode .btn-primary:not(:disabled):not(.disabled).active,
+.darkmode .btn-primary:not(:disabled):not(.disabled).active:hover,
+.darkmode .btn-primary:not(:disabled):not(.disabled):active,
+.darkmode .btn-primary:not(:disabled):not(.disabled).active:focus {
+  color: #121212;
+  background-color: #c1def1;
+  border-color: #c1def1;
   font-weight: bold;
 }
 
