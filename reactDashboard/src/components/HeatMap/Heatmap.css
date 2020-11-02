@@ -4,7 +4,6 @@
   height: 100%;
   background-color: #ffffff;
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding-top: 10px;
 }
 
 .heatmap-container {
@@ -18,7 +17,7 @@
   z-index: 2;
   background-color: #ffffff;
   color: #133a53;
-  padding: 0 20px;
+  padding: 10px 20px 0;
 }
 
 .darkmode .table thead th {
@@ -128,6 +127,10 @@
   padding-bottom: 0;
   margin-bottom: 10px;
   border: 1px solid darkgrey;
+}
+
+.heatmapScale .row {
+  flex-wrap: nowrap;
 }
 
 .darkmode .heatmapScale {
