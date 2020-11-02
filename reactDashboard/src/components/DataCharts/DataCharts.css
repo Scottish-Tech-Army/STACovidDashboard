@@ -200,7 +200,3 @@ canvas {
 .darkmode .MuiSlider-markLabel {
   color: #f2f2f2;
 }
-
-.darkmode .selected-chart {
-  background-color:#c1def1;
-}

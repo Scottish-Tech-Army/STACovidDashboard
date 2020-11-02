@@ -121,6 +121,9 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
             gridLines: {
               display: false,
             },
+            ticks: {
+              fontColor: darkmode ? "#f2f2f2" : "#767676",
+            },
           },
         ],
       },
@@ -154,6 +157,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
 
   if (dateRange != null) {
     result.options.scales.xAxes[0].ticks = {
+      ...result.options.scales.xAxes[0].ticks,
       min: dateRange.startDate,
       max: dateRange.endDate,
     };

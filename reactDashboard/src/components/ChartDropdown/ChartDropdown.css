@@ -49,10 +49,8 @@
 }
 
 .darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
-  background-color: rgb(56, 56, 56)
-;
-  border-color: rgb(56, 56, 56)
-;
+  background-color: #ec6730;
+  border-color: #ec6730;
   color: #ffffff;
 }
 

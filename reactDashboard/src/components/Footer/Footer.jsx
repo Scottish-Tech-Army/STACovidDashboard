@@ -51,7 +51,7 @@ const Footer = ({ darkmode }) => {
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="p-1">
+        <Row className="p-1 footer-main">
           <Col
             md={12}
             className="sitemap-container d-flex justify-content-between"
@@ -99,7 +99,7 @@ const Footer = ({ darkmode }) => {
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row>
+        <Row className="footer-base">
           <Col sm={12} md={9}>
             <div className="footer-copyright text-left">
               Unless otherwise stated, this webpage contains public sector

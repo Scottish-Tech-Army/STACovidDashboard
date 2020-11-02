@@ -16,7 +16,7 @@
 }
 
 .darkmode .dashboard-navbar img#logo {
-  background-color: #c1def1;
+  background-color: #f2f2f2;
   padding: 0 5px;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .darkmode .dashboard-navbar {
-  background-color: #c1def1;
+  background-color: #f2f2f2;
   color: black;
   margin: 0 15px;
   border-top-left-radius: 10px;
