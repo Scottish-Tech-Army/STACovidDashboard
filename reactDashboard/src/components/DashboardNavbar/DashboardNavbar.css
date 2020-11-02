@@ -1,56 +1,64 @@
-.nav-link {
-  font-size: 1.25em;
-  border-left: 1px solid #767676;
-  margin-bottom: 8px
-}
-
 .dashboard-navbar {
-  display: flex;
-  align-items: flex-end;
+  margin: 0 1px 0px 1px;
 }
 
 .dashboard-navbar img#logo {
-  height: 80px;
+  height: 130px;
   margin-right: 20px;
-  margin-top: 10px;
-}
-
-.darkmode .dashboard-navbar img#logo {
-  background-color: #f2f2f2;
-  padding: 0 5px;
-}
-
-.darkmode .dashboard-navbar .heading h1 {
-  color: #121212;
-}
-
-.navbar {
-  align-items: flex-end;
 }
 
 .dashboard-navbar .heading-container {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  padding: 5px 0 5px;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
 .dashboard-navbar .heading-container.collapse:not(.show) {
   display: none;
 }
 
+.dashboard-navbar .heading {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.dashboard-navbar .heading h1 {
+  display: inline-block;
+}
+
+.darkmode .dashboard-navbar {
+  background-color: #f2f2f2;
+  color: black;
+  margin: 0 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 .navbar-links {
   display: flex;
   justify-content: flex-end;
+  padding: 1.25rem 0rem !important;
 }
 
 .darkmode .navbar-light .navbar-nav .nav-link {
-  color: #101010;;
+  color: #f2f2f2;
+}
+
+.darkmode .navbar-link {
+  color: #f2f2f2;
 }
 
 .nav-link {
-  font-size: 1.25em;
-  border-left: 1px solid #767676;
-  margin-bottom: 8px
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 10px 0;
+  padding: 0 1.75rem !important;
+  flex-basis: 0;
+  border-left: 2px solid #3c3c3b;
 }
 
 .nav-link:hover {
@@ -93,28 +101,16 @@
   }
 }
 
-.darkmode .dashboard-navbar {
-  background-color: #f2f2f2;
+.darkmode {
+  background-color: #121212;
   color: black;
-  margin: 0 15px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 
 .dark-mode-btn {
   color: "#f2f2f2";
-  background-color: #f2f2f2;
   cursor: pointer;
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  padding: 10px;
-  font-size: 50px;
-  margin: auto 20px 8px auto;
 }
 
 .darkmode .dark-mode-btn {
-  color: #c1def1;
-  background-color: #121212;
-  border: 1px solid #121212;
+  color: white;
 }
