@@ -27,8 +27,8 @@ function getDateLine( { date, name }, index, darkmode) {
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: darkmode? "#225ea8" : "#007EB9",
-      fontColor: "#ffffff",
+      backgroundColor: darkmode? "#c1def1" : "#007EB9",
+      fontColor: darkmode? "#121212" : "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
       xPadding: 10,
@@ -52,7 +52,7 @@ export function getWhoThresholdLine() {
     value: 5,
     label: {
       backgroundColor: "white",
-      fontColor: "black",
+      fontColor: "#000000",
       xPadding: 0,
       yPadding: 0,
       position: "top",
@@ -66,9 +66,9 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   return {
     label: datasetLabel,
     data: seriesData,
-    backgroundColor: colour,
+    backgroundColor: colour === "#ec6730" ? colour : "rgb(118, 118, 118, 0.5)",
     borderColor: colour,
-    fill: false,
+    fill: colour === "#ec6730" ? false : true,
     pointRadius: 0,
     borderWidth: 2,
     lineTension: 0,
@@ -78,7 +78,6 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
 export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
   let result = {
     type: "line",
-
     data: {
       datasets: datasets,
     },

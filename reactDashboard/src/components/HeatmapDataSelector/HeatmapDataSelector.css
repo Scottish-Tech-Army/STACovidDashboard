@@ -13,8 +13,8 @@
 .darkmode .btn-primary:active,
 .darkmode .btn-primary:focus {
   color: #ffffff;
-  background-color: rgb(56, 56, 56);
-  border-color: rgb(56, 56, 56);
+  background-color: rgb(64,64,64);
+  border-color: rgb(64,64,64);
   font-weight: bold;
 }
 
@@ -33,6 +33,7 @@
 .darkmode .btn-primary:not(:disabled):not(.disabled):active,
 .darkmode .btn-primary:not(:disabled):not(.disabled).active:focus {
   color: #121212;
+  opacity: 75%;
   background-color: #c1def1;
   border-color: #c1def1;
   font-weight: bold;

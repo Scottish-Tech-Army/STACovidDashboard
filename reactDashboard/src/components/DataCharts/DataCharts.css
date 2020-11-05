@@ -9,7 +9,7 @@
 }
 
 .darkmode .chart-border {
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(64,64,64);
   box-shadow: none;
 }
 
@@ -81,7 +81,7 @@
   padding: 7px;
   width: 7em;
   height: 7em;
-  color: black;
+  color: #000000;
 }
 
 .sonification-play-button {
@@ -100,7 +100,7 @@
 .darkmode .sonification-play-button:hover {
   box-shadow: none;
   background-color: #f2f2f2;
-  color: rgb(56, 56, 56);
+  color: rgb(64,64,64);
 }
 
 .sonification-play-button.col {

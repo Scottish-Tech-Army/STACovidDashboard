@@ -30,7 +30,7 @@
 }
 
 .darkmode .heatmap {
-  background-color: rgb(56,56,56);
+  background-color: rgb(64,64,64);
   box-shadow: none;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -39,7 +39,7 @@
 }
 
 .darkmode .heatmap table th {
-  background-color: rgb(56,56,56);
+  background-color: rgb(64,64,64);
   padding: 0 20px;
 }
 
@@ -55,7 +55,7 @@
 
 .darkmode .area {
   color: #f2f2f2;
-  background-color: rgb(56,56,56);
+  background-color: rgb(64,64,64);
   border-top: 1px solid #020202;
 }
 

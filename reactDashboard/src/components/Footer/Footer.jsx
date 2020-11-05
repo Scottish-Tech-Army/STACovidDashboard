@@ -25,7 +25,7 @@ const Footer = ({ darkmode }) => {
     );
   }
 
-  const SOCIAL_LOGO = "black";
+  const SOCIAL_LOGO = "#000000";
   const DARK_SOCIAL_LOGO = "#9cd7ff";
 
   function sitemapExternalLink(href, content) {

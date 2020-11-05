@@ -12,19 +12,20 @@ import {
 } from "../DataCharts/DataChartsConsts";
 
 describe("commonChartConfiguration", () => {
-  const mockData = [datasetConfiguration("testLabel", undefined, "#767676")];
+  const mockData = [datasetConfiguration("testLabel", "#767676", undefined)];
 
   it("with date range", () => {
     const result = commonChartConfiguration(mockData, false, {
       startDate: 0,
       endDate: 1,
     });
-    const expectedResult = { max: 1, min: 0 };
+    const expectedResult = { max: 1, min: 0, fontColor: "#767676" };
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
   it("without date range", () => {
     const result = commonChartConfiguration(mockData, false);
-    expect(result.options.scales.xAxes[0].ticks).toBeUndefined();
+    const expectedResult = { fontColor: "#767676" };
+    expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
   it("annotations with dataset", () => {
     const result = commonChartConfiguration(mockData, false);
@@ -39,19 +40,24 @@ describe("commonChartConfiguration", () => {
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
       "#121212"
     );
+    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual("#f2f2f2");
+    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual("#f2f2f2");
+    expect(result.options.legend.labels.fontColor).toStrictEqual("#f2f2f2");
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
       "#f2f2f2"
     );
     expect(
       result.options.annotation.annotations[0].label.backgroundColor
-    ).toStrictEqual("#225ea8
-");
+    ).toStrictEqual("#c1def1");
   });
   it("darkmode false", () => {
     const result = commonChartConfiguration(mockData, false);
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
-      "#767676"
+      "#cccccc"
     );
+    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual("#767676");
+    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual("#767676");
+    expect(result.options.legend.labels.fontColor).toStrictEqual("#767676");
     expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
       "rgba(0,0,0,0.25)"
     );

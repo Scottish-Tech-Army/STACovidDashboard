@@ -5,11 +5,11 @@
 }
 
 .darkmode .fullscreen svg {
-  color: rgb(56,56,56);
+  color: rgb(64,64,64);
   background-color: #f2f2f2;
 }
 
 .darkmode .fullscreen svg:hover {
   color: #f2f2f2;
-  background-color: rgb(56,56,56);
+  background-color: rgb(64,64,64);
 }

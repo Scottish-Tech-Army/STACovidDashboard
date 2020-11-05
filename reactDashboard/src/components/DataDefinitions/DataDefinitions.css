@@ -1,5 +1,4 @@
 .data-definitions .data-accordion-toggle-down {
-  color: #ffffff;
   color: #c1def1;
   border: 2px solid #c1def1;
   border-radius: 50%;
@@ -8,15 +7,30 @@
   height: 30px;
 }
 
+.darkmode .data-definitions .data-accordion-toggle-down {
+  color: #121212;
+  border: 2px solid #121212;
+}
+
 .data-definitions .accordion-header {
   color: #ffffff;
   background-color: #133a53;
+}
+
+.darkmode .data-definitions .accordion-header {
+  background-color: #c1def1;
+  /* opacity: 75%; */
+  color: #121212;
 }
 
 .data-definitions button.btn.btn-link {
   color: #ffffff;
   font-weight: bold;
   text-decoration: none;
+}
+
+.darkmode .data-definitions button.btn.btn-link {
+  color: #121212;
 }
 
 .data-definitions button.btn:active,
@@ -28,6 +42,11 @@
 .data-definitions .data-accordion-toggle-down:hover {
   color: #fd8d3c;
   border-color: #fd8d3c;
+}
+.darkmode .data-definitions .data-accordion-toggle-down:hover {
+  color: #121212;
+  border-color: #121212;
+  background-color: #f2f2f2;
 }
 
 .data-definitions .data-definitions-body {
@@ -60,15 +79,13 @@
 }
 
 .darkmode .card-body {
-  background-color: rgb(56, 56, 56);
+  background-color: #f2f2f2;
+  color: #121212;
+  opacity: 75%;
 }
 
 .darkmode hr {
   background-color: #f2f2f2;
-}
-
-.darkmode .accordion-header {
-  background-color: rgb(56, 56, 56);
 }
 
 .card {

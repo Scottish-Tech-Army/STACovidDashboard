@@ -243,7 +243,7 @@ const GeoHeatMap = ({
       return heatcolours[getHeatLevel(count)];
     }
 
-    const BORDER_COLOUR = "black";
+    const BORDER_COLOUR = "#000000";
     const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {

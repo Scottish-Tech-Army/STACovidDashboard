@@ -3,6 +3,10 @@
   padding: 10px 40px 10px 20px;
 }
 
+.darkmode .info-bar {
+  opacity: 75%;
+}
+
 .scot-gov-link {
   color: #133A53;
 }

@@ -41,9 +41,9 @@
 }
 
 .darkmode .selected-chart:hover {
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(64,64,64);
 
-  border-color: rgb(56, 56, 56);
+  border-color: rgb(64,64,64);
 
   color: #ffffff;
 }

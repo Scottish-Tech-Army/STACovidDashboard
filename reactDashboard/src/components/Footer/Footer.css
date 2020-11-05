@@ -59,11 +59,11 @@
 }
 
 .sta-logo-text {
-  color: black;
+  color: #000000;
 }
 
 .sta-logo-text:hover {
-  color: black;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -86,6 +86,7 @@ footer {
 
 .darkmode .footer-base {
   background-color: #f2f2f2;
+  opacity: 75%;
   color: #121212;
   margin: 0;
   padding: 20px 0 40px;
@@ -94,7 +95,7 @@ footer {
 }
 
 .darkmode .footer-main {
-  background-color: rgb(56,56,56);
+  background-color: rgb(64,64,64);
   margin: 0;
 }
 
