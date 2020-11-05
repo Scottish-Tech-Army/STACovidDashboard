@@ -162,7 +162,7 @@ const GeoHeatMap = ({
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
           moment(regionData.toDate).format("DD MMM") +
-          "</div> <br /><strong>" +
+          "</div> <strong>" +
           toTitleCase(currentValueTypeRef.current) +
           ": </strong>" +
           count +

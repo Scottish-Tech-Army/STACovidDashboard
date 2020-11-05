@@ -1,4 +1,5 @@
-.geo-map,  .full-screen-geo-map{
+.geo-map,
+.full-screen-geo-map {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,8 @@
   display: none;
 }
 
-#map, #regionmap {
+#map,
+#regionmap {
   height: 100%;
   width: 100%;
 }
@@ -41,15 +43,19 @@ div.leaflet-tooltip p {
 }
 
 div.leaflet-tooltip-left::before {
-  border-left-color: #000000;
+  border-left-color: #ac3232;
 }
 
 div.leaflet-tooltip-right::before {
-  border-right-color: #000000;
+  border-right-color: #071d75;
 }
 
 div.leaflet-popup-content-wrapper {
   background-color: #000000;
+}
+
+div.leaflet-popup-content {
+  margin: 5px;
 }
 
 .legend {
@@ -79,5 +85,5 @@ div.leaflet-popup-content-wrapper {
   font-weight: bold;
   color: #fd8d3c;
   border-bottom: 1px solid LightGray;
-  padding-bottom: 5px;
+  /* padding-bottom: 5px; */
 }
