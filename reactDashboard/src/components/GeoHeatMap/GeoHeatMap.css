@@ -85,5 +85,9 @@ div.leaflet-popup-content {
   font-weight: bold;
   color: #fd8d3c;
   border-bottom: 1px solid LightGray;
-  /* padding-bottom: 5px; */
+}
+
+.map-cases-count {
+  font-size: 13px;
+  font-weight: normal;
 }
