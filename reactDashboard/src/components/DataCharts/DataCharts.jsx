@@ -253,6 +253,7 @@ const DataCharts = ({
 
     const REGION_DATASET_COLOUR = "#ec6730";
     const AVERAGE_DATASET_COLOUR = "#767676";
+    const AVERAGE_DATASET_FILL_COLOUR = darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
 
     function setChart(
       datasetLabel,
@@ -268,7 +269,7 @@ const DataCharts = ({
           datasetConfiguration(
             datasetLabel,
             currentSeriesData,
-            REGION_DATASET_COLOUR
+            REGION_DATASET_COLOUR,
           )
         );
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
@@ -276,7 +277,8 @@ const DataCharts = ({
             datasetConfiguration(
               "Scotland average (adjusted for population)",
               getAverageSeriesData(seriesData, regionCode),
-              AVERAGE_DATASET_COLOUR
+              AVERAGE_DATASET_COLOUR,
+              AVERAGE_DATASET_FILL_COLOUR
             )
           );
         }
@@ -288,7 +290,6 @@ const DataCharts = ({
       );
 
       chartConfiguration.options.tooltips = {
-
         callbacks: {
           label: (tooltipItem, data) => {
             return (
@@ -423,6 +424,7 @@ const DataCharts = ({
           seriesTitle={seriesTitle}
           regionCode={regionCode}
           dateRange={dateRange}
+          darkmode={darkmode}
         />
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />

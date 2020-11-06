@@ -5,7 +5,7 @@
 }
 
 .darkmode .headline-banner {
-  background-color: rgb(64,64,64);
+  background-color: #133a53;
 }
 
 .darkmode .headline-banner h2 {
@@ -19,10 +19,6 @@
   font-weight: bold;
   color: #fc8d59;
 }
-
-/* .darkmode .headline-banner-highlight {
-  color: #f2f2f2;
-} */
 
 @media screen and (max-width: 768px) {
   .headline-banner {
@@ -41,10 +37,6 @@
 #link {
   color: #c1def1;
 }
-
-/* .darkmode #link {
-  color: #f2f2f2;
-} */
 
 #link:hover {
   color: #fc8d59;

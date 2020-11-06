@@ -128,9 +128,12 @@ button.MuiButtonBase-root:hover {
   background-color: #262626;
 }
 
+header {
+  padding-top: 10px;
+}
+
 .darkmode header {
   background-color: #121212;
-  padding-top: 10px;
 }
 
 .darkmode .region-selector-label {

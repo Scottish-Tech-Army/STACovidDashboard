@@ -8,19 +8,13 @@
 }
 
 .darkmode .data-definitions .data-accordion-toggle-down {
-  color: #121212;
-  border: 2px solid #121212;
+  color: #c1def1;
+  border: 2px solid #c1def1;
 }
 
 .data-definitions .accordion-header {
   color: #ffffff;
   background-color: #133a53;
-}
-
-.darkmode .data-definitions .accordion-header {
-  background-color: #c1def1;
-  /* opacity: 75%; */
-  color: #121212;
 }
 
 .data-definitions button.btn.btn-link {
@@ -30,7 +24,7 @@
 }
 
 .darkmode .data-definitions button.btn.btn-link {
-  color: #121212;
+  color: #f2f2f2;
 }
 
 .data-definitions button.btn:active,
@@ -42,11 +36,6 @@
 .data-definitions .data-accordion-toggle-down:hover {
   color: #fd8d3c;
   border-color: #fd8d3c;
-}
-.darkmode .data-definitions .data-accordion-toggle-down:hover {
-  color: #121212;
-  border-color: #121212;
-  background-color: #f2f2f2;
 }
 
 .data-definitions .data-definitions-body {
@@ -79,13 +68,13 @@
 }
 
 .darkmode .card-body {
-  background-color: #f2f2f2;
-  color: #121212;
+  background-color: darkgray;
   opacity: 75%;
+  color: #121212;
 }
 
 .darkmode hr {
-  background-color: #f2f2f2;
+  background-color: #121212;
 }
 
 .card {

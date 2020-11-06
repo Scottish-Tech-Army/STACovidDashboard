@@ -62,13 +62,13 @@ export function getWhoThresholdLine() {
   };
 }
 
-export function datasetConfiguration(datasetLabel, seriesData, colour) {
+export function datasetConfiguration(datasetLabel, seriesData, colour, fillColour=null) {
   return {
     label: datasetLabel,
     data: seriesData,
-    backgroundColor: colour === "#ec6730" ? colour : "rgb(118, 118, 118, 0.5)",
+    backgroundColor: fillColour !== null ? fillColour : undefined,
     borderColor: colour,
-    fill: colour === "#ec6730" ? false : true,
+    fill: fillColour !== null,
     pointRadius: 0,
     borderWidth: 2,
     lineTension: 0,

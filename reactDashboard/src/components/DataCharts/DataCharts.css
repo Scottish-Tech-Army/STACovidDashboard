@@ -126,11 +126,6 @@
   margin: 0 auto;
 }
 
-/* .darkmode .MuiSlider-track  {
-color: #225ea8
-;
-} */
-
 @media screen and (max-width: 1400px) {
   #date-range-slider-position {
     max-width: 80vw;
@@ -199,4 +194,8 @@ canvas {
 
 .darkmode .MuiSlider-markLabel {
   color: #f2f2f2;
+}
+
+.darkmode span.MuiSlider-thumb {
+  box-shadow: none;
 }
