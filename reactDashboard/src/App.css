@@ -34,16 +34,18 @@ header {
 }
 
 .geo-map-column {
-  padding-left: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px;
 }
 
 .region-tiles-column {
-  padding-top: 15px;
+  padding-top: 10px;
   background-color: #ffffff;
+  margin-bottom: 5px;
 }
 
 .darkmode .region-tiles-column {
-  border-radius: 10px;
   background-color: #121212
 }
 
@@ -105,7 +107,8 @@ header {
   width: 50vw;
 }
 
-.darkmode .about-us-details ul {
+.darkmode .about-us-details ul,
+.accessibility-details ul {
   background-color: rgb(50, 50, 50);
 }
 
@@ -171,7 +174,11 @@ button.MuiButtonBase-root {
 }
 
 button.MuiButtonBase-root:hover {
-  box-shadow: none;
+  box-shadow: 5px 5px 5px #aaaaaa;
   background-color: #f2f2f2;
   color: rgb(64,64,64)
+}
+
+.darkmode button.MuiButtonBase-root:hover {
+  box-shadow: none;
 }

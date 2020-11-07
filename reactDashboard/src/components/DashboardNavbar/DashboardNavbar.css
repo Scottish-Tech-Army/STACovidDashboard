@@ -1,16 +1,42 @@
-.nav-link {
-  font-size: 1em;
-  margin-bottom: 8px
+.navbar-links {
+  margin-right: 0;
+  margin-bottom: 0;
 }
 
-.darkmode .nav-link {
+.nav-link {
+  font-size: 1em;
+  width: 200px;
+  padding-top: 20px;
+  text-align: center;
 }
+
+/* .darkmode .nav-link {
+  border-bottom: 5px solid #767676;
+} */
+
+.nav-link:hover {
+  text-decoration: underline;
+  color: #121212 !important;
+}
+
+.nav-link.selected {
+  color: #121212 !important;
+  text-decoration: none !important;
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.darkmode .nav-link.selected {
+  color: #121212 !important;
+  background-color: #ffffff;
+}
+
 
 .dashboard-navbar img#logo {
   height: 80px;
-  margin-right: 20px;
+  margin-right: 10px;
   margin-top: 10px;
-  padding: 0 5px;
+  padding: 0 5px 10px;
 }
 
 .darkmode .dashboard-navbar img#logo {
@@ -19,6 +45,9 @@
 
 .dashboard-navbar {
   margin: 0 15px;
+  padding-bottom: 0;
+  background-color: #ffffff;
+  justify-content: space-around;
 }
 
 .darkmode .dashboard-navbar {
@@ -43,51 +72,32 @@
 .dashboard-navbar .heading-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: flex-end;
+  padding-right: 20px;
 }
 
 .dashboard-navbar .heading-container.collapse:not(.show) {
   display: none;
 }
 
-.darkmode .navbar-light .navbar-nav .nav-link {
+/* .darkmode .navbar-light .navbar-nav .nav-link {
   color: #121212;;
-}
+} */
 
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-.nav-link.selected {
-  color: rgba(0, 0, 0, 0.9);
-  text-decoration: none !important;
-}
-
-@media screen and (max-width: 991px) {
-  /* .dashboard-navbar .heading-container {
+@media screen and (max-width: 1185px) {
+  .dashboard-navbar .heading-container {
     justify-content: flex-end;
   }
   .dashboard-navbar .heading {
     display: none;
-  } */
+  }
 }
 
-@media screen and (max-width: 575px) {
-  /* .dashboard-navbar img#logo {
-    height: 80px !important;
+@media screen and (max-width: 660px) {
+  .navbar-nav {
+    margin: 0 auto 10px;
   }
-  .dashboard-navbar .heading-container {
-    align-items: flex-start;
-    flex-direction: column;
-    padding-bottom: 0;
-    border-bottom: 2px solid #2a84bb;
-  }
-  .navbar-links {
-    flex-direction: column;
-  }
-  .nav-link {
-    border-left: none;
-  } */
 }
 
 .dark-mode-btn {
@@ -97,7 +107,7 @@
   width: 100%;
   padding: 10px;
   font-size: 50px;
-  margin: auto 20px 8px auto;
+  margin: auto 0 10px auto;
 }
 
 .dark-mode-btn:hover {

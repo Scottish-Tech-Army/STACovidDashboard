@@ -24,3 +24,11 @@
 .darkmode .fullscreen:hover {
   border: 1px solid #c1def1;
 }
+
+.full-screen {
+  padding-top: 10px;
+}
+
+.darkmode .full-screen {
+  background-color: #121212;
+}

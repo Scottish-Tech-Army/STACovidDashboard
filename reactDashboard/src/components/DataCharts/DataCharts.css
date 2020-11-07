@@ -1,11 +1,20 @@
 .chart-border {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 10px 50px 80px 50px;
+  padding: 10px 50px 80px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: #ffffff;
   position: relative;
+}
+
+.chart-border .container,
+.chart-border .container-lg,
+.chart-border .container-md,
+.chart-border .container-sm {
+  width: 100%;
 }
 
 .darkmode .chart-border {
@@ -162,9 +171,6 @@
     font-size: 0.4rem;
     padding: 10px 5px;
     top: 20px;
-  }
-  .chart-border {
-    padding: 20px 20px 80px;
   }
 }
 

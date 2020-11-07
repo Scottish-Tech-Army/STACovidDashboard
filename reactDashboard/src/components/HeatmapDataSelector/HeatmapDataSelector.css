@@ -41,7 +41,6 @@
 .heatmap-selector .toggle-button-group {
   margin: 5px 0;
   width: 100%;
-  padding: 0 10px;
 }
 
 .heatmap-selector {
@@ -55,4 +54,8 @@
 
 .btn {
   text-align: left;
+}
+
+.selector-group label {
+  width: 50%;
 }
