@@ -87,17 +87,76 @@ header {
 }
 
 .data-sources-list {
-  min-height: 40vh;
+  min-height: 52.5vh;
+  padding: 20px 40px;
 }
 
-.accessibility-page ul {
-  list-style-type: none;
-  margin: 0 0 1rem 0;
-  padding: 0;
+.accessibility-details li,
+.about-us-details li {
+  padding: 0 20px 0;
 }
 
-.accessibility-intro li {
-  padding-left: 20px;
+.darkmode .accessibility-details li,
+.darkmode .about-us-details li {
+  background-color: rgb(50, 50, 50);
+}
+
+.about-us-details ul {
+  width: 50vw;
+}
+
+.darkmode .about-us-details ul {
+  background-color: rgb(50, 50, 50);
+}
+
+.accessibility-details ul {
+  padding-left: 50px;
+  padding-bottom: 20px;
+}
+
+.darkmode .accessibility-details p,
+.darkmode .about-us-details p {
+  background-color: rgb(50, 50, 50);
+}
+
+.accessibility-details p,
+.about-us-details p {
+  padding: 10px 20px;
+  margin-bottom: 0;
+}
+
+.team-members.col,
+.vendors.col {
+  padding: 0 0 10px;
+}
+
+.darkmode .team-members.col,
+.darkmode .vendors.col {
+  background-color: rgb(50, 50, 50);
+}
+
+.data-sources-list li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.darkmode .data-sources-list li {
+  border-bottom: 1px solid rgb(106, 106, 106);
+}
+
+.darkmode .team-members .link,
+.darkmode .about-us-details .link,
+.darkmode .data-sources .link,
+.darkmode .accessibility-details .link {
+  color: #c1def1;
+  font-weight: bold;
+}
+
+.darkmode .team-members .link,
+.darkmode .about-us-details .link {
+  color: #f2f2f2;
+  font-weight: bold;
 }
 
 button.MuiButtonBase-root {

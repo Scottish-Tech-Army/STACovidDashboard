@@ -124,7 +124,7 @@ function AboutUs() {
   const sortedVendors = createMemberLinks(vendors);
 
   return (
-    <div fluid="true" className="about-us">
+    <div className="about-us">
       <div className="about-us-details">
         <hr className="full-width-hr" />
         <h1>About us</h1>
@@ -141,11 +141,13 @@ function AboutUs() {
         <p>
           Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter
           Jaco, the Scottish Tech Army Limited is a not for profit company that
-          is building a volunteer Covid-19 technical response team that will
-          work to help the Scottish Government, local authorities and other
-          organisations across the country with rapid technical development
-          projects to address current Covid-19 related challenges and post
-          pandemic economic recovery.{" "}
+          is building a volunteer Covid-19 technical response team.
+        </p>
+        <p>
+          The team will work to help the Scottish Government, local authorities
+          and other organisations across the country with rapid technical
+          development projects to address current Covid-19 related challenges
+          and post pandemic economic recovery.{" "}
         </p>
       </div>
       <div className="about-us-details">
@@ -156,12 +158,12 @@ function AboutUs() {
           The Covid-19 dashboard for Scotland was created by the following STA
           volunteers:{" "}
         </p>
-        <Container className="team-members">
+        <Container fluid>
           <Row>
-            <Col>
+            <Col className="team-members">
               {sortedTeamMembers.slice(0, sortedTeamMembers.length / 2)}
             </Col>
-            <Col>
+            <Col className="team-members">
               {sortedTeamMembers.slice(
                 sortedTeamMembers.length / 2,
                 sortedTeamMembers.length
@@ -180,10 +182,12 @@ function AboutUs() {
           organisations. We would like to thank the following companies for
           donating access to their systems to the Scottish Tech Army:
         </p>
-        <Container className="vendors">
+        <Container fluid>
           <Row>
-            <Col>{sortedVendors.slice(0, sortedVendors.length / 2)}</Col>
-            <Col>
+            <Col className="vendors">
+              {sortedVendors.slice(0, sortedVendors.length / 2)}
+            </Col>
+            <Col className="vendors">
               {sortedVendors.slice(
                 sortedVendors.length / 2,
                 sortedVendors.length
@@ -194,6 +198,6 @@ function AboutUs() {
       </div>
     </div>
   );
-};
+}
 
 export default AboutUs;

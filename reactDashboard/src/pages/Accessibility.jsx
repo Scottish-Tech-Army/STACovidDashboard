@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Accessibility = () => {
   return (
     <div fluid="true" className="accessibility-page">
-      <div className="accessibility-intro">
+      <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h1>Accessibility</h1>
         <hr className="full-width-hr" />
         <p>
@@ -24,6 +25,7 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Conformance Statement</h2>
         <hr className="full-width-hr" />
         <p>
@@ -32,18 +34,19 @@ const Accessibility = () => {
             href="https://www.w3.org/TR/WCAG20/"
             target="_blank"
             rel="noopener noreferrer"
+            className="link"
           >
             Web Content Accessibility Guidelines (WCAG) 2.0
           </a>
           .
         </p>
-
         <p>
           Automated testing has taken place against these standards and all
           expectations are met under the directive.
         </p>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Browsers</h2>
         <hr className="full-width-hr" />
         <p id="browsers-list">
@@ -66,6 +69,7 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Screen Readers</h2>
         <hr className="full-width-hr" />
         <p>
