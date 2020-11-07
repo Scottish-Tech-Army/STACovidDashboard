@@ -74,7 +74,7 @@ footer {
 
 .darkmode footer {
   background-color: #121212;
-  padding-bottom: 0;
+  padding-bottom: 30px;
 }
 
 .darkmode footer .sitemap .entry {
@@ -97,6 +97,5 @@ footer {
 }
 
 .darkmode .footer-main {
-  background-color: rgb(64,64,64);
   margin: 0;
 }

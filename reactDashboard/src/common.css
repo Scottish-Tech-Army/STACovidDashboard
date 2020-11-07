@@ -43,4 +43,12 @@
 
 .link {
   color: #121212;
+  font-weight: bold;
+}
+
+.darkmode .team-members .link,
+.darkmode .about-us-details .link,
+.darkmode .data-sources .link {
+  color: #f2f2f2;
+  font-weight: bold;
 }

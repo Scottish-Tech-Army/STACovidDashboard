@@ -124,7 +124,7 @@ function AboutUs() {
   const sortedVendors = createMemberLinks(vendors);
 
   return (
-    <div  fluid="true" className="about-us">
+    <div fluid="true" className="about-us">
       <div className="about-us-details">
         <hr className="full-width-hr" />
         <h1>About us</h1>

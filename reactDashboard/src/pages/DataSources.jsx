@@ -6,9 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const DataSources = () => {
   return (
     <div className="data-sources">
+      <hr className="full-width-hr" />
       <h1>Data sources and attributions</h1>
       <hr className="full-width-hr" />
-      <ul>
+      <ul className="data-sources-list">
         <li>
           Routemap information:
           <a
@@ -99,7 +100,7 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
-      <hr />
+      <hr className="full-width-hr"/>
       <DataDefinitions />
     </div>
   );

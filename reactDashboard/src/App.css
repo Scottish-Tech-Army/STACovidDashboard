@@ -1,3 +1,7 @@
+.darkmode {
+  background-color: #121212;
+}
+
 .full-screen {
   background-color: #ffffff;
 }
@@ -49,8 +53,6 @@ header {
 
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
-  margin-top: 8px;
-  margin-bottom: 8px;
 }
 
 .darkmode .underHeatmapSelector {
@@ -60,32 +62,32 @@ header {
 .about-us,
 .accessibility-page,
 .data-sources {
-  margin: 0 15px;
+  padding: 0 15px;
   text-align: left;
 }
 
 .darkmode .about-us,
 .darkmode .accessibility-page,
 .darkmode .data-sources {
-  background-color: #121212;
+  background-color: #121212 !important;
   color: #f2f2f2;
 }
 
-.data-sources {
-  padding-bottom: 3vh;
-}
-
-.about-us-details,
-.accessibility-intro,
-.accessibility-details {
-  padding-bottom: 30px;
-}
-
-/* .about-us h1,
-.about-us h2, */
+.about-us h1,
+.about-us h2,
 .accessibility-page h1,
+.accessibility-page h2,
 .data-sources h1 {
-  padding-top: 2vh;
+  font-size: 1rem;
+  padding: 25px;
+  background-color: #133a53;
+  color: #ffffff;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.data-sources-list {
+  min-height: 40vh;
 }
 
 .accessibility-page ul {
@@ -96,30 +98,6 @@ header {
 
 .accessibility-intro li {
   padding-left: 20px;
-}
-
-.accessibility-page .browsers {
-  font-style: italic;
-  padding-left: 20px;
-  margin-bottom: 15px;
-}
-
-.accessibility-page #browsers-list {
-  margin-bottom: 5px;
-}
-
-.about-us .name {
-  /* color: #3c3c3b;
-  font-size: 16pt; */
-}
-
-.team-members {
-  /* justify-content: left; */
-}
-
-.widgets-block {
-  background-color: #f2f2f2;
-  padding: 0 0 40px 0;
 }
 
 button.MuiButtonBase-root {

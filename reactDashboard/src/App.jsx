@@ -174,17 +174,17 @@ const App = () => {
             />
           </Route>
           <Route path={URL_ACCESSIBILITY}>
-            <Accessibility darkmode={darkmode}/>
+            <Accessibility />
           </Route>
           <Route path={URL_DATA_SOURCES}>
-            <DataSources darkmode={darkmode}/>
+            <DataSources />
           </Route>
           <Route path={URL_ABOUT_US}>
-            <AboutUs darkmode={darkmode}/>
+            <AboutUs/>
           </Route>
           <Route path="*">{() => <Redirect to="/" />}</Route>
         </Switch>
-        <Footer darkmode={darkmode} />
+        <Footer />
       </Router>
     </div>
   );
