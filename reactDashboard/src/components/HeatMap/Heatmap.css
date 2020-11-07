@@ -6,7 +6,7 @@
 }
 
 .heatmap-container {
-  padding-bottom: 15px;
+  padding: 0;
 }
 
 .heatmap table th {
@@ -16,7 +16,6 @@
   z-index: 2;
   background-color: #ffffff;
   color: #133a53;
-  padding: 10px 20px 0;
 }
 
 .darkmode .table thead th {
@@ -39,7 +38,6 @@
 
 .darkmode .heatmap table th {
   background-color: rgb(64,64,64);
-  padding: 0 20px;
 }
 
 .heatmap table th .subheading {
@@ -48,7 +46,6 @@
 
 .heatmap table tr.area td {
   border: 0;
-  padding: 0 20px;
   vertical-align: middle;
 }
 
@@ -125,6 +122,7 @@
   padding-top: 0;
   padding-bottom: 0;
   margin-bottom: 10px;
+  margin-left: 0;
   border: 1px solid darkgrey;
 }
 
@@ -143,6 +141,7 @@
 .heatmapScale .col.smallscale {
   display: none;
 }
+
 @media all and (max-width: 810px) {
   .heatmapScale .col.smallscale {
     display: inline;
