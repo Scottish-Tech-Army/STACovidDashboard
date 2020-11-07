@@ -149,7 +149,7 @@ const RegionGeoMap = ({
     const UNSELECTED_COLOUR = "#000000";
     const BORDER_COLOUR = "#000000";
     const DARK_SELECTED_COLOUR = "#c1def1";
-    const DARK_BORDER_COLOUR = "ffffff";
+    const DARK_BORDER_COLOUR = "#ffffff";
 
     function getRegionStyle(featureCode) {
       return {

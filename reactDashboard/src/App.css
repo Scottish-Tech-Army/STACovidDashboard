@@ -1,3 +1,52 @@
+.full-screen {
+  background-color: #ffffff;
+}
+
+.darkmode .container-fluid {
+  background-color: #121212;
+}
+
+header {
+  padding-top: 10px;
+}
+
+.darkmode header {
+  background-color: #121212;
+}
+
+.darkmode .region-selector-label {
+  color: #f2f2f2;
+}
+
+.heatmaps-row,
+.region-page-top-row {
+  padding: 15px 10px;
+  margin: 0;
+  background-color: #f2f2f2
+}
+
+.darkmode .region-page-top-row {
+  background-color: rgb(56,56,56);
+}
+
+.geo-map-column {
+  padding-left: 0;
+}
+
+.region-tiles-column {
+  padding-top: 15px;
+  background-color: #ffffff;
+}
+
+.darkmode .region-tiles-column {
+  border-radius: 10px;
+  background-color: #121212
+}
+
+.darkmode .heatmaps-row {
+  background-color: #262626;
+}
+
 .underHeatmapSelector {
   border: 1px solid #2a84bb;
   margin-top: 8px;
@@ -8,41 +57,22 @@
   border: 1px solid #cccccc;
 }
 
-.full-width-hr {
-  border: 1px solid #2a84bb;
-  margin: 10px 0;
-  padding: 0;
-}
-
-.full-screen {
-  background-color: #ffffff;
-}
-
-.link {
-  color: #3c3c3b;
-  font-weight: bold;
-  text-decoration: none;
-}
-
 .about-us,
 .accessibility-page,
 .data-sources {
+  margin: 0 15px;
   text-align: left;
-  padding-top: 3vh;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
-.accessibility-page {
+.darkmode .about-us,
+.darkmode .accessibility-page,
+.darkmode .data-sources {
   background-color: #121212;
+  color: #f2f2f2;
 }
 
 .data-sources {
   padding-bottom: 3vh;
-}
-
-.darkmode .data-sources {
-  background-color: #121212;
 }
 
 .about-us-details,
@@ -51,15 +81,11 @@
   padding-bottom: 30px;
 }
 
-.about-us h1,
-.about-us h2,
+/* .about-us h1,
+.about-us h2, */
 .accessibility-page h1,
 .data-sources h1 {
   padding-top: 2vh;
-}
-
-.darkmode .about-us {
-  background-color: #121212;
 }
 
 .accessibility-page ul {
@@ -83,12 +109,12 @@
 }
 
 .about-us .name {
-  color: #3c3c3b;
-  font-size: 16pt;
+  /* color: #3c3c3b;
+  font-size: 16pt; */
 }
 
 .team-members {
-  justify-content: left;
+  /* justify-content: left; */
 }
 
 .widgets-block {
@@ -103,7 +129,6 @@ button.MuiButtonBase-root {
 }
 
 .darkmode button.MuiButtonBase-root {
-  background-color: inherit;
   color: #f2f2f2;
   border-color: #f2f2f2;
 }
@@ -112,30 +137,4 @@ button.MuiButtonBase-root:hover {
   box-shadow: none;
   background-color: #f2f2f2;
   color: rgb(64,64,64)
-}
-
-.darkmode .container-fluid {
-  background-color: #121212;
-}
-
-.heatmaps-row {
-  background-color: #f2f2f2;
-  padding: 20px 10px;
-  margin: 0;
-}
-
-.darkmode .heatmaps-row {
-  background-color: #262626;
-}
-
-header {
-  padding-top: 10px;
-}
-
-.darkmode header {
-  background-color: #121212;
-}
-
-.darkmode .region-selector-label {
-  color: #c1def1;
 }

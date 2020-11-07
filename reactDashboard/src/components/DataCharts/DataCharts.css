@@ -89,6 +89,12 @@
   border-color: #cccccc;
 }
 
+.sonification-play-button h5 {
+  font-size: 0.75rem;
+  color: #6c6c6c;
+  margin-bottom: 0;
+}
+
 .darkmode .sonification-play-button h5 {
   color: #f2f2f2;
 }
@@ -97,10 +103,10 @@
   box-shadow: 5px 5px 5px #aaaaaa;
 }
 
-.darkmode .sonification-play-button:hover {
+.darkmode .sonification-play-button:hover,
+.darkmode .sonification-play-button h5:hover {
   box-shadow: none;
-  background-color: #f2f2f2;
-  color: rgb(64,64,64);
+  background-color: #133a53;
 }
 
 .sonification-play-button.col {
@@ -110,16 +116,10 @@
   background: none;
 }
 
-.sonification-play-button h5 {
-  font-size: 0.75rem;
-  color: #6c6c6c;
-  margin-bottom: 0;
-}
-
 #date-range-slider-position {
   position: absolute;
   bottom: 0 !important;
-  max-width: 85vw;
+  max-width: 90vw;
   right: 40px;
   left: 40px;
   padding: 0 0 70px;

@@ -105,8 +105,8 @@ const Regional = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row>
-          <Col xs={12} lg={4}>
+        <Row className="region-page-top-row">
+          <Col className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
@@ -115,10 +115,8 @@ const Regional = ({
               darkmode={darkmode}
             />
           </Col>
-          <Col xs={12} lg={8}>
+          <Col className="region-tiles-column" xs={12} lg={8}>
             <hr className="d-flex d-md-none full-width-hr" />
-            <strong className="region-selector-label">Select region (or select on map):</strong>
-
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}

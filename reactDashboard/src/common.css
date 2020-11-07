@@ -31,10 +31,16 @@
   font-weight: bold;
 }
 
-.hidden-chart {
-  display: none;
+.full-width-hr {
+  border: 1px solid #2a84bb;
+  margin: 10px 0;
+  padding: 0;
 }
 
 .darkmode .full-width-hr {
   border: 1px solid #b3b3b3;
+}
+
+.link {
+  color: #121212;
 }

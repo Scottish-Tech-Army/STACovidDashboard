@@ -26,7 +26,7 @@
 }
 
 .darkmode .single-value {
-  background-color: rgb(64,64,64);
+  background-color: rgb(56,56,56);
   box-shadow: none;
 }
 
@@ -49,10 +49,11 @@
 
 .region-single-value-bar,
 .single-value-bar {
-  padding: 10px;
+  padding: 0;
   margin: 0;
   margin-top: 0;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   background-color: #f2f2f2;
   position: relative;

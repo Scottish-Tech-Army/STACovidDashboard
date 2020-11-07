@@ -32,6 +32,8 @@ const RegionDropdown = ({
   }
 
   return (
+    <div className="region-selector-row">
+    <strong className="region-selector-label">Select region (or select on map):</strong>
     <Dropdown onSelect={(eventKey) => setRegionCode(eventKey)}>
       <Dropdown.Toggle variant="primary" className="selected-region">
         {regionCode == null
@@ -67,6 +69,7 @@ const RegionDropdown = ({
         )}
       </Dropdown.Menu>
     </Dropdown>
+    </div>
   );
 };
 

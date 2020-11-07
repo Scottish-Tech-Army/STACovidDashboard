@@ -33,15 +33,15 @@
 .darkmode .btn-primary:not(:disabled):not(.disabled):active,
 .darkmode .btn-primary:not(:disabled):not(.disabled).active:focus {
   color: #121212;
-  opacity: 75%;
   background-color: #c1def1;
   border-color: #c1def1;
   font-weight: bold;
 }
 
 .heatmap-selector .toggle-button-group {
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 5px 0;
   width: 100%;
+  padding: 0 10px;
 }
 
 .heatmap-selector {

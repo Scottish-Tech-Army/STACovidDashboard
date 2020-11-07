@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const AboutUs = () => {
+function AboutUs() {
   const teamMembers = [
     {
       name: "Rhi Batstone",
@@ -124,8 +124,9 @@ const AboutUs = () => {
   const sortedVendors = createMemberLinks(vendors);
 
   return (
-    <div fluid="true" className="about-us">
+    <div  fluid="true" className="about-us">
       <div className="about-us-details">
+        <hr className="full-width-hr" />
         <h1>About us</h1>
         <hr className="full-width-hr" />
         <p>
@@ -134,6 +135,7 @@ const AboutUs = () => {
         </p>
       </div>
       <div className="about-us-details">
+        <hr className="full-width-hr" />
         <h2>The Scottish Tech Army</h2>
         <hr className="full-width-hr" />
         <p>
@@ -147,6 +149,7 @@ const AboutUs = () => {
         </p>
       </div>
       <div className="about-us-details">
+        <hr className="full-width-hr" />
         <h2>Meet the team</h2>
         <hr className="full-width-hr" />
         <p>
@@ -168,6 +171,7 @@ const AboutUs = () => {
         </Container>
       </div>
       <div className="about-us-details">
+        <hr className="full-width-hr" />
         <h2>Thanks to</h2>
         <hr className="full-width-hr" />
         <p>

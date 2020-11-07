@@ -25,6 +25,12 @@
   width: 100%;
 }
 
+.darkmode #map,
+.darkmode #regionmap {
+  border: 1px solid darkgray;
+  border-radius: 1%;
+}
+
 .region-popup {
   background-color: #000000;
   color: #ffffff;
@@ -65,7 +71,7 @@ div.leaflet-popup-content-wrapper {
   background-color: rgb(64,64,64);
   color: #f2f2f2;
   border: 1px solid #b3b3b3;
-  border-radius: 10px;
+  border-radius: 2%;
 }
 .legend .legend-title {
   font-weight: bold;
@@ -101,6 +107,6 @@ div.leaflet-popup-content-wrapper {
   color: #f2f2f2;
 }
 
-legend {
-  color: #c1def1;
+.darkmode legend {
+  color: #f2f2f2;
 }

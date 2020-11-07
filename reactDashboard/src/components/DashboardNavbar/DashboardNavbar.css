@@ -92,7 +92,6 @@
 
 .dark-mode-btn {
   background-color: #287db2;
-  cursor: pointer;
   border-radius: 50%;
   height: 100%;
   width: 100%;
@@ -101,8 +100,17 @@
   margin: auto 20px 8px auto;
 }
 
+.dark-mode-btn:hover {
+  background-color: #c1def1;
+  cursor: pointer;
+}
+
 .darkmode .dark-mode-btn {
   color: #fd8d3c;
   background-color: #121212;
-  border: 1px solid #121212;
+}
+
+.darkmode .dark-mode-btn:hover {
+  color: #121212;
+  background-color: #fd8d3c;
 }
