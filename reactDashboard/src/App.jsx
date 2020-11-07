@@ -74,8 +74,7 @@ const App = () => {
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
-  // const [darkmode, setDarkmode] = useState(false);
-  const [darkmode, setDarkmode] = useState(true);
+  const [darkmode, setDarkmode] = useState(false);
 
   // Load and parse datasets
   useEffect(() => {
