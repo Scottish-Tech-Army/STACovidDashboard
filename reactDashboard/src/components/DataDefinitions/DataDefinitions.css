@@ -67,10 +67,13 @@
   color: #2a84bb;
 }
 
-.darkmode .card-body {
-  background-color: darkgray;
-  opacity: 75%;
-  color: #121212;
+.data-definitions .card-body {
+
+}
+
+.darkmode .data-definitions .card-body {
+  background-color: #262626;
+  color: #f2f2f2;
 }
 
 .darkmode hr {
