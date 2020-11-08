@@ -63,6 +63,15 @@
   font-weight: bold;
 }
 
+.darkmode .data-definitions .defined-term,
+.darkmode .data-definitions .definitions-heading {
+  color: #c1def1;
+}
+
+.darkmode .data-definitions hr {
+  border: 1px solid #cccccc;
+}
+
 .data-definitions-body .source-attribution {
   color: #2a84bb;
 }
