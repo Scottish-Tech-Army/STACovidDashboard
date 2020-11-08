@@ -91,7 +91,6 @@ describe("heatmap selection", () => {
 
   function checkHeatmapHealthBoardsBoundaries() {
     expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
-    expect(dashboard.heatmapBoundariesCount).toHaveText("14 Boards");
     const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
     expect(heatmapBoundariesValues).toHaveLength(15);
     expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
@@ -101,7 +100,6 @@ describe("heatmap selection", () => {
 
   function checkHeatmapCouncilAreasBoundaries() {
     expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    expect(dashboard.heatmapBoundariesCount).toHaveText("32 Areas");
     const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
     expect(heatmapBoundariesValues).toHaveLength(33);
     expect(heatmapBoundariesValues[0]).toHaveText("Scotland");

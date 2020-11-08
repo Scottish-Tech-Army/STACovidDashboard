@@ -24,7 +24,7 @@ export default class Page {
   }
 
   get sitemapLinkSummaryDashboard() {
-    return $(".sitemap-container").$("a.link=Summary Dashboard");
+    return $(".sitemap-container").$("a.link=Summary Statistics");
   }
 
   get navbarLinkRegionalInsights() {
@@ -32,7 +32,7 @@ export default class Page {
   }
 
   get navbarLinkSummaryDashboard() {
-    return $(".dashboard-navbar").$(".nav-link=Summary Dashboard");
+    return $(".dashboard-navbar").$(".nav-link=Summary Statistics");
   }
 
   get navbarLinkLogo() {
