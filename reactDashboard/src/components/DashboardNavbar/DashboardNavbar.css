@@ -130,11 +130,7 @@
 }
 
 @media screen and (max-width: 1080px) {
-  /* .dashboard-navbar .heading-container {
-    justify-content: space-between;
-  } */
   .dashboard-navbar .heading {
-    /* display: none; */
     font-size: 0.75rem;
   }
 }

@@ -205,7 +205,7 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="dailyDeaths"
-            title="DAILY FATALITIES"
+            title="DAILY DEATHS"
             subtitle={guardMissingData(
               getRelativeReportedDate(dailyDeaths.date)
             )}
@@ -216,7 +216,7 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyDeaths"
-            title="FATALITIES THIS WEEK"
+            title="DEATHS THIS WEEK"
             value={guardMissingData(weeklyDeaths)}
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
@@ -224,7 +224,7 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="totalDeaths"
-            title="TOTAL FATALITIES"
+            title="TOTAL DEATHS"
             subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalDeaths.value)}
             tooltip="These are the total deaths since the COVID-19 Pandemic began."

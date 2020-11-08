@@ -35,8 +35,8 @@ test("singleValueBar renders default data when dataset is null", async () => {
 
   checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
   checkSingleValue("totalCases", "0", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "0", "reported on 01 January, 1999");
-  checkSingleValue("totalFatalities", "0", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalDeaths", "0", "reported since 28 February, 2020");
   checkSingleValue("fatalityCaseRatio", "0");
 });
 
@@ -54,9 +54,9 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
 
   checkSingleValue("dailyCases", "1,167", "reported today");
   checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "15", "reported today");
+  checkSingleValue("dailyDeaths", "15", "reported today");
   checkSingleValue(
-    "totalFatalities",
+    "totalDeaths",
     "2,609",
     "reported since 28 February, 2020"
   );
@@ -77,9 +77,9 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
 
   checkSingleValue("dailyCases", "1,167", "reported yesterday");
   checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "15", "reported yesterday");
+  checkSingleValue("dailyDeaths", "15", "reported yesterday");
   checkSingleValue(
-    "totalFatalities",
+    "totalDeaths",
     "2,609",
     "reported since 28 February, 2020"
   );
@@ -104,9 +104,9 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
     "Not available",
     "reported since 28 February, 2020"
   );
-  checkSingleValue("dailyFatalities", "Not available", "Not available");
+  checkSingleValue("dailyDeaths", "Not available", "Not available");
   checkSingleValue(
-    "totalFatalities",
+    "totalDeaths",
     "Not available",
     "reported since 28 February, 2020"
   );

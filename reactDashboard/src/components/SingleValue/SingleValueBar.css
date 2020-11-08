@@ -82,6 +82,17 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
+  .region-single-value-container .single-value-heading {
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 30%;
+  }
+  .region-single-value-container .single-value-number {
+    margin-left: 20px;
+  }
+  .region-single-value-container .single-value {
+    height: 175px;
+  }
   .single-value-container {
     width: 50%;
   }
@@ -93,6 +104,12 @@
   }
   .region-single-value-container {
     width: 100%;
+  }
+  .region-single-value-container .single-value {
+    height: 125px;
+  }
+  .region-single-value-container .single-value-heading {
+    height: 20%;
   }
 }
 

@@ -58,8 +58,8 @@ const MISSING_DATA = "Not available";
 function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
   const [dailyCases, setDailyCases] = useState(emptyDate);
   const [totalCases, setTotalCases] = useState(emptyDate);
-  const [dailyFatalities, setDailyFatalities] = useState(emptyDate);
-  const [totalFatalities, setTotalFatalities] = useState(emptyDate);
+  const [dailyDeaths, setDailyDeaths] = useState(emptyDate);
+  const [totalDeaths, setTotalDeaths] = useState(emptyDate);
   const [fatalityCaseRatio, setFatalityCaseRatio] = useState(0);
 
 
@@ -73,8 +73,8 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
       if (results !== null) {
         setDailyCases(results.cases);
         setTotalCases(results.cumulativeCases);
-        setDailyFatalities(results.deaths);
-        setTotalFatalities(results.cumulativeDeaths);
+        setDailyDeaths(results.deaths);
+        setTotalDeaths(results.cumulativeDeaths);
         setFatalityCaseRatio(results.fatalityCaseRatio);
       }
     }
@@ -102,22 +102,22 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
       </div>
       <div className="p-2 single-value-container">
         <SingleValue
-          id="dailyFatalities"
-          title="DAILY FATALITIES"
+          id="dailyDeaths"
+          title="DAILY DEATHS"
           subtitle={guardMissingData(
-            getRelativeReportedDate(dailyFatalities.date)
+            getRelativeReportedDate(dailyDeaths.date)
           )}
-          value={guardMissingData(dailyFatalities.value)}
-          tooltip="These are the fatalities reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
+          value={guardMissingData(dailyDeaths.value)}
+          tooltip="These are the Deaths reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
       <div className="p-2 single-value-container">
         <SingleValue
-          id="totalFatalities"
-          title="TOTAL FATALITIES"
+          id="totalDeaths"
+          title="TOTAL DEATHS"
           subtitle={SUBTITLE_TOTAL}
-          value={guardMissingData(totalFatalities.value)}
-          tooltip="These are the total number of fatalities where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
+          value={guardMissingData(totalDeaths.value)}
+          tooltip="These are the total number of Deaths where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
         />
       </div>
       <div className="p-2 single-value-container">
