@@ -129,7 +129,17 @@
   display: none;
 }
 
-@media screen and (max-width: 975px) {
+@media screen and (max-width: 1080px) {
+  /* .dashboard-navbar .heading-container {
+    justify-content: space-between;
+  } */
+  .dashboard-navbar .heading {
+    /* display: none; */
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
   .dashboard-navbar .heading-container {
     justify-content: flex-end;
   }
