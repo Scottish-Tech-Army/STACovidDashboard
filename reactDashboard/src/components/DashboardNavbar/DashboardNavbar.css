@@ -101,6 +101,10 @@
   border-top-right-radius: 10px;
 }
 
+.dashboard-navbar .heading-container.collapse:not(.show) {
+  display: none;
+}
+
 .dashboard-navbar .heading h1 {
   font-size: 2em;
   margin-bottom: 0;
@@ -138,7 +142,22 @@
   .navbar-nav {
     margin: 0 0 0 auto;
   }
+  .dashboard-navbar .heading-container {
+    flex-direction: column;
+    padding-right: 0;
+  }
   .darkmode-btn-toggle {
     margin: auto 20px auto auto;
+  }
+  .navbar-links a.nav-link.selected,
+  .navbar-links a.nav-link {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    width: 90vw;
+    text-align: center;
+    padding-left: 10px;
+  }
+  .navbar-links {
+    margin: 10px auto;
   }
 }

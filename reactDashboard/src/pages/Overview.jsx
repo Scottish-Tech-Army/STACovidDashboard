@@ -120,7 +120,7 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="widgets_block">
+        <Row>
           <Col
             xs={12}
             md={12}
@@ -155,9 +155,6 @@ const Overview = ({
                   fullscreenEnabled={zoomGeoMap}
                   darkmode={darkmode}
                 />
-              </Col>
-              <Col className="d-block d-lg-none">
-                <hr className="underHeatmapSelector" />
               </Col>
               <Col
                 xs={zoomGeoMap ? 0 : 12}
