@@ -129,7 +129,7 @@
   display: none;
 }
 
-@media screen and (max-width: 1185px) {
+@media screen and (max-width: 975px) {
   .dashboard-navbar .heading-container {
     justify-content: flex-end;
   }
