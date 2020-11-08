@@ -29,7 +29,7 @@
 
 .data-definitions button.btn:active,
 .data-definitions button.btn:focus {
-  outline: none !important;
+  outline: none;
   box-shadow: none;
 }
 
@@ -51,6 +51,11 @@
 
 .data-definitions .data-definitions-body li {
   padding-bottom: 5px;
+  list-style: none;
+}
+
+.data-definitions .data-definitions-body ul {
+  padding-left: 10px;
 }
 
 .data-definitions .data-definitions-link {
@@ -89,6 +94,6 @@
   border: none;
 }
 
-.data-definitions .definition-paragraph {
-  padding-bottom: 20px !important;
+.data-definitions p.definition-paragraph {
+  padding-bottom: 20px;
 }

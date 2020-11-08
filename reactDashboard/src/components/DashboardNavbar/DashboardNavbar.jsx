@@ -32,19 +32,27 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
           alt="Scottish Tech Army Logo"
         />
       </Link>
+      <Nav className="hide-darkmode">
+      <FontAwesomeIcon
+        icon={darkmode ? faSun : faMoon}
+        className="darkmode-btn-toggle"
+        size="2x"
+        onClick={() => setDarkmode((value) => !value)}
+      />
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      </Nav>
       <Navbar.Collapse id="basic-navbar-nav" className="heading-container">
         <Navbar.Brand className="heading">
           <h1>Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
         <Nav className="navbar-links">
-          {navLink(URL_OVERVIEW, "Summary Dashboard")}
+          {navLink(URL_OVERVIEW, "Summary Statistics")}
           {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
       <FontAwesomeIcon
         icon={darkmode ? faSun : faMoon}
-        className="dark-mode-btn"
+        className="darkmode-btn"
         size="2x"
         onClick={() => setDarkmode((value) => !value)}
       />

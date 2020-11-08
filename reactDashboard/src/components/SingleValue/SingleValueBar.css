@@ -18,16 +18,11 @@
   font-size: 2.5rem;
   color: #2a84bb;
   font-weight: bold;
-  margin-left: 40px;
+  margin-left: 30px;
 }
 
 .darkmode .single-value-number {
   color: #f2f2f2;
-}
-
-.darkmode .single-value {
-  background-color: rgb(56,56,56);
-  box-shadow: none;
 }
 
 .single-value-line {
@@ -37,13 +32,15 @@
 .single-value {
   box-shadow: 10px 10px 5px #aaaaaa;
   padding: 10px 0 0;
-  height: 100%;
+  height: 125px;
   background-color: #ffffff;
   color: #133a53;
   position: relative;
 }
 
 .darkmode .single-value {
+  background-color: rgb(56,56,56);
+  box-shadow: none;
   color: #c1def1;
 }
 
@@ -99,17 +96,29 @@
   }
 }
 
+@media screen and (max-width: 575px) {
+  .single-value {
+    height: 100px;
+  }
+  .single-value-heading {
+    margin-left: 20px;
+    padding-right: auto;
+    font-size: 0.75rem;
+  }
+  .subtitle {
+    font-size: 0.65rem;
+  }
+  .single-value-number {
+    font-size: 1.75rem;
+    margin-left: 20px;
+  }
+}
+
 @media screen and (max-width: 500px) {
   .single-value-bar {
     flex-direction: column;
   }
   .single-value-container {
     width: 100%;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .single-value-number {
-    font-size: 2rem;
   }
 }

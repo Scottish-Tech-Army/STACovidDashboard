@@ -127,7 +127,7 @@
 
 #date-range-slider-position {
   position: absolute;
-  bottom: 0 !important;
+  bottom: 0;
   max-width: 90vw;
   right: 40px;
   left: 40px;
