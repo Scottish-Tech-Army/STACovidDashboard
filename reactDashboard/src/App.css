@@ -108,7 +108,7 @@ header {
 }
 
 .darkmode .about-us-details ul,
-.accessibility-details ul {
+.darkmode .accessibility-details ul {
   background-color: rgb(50, 50, 50);
 }
 
