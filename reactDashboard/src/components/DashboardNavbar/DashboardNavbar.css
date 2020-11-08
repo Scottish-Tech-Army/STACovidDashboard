@@ -96,7 +96,7 @@
 
 .darkmode .dashboard-navbar {
   background-color: #f2f2f2;
-  opacity: 75%;
+  opacity: 0.75;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }

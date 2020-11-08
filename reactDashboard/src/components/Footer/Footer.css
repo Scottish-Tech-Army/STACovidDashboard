@@ -88,7 +88,7 @@ footer {
 
 .darkmode .footer-base {
   background-color: #f2f2f2;
-  opacity: 75%;
+  opacity: 0.75;
   color: #121212;
   margin: 0;
   padding: 20px 0 40px;
