@@ -23,7 +23,7 @@ const findNavlink = (linkText) =>
   Array.from(document.querySelectorAll(".navbar-links a.nav-link")).find(
     (el) => el.textContent === linkText
   );
-const overviewNavlink = () => findNavlink("Summary Dashboard");
+const overviewNavlink = () => findNavlink("Summary Statistics");
 const regionalNavlink = () => findNavlink("Regional Insights");
 
 describe("nav links content and highlighting", () => {
