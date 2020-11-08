@@ -99,7 +99,8 @@ header {
 }
 
 .darkmode .accessibility-details li,
-.darkmode .about-us-details li {
+.darkmode .about-us-details li,
+.darkmode .data-sources-list li {
   background-color: rgb(50, 50, 50);
 }
 
@@ -108,7 +109,8 @@ header {
 }
 
 .darkmode .about-us-details ul,
-.darkmode .accessibility-details ul {
+.darkmode .accessibility-details ul,
+.darkmode .data-sources .data-sources-list {
   background-color: rgb(50, 50, 50);
 }
 
