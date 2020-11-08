@@ -33,9 +33,6 @@ class DashboardPage extends Page {
   get heatmapBoundariesTitle() {
     return this.heatmapHeaderRow.$("th:nth-child(1) div:nth-child(1)");
   }
-  get heatmapBoundariesCount() {
-    return this.heatmapHeaderRow.$("th:nth-child(1) div.subheading");
-  }
   get selectHealthBoardsButton() {
     return $(".heatmap-selector #healthBoards");
   }
@@ -44,9 +41,6 @@ class DashboardPage extends Page {
   }
   get heatmapValueTypeTitle() {
     return this.heatmapHeaderRow.$("th:nth-child(2) div:nth-child(1)");
-  }
-  get heatmapValueTypeCount() {
-    return this.heatmapHeaderRow.$("th:nth-child(2) div.subheading");
   }
   get selectCasesButton() {
     return $(".heatmap-selector #cases");
@@ -72,11 +66,11 @@ class DashboardPage extends Page {
   get totalCases() {
     return $(".single-value-bar #totalCases");
   }
-  get dailyFatalities() {
-    return $(".single-value-bar #dailyFatalities");
+  get dailyDeaths() {
+    return $(".single-value-bar #dailyDeaths");
   }
-  get totalFatalities() {
-    return $(".single-value-bar #totalFatalities");
+  get totalDeaths() {
+    return $(".single-value-bar #totalDeaths");
   }
   get fatalityCaseRatio() {
     return $(".single-value-bar #fatalityCaseRatio");

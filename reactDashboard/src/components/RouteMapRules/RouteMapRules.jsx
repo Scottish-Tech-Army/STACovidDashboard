@@ -52,7 +52,6 @@ const RouteMapRules = () => {
                   "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
                   "latest Scottish Government guidance"
                 )}
-                .
               </h2>
             </Route>
           </Switch>

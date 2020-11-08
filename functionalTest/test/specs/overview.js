@@ -30,8 +30,8 @@ describe("Verify Single Value Bar Visibility", () => {
     dashboard.open();
     expect(dashboard.dailyCases).toBeDisplayed();
     expect(dashboard.totalCases).toBeDisplayed();
-    expect(dashboard.dailyFatalities).toBeDisplayed();
-    expect(dashboard.totalFatalities).toBeDisplayed();
+    expect(dashboard.dailyDeaths).toBeDisplayed();
+    expect(dashboard.totalDeaths).toBeDisplayed();
     expect(dashboard.fatalityCaseRatio).toBeDisplayed();
   });
 });

@@ -58,7 +58,7 @@ const Footer = ({ darkmode }) => {
           >
             <div className="sitemap">
               <div className="title">DASHBOARDS</div>
-              {sitemapEntry(URL_OVERVIEW, "Summary Dashboard")}
+              {sitemapEntry(URL_OVERVIEW, "Summary Statistics")}
               {sitemapEntry(URL_REGIONAL, "Regional Insights")}
               {sitemapEntry(URL_DATA_SOURCES, "Data Sources")}
             </div>

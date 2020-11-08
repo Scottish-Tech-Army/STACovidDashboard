@@ -23,7 +23,7 @@ export default class Page {
     return $(".sitemap-container").$("a.link=Regional Insights");
   }
 
-  get sitemapLinkSummaryDashboard() {
+  get sitemapLinkSummaryStatistics() {
     return $(".sitemap-container").$("a.link=Summary Statistics");
   }
 
@@ -31,7 +31,7 @@ export default class Page {
     return $(".dashboard-navbar").$(".nav-link=Regional Insights");
   }
 
-  get navbarLinkSummaryDashboard() {
+  get navbarLinkSummaryStatistics() {
     return $(".dashboard-navbar").$(".nav-link=Summary Statistics");
   }
 
