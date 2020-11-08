@@ -54,6 +54,13 @@ class DashboardPage extends Page {
   get heatmapValueTypeValues() {
     return $$(".heatmap tbody tr.area td:nth-child(2)");
   }
+  get heatmapHeatbarValues() {
+    return $$(".heatmap tbody tr.area td:nth-child(3)");
+  }
+  heatbarLines(rowIndex) {
+    return this.heatmapHeatbarValues[rowIndex].$(".heatbar").$$("line");
+  }
+
   get geoMapArea() {
     return $$(" div.leaflet-pane > svg > g > path");
   }
@@ -85,7 +92,7 @@ class DashboardPage extends Page {
     return $(".quick-select-dates button#" + time);
   }
   get sliderTrack() {
-    return $('span.MuiSlider-track');
+    return $("span.MuiSlider-track");
   }
   get fromDate() {
     return $$("span.MuiSlider-markLabel")[0];
