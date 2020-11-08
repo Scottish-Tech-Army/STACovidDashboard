@@ -67,13 +67,13 @@
 
 .navbar-links a.nav-link.selected {
   color: #121212;
-  text-decoration: none;
   background-color: #f2f2f2;
+  text-decoration: none;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
-.darkmode .nav-link.selected {
+.darkmode .navbar-links a.nav-link.selected {
   background-color: #ffffff;
 }
 
