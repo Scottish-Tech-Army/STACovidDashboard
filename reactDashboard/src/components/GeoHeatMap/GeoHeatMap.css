@@ -26,9 +26,9 @@
 }
 
 .region-popup {
-  background-color: #000000;
   color: #ffffff;
   font-weight: bold;
+  font-size: 11px;
 }
 
 div.leaflet-tooltip {
@@ -88,6 +88,6 @@ div.leaflet-popup-content {
 }
 
 .map-cases-count {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: normal;
 }
