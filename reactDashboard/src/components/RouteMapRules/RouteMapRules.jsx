@@ -3,8 +3,6 @@ import "./RouteMapRules.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
-import { Switch, Route } from "react-router-dom";
 
 const RouteMapRules = () => {
   function createLink(url, text) {
@@ -24,34 +22,18 @@ const RouteMapRules = () => {
     <Container fluid className="d-flex flex-column">
       <Row>
         <Col xs="12" className="headline-banner">
-          <Switch>
-            <Route exact path={URL_OVERVIEW}>
-              <h2>
-                We are currently in{" "}
-                <span className="headline-banner-highlight">Phase 3</span> of
-                the Scottish Government's{" "}
-                {createLink(
-                  "https://www.gov.scot/coronavirus-covid-19/",
-                  "COVID-19 Route Map"
-                )}
-                .
-              </h2>
-            </Route>
-            <Route path={URL_REGIONAL}>
-              <h2>
-                There are a number of{" "}
-                <span className="headline-banner-highlight">
-                  Regional Restrictions
-                </span>{" "}
-                to help fight the pandemic. See the{" "}
-                {createLink(
-                  "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
-                  "latest Scottish Government guidance"
-                )}
-                .
-              </h2>
-            </Route>
-          </Switch>
+          <h2>
+            There are a number of{" "}
+            <span className="headline-banner-highlight">
+              Regional Restrictions
+            </span>{" "}
+            to help fight the pandemic. See the{" "}
+            {createLink(
+              "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
+              "latest Scottish Government guidance"
+            )}
+            .
+          </h2>
         </Col>
       </Row>
     </Container>
