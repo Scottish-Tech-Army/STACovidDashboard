@@ -8,7 +8,9 @@ describe("Covid-19 Dashboard", () => {
     expect(browser).toHaveTitle(title);
     expect(dashboard.imgLogo).toBeDisplayed();
     expect(dashboard.headingTitle).toHaveText("Scottish COVID-19 Statistics");
-    expect(dashboard.headlineBanner).toHaveTextContaining("Phase 3");
+    expect(dashboard.headlineBanner).toHaveTextContaining(
+      "Regional Restrictions to help fight the pandemic"
+    );
   });
 });
 
