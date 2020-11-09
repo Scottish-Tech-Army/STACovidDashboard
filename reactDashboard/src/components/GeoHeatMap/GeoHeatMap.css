@@ -108,6 +108,10 @@ div.leaflet-popup-content-wrapper {
   color: #f2f2f2;
 }
 
+.darkmode .leaflet-container {
+  background: #121212;
+}
+
 .darkmode legend {
   color: #f2f2f2;
 }
