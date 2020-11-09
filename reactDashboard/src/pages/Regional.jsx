@@ -116,7 +116,7 @@ const Regional = ({
             />
           </Col>
           <Col className="region-tiles-column" xs={12} lg={8}>
-            <hr className="d-flex d-md-none full-width-hr" />
+            <hr className="full-width-hr" />
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
