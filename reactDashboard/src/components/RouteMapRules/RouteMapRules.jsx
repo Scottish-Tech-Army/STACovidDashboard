@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Switch, Route } from "react-router-dom";
 
 const RouteMapRules = () => {
   function createLink(url, text) {
