@@ -14,6 +14,9 @@ import {
   addPlayStateChangeListener,
   deletePlayStateChangeListener,
 } from "../Utils/Sonification";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import { Tooltip as ReactBootstrapTooltip } from "react-bootstrap";
+import "../ToolTips/ToolTip.css";
 
 const SonificationPlayButton = ({
   seriesData = null,
@@ -57,21 +60,29 @@ const SonificationPlayButton = ({
   }
 
   return (
-    <button
-      type="button"
-      className="sonification-play-button"
-      onClick={handleAudio}
-      title={createTitle()}
+    <OverlayTrigger
+      overlay={
+        <ReactBootstrapTooltip id="tooltip">
+          {createTitle()}
+        </ReactBootstrapTooltip>
+      }
     >
-      <span>
-        <FontAwesomeIcon
-          icon={audioPlaying ? faVolumeMute : faVolumeUp}
-          size="2x"
-          color="#6c6c6c"
-        />
-        <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
-      </span>
-    </button>
+      <button
+        type="button"
+        className="sonification-play-button"
+        onClick={handleAudio}
+        aria-label={createTitle()}
+      >
+        <span>
+          <FontAwesomeIcon
+            icon={audioPlaying ? faVolumeMute : faVolumeUp}
+            size="2x"
+            color="#6c6c6c"
+          />
+          <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
+        </span>
+      </button>
+    </OverlayTrigger>
   );
 };
 
