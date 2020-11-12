@@ -147,29 +147,29 @@ test("getPhoneticPlaceNameByFeatureCode", async () => {
 
 // Contains both health board and council area feature codes
 const dailyNHSCsvData = `
-20200306,S08000031,place 1,0,21,0.21,1,10,0,31,0
-20200306,S08000022,place 2,1,22,0.22,2,20,0,32,0
-20200306,S12000013,place 3,1,23,0.23,3,30,0,33,0
-20200306,S92000003,Scotland,1,23,0.23,3,30,0,33,0
-20200309,S08000031,place 1,0,24,0.24,4,40,0,34,0
-20200309,S08000022,place 2,300,25,0.25,5,50,0,35,0
-20200309,S12000013,place 3,-8,26,0.26,6,60,0,36,0
-20200309,S92000003,Scotland,-8,26,0.26,6,60,0,36,0
-20200308,S08000031,place 1,0,27,0.27,7,70,0,37,0
-20200308,S08000022,place 2,201,28,0.28,8,80,0,38,0
-20200308,S12000013,place 3,26,29,0.29,9,90,0,39,0
-20200308,S92000003,Scotland,26,29,0.29,9,90,0,39,0
-20200307,S08000031,place 1,0,0,0,0,0,0,0,0
-20200307,S08000022,place 2,-1,-21,-0.21,-1,-10,0,-31,0
-20200307,S12000013,place 3,-1,-22,-0.22,-2,-20,0,-32,0
-20200307,S92000003,Scotland,-1,-22,-0.22,-2,-20,0,-32,0
+20200306,S08000031,place 1,0,21,0.21,1,10,0,31,0,0,0,0.1
+20200306,S08000022,place 2,1,22,0.22,2,20,0,32,0,0,0,1.1
+20200306,S12000013,place 3,1,23,0.23,3,30,0,33,0,0,0,2.1
+20200306,S92000003,Scotland,1,23,0.23,3,30,0,33,0,0,0,3.1
+20200309,S08000031,place 1,0,24,0.24,4,40,0,34,0,0,0,4.1
+20200309,S08000022,place 2,300,25,0.25,5,50,0,35,0,0,0,5.1
+20200309,S12000013,place 3,-8,26,0.26,6,60,0,36,0,0,0,6.1
+20200309,S92000003,Scotland,-8,26,0.26,6,60,0,36,0,0,0,7.1
+20200308,S08000031,place 1,0,27,0.27,7,70,0,37,0,0,0,8.1
+20200308,S08000022,place 2,201,28,0.28,8,80,0,38,0,0,0,9.1
+20200308,S12000013,place 3,26,29,0.29,9,90,0,39,0,0,0,10.1
+20200308,S92000003,Scotland,26,29,0.29,9,90,0,39,0,0,0,11.1
+20200307,S08000031,place 1,0,0,0,0,0,0,0,0,0,0,0
+20200307,S08000022,place 2,-1,-21,-0.21,-1,-10,0,-31,0,0,0,12.1
+20200307,S12000013,place 3,-1,-22,-0.22,-2,-20,0,-32,0,0,0,13.1
+20200307,S92000003,Scotland,-1,-22,-0.22,-2,-20,0,-32,0,0,0,14.1
 `;
 
 const dailyHealthBoardCsvLabels =
-  "Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+  "Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF";
 
 const dailyCouncilAreaCsvLabels =
-  "Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative";
+  "Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,TotalPillar1,TotalPillar2";
 
 const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
 const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
@@ -192,7 +192,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 10,
             cumulativeCases: 21,
             crudeRatePositive: 0.21,
-            cumulativeNegativeTests: 31,
+            positivePercentage: 0.1,
           })
           .set(Date.parse("2020-03-07"), {
             cases: 0,
@@ -200,7 +200,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 0,
             cumulativeCases: 0,
             crudeRatePositive: 0,
-            cumulativeNegativeTests: 0,
+            positivePercentage: 0,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 0,
@@ -208,7 +208,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 70,
             cumulativeCases: 27,
             crudeRatePositive: 0.27,
-            cumulativeNegativeTests: 37,
+            positivePercentage: 8.1,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 0,
@@ -216,7 +216,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 40,
             cumulativeCases: 24,
             crudeRatePositive: 0.24,
-            cumulativeNegativeTests: 34,
+            positivePercentage: 4.1,
           })
       )
       .set(
@@ -228,7 +228,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 20,
             cumulativeCases: 22,
             crudeRatePositive: 0.22,
-            cumulativeNegativeTests: 32,
+            positivePercentage: 1.1,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -236,7 +236,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -10,
             cumulativeCases: -21,
             crudeRatePositive: -0.21,
-            cumulativeNegativeTests: -31,
+            positivePercentage: 12.1,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 201,
@@ -244,7 +244,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 80,
             cumulativeCases: 28,
             crudeRatePositive: 0.28,
-            cumulativeNegativeTests: 38,
+            positivePercentage: 9.1,
           })
           .set(Date.parse("2020-03-09"), {
             cases: 300,
@@ -252,7 +252,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 50,
             cumulativeCases: 25,
             crudeRatePositive: 0.25,
-            cumulativeNegativeTests: 35,
+            positivePercentage: 5.1,
           })
       )
       .set(
@@ -264,7 +264,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
-            cumulativeNegativeTests: 33,
+            positivePercentage: 2.1,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -272,7 +272,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
-            cumulativeNegativeTests: -32,
+            positivePercentage: 13.1,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -280,7 +280,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
-            cumulativeNegativeTests: 39,
+            positivePercentage: 10.1,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -288,7 +288,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
-            cumulativeNegativeTests: 36,
+            positivePercentage: 6.1,
           })
       )
       .set(
@@ -300,7 +300,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 30,
             cumulativeCases: 23,
             crudeRatePositive: 0.23,
-            cumulativeNegativeTests: 33,
+            positivePercentage: 3.1,
           })
           .set(Date.parse("2020-03-07"), {
             cases: -1,
@@ -308,7 +308,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: -20,
             cumulativeCases: -22,
             crudeRatePositive: -0.22,
-            cumulativeNegativeTests: -32,
+            positivePercentage: 14.1,
           })
           .set(Date.parse("2020-03-08"), {
             cases: 26,
@@ -316,7 +316,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 90,
             cumulativeCases: 29,
             crudeRatePositive: 0.29,
-            cumulativeNegativeTests: 39,
+            positivePercentage: 11.1,
           })
           .set(Date.parse("2020-03-09"), {
             cases: -8,
@@ -324,7 +324,7 @@ describe("createPlaceDateValuesMap", () => {
             cumulativeDeaths: 60,
             cumulativeCases: 26,
             crudeRatePositive: 0.26,
-            cumulativeNegativeTests: 36,
+            positivePercentage: 7.1,
           })
       ),
   };
