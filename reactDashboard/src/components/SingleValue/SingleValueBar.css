@@ -39,7 +39,7 @@
 }
 
 .darkmode .single-value {
-  background-color: rgb(56,56,56);
+  background-color: rgb(56, 56, 56);
   box-shadow: none;
   color: #c1def1;
 }
@@ -48,7 +48,6 @@
 .single-value-bar {
   padding: 0;
   margin: 0;
-  margin-top: 0;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -58,10 +57,6 @@
 .darkmode .region-single-value-bar,
 .darkmode .single-value-bar {
   background-color: #121212;
-}
-
-.darkmode .single-value-hr {
-  border: 1px solid #262626;
 }
 
 .single-value-container {
@@ -75,6 +70,10 @@
 .single-value-hr {
   margin-bottom: 0;
   padding-bottom: 0;
+}
+
+.darkmode .single-value-hr {
+  border-color: #262626;
 }
 
 @media screen and (max-width: 1324px) {

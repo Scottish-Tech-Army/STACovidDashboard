@@ -8,11 +8,13 @@
   background-color: #133a53;
 }
 
-.darkmode .headline-banner h2 {
-  color: #f2f2f2;
-}
+/* color is default white for .headline-banner h2 */
 .headline-banner h2 {
   font-size: 1.5rem;
+}
+
+.darkmode .headline-banner h2 {
+  color: #f2f2f2;
 }
 
 .headline-banner-highlight {

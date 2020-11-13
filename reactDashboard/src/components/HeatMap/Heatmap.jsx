@@ -189,10 +189,8 @@ function Heatmap({
     const scotlandTotal = totalCount();
     return (
       <tr className="area" key={index}>
-        <td className="scotland-total">{name}</td>
-        <td className="scotland-total">
-          {featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}
-        </td>
+        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{name}</td>
+        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
@@ -285,6 +283,7 @@ function Heatmap({
 
   function heatbarScale() {
     return (
+      <Container fluid className="heatmapScale">
       <Row>
         {heatLevels.map((value, index) => {
           return (
@@ -300,7 +299,8 @@ function Heatmap({
             </Col>
           );
         })}
-      </Row>
+        </Row>
+      </Container>
     );
   }
 
@@ -321,7 +321,7 @@ function Heatmap({
             </th>
             <th>
               <div>DAILY COUNT</div>
-              {dateRangeText()}
+              <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>
           </tr>

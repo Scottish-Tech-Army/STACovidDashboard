@@ -2,7 +2,7 @@
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
-  color: #ffffff;
+  color: white;
   background-color: #287db2;
   border-color: #287db2;
   font-weight: bold;
@@ -12,7 +12,7 @@
 .darkmode .btn-primary:hover,
 .darkmode .btn-primary:active,
 .darkmode .btn-primary:focus {
-  color: #ffffff;
+  color: white;
   background-color: rgb(64,64,64);
   border-color: rgb(64,64,64);
   font-weight: bold;
@@ -22,7 +22,7 @@
 .btn-primary:not(:disabled):not(.disabled).active:hover,
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active:focus {
-  color: #ffffff;
+  color: white;
   background-color: #133a53;
   border-color: #133a53;
   font-weight: bold;

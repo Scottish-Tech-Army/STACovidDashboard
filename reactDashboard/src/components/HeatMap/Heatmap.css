@@ -1,5 +1,6 @@
 .heatmap {
   overflow-y: auto;
+  overflow-x: auto;
   max-height: 600px;
   height: 100%;
   background-color: #ffffff;
