@@ -99,7 +99,7 @@ describe("nav links content and highlighting", () => {
 describe("darkmode button", () => {
   var storedDarkmode = false;
   const setDarkmode = (value) => (storedDarkmode = value(storedDarkmode));
-  const darkmodeButton = () => container.querySelector(".darkmode-btn");
+  const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
 
   it("darkmode button", () => {
     act(() => {

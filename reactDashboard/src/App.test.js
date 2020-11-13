@@ -22,7 +22,7 @@ test("darkmode class", async () => {
   fetch.mockReject(new Error("fetch failed"));
   global.suppressConsoleErrorLogs();
 
-  const darkmodeButton = () => container.querySelector(".darkmode-btn");
+  const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
   const app = () => container.querySelector(".App");
 
   await act(async () => {

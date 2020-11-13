@@ -1,4 +1,3 @@
-.darkmode-btn,
 .darkmode-btn-toggle {
   background-color: #287db2;
   border-radius: 50%;
@@ -9,23 +8,16 @@
   margin: auto 0 10px auto;
 }
 
-.darkmode-btn {
-  display: block;
-}
-
-.darkmode-btn:hover,
 .darkmode-btn-toggle:hover {
   background-color: #c1def1;
   cursor: pointer;
 }
 
-.darkmode .darkmode-btn,
 .darkmode .darkmode-btn-toggle {
   color: #fd8d3c;
   background-color: #121212;
 }
 
-.darkmode .darkmode-btn:hover,
 .darkmode .darkmode-btn-toggle:hover {
   color: #121212;
   background-color: #fd8d3c;
@@ -38,9 +30,6 @@
 @media screen and (max-width: 575px) {
   .hide-darkmode .darkmode-btn-toggle {
     display: block;
-  }
-  .darkmode-btn {
-    display: none;
   }
 }
 
