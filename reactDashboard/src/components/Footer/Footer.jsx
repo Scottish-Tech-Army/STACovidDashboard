@@ -11,7 +11,11 @@ import {
   URL_REGIONAL,
 } from "../../pages/PageConsts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedinIn, faTwitter, faInstagram} from "@fortawesome/free-brands-svg-icons";
+import {
+  faLinkedinIn,
+  faTwitter,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 import { NavLink } from "react-router-dom";
 
 const Footer = ({ darkmode }) => {
@@ -25,7 +29,7 @@ const Footer = ({ darkmode }) => {
     );
   }
 
-  const SOCIAL_LOGO = "#000000";
+  const SOCIAL_LOGO = "black";
   const DARK_SOCIAL_LOGO = "#9cd7ff";
 
   function sitemapExternalLink(href, content) {

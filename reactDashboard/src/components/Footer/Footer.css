@@ -60,11 +60,11 @@
 }
 
 .sta-logo-text {
-  color: #000000;
+  color: black;
 }
 
 .sta-logo-text:hover {
-  color: #000000;
+  color: black;
   text-decoration: none;
 }
 

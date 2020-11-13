@@ -69,7 +69,7 @@ function DataDefinitions() {
               icon={faAngleDown}
               className="data-accordion-toggle-down"
               size="3x"
-              color="#000000"
+              color="black"
             />
           </Accordion.Toggle>
         </Card.Header>

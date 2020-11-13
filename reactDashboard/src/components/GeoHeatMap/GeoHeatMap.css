@@ -34,13 +34,13 @@
 
 .region-popup {
   background-color: black;
-  color: #ffffff;
+  color: white;
   font-weight: bold;
 }
 
 div.leaflet-tooltip {
   background-color: black;
-  color: #ffffff;
+  color: white;
   font-weight: bold;
   border: none;
 }
@@ -64,7 +64,7 @@ div.leaflet-popup-content-wrapper {
 .legend {
   line-height: 18px;
   color: #555;
-  background: #ffffff;
+  background: white;
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
 }

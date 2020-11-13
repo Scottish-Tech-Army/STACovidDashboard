@@ -28,7 +28,7 @@ function getDateLine({ date, name }, index, darkmode) {
     value: date,
     label: {
       backgroundColor: darkmode ? "#c1def1" : "#007EB9",
-      fontColor: darkmode ? "#121212" : "#ffffff",
+      fontColor: darkmode ? "#121212" : "white",
       fontStyle: "bold",
       cornerRadius: 2,
       xPadding: 10,
@@ -52,7 +52,7 @@ export function getWhoThresholdLine() {
     value: 5,
     label: {
       backgroundColor: "white",
-      fontColor: "#000000",
+      fontColor: "black",
       xPadding: 0,
       yPadding: 0,
       position: "top",

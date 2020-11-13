@@ -13,12 +13,12 @@
 }
 
 .data-definitions .accordion-header {
-  color: #ffffff;
+  color: white;
   background-color: #133a53;
 }
 
 .data-definitions button.btn.btn-link {
-  color: #ffffff;
+  color: white;
   font-weight: bold;
   text-decoration: none;
 }

@@ -31,25 +31,25 @@
 .selected-chart:hover {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff;
+  color: white;
 }
 
 .darkmode .selected-chart:hover {
   background-color: rgb(64, 64, 64);
   border-color: rgb(64, 64, 64);
-  color: #ffffff;
+  color: white;
 }
 
 .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff;
+  color: white;
 }
 
 .darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff;
+  color: white;
 }
 
 .selected-chart.dropdown-toggle.btn.btn-primary:focus {

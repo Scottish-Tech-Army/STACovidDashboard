@@ -42,7 +42,7 @@ const DateSlider = withStyles({
   thumb: {
     height: 25,
     width: 25,
-    backgroundColor: "#ffffff",
+    backgroundColor: "white",
     color: "#6c6c6c",
     border: "1px solid #6c6c6c",
     marginTop: -9,

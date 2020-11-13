@@ -15,8 +15,8 @@
 }
 
 #tooltip > .tooltip-inner {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: black;
+  color: white;
   border-radius: 10px;
   padding: 20px;
   font-weight: bold;

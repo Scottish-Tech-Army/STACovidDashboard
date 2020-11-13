@@ -3,7 +3,7 @@
   overflow-x: auto;
   max-height: 600px;
   height: 100%;
-  background-color: #ffffff;
+  background-color: white;
 }
 
 .heatmap-container {
@@ -15,7 +15,7 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #ffffff;
+  background-color: white;
   color: #133a53;
 }
 
@@ -114,7 +114,7 @@
 
 .heatmapScale .l-7 {
   background-color: #020202;
-  color: #ffffff;
+  color: white;
 }
 
 .heatmapScale {
@@ -155,7 +155,7 @@
 }
 
 .darkmode .heatmapScale .l-7 {
-  color: #ffffff;
+  color: white;
 }
 
 @media all and (max-width: 600px) {
@@ -176,7 +176,7 @@
 }
 
 .darkmode .heatbarLine {
-  background-color: #ffffff;
+  background-color: white;
 }
 
 svg.heatbar {

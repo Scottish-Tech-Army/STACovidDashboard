@@ -3,7 +3,7 @@
 }
 
 .full-screen {
-  background-color: #ffffff;
+  background-color: white;
 }
 
 /* color is default white for header */
@@ -82,7 +82,7 @@ header {
   font-size: 1rem;
   padding: 15px;
   background-color: #133a53;
-  color: #ffffff;
+  color: white;
   border-radius: 5px;
   font-weight: bold;
 }
