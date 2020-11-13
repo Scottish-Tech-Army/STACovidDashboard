@@ -28,7 +28,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
       <FontAwesomeIcon
         icon={darkmode ? faSun : faMoon}
         className="darkmode-btn-toggle"
-        size="2x"
+        size="1x"
         onClick={() => setDarkmode((value) => !value)}
       />
     );
