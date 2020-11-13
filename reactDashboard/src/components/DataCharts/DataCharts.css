@@ -10,16 +10,16 @@
   position: relative;
 }
 
+.darkmode .chart-border {
+  background-color: rgb(64, 64, 64);
+  box-shadow: none;
+}
+
 .chart-border .container,
 .chart-border .container-lg,
 .chart-border .container-md,
 .chart-border .container-sm {
   width: 100%;
-}
-
-.darkmode .chart-border {
-  background-color: rgb(64, 64, 64);
-  box-shadow: none;
 }
 
 .chart-title h2 {
@@ -36,10 +36,6 @@
   flex-direction: row;
   margin: 0;
   justify-content: flex-start;
-}
-
-.darkmode h2 {
-  color: #f2f2f2;
 }
 
 @media screen and (max-width: 600px) {

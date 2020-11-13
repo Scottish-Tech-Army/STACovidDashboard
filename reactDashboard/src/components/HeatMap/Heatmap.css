@@ -15,7 +15,7 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #ffffff;
+  background-color: inherit;
   color: #133a53;
 }
 
@@ -24,7 +24,7 @@
   color: #f2f2f2;
 }
 
-.darkmode .table td,
+.table td,
 .table th {
   border-top: none;
 }
@@ -33,10 +33,6 @@
   background-color: rgb(64, 64, 64);
   box-shadow: none;
   border-radius: 10px;
-}
-
-.darkmode .heatmap table th {
-  background-color: rgb(64, 64, 64);
 }
 
 .heatmap table th .subheading {
@@ -125,18 +121,19 @@
   border: 1px solid darkgrey;
 }
 
-.heatmapScale .row {
-  flex-wrap: nowrap;
-}
-
 .darkmode .heatmapScale {
   border: 1px solid #f2f2f2;
   background-color: #f2f2f2;
 }
 
+.heatmapScale .row {
+  flex-wrap: nowrap;
+}
+
 .heatmapScale .col {
   padding: 2px 15px;
 }
+
 .heatmapScale .col.smallscale {
   display: none;
 }

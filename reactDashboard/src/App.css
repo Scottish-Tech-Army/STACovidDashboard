@@ -6,6 +6,7 @@
   background-color: #ffffff;
 }
 
+/* color is default white for header */
 header {
   padding-top: 10px;
 }
@@ -14,6 +15,7 @@ header {
   background-color: #121212;
 }
 
+/* color is default white for .region-selector-label */
 .darkmode .region-selector-label {
   color: #f2f2f2;
 }
@@ -22,11 +24,15 @@ header {
 .region-page-top-row {
   padding: 15px 10px;
   margin: 0;
-  background-color: #f2f2f2
+  background-color: #f2f2f2;
+}
+
+.darkmode .heatmaps-row {
+  background-color: #262626;
 }
 
 .darkmode .region-page-top-row {
-  background-color: rgb(56,56,56);
+  background-color: rgb(56, 56, 56);
 }
 
 .geo-map-column {
@@ -35,17 +41,14 @@ header {
   margin-bottom: 5px;
 }
 
+/* color is default white for .region-tiles-column */
 .region-tiles-column {
   padding-top: 0;
-  background-color: #ffffff;
   margin-bottom: 5px;
 }
 
 .darkmode .region-tiles-column {
-  background-color: #121212
-}
-.darkmode .heatmaps-row {
-  background-color: #262626;
+  background-color: #121212;
 }
 
 .underHeatmapSelector {
@@ -56,6 +59,7 @@ header {
   border: 1px solid #cccccc;
 }
 
+/* color and background-color are default for .about-us, .accessibility-page, .data-sources */
 .about-us,
 .accessibility-page,
 .data-sources {
@@ -88,6 +92,7 @@ header {
   padding: 20px 40px;
 }
 
+/* background-color is default for .accessibility-details li, .about-us-details li, .data-sources-list li, .about-us-details ul, .accessibility-details ul, .data-sources .data-sources-list */
 .accessibility-details li,
 .about-us-details li {
   padding: 0 20px 0;
@@ -95,7 +100,10 @@ header {
 
 .darkmode .accessibility-details li,
 .darkmode .about-us-details li,
-.darkmode .data-sources-list li {
+.darkmode .data-sources-list li,
+.darkmode .about-us-details ul,
+.darkmode .accessibility-details ul,
+.darkmode .data-sources .data-sources-list {
   background-color: rgb(50, 50, 50);
 }
 
@@ -103,17 +111,12 @@ header {
   width: 50vw;
 }
 
-.darkmode .about-us-details ul,
-.darkmode .accessibility-details ul,
-.darkmode .data-sources .data-sources-list {
-  background-color: rgb(50, 50, 50);
-}
-
 .accessibility-details ul {
   padding-left: 50px;
   padding-bottom: 20px;
 }
 
+/* background-color is default for .accessibility-details p, .about-us-details p */
 .darkmode .accessibility-details p,
 .darkmode .about-us-details p {
   background-color: rgb(50, 50, 50);
@@ -165,20 +168,20 @@ button.MuiButtonBase-root {
   font-size: 0.75rem;
 }
 
-button.MuiButtonBase-root:focus {
-  outline: none;
-  background-color: inherit;
-}
-
 .darkmode button.MuiButtonBase-root {
   color: #f2f2f2;
   border-color: #f2f2f2;
 }
 
+button.MuiButtonBase-root:focus {
+  outline: none;
+  background-color: inherit;
+}
+
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
   background-color: #f2f2f2;
-  color: rgb(64,64,64)
+  color: rgb(64, 64, 64);
 }
 
 .darkmode button.MuiButtonBase-root:hover {

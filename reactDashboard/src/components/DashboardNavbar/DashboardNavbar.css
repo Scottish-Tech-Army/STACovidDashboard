@@ -8,14 +8,14 @@
   margin: auto 0 10px auto;
 }
 
-.darkmode-btn-toggle:hover {
-  background-color: #c1def1;
-  cursor: pointer;
-}
-
 .darkmode .darkmode-btn-toggle {
   color: #fd8d3c;
   background-color: #121212;
+}
+
+.darkmode-btn-toggle:hover {
+  background-color: #c1def1;
+  cursor: pointer;
 }
 
 .darkmode .darkmode-btn-toggle:hover {
@@ -67,7 +67,7 @@
 }
 
 .darkmode .navbar-links a.nav-link.selected {
-  background-color: #ffffff;
+  background-color: white;
 }
 
 .dashboard-navbar img#logo {
@@ -83,7 +83,7 @@
 .dashboard-navbar {
   margin: 0 15px;
   padding: 30px 10px 0;
-  background-color: #ffffff;
+  background-color: white;
 }
 
 .darkmode .dashboard-navbar {

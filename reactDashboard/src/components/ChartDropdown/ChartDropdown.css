@@ -34,17 +34,15 @@
   color: #ffffff;
 }
 
-.selected-chart.dropdown-toggle.btn.btn-primary {
-  background-color: #ec6730;
-  border-color: #ec6730;
+.darkmode .selected-chart:hover {
+  background-color: rgb(64, 64, 64);
+  border-color: rgb(64, 64, 64);
   color: #ffffff;
 }
 
-.darkmode .selected-chart:hover {
-  background-color: rgb(64,64,64);
-
-  border-color: rgb(64,64,64);
-
+.selected-chart.dropdown-toggle.btn.btn-primary {
+  background-color: #ec6730;
+  border-color: #ec6730;
   color: #ffffff;
 }
 
