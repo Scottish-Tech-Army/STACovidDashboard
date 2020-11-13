@@ -1,8 +1,7 @@
 import dashboard from "../pageobjects/dashboardPage";
 import regionalInsights from "../pageobjects/regionalPage";
 
-const OVERVIEW_PAGE_TEXT =
-  "We are currently in Phase 3 of the Scottish Government's COVID-19 Route Map";
+const OVERVIEW_PAGE_TEXT = "DEATH/CASE RATIO";
 const ABOUTUS_PAGE_TEXT = "Meet the team";
 const ACCESSIBILITY_PAGE_TEXT = "Conformance Statement";
 const DATASOURCES_PAGE_TEXT = "Data sources and attributions";

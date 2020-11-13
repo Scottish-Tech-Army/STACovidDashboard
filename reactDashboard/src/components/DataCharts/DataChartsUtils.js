@@ -17,7 +17,7 @@ const keyDates = [
   { date: Date.parse("2020-10-09"), name: "BARS CLOSE" },
 ];
 
-function getDateLine( { date, name }, index, darkmode) {
+function getDateLine({ date, name }, index, darkmode) {
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
@@ -27,8 +27,8 @@ function getDateLine( { date, name }, index, darkmode) {
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: darkmode? "#c1def1" : "#007EB9",
-      fontColor: darkmode? "#121212" : "#ffffff",
+      backgroundColor: darkmode ? "#c1def1" : "#007EB9",
+      fontColor: darkmode ? "#121212" : "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
       xPadding: 10,
@@ -62,7 +62,12 @@ export function getWhoThresholdLine() {
   };
 }
 
-export function datasetConfiguration(datasetLabel, seriesData, colour, fillColour=null) {
+export function datasetConfiguration(
+  datasetLabel,
+  seriesData,
+  colour,
+  fillColour = null
+) {
   return {
     label: datasetLabel,
     data: seriesData,
@@ -151,7 +156,9 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
     },
   };
   if (datasets.length > 0) {
-    result.options.annotation = { annotations: keyDates.map((date, i)=>getDateLine(date, i, darkmode)) };
+    result.options.annotation = {
+      annotations: keyDates.map((date, i) => getDateLine(date, i, darkmode)),
+    };
   }
 
   if (dateRange != null) {

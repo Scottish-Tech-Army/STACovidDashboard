@@ -8,7 +8,6 @@ const DataSources = () => {
     <div className="data-sources">
       <hr className="full-width-hr" />
       <h1>Data sources and attributions</h1>
-      <hr className="full-width-hr" />
       <ul className="data-sources-list">
         <li>
           Routemap information:
@@ -100,7 +99,7 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
-      <hr className="full-width-hr"/>
+      <hr className="full-width-hr" />
       <DataDefinitions />
     </div>
   );

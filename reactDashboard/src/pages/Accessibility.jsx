@@ -8,7 +8,6 @@ const Accessibility = () => {
       <div className="accessibility-details">
         <hr className="full-width-hr" />
         <h1>Accessibility</h1>
-        <hr className="full-width-hr" />
         <p>
           We want everyone who visits the Covid-19 Dashboard to feel welcome,
           and able to find information whatever their circumstances.
@@ -27,7 +26,6 @@ const Accessibility = () => {
       <div className="accessibility-details">
         <hr className="full-width-hr" />
         <h2>Conformance Statement</h2>
-        <hr className="full-width-hr" />
         <p>
           We're working towards meeting the AA standard of the{" "}
           <a
@@ -48,7 +46,6 @@ const Accessibility = () => {
       <div className="accessibility-details">
         <hr className="full-width-hr" />
         <h2>Browsers</h2>
-        <hr className="full-width-hr" />
         <p id="browsers-list">
           We've tested the website using the following web browsers:
         </p>
@@ -71,7 +68,6 @@ const Accessibility = () => {
       <div className="accessibility-details">
         <hr className="full-width-hr" />
         <h2>Screen Readers</h2>
-        <hr className="full-width-hr" />
         <p>
           This website is compatible with modern screen readers and other
           assistive technologies.

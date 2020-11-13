@@ -23,23 +23,25 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
     );
   }
 
-  return (
-    <Navbar className="dashboard-navbar" expand="sm">
-      <Link to={URL_OVERVIEW}>
-        <img
-          id="logo"
-          src="/STALogoSquare.svg"
-          alt="Scottish Tech Army Logo"
-        />
-      </Link>
-      <Nav className="hide-darkmode">
+  const darkmodeIcon = () => {
+    return (
       <FontAwesomeIcon
         icon={darkmode ? faSun : faMoon}
         className="darkmode-btn-toggle"
         size="2x"
         onClick={() => setDarkmode((value) => !value)}
       />
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    );
+  };
+
+  return (
+    <Navbar className="dashboard-navbar" expand="sm">
+      <Link to={URL_OVERVIEW}>
+        <img id="logo" src="/STALogoSquare.svg" alt="Scottish Tech Army Logo" />
+      </Link>
+      <Nav className="hide-darkmode">
+        {darkmodeIcon()}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
       </Nav>
       <Navbar.Collapse id="basic-navbar-nav" className="heading-container">
         <Navbar.Brand className="heading">
@@ -50,12 +52,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
           {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
-      <FontAwesomeIcon
-        icon={darkmode ? faSun : faMoon}
-        className="darkmode-btn"
-        size="2x"
-        onClick={() => setDarkmode((value) => !value)}
-      />
+      {darkmodeIcon()}
     </Navbar>
   );
 };
