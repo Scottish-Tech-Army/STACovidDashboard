@@ -3,8 +3,8 @@
 .btn-primary:active,
 .btn-primary:focus {
   color: white;
-  background-color: #287DB2;
-  border-color: #287DB2;
+  background-color: #287db2;
+  border-color: #287db2;
   font-weight: bold;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .darkmode .full-width-hr {
-  border: 1px solid #b3b3b3;
+  border-color: #b3b3b3;
 }
 
 .link {

@@ -103,7 +103,6 @@ function DateRangeSlider({
   councilAreaDataset = null,
   dateRange = { startDate: 0, endDate: 0 },
   setDateRange,
-  darkmode,
 }) {
   const classes = useStyles();
 

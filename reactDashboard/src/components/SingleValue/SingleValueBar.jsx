@@ -108,7 +108,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
             getRelativeReportedDate(dailyDeaths.date)
           )}
           value={guardMissingData(dailyDeaths.value)}
-          tooltip="These are the Deaths reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
+          tooltip="These are the deaths reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
       <div className="p-2 single-value-container">
@@ -117,7 +117,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           title="TOTAL DEATHS"
           subtitle={SUBTITLE_TOTAL}
           value={guardMissingData(totalDeaths.value)}
-          tooltip="These are the total number of Deaths where COVID-19 is noted on the Death Certificate since records began on 28 February, 2020."
+          tooltip="These are the total number of Deaths where COVID-19 is noted on the death Certificate since records began on 28 February, 2020."
         />
       </div>
       <div className="p-2 single-value-container">

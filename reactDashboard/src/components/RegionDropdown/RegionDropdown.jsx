@@ -33,42 +33,44 @@ const RegionDropdown = ({
 
   return (
     <div className="region-selector-row">
-    <strong className="region-selector-label">Select region (or select on map):</strong>
-    <Dropdown onSelect={(eventKey) => setRegionCode(eventKey)}>
-      <Dropdown.Toggle variant="primary" className="selected-region">
-        {regionCode == null
-          ? "Select a region"
-          : getPlaceNameByFeatureCode(regionCode)}
-      </Dropdown.Toggle>
-      <Dropdown.Menu className="region-menu">
-        <Dropdown.Item
-          key={FEATURE_CODE_SCOTLAND}
-          eventKey={FEATURE_CODE_SCOTLAND}
-        >
-          {getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND)}
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Header>Health Boards</Dropdown.Header>
-        {FEATURE_CODE_HEALTH_BOARDS.map((featureCode) => (
-          <Dropdown.Item key={featureCode} eventKey={featureCode}>
-            {getPlaceNameByFeatureCode(featureCode)}
+      <strong className="region-selector-label">
+        Select region (or select on map):
+      </strong>
+      <Dropdown onSelect={(eventKey) => setRegionCode(eventKey)}>
+        <Dropdown.Toggle variant="primary" className="selected-region">
+          {regionCode == null
+            ? "Select a region"
+            : getPlaceNameByFeatureCode(regionCode)}
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="region-menu">
+          <Dropdown.Item
+            key={FEATURE_CODE_SCOTLAND}
+            eventKey={FEATURE_CODE_SCOTLAND}
+          >
+            {getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND)}
           </Dropdown.Item>
-        ))}
-        {showCouncilAreas ? (
-          <>
-            <Dropdown.Divider />
-            <Dropdown.Header>Council Areas</Dropdown.Header>
-            {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
-              <Dropdown.Item key={featureCode} eventKey={featureCode}>
-                {getPlaceNameByFeatureCode(featureCode)}
-              </Dropdown.Item>
-            ))}
-          </>
-        ) : (
-          <></>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+          <Dropdown.Divider />
+          <Dropdown.Header>Health Boards</Dropdown.Header>
+          {FEATURE_CODE_HEALTH_BOARDS.map((featureCode) => (
+            <Dropdown.Item key={featureCode} eventKey={featureCode}>
+              {getPlaceNameByFeatureCode(featureCode)}
+            </Dropdown.Item>
+          ))}
+          {showCouncilAreas ? (
+            <>
+              <Dropdown.Divider />
+              <Dropdown.Header>Council Areas</Dropdown.Header>
+              {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
+                <Dropdown.Item key={featureCode} eventKey={featureCode}>
+                  {getPlaceNameByFeatureCode(featureCode)}
+                </Dropdown.Item>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
   );
 };

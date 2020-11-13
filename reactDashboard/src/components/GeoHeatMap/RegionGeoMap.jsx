@@ -146,10 +146,10 @@ const RegionGeoMap = ({
   // Update counts to use to style map boundaries layer
   useEffect(() => {
     const SELECTED_COLOUR = "red";
-    const UNSELECTED_COLOUR = "#000000";
-    const BORDER_COLOUR = "#000000";
+    const UNSELECTED_COLOUR = "black";
+    const BORDER_COLOUR = "black";
     const DARK_SELECTED_COLOUR = "#c1def1";
-    const DARK_BORDER_COLOUR = "#ffffff";
+    const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
       return {

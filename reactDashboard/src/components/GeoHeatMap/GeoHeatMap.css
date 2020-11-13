@@ -33,13 +33,13 @@
 }
 
 .region-popup {
-  background-color: #000000;
+  background-color: black;
   color: #ffffff;
   font-weight: bold;
 }
 
 div.leaflet-tooltip {
-  background-color: #000000;
+  background-color: black;
   color: #ffffff;
   font-weight: bold;
   border: none;
@@ -50,15 +50,15 @@ div.leaflet-tooltip p {
 }
 
 div.leaflet-tooltip-left::before {
-  border-left-color: #000000;
+  border-left-color: black;
 }
 
 div.leaflet-tooltip-right::before {
-  border-right-color: #000000;
+  border-right-color: black;
 }
 
 div.leaflet-popup-content-wrapper {
-  background-color: #000000;
+  background-color: black;
 }
 
 .legend {
@@ -99,7 +99,7 @@ div.leaflet-popup-content-wrapper {
 
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-attribution a {
-  color: #000000;
+  color: black;
 }
 
 .darkmode .leaflet-container .leaflet-control-attribution,
