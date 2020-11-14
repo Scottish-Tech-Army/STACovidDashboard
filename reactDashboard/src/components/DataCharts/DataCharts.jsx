@@ -271,7 +271,11 @@ const DataCharts = ({
         regionCode,
         datasetLabel
       );
-      const chartConfiguration = commonChartConfiguration(datasets, darkmode, dateRange);
+      const chartConfiguration = commonChartConfiguration(
+        datasets,
+        darkmode,
+        dateRange
+      );
 
       if (additionalConfiguration) {
         additionalConfiguration(chartConfiguration);
