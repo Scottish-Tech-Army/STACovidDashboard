@@ -12,7 +12,7 @@
 
 #tooltip > .tooltip-inner {
   background-color: #000000;
-  opacity: 85%;
+  opacity: 0.85;
   color: #ffffff;
   border-radius: 10px;
   padding: 6px;
