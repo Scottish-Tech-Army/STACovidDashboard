@@ -49,9 +49,9 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Statistics")}
           {navLink(URL_REGIONAL, "Regional Insights", false)}
+          {darkmodeIcon()}
         </Nav>
       </Navbar.Collapse>
-      {darkmodeIcon()}
     </Navbar>
   );
 };

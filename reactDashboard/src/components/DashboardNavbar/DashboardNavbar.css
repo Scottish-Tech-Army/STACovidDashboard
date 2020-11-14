@@ -1,10 +1,9 @@
 .darkmode-btn-toggle {
   background-color: #287db2;
   border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  padding: 8px;
-  font-size: 30px;
+
+  padding: 6px;
+  font-size: 25px;
   margin: auto 0 auto auto;
 }
 
@@ -25,12 +24,6 @@
 
 .hide-darkmode .darkmode-btn-toggle {
   display: none;
-}
-
-@media screen and (max-width: 575px) {
-  .hide-darkmode .darkmode-btn-toggle {
-    display: block;
-  }
 }
 
 .hide-darkmode {
@@ -145,6 +138,7 @@
     padding-right: 0;
   }
   .darkmode-btn-toggle {
+    display: inline;
     margin: auto 20px auto auto;
   }
   .navbar-links a.nav-link.selected,
