@@ -12,10 +12,12 @@
 
 #tooltip > .tooltip-inner {
   background-color: #000000;
+  opacity: 0.85;
   color: #ffffff;
   border-radius: 10px;
-  padding: 20px;
+  padding: 6px;
   font-weight: bold;
+  line-height: 1.4;
 }
 
 .tooltip-inner {
