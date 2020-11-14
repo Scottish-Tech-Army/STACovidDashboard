@@ -82,7 +82,7 @@ function DataDefinitions() {
             <p className="definitions-heading">Reporting and Specimen Dates</p>
             <hr />
               <p>
-                <span className="defined-term">Reported Dates</span>: Since the
+                <strong>Reported Dates</strong>: Since the
                 time taken to test samples and report the results varies, new
                 cases reported on a daily basis in the headline summary figures
                 on the dashboard pages may be distributed across a range of
@@ -90,7 +90,7 @@ function DataDefinitions() {
               </p>
               <br/>
               <p>
-                <span className="defined-term">Specimen Dates</span>:{" "}
+                <strong>Specimen Dates</strong>:{" "}
                 {specimenDateDefinition()}
               </p>
 
