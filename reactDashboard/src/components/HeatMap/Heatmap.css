@@ -8,7 +8,6 @@
 .darkmode .heatmap {
   background-color: rgb(64, 64, 64);
   box-shadow: none;
-  border-radius: 10px;
 }
 
 .heatmap-container {
@@ -22,14 +21,12 @@
   z-index: 2;
   background-color: white;
   color: #133a53;
-  
 }
 
-.darkmode table th {
+.darkmode .heatmap table th {
   color: #f2f2f2;
 }
 
-.darkmode .table td,
 .table th {
   border-top: none;
 }
@@ -53,8 +50,6 @@
 
 .darkmode .area {
   color: #f2f2f2;
-  background-color: rgb(64, 64, 64);
-  border-top-color: 1px solid #020202;
 }
 
 .heatmap .l-0 {
@@ -124,18 +119,19 @@
   border: 1px solid darkgrey;
 }
 
-.heatmapScale .row {
-  flex-wrap: nowrap;
+.darkmode .heatmapScale {
+  border-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
-.darkmode .heatmapScale {
-  border: 1px solid #f2f2f2;
-  background-color: #f2f2f2;
+.heatmapScale .row {
+  flex-wrap: nowrap;
 }
 
 .heatmapScale .col {
   padding: 2px 15px;
 }
+
 .heatmapScale .col.smallscale {
   display: none;
 }

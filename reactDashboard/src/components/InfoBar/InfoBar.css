@@ -4,15 +4,17 @@
 }
 
 .darkmode .info-bar {
-  opacity: 0.75;
+  background-color: #859aab;
 }
 
 .scot-gov-link {
-  color: #133A53;
+  color: #133a53;
   font-weight: bold;
 }
 
-.timestamp, .message, .news-item-title {
+.timestamp,
+.message,
+.news-item-title {
   color: #133a53;
 }
 

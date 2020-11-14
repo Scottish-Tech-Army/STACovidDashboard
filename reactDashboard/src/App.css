@@ -55,7 +55,7 @@ header {
 }
 
 .darkmode .underHeatmapSelector {
-  border: 1px solid #cccccc;
+  border-color: #cccccc;
 }
 
 /* color and background-color are default for .about-us, .accessibility-page, .data-sources */
@@ -91,7 +91,6 @@ header {
   padding: 20px 40px;
 }
 
-/* background-color is default for .accessibility-details li, .about-us-details li, .data-sources-list li, .about-us-details ul, .accessibility-details ul, .data-sources .data-sources-list */
 .accessibility-details li,
 .about-us-details li {
   padding: 0 20px 0;
@@ -115,16 +114,15 @@ header {
   padding-bottom: 20px;
 }
 
-/* background-color is default for .accessibility-details p, .about-us-details p */
-.darkmode .accessibility-details p,
-.darkmode .about-us-details p {
-  background-color: rgb(50, 50, 50);
-}
-
 .accessibility-details p,
 .about-us-details p {
   padding: 10px 20px;
   margin-bottom: 0;
+}
+
+.darkmode .accessibility-details p,
+.darkmode .about-us-details p {
+  background-color: rgb(50, 50, 50);
 }
 
 .team-members.col,
@@ -144,7 +142,7 @@ header {
 }
 
 .darkmode .data-sources-list li {
-  border-bottom: 1px solid rgb(106, 106, 106);
+  border-bottom-color: rgb(106, 106, 106);
 }
 
 .darkmode .team-members .link,
@@ -152,13 +150,6 @@ header {
 .darkmode .data-sources .link,
 .darkmode .accessibility-details .link {
   color: #c1def1;
-  font-weight: bold;
-}
-
-.darkmode .team-members .link,
-.darkmode .about-us-details .link {
-  color: #f2f2f2;
-  font-weight: bold;
 }
 
 button.MuiButtonBase-root {

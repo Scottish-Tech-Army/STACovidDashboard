@@ -28,7 +28,7 @@ function getDateLine({ date, name }, index, darkmode) {
     value: date,
     label: {
       backgroundColor: darkmode ? "#c1def1" : "#007EB9",
-      fontColor: darkmode ? "#121212" : "white",
+      fontColor: darkmode ? "#121212" : "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
       xPadding: 10,

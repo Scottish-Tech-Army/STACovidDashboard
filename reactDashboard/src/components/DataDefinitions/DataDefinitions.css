@@ -7,11 +7,6 @@
   height: 30px;
 }
 
-.darkmode .data-definitions .data-accordion-toggle-down {
-  color: #c1def1;
-  border: 2px solid #c1def1;
-}
-
 .data-definitions .accordion-header {
   color: white;
   background-color: #133a53;
@@ -77,7 +72,7 @@
 }
 
 .darkmode .data-definitions hr {
-  border: 1px solid #cccccc;
+  border-color: #7c4949;
 }
 
 .data-definitions-body .source-attribution {
@@ -89,7 +84,7 @@
   color: #f2f2f2;
 }
 
-.card {
+.data-definitions .card {
   border: none;
 }
 

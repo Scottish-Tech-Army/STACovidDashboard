@@ -83,7 +83,7 @@
   position: absolute;
   top: 20px;
   right: 40px;
-  background-color: white;
+  background-color: inherit;
   font-size: 0.5rem;
   border: 1px solid #6c6c6c;
   border-radius: 10px;
@@ -91,10 +91,6 @@
   width: 7em;
   height: 7em;
   color: black;
-}
-
-.sonification-play-button {
-  background-color: inherit;
   border-color: #cccccc;
 }
 
@@ -112,8 +108,7 @@
   box-shadow: 5px 5px 5px #aaaaaa;
 }
 
-.darkmode .sonification-play-button:hover,
-.darkmode .sonification-play-button h5:hover {
+.darkmode .sonification-play-button:hover {
   box-shadow: none;
 }
 

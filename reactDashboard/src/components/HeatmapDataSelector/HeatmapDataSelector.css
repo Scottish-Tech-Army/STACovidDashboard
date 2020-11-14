@@ -15,7 +15,6 @@
   color: white;
   background-color: rgb(64,64,64);
   border-color: rgb(64,64,64);
-  font-weight: bold;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
@@ -25,7 +24,6 @@
   color: white;
   background-color: #133a53;
   border-color: #133a53;
-  font-weight: bold;
 }
 
 .darkmode .btn-primary:not(:disabled):not(.disabled).active,
@@ -35,7 +33,6 @@
   color: #121212;
   background-color: #c1def1;
   border-color: #c1def1;
-  font-weight: bold;
 }
 
 .heatmap-selector .toggle-button-group {

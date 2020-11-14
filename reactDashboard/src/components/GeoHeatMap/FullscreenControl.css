@@ -1,3 +1,12 @@
+.full-screen {
+  padding-top: 10px;
+}
+
+.darkmode .fullscreen {
+  color: #121212;
+  background-color: #c1def1;
+}
+
 .fullscreen svg {
   height: 25px;
   width: 25px;
@@ -14,17 +23,4 @@
 .darkmode .fullscreen svg:hover {
   color: #c1def1;
   background-color: #121212;
-}
-
-.darkmode .fullscreen:hover {
-  border: 1px solid #c1def1;
-}
-
-.full-screen {
-  padding-top: 10px;
-}
-
-.darkmode .fullscreen {
-  color: #121212;
-  background-color: #c1def1;
 }

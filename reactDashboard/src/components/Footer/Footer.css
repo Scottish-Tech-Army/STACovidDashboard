@@ -9,9 +9,8 @@
   color: #0056b3;
 }
 
-.sitemap .entry {
-  font-weight: normal;
-  color: #121212;
+.darkmode footer .sitemap .entry {
+  color: #f2f2f2;
 }
 
 @media screen and (max-width: 768px) {
@@ -74,12 +73,6 @@ footer {
 
 .darkmode footer {
   background-color: #121212;
-  padding-bottom: 30px;
-}
-
-.darkmode footer .sitemap .entry {
-  color: #f2f2f2;
-  font-weight: normal;
 }
 
 .darkmode footer .sitemap .title {
@@ -87,15 +80,9 @@ footer {
 }
 
 .darkmode .footer-base {
-  background-color: #f2f2f2;
-  opacity: 0.75;
+  background-color: #acacac;
   color: #121212;
-  margin: 0;
   padding: 20px 0 40px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-.darkmode .footer-main {
-  margin: 0;
 }
