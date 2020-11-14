@@ -41,6 +41,10 @@
   margin: 0;
 }
 
+.data-definitions .data-definitions-body ul {
+  padding-top: 15px;
+}
+
 .data-definitions .data-definitions-body li {
   padding-bottom: 5px;
 }
@@ -49,7 +53,6 @@
   color: #2a84bb;
 }
 
-.data-definitions .defined-term,
 .data-definitions .data-definitions-link,
 .data-definitions .definitions-heading {
   font-weight: bold;
