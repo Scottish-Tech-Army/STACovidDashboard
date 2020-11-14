@@ -31,6 +31,10 @@
   color: #133a53;
 }
 
+.darkmode .chart-title h2 {
+  color: #f2f2f2;
+}
+
 .chart-title {
   display: flex;
   flex-direction: row;

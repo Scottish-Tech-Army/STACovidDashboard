@@ -117,7 +117,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           title="TOTAL DEATHS"
           subtitle={SUBTITLE_TOTAL}
           value={guardMissingData(totalDeaths.value)}
-          tooltip="These are the total number of Deaths where COVID-19 is noted on the death Certificate since records began on 28 February, 2020."
+          tooltip="These are the total number of deaths where COVID-19 is noted on the death Certificate since records began on 28 February, 2020."
         />
       </div>
       <div className="p-2 single-value-container">

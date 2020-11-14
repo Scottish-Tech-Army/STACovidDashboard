@@ -3,9 +3,9 @@
   border-radius: 50%;
   height: 100%;
   width: 100%;
-  padding: 10px;
-  font-size: 50px;
-  margin: auto 0 10px auto;
+  padding: 8px;
+  font-size: 30px;
+  margin: auto 0 auto auto;
 }
 
 .darkmode .darkmode-btn-toggle {
