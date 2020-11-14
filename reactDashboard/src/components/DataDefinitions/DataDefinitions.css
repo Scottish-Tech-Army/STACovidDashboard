@@ -41,6 +41,10 @@
   margin: 0;
 }
 
+.data-definitions .data-definitions-body ul {
+  padding-top: 15px;
+}
+
 .data-definitions .data-definitions-body li {
   padding-bottom: 5px;
 }
