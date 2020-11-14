@@ -17,7 +17,7 @@ const keyDates = [
   { date: Date.parse("2020-10-09"), name: "BARS CLOSE" },
 ];
 
-function getDateLine({ date, name }, index, darkmode) {
+function getDateLine({ date, name }, darkmode, index) {
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
@@ -158,7 +158,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
 
   if (datasets.length > 0) {
     result.options.annotation = {
-      annotations: keyDates.map((date, i) => getDateLine(date, i, darkmode)),
+      annotations: keyDates.map((date, i) => getDateLine(date, darkmode, i)),
     };
   }
 
