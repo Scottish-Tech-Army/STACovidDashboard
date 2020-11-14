@@ -8,11 +8,10 @@ import {
   TOTAL_CASES,
   DAILY_DEATHS,
   TOTAL_DEATHS,
-  PERCENTAGE_CASES,
+  PERCENTAGE_TESTS,
 } from "../DataCharts/DataChartsConsts";
 
 var storedChartType = DAILY_CASES;
-var storedShowPercentageTests = true;
 const setChartType = (value) => (storedChartType = value);
 
 var container = null;
@@ -20,7 +19,6 @@ beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  storedShowPercentageTests = true;
 });
 
 afterEach(() => {
@@ -39,11 +37,7 @@ async function click(button) {
   await act(async () => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     render(
-      <ChartDropdown
-        chartType={storedChartType}
-        setChartType={setChartType}
-        showPercentageTests={storedShowPercentageTests}
-      />,
+      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />,
       container
     );
   });
@@ -115,11 +109,11 @@ describe("chartType input property", () => {
     expect(selectedItem().textContent).toBe("Total Deaths");
   });
 
-  it("percentCases", () => {
+  it("percentTests", () => {
     act(() => {
       render(
         <ChartDropdown
-          chartType={PERCENTAGE_CASES}
+          chartType={PERCENTAGE_TESTS}
           setChartType={setChartType}
         />,
         container
@@ -160,30 +154,6 @@ describe("available choices", () => {
       "% Tests Positive",
     ]);
   });
-
-  it("showPercentageTests=false", () => {
-    storedShowPercentageTests = false;
-    act(() => {
-      render(
-        <ChartDropdown
-          chartType={storedChartType}
-          setChartType={setChartType}
-          showPercentageTests={storedShowPercentageTests}
-        />,
-        container
-      );
-    });
-
-    // Make the menu appear
-    click(selectedItem());
-
-    checkDropdownMenuItems([
-      "Daily Cases",
-      "Total Cases",
-      "Daily Deaths",
-      "Total Deaths",
-    ]);
-  });
 });
 
 test("choose chartTypes", async () => {
@@ -210,7 +180,7 @@ test("choose chartTypes", async () => {
   expect(selectedItem().textContent).toBe("Total Deaths");
 
   await click(dropdownMenuItem("% Tests Positive"));
-  expect(storedChartType).toBe(PERCENTAGE_CASES);
+  expect(storedChartType).toBe(PERCENTAGE_TESTS);
   expect(selectedItem().textContent).toBe("% Tests Positive");
 
   await click(dropdownMenuItem("Daily Cases"));

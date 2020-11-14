@@ -71,8 +71,12 @@ export function createPlaceDateValuesMap(lines) {
         crudeRatePositive,
         dailyDeaths,
         cumulativeDeaths,
+        v2,
+        v3,
         v4,
-        cumulativeNegativeTests,
+        v5,
+        v6,
+        positivePercentage,
       ],
       i
     ) => {
@@ -87,7 +91,7 @@ export function createPlaceDateValuesMap(lines) {
         cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
         crudeRatePositive: Number(crudeRatePositive),
-        cumulativeNegativeTests: Number(cumulativeNegativeTests),
+        positivePercentage: Number(positivePercentage),
       });
       dateSet.add(date);
     }

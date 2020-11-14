@@ -155,6 +155,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
       },
     },
   };
+
   if (datasets.length > 0) {
     result.options.annotation = {
       annotations: keyDates.map((date, i) => getDateLine(date, i, darkmode)),
