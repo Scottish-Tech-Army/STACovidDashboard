@@ -146,7 +146,7 @@ const Regional = ({
             />
           </Col>
         </Row>
-        <Row className="d-none d-sm-flex">
+        <Row>
           <Col>
             <hr className="full-width-hr" />
             <DataDefinitions />
