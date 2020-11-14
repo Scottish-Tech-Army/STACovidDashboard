@@ -193,7 +193,7 @@ const Overview = ({
           <Col>
             <hr className="full-width-hr" />
             <DataDefinitions />
-            <hr className="full-width-hr" />
+            <hr className="full-width-hr d-none d-sm-flex" />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
