@@ -143,6 +143,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       },
     },
   };
+
   if (datasets.length > 0) {
     result.options.annotation = { annotations: keyDates.map(getDateLine) };
   }

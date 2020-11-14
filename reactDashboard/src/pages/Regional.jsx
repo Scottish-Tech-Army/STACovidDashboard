@@ -142,7 +142,6 @@ const Regional = ({
               regionCode={regionCode}
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
-              showPercentageTests={false}
               populationProportionMap={populationProportionMap}
             />
           </Col>
