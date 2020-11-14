@@ -36,6 +36,7 @@
   background-color: black;
   color: white;
   font-weight: bold;
+  font-size: 11px;
 }
 
 div.leaflet-tooltip {
@@ -59,6 +60,10 @@ div.leaflet-tooltip-right::before {
 
 div.leaflet-popup-content-wrapper {
   background-color: black;
+}
+
+div.leaflet-popup-content {
+  margin: 5px;
 }
 
 .legend {
@@ -97,7 +102,6 @@ div.leaflet-popup-content-wrapper {
   font-weight: bold;
   color: #fd8d3c;
   border-bottom: 1px solid LightGray;
-  padding-bottom: 5px;
 }
 
 .leaflet-container .leaflet-control-attribution,
@@ -109,4 +113,8 @@ div.leaflet-popup-content-wrapper {
 .darkmode .leaflet-container .leaflet-control-attribution a {
   background-color: #0b0a0a;
   color: #f2f2f2;
+}
+.map-cases-count {
+  font-size: 12px;
+  font-weight: normal;
 }

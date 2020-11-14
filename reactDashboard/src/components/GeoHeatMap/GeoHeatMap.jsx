@@ -141,9 +141,9 @@ const GeoHeatMap = ({
       const featureCode = featureCodeForFeature(layer.feature);
       const regionData = current7DayDatasetRef.current.get(featureCode);
       var content =
-        "<p class='region-popup'><strong>" +
+        "<p class='region-popup'>" +
         regionData.name +
-        "</strong><br />Not available</p>";
+        "<br />Not available</p>";
 
       function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
@@ -158,17 +158,17 @@ const GeoHeatMap = ({
 
       if (regionData) {
         content =
-          "<div class='region-popup'><div><strong>" +
+          "<div class='region-popup'><div>" +
           regionData.name.toUpperCase() +
-          "</strong></div><div class='map-date-range'>" +
+          "</div><div class='map-date-range'>" +
           moment(regionData.fromDate).format("DD MMM") +
           " - " +
           moment(regionData.toDate).format("DD MMM") +
-          "</div> <br /><strong>" +
+          "</div> <div class='map-cases-count'>" +
           toTitleCase(currentValueTypeRef.current) +
-          ": </strong>" +
+          ": " +
           count +
-          "</div>";
+          "</div></div>";
       }
 
       L.popup({ closeButton: false })
