@@ -92,6 +92,7 @@ function RegionalSingleValueBar({
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
+  const SUBTITLE_WEEKLY = "last 7 days";
   const SUBTITLE_TOTAL = "reported since 28 February, 2020";
 
   if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
@@ -185,7 +186,8 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyCases"
-            title="CASES THIS WEEK"
+            title="WEEKLY CASES"
+            subtitle={SUBTITLE_WEEKLY}
             value={guardMissingData(weeklyCases)}
             tooltip="These are the cases over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
@@ -216,7 +218,8 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyDeaths"
-            title="DEATHS THIS WEEK"
+            title="WEEKLY FATALITIES"
+            subtitle={SUBTITLE_WEEKLY}
             value={guardMissingData(weeklyDeaths)}
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />

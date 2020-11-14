@@ -143,14 +143,14 @@ describe("normal rendering, currentTotalsCouncilAreaDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "150");
+    checkSingleValue("weeklyCases", "150", "last 7 days");
     checkSingleValue(
       "totalCases",
       "Not available",
       "reported since 28 February, 2020"
     );
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "37");
+    checkSingleValue("weeklyDeaths", "37", "last 7 days");
     checkSingleValue(
       "totalDeaths",
       "Not available",
@@ -177,14 +177,14 @@ describe("normal rendering, currentTotalsHealthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "1,572");
+    checkSingleValue("weeklyCases", "1,572", "last 7 days");
     checkSingleValue(
       "totalCases",
       "Not available",
       "reported since 28 February, 2020"
     );
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "86");
+    checkSingleValue("weeklyDeaths", "86", "last 7 days");
     checkSingleValue(
       "totalDeaths",
       "Not available",
@@ -209,14 +209,14 @@ describe("normal rendering, currentTotalsHealthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "Not available", "Not available");
-    checkSingleValue("weeklyCases", "501");
+    checkSingleValue("weeklyCases", "501", "last 7 days");
     checkSingleValue(
       "totalCases",
       "Not available",
       "reported since 28 February, 2020"
     );
     checkSingleValue("dailyDeaths", "Not available", "Not available");
-    checkSingleValue("weeklyDeaths", "34");
+    checkSingleValue("weeklyDeaths", "34", "last 7 days");
     checkSingleValue(
       "totalDeaths",
       "Not available",
@@ -300,10 +300,10 @@ describe("normal rendering, councilAreaDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "1", "reported yesterday");
-    checkSingleValue("weeklyCases", "Not available");
+    checkSingleValue("weeklyCases", "Not available", "last 7 days");
     checkSingleValue("totalCases", "311", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "2", "reported yesterday");
-    checkSingleValue("weeklyDeaths", "Not available");
+    checkSingleValue("weeklyDeaths", "Not available", "last 7 days");
     checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
   });
 });
@@ -327,7 +327,7 @@ describe("normal rendering, healthBoardDataset null", () => {
 
     checkSingleValue("dailyCases", "7", "reported today");
     // Falls back on value calculated from CA data
-    checkSingleValue("weeklyCases", "672");
+    checkSingleValue("weeklyCases", "672", "last 7 days");
     checkSingleValue(
       "totalCases",
       "19,126",
@@ -335,7 +335,7 @@ describe("normal rendering, healthBoardDataset null", () => {
     );
     checkSingleValue("dailyDeaths", "3", "reported today");
     // Falls back on value calculated from CA data
-    checkSingleValue("weeklyDeaths", "72");
+    checkSingleValue("weeklyDeaths", "72", "last 7 days");
     checkSingleValue(
       "totalDeaths",
       "2,491",
@@ -360,10 +360,10 @@ describe("normal rendering, healthBoardDataset null", () => {
     });
 
     checkSingleValue("dailyCases", "4", "reported today");
-    checkSingleValue("weeklyCases", "Not available");
+    checkSingleValue("weeklyCases", "Not available", "last 7 days");
     checkSingleValue("totalCases", "305", "reported since 28 February, 2020");
     checkSingleValue("dailyDeaths", "0", "reported today");
-    checkSingleValue("weeklyDeaths", "Not available");
+    checkSingleValue("weeklyDeaths", "Not available", "last 7 days");
     checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
   });
 
@@ -507,28 +507,28 @@ test("parseNhsCACsvData", () => {
 
 function expectNormalScotlandValues() {
   checkSingleValue("dailyCases", "7", "reported today");
-  checkSingleValue("weeklyCases", "1,572");
+  checkSingleValue("weeklyCases", "1,572", "last 7 days");
   checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
   checkSingleValue("dailyDeaths", "3", "reported today");
-  checkSingleValue("weeklyDeaths", "86");
+  checkSingleValue("weeklyDeaths", "86", "last 7 days");
   checkSingleValue("totalDeaths", "2,491", "reported since 28 February, 2020");
 }
 
 function expectNormalCouncilAreaValues() {
   checkSingleValue("dailyCases", "1", "reported yesterday");
-  checkSingleValue("weeklyCases", "150");
+  checkSingleValue("weeklyCases", "150", "last 7 days");
   checkSingleValue("totalCases", "311", "reported since 28 February, 2020");
   checkSingleValue("dailyDeaths", "2", "reported yesterday");
-  checkSingleValue("weeklyDeaths", "37");
+  checkSingleValue("weeklyDeaths", "37", "last 7 days");
   checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
 }
 
 function expectNormalHealthBoardValues() {
   checkSingleValue("dailyCases", "4", "reported today");
-  checkSingleValue("weeklyCases", "501");
+  checkSingleValue("weeklyCases", "501", "last 7 days");
   checkSingleValue("totalCases", "305", "reported since 28 February, 2020");
   checkSingleValue("dailyDeaths", "0", "reported today");
-  checkSingleValue("weeklyDeaths", "34");
+  checkSingleValue("weeklyDeaths", "34", "last 7 days");
   checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
 }
 
