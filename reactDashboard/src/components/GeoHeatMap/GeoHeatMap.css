@@ -43,15 +43,15 @@ div.leaflet-tooltip p {
 }
 
 div.leaflet-tooltip-left::before {
-  border-left-color: #ac3232;
+  border-left-color: black;
 }
 
 div.leaflet-tooltip-right::before {
-  border-right-color: #071d75;
+  border-right-color: black;
 }
 
 div.leaflet-popup-content-wrapper {
-  background-color: #000000;
+  background-color: black;
 }
 
 div.leaflet-popup-content {
