@@ -19,7 +19,7 @@ function RegionTypeSelector({ areaType, setAreaType }) {
   }
   return (
     <fieldset>
-      <legend>Select Boundaries:</legend>
+      <legend className="boundaries-legend">Select Boundaries:</legend>
       <ToggleButtonGroup
         className="toggle-button-group"
         name="areaType"
