@@ -1,8 +1,8 @@
 .darkmode-btn-toggle {
   background-color: #287db2;
   border-radius: 50%;
-  padding: 6px;
-  font-size: 25px;
+  padding: 5px;
+  font-size: 40px;
   margin: auto 0 auto 40px;
 }
 
@@ -38,11 +38,12 @@
 .nav-link {
   font-size: 1em;
   width: 180px;
-  padding-top: 10px;
   margin-top: 10px;
   padding-bottom: 20px;
   text-align: center;
   font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .navbar-links a.nav-link:hover {
@@ -54,12 +55,10 @@
   color: #121212;
   background-color: #f2f2f2;
   text-decoration: none;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 
 .darkmode .navbar-links a.nav-link.selected {
-  background-color: white;
+  background-color: #cccccc;
 }
 
 .dashboard-navbar img#logo {
@@ -71,6 +70,7 @@
 .dashboard-navbar {
   margin: 0 15px;
   background-color: white;
+  padding-bottom: 0;
 }
 
 .darkmode .dashboard-navbar {
