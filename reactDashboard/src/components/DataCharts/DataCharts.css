@@ -94,6 +94,7 @@
   border-color: #cccccc;
 }
 
+/* to meet accessibility requirements */
 .sonification-play-button:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
 }
@@ -108,6 +109,7 @@
   color: #f2f2f2;
 }
 
+/* to meet accessibility requirements */
 .darkmode .sonification-play-button:hover,
 .darkmode .sonification-play-button h5:hover {
   box-shadow: none;
