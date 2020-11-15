@@ -182,7 +182,7 @@
   background-color: #262626;
 }
 
-legend {
+.datacharts legend {
   font-size: 1rem;
   font-weight: bold;
 }
