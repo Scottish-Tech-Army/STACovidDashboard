@@ -19,6 +19,10 @@
   background-color: #133a53;
 }
 
+.darkmode .fullscreen:hover {
+  border: 1px solid #c1def1;
+}
+
 .darkmode .fullscreen:hover,
 .darkmode .fullscreen svg:hover {
   color: #c1def1;
