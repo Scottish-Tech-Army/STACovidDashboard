@@ -142,6 +142,12 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
       },
       tooltips: {
         callbacks: {
+          labelColor: function (tooltipItem, chart) {
+            return {
+              borderColor: "#000000",
+              backgroundColor: "#ec6730",
+            };
+          },
           label: (tooltipItem, data) => {
             return (
               data.datasets[tooltipItem.datasetIndex].label +

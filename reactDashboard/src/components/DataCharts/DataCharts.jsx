@@ -226,6 +226,7 @@ const DataCharts = ({
 
     const REGION_DATASET_COLOUR = "#ec6730";
     const AVERAGE_DATASET_COLOUR = "#767676";
+    const AVERAGE_DATASET_FILL_COLOUR = darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
 
     function getAverageSeriesLabel(chartType) {
       return (chartType = PERCENTAGE_TESTS
@@ -249,7 +250,8 @@ const DataCharts = ({
             datasetConfiguration(
               getAverageSeriesLabel(chartType),
               getAverageSeriesData(seriesData, regionCode, chartType),
-              AVERAGE_DATASET_COLOUR
+              AVERAGE_DATASET_COLOUR,
+              AVERAGE_DATASET_FILL_COLOUR,
             )
           );
         }
