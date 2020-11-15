@@ -24,6 +24,8 @@ header {
 .region-page-top-row {
   padding: 15px 10px;
   background-color: #f2f2f2;
+  /* required to keep the alignment down left and right hand side of pages */
+  margin: 0;
 }
 
 .darkmode .heatmaps-row {

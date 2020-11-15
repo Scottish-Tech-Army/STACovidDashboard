@@ -314,13 +314,13 @@ function Heatmap({
         <thead>
           <tr>
             <th>
-              <div>{areaTitle()}</div>
+              <div className="heatmap-table-heading">{areaTitle()}</div>
             </th>
             <th>
-              <div>{valueTitle()}</div>
+              <div className="heatmap-table-heading">{valueTitle()}</div>
             </th>
             <th>
-              <div>DAILY COUNT</div>
+              <div className="heatmap-table-heading">DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>
