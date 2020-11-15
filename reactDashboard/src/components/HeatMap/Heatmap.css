@@ -169,7 +169,7 @@
   }
 }
 
-@media all and (max-width: 450px) {
+@media all and (max-width: 550px) {
   .heatmapScale .col {
     padding: 5px 5px;
   }
