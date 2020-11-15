@@ -81,7 +81,7 @@ test("default play/stop behaviour", async () => {
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
   expect(deletePlayStateChangeListener).toHaveBeenCalledTimes(0);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of dataset title for Na h-Eileanan Siar"
   );
   expect(playAudio).toHaveBeenCalledTimes(0);
@@ -110,7 +110,7 @@ test("default play/stop behaviour", async () => {
   );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(1);
-  expect(playButton().title).toBe("Stop listening");
+  expect(playButton().getAttribute("aria-label")).toBe("Stop listening");
 
   // Click stop
   await act(async () => {
@@ -135,7 +135,7 @@ test("default play/stop behaviour", async () => {
   );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(2);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of dataset title for Na h-Eileanan Siar"
   );
 });
@@ -147,7 +147,7 @@ test("minimum input play/stop behaviour", async () => {
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
   expect(deletePlayStateChangeListener).toHaveBeenCalledTimes(0);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of no data for Scotland"
   );
   expect(playAudio).toHaveBeenCalledTimes(0);
@@ -168,7 +168,7 @@ test("minimum input play/stop behaviour", async () => {
   );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(1);
-  expect(playButton().title).toBe("Stop listening");
+  expect(playButton().getAttribute("aria-label")).toBe("Stop listening");
 
   // Click stop
   await act(async () => {
@@ -185,7 +185,7 @@ test("minimum input play/stop behaviour", async () => {
   );
   // Check callback action
   expect(isAudioPlaying).toHaveBeenCalledTimes(2);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of no data for Scotland"
   );
 });
@@ -202,7 +202,7 @@ test("empty input play behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(0);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of no data for Scotland"
   );
 
@@ -218,7 +218,7 @@ test("empty input play behaviour", async () => {
   });
 
   expect(playAudio).toHaveBeenCalledTimes(0);
-  expect(playButton().title).toBe(
+  expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of no data for Scotland"
   );
 });
