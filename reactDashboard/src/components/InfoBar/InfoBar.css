@@ -3,8 +3,9 @@
   padding: 10px 20px;
 }
 
+/* reverted changes to meet accessibility requirements */
 .darkmode .info-bar {
-  background-color: #859aab;
+   opacity: 0.75;
 }
 
 .scot-gov-link {
