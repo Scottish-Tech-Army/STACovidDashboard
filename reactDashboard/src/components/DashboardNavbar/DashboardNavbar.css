@@ -10,7 +10,7 @@
 .dashboard-navbar .heading-container {
   display: flex;
   flex-direction: row;
-  padding: 5px 0 5px;
+  padding: 5px 20px 5px 0;
   align-items: center;
   justify-content: space-between;
   flex-grow: 1;
