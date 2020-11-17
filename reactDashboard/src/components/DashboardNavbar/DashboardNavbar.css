@@ -1,3 +1,4 @@
+.darkmode-btn,
 .darkmode-btn-toggle {
   background-color: #287db2;
   border-radius: 50%;
@@ -6,16 +7,28 @@
   margin: auto 0 auto 40px;
 }
 
+.darkmode-btn {
+  display: block;
+}
+
 .darkmode .darkmode-btn-toggle {
   color: #fd8d3c;
   background-color: #121212;
 }
 
+.darkmode-btn:hover,
 .darkmode-btn-toggle:hover {
   background-color: #c1def1;
   cursor: pointer;
 }
 
+.darkmode .darkmode-btn,
+.darkmode .darkmode-btn-toggle {
+  color: #fd8d3c;
+  background-color: #121212;
+}
+
+.darkmode .darkmode-btn:hover,
 .darkmode .darkmode-btn-toggle:hover {
   color: #121212;
   background-color: #fd8d3c;
@@ -62,7 +75,7 @@
 }
 
 .dashboard-navbar img#logo {
-  height: 60px;
+  height: 80px;
   margin: 10px 10px 10px 0;
   padding: 0;
 }
@@ -77,6 +90,10 @@
   background-color: #acacac;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.dashboard-navbar .heading-container.collapse:not(.show) {
+  display: none;
 }
 
 .dashboard-navbar .heading h1 {
@@ -123,7 +140,6 @@
     padding-right: 0;
   }
   .darkmode-btn-toggle {
-    display: inline;
     margin: auto 20px auto auto;
   }
   .navbar-links a.nav-link.selected,
@@ -136,5 +152,11 @@
   }
   .navbar-links {
     margin: 10px auto;
+  }
+  .hide-darkmode .darkmode-btn-toggle {
+    display: block;
+  }
+  .darkmode-btn {
+    display: none;
   }
 }
