@@ -218,7 +218,7 @@ function RegionalSingleValueBar({
         <div className="p-2 region-single-value-container">
           <SingleValue
             id="weeklyDeaths"
-            title="WEEKLY FATALITIES"
+            title="WEEKLY DEATHS"
             subtitle={SUBTITLE_WEEKLY}
             value={guardMissingData(weeklyDeaths)}
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
