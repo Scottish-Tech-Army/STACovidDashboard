@@ -27,15 +27,13 @@ const DashboardNavbar = () => {
       </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <div className="heading-container">
-          <Navbar.Brand className="heading">
-            <h1>Scottish COVID-19 Statistics</h1>
-          </Navbar.Brand>
-          <Nav className="navbar-links">
-            {navLink(URL_OVERVIEW, "Summary Dashboard")}
-            {navLink(URL_REGIONAL, "Regional Insights", false)}
-          </Nav>
-        </div>
+        <Navbar.Brand className="heading-container">
+          <h1 className="heading">Scottish COVID-19 Statistics</h1>
+        </Navbar.Brand>
+        <Nav className="navbar-links">
+          {navLink(URL_OVERVIEW, "Summary Dashboard")}
+          {navLink(URL_REGIONAL, "Regional Insights", false)}
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   );

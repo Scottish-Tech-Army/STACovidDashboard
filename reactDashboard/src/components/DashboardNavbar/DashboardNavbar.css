@@ -17,7 +17,7 @@
 }
 
 .dashboard-navbar .heading-container.collapse:not(.show) {
-    display: none;
+  display: none;
 }
 
 .dashboard-navbar .heading {
@@ -71,7 +71,7 @@
   .dashboard-navbar img#logo {
     height: 80px !important;
   }
-  .dashboard-navbar .heading-container {
+  .dashboard-navbar .navbar-links {
     align-items: flex-start;
     flex-direction: column;
     padding-bottom: 0;
