@@ -26,10 +26,6 @@
   padding-right: 20px;
 }
 
-.dashboard-navbar .heading .h1 {
-  display: inline-block;
-}
-
 .navbar-links {
   display: flex;
   justify-content: flex-end;
