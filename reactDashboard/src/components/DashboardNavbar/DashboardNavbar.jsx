@@ -26,7 +26,7 @@ const DashboardNavbar = () => {
         <img id="logo" src="/STALogo.png" alt="Scottish Tech Army Logo" />
       </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav" className="heading-container">
+      <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading">
           <h1>Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
