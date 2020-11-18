@@ -56,14 +56,14 @@
   margin: 0;
 }
 
-@media screen and (min-width: 1200px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl {
-    max-width: 100%;
-  }
+/* block required to keep the chart at full-width when the screen is narrower */
+.container,
+.container-xl,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xs {
+  max-width: 100%;
 }
 
 .chart-container {
