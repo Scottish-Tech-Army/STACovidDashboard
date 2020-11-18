@@ -41,6 +41,7 @@ function HeatmapDataSelector({
       <Row className="selector-container">
         <Col className="selector-group" xs={12} md={6}>
           <fieldset>
+            <legend>Select boundaries:</legend>
             <ToggleButtonGroup
               className="toggle-button-group"
               name="areaType"
@@ -59,6 +60,7 @@ function HeatmapDataSelector({
         </Col>
         <Col className="selector-group" xs={12} md={6}>
           <fieldset>
+            <legend>Select type:</legend>
             <ToggleButtonGroup
               className="toggle-button-group"
               name="valueType"

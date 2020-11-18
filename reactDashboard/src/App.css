@@ -32,6 +32,15 @@ header {
   background-color: #262626;
 }
 
+.selector-group fieldset legend {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.darkmode .selector-group fieldset legend {
+  color: #f2f2f2;
+}
+
 .darkmode .region-page-top-row {
   background-color: rgb(56, 56, 56);
 }
