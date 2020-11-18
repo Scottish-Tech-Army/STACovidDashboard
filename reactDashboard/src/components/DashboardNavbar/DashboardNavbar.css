@@ -10,24 +10,19 @@
 .dashboard-navbar .heading-container {
   display: flex;
   flex-direction: row;
-  padding: 5px 0 5px;
+  padding: 5px 20px 5px 0;
   align-items: center;
   justify-content: space-between;
   flex-grow: 1;
 }
 
 .dashboard-navbar .heading-container.collapse:not(.show) {
-    display: none;
+  display: none;
 }
 
 .dashboard-navbar .heading {
   display: flex;
   align-items: center;
-  padding-right: 20px;
-}
-
-.dashboard-navbar .heading .h1 {
-  display: inline-block;
 }
 
 .navbar-links {
@@ -71,7 +66,7 @@
   .dashboard-navbar img#logo {
     height: 80px !important;
   }
-  .dashboard-navbar .heading-container {
+  .dashboard-navbar .navbar-links {
     align-items: flex-start;
     flex-direction: column;
     padding-bottom: 0;
