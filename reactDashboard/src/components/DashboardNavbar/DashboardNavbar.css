@@ -34,6 +34,11 @@
   background-color: #fd8d3c;
 }
 
+.dashboard-navbar .heading {
+  display: flex;
+  align-items: center;
+}
+
 .hide-darkmode .darkmode-btn-toggle {
   display: none;
 }
@@ -50,7 +55,6 @@
 
 .nav-link {
   font-size: 1em;
-  width: 180px;
   margin-top: 10px;
   padding-bottom: 20px;
   text-align: center;
@@ -112,13 +116,15 @@
 .dashboard-navbar .heading-container {
   display: flex;
   flex-direction: row;
+  padding: 5px 20px 5px 0;
+  align-items: center;
   justify-content: space-between;
-  padding-right: 20px;
+  flex-grow: 1;
 }
 
 @media screen and (max-width: 1080px) {
   .dashboard-navbar .heading {
-    font-size: 0.75rem;
+    font-size: 1.5rem;
   }
 }
 

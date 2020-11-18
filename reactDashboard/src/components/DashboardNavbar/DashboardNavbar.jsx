@@ -42,9 +42,9 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
       {darkmodeIcon("darkmode-btn-toggle")}
       </Nav>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav" className="heading-container">
-        <Navbar.Brand className="heading">
-          <h1>Scottish COVID-19 Statistics</h1>
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Brand className="heading-container">
+          <h1 className="heading">Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Statistics")}
