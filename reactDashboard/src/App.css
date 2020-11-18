@@ -42,6 +42,20 @@ header {
   margin-bottom: 5px;
 }
 
+/* inserts an hr divider between the geo map and the heatmap table when they stack vertically */
+.responsive-divider {
+  padding: 0;
+  margin: 10px 0 15px;
+  display:none;
+}
+
+
+@media screen and (max-width: 990px) {
+  .responsive-divider {
+    display:block;
+  }
+}
+
 /* color is default white for .region-tiles-column */
 .region-tiles-column {
   padding-top: 0;

@@ -156,6 +156,9 @@ const Overview = ({
                   darkmode={darkmode}
                 />
               </Col>
+              <Col className="responsive-divider">
+                <hr className="full-width-hr" />
+              </Col>
               <Col
                 xs={zoomGeoMap ? 0 : 12}
                 lg={zoomGeoMap ? 0 : 8}
