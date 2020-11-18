@@ -96,6 +96,7 @@ header {
 .data-sources h1 {
   font-size: 1rem;
   padding: 15px;
+  margin-bottom: 0;
   background-color: #133a53;
   color: white;
   border-radius: 5px;
@@ -112,43 +113,29 @@ header {
   padding: 0 20px 0;
 }
 
-.darkmode .accessibility-details li,
-.darkmode .about-us-details li,
-.darkmode .data-sources-list li,
-.darkmode .about-us-details ul,
-.darkmode .accessibility-details ul,
-.darkmode .data-sources .data-sources-list {
-  background-color: rgb(50, 50, 50);
-}
-
 .about-us-details ul {
   width: 50vw;
 }
 
+.accessibility-details,
+.about-us {
+  padding-bottom: 20px;
+}
+
 .accessibility-details ul {
   padding-left: 50px;
-  padding-bottom: 20px;
+  margin: 0;
 }
 
 .accessibility-details p,
 .about-us-details p {
-  padding: 10px 20px;
-  margin-bottom: 0;
-}
-
-.darkmode .accessibility-details p,
-.darkmode .about-us-details p {
-  background-color: rgb(50, 50, 50);
+  padding: 20px;
+  margin: 0;
 }
 
 .team-members.col,
 .vendors.col {
-  padding: 0 0 10px;
-}
-
-.darkmode .team-members.col,
-.darkmode .vendors.col {
-  background-color: rgb(50, 50, 50);
+  padding: 0 0 20px;
 }
 
 .data-sources-list li {
