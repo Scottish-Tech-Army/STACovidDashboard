@@ -37,7 +37,10 @@
 .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: white;
+}
+
+.darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
+  color: #020202;
 }
 
 .darkmode .selected-chart.dropdown-toggle.btn.btn-primary {

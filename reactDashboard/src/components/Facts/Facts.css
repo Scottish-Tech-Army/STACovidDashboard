@@ -72,6 +72,15 @@
   display: inline-block;
 }
 
+.darkmode .highlight-facts {
+  color: #ec6730;
+  opacity: 1;
+}
+
 #test-link {
   color: #2a84bb;
+}
+
+.darkmode #test-link {
+  color: #6BB3DD;
 }

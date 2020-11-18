@@ -61,6 +61,10 @@
   color: #2a84bb;
 }
 
+.darkmode .data-definitions .data-definitions-link {
+  color: #3094D0;
+}
+
 .data-definitions .data-definitions-link,
 .data-definitions .definitions-heading {
   font-weight: bold;
@@ -77,6 +81,10 @@
 
 .data-definitions-body .source-attribution {
   color: #2a84bb;
+}
+
+.darkmode .data-definitions-body .source-attribution {
+  color: #3094D0;
 }
 
 .darkmode .data-definitions .card-body {
