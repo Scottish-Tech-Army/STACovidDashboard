@@ -22,11 +22,14 @@ footer .sitemap .entry {
   color: #f2f2f2;
 }
 
+.footer-base {
+  margin: 0;
+  padding: 20px 0 40px;
+}
+
 .darkmode .footer-base {
   background-color: #acacac;
   color: #121212;
-  margin: 0;
-  padding: 20px 0 40px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
