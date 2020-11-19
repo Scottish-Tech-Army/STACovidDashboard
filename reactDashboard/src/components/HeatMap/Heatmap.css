@@ -186,12 +186,11 @@ svg.heatbar {
   width: 100%;
 }
 
-/* fix light-blue for darkmode */
-.heatmap table tr.area td.scotland-total {
+.heatmap table tr.scotland-total td {
   font-weight: bold;
   color: #287db2;
 }
 
-.darkmode .heatmap table tr.area td.scotland-total {
+.darkmode .heatmap table tr.scotland-total td {
   color: #c1def1;
 }

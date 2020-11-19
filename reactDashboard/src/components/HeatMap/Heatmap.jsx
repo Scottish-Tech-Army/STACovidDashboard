@@ -188,9 +188,9 @@ function Heatmap({
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     const scotlandTotal = totalCount();
     return (
-      <tr className="area" key={index}>
-        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{name}</td>
-        <td className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total": ""}>{featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}</td>
+      <tr  className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area": "area"} key={index}>
+        <td>{name}</td>
+        <td>{featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
