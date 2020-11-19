@@ -75,10 +75,42 @@ export function datasetConfiguration(datasetLabel, seriesData, colour) {
   };
 }
 
+function getSeriesYMax(dataset, dateRange) {
+  let series = dataset.data;
+  if (dateRange !== null && dateRange !== undefined) {
+    series = series.filter(
+      (data) => data.t >= dateRange.startDate && data.t <= dateRange.endDate
+    );
+  }
+  return Math.max(...series.map((data) => data.y), 0);
+}
+
+export const getChartYMax = (datasets, dateRange) => {
+  if (datasets === null || datasets === undefined || datasets.length === 0) {
+    return 0;
+  }
+  return Math.max(
+    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
+  );
+}
+
+export const maxTicks = (getChartYMax) => {
+  if (
+    getChartYMax === null ||
+    getChartYMax === undefined ||
+    getChartYMax === 0 ||
+    getChartYMax >= 20
+  ) {
+    return 20;
+  } else {
+    return getChartYMax;
+  }
+};
+console.log(maxTicks());
+
 export function commonChartConfiguration(datasets, dateRange = null) {
   let result = {
     type: "line",
-
     data: {
       datasets: datasets,
     },
@@ -154,6 +186,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       max: dateRange.endDate,
     };
   }
+
   return result;
 }
 
