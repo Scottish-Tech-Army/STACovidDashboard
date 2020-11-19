@@ -86,29 +86,27 @@ function getSeriesYMax(dataset, dateRange) {
 }
 
 export function getChartYMax(datasets, dateRange) {
-  let yMax = 0;
   if (datasets === null || datasets === undefined || datasets.length === 0) {
-    yMax = 0;
-  } else {
-    yMax = Math.max(
-      ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
-    );
+    return 0;
   }
-  maxTicks(yMax);
-  return yMax;
+  return Math.max(
+    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
+  );
 }
 
-export const maxTicks = (yMax) => {
-  let maxTicks = 0;
-  if (yMax === null || yMax === undefined || yMax === 0 || yMax >= 20) {
-    maxTicks = 20;
-  } else {
-    maxTicks = yMax;
+export const getMaxTicks = (yMax) => {
+  if (yMax === null || yMax === undefined || yMax === 0) {
+    return 1;
   }
-  return maxTicks;
+  if (yMax >= 20) {
+    return 20;
+  }
+  return yMax;
 };
 
-export function commonChartConfiguration(datasets, dateRange = null, maxTicks) {
+export function commonChartConfiguration(datasets, dateRange = null) {
+  const maxTicks = getMaxTicks(getChartYMax(datasets, dateRange));
+
   let result = {
     type: "line",
     data: {
@@ -175,10 +173,6 @@ export function commonChartConfiguration(datasets, dateRange = null, maxTicks) {
       },
     },
   };
-
-  if (datasets.length > 0) {
-    getChartYMax(datasets, dateRange);
-  }
 
   if (datasets.length > 0) {
     result.options.annotation = { annotations: keyDates.map(getDateLine) };

@@ -3,7 +3,7 @@ import {
   calculateDateRange,
   datasetConfiguration,
   getChartYMax,
-  maxTicks,
+  getMaxTicks,
 } from "./DataChartsUtils";
 import {
   ALL_DATES,
@@ -13,8 +13,71 @@ import {
   LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
 
+const TEST_MAX_DATA_1 = [
+  {
+    t: Date.parse("2020-01-01"),
+    y: 363,
+  },
+  {
+    t: Date.parse("2020-01-02"),
+    y: 101,
+  },
+  {
+    t: Date.parse("2020-01-03"),
+    y: 257,
+  },
+  {
+    t: Date.parse("2020-01-04"),
+    y: 771,
+  },
+  {
+    t: Date.parse("2020-01-05"),
+    y: 799,
+  },
+  {
+    t: Date.parse("2020-01-06"),
+    y: 297,
+  },
+  {
+    t: Date.parse("2020-01-07"),
+    y: 118,
+  },
+];
+const TEST_MAX_DATA_2 = [
+  {
+    t: Date.parse("2020-01-01"),
+    y: 4056,
+  },
+  {
+    t: Date.parse("2020-01-02"),
+    y: 256,
+  },
+  {
+    t: Date.parse("2020-01-03"),
+    y: 235,
+  },
+  {
+    t: Date.parse("2020-01-04"),
+    y: 367,
+  },
+  {
+    t: Date.parse("2020-01-05"),
+    y: 2478,
+  },
+  {
+    t: Date.parse("2020-01-06"),
+    y: 163,
+  },
+  {
+    t: Date.parse("2020-01-07"),
+    y: 842,
+  },
+];
+
 describe("commonChartConfiguration", () => {
-  const mockData = [datasetConfiguration("testLabel", undefined, "#767676")];
+  const mockData = [
+    datasetConfiguration("testLabel", TEST_MAX_DATA_1, "#767676"),
+  ];
 
   it("with date range", () => {
     const result = commonChartConfiguration(mockData, {
@@ -35,6 +98,40 @@ describe("commonChartConfiguration", () => {
   it("annotations without dataset", () => {
     const result = commonChartConfiguration([]);
     expect(result.options.annotation).toBeUndefined();
+  });
+  it("receive maxTicks less than 20", () => {
+    const smallMockData = [
+      datasetConfiguration(
+        "testLabel",
+        [
+          {
+            t: Date.parse("2020-01-01"),
+            y: 1,
+          },
+          {
+            t: Date.parse("2020-01-02"),
+            y: 0,
+          },
+          {
+            t: Date.parse("2020-01-03"),
+            y: 0,
+          },
+          {
+            t: Date.parse("2020-01-04"),
+            y: 1,
+          },
+        ],
+        "#767676"
+      ),
+    ];
+    const result = commonChartConfiguration(smallMockData);
+    expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(1);
+  });
+  it("receive maxTicks more than 20", () => {
+    const result = commonChartConfiguration(mockData);
+    expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(
+      20
+    );
   });
 });
 
@@ -116,66 +213,7 @@ describe("getChartYMax", () => {
     startDate: Date.parse("1980-01-01"),
     endDate: Date.parse("1980-01-08"),
   };
-  const TEST_MAX_DATA_1 = [
-    {
-      t: Date.parse("2020-01-01"),
-      y: 363,
-    },
-    {
-      t: Date.parse("2020-01-02"),
-      y: 101,
-    },
-    {
-      t: Date.parse("2020-01-03"),
-      y: 257,
-    },
-    {
-      t: Date.parse("2020-01-04"),
-      y: 771,
-    },
-    {
-      t: Date.parse("2020-01-05"),
-      y: 799,
-    },
-    {
-      t: Date.parse("2020-01-06"),
-      y: 297,
-    },
-    {
-      t: Date.parse("2020-01-07"),
-      y: 118,
-    },
-  ];
-  const TEST_MAX_DATA_2 = [
-    {
-      t: Date.parse("2020-01-01"),
-      y: 4056,
-    },
-    {
-      t: Date.parse("2020-01-02"),
-      y: 256,
-    },
-    {
-      t: Date.parse("2020-01-03"),
-      y: 235,
-    },
-    {
-      t: Date.parse("2020-01-04"),
-      y: 367,
-    },
-    {
-      t: Date.parse("2020-01-05"),
-      y: 2478,
-    },
-    {
-      t: Date.parse("2020-01-06"),
-      y: 163,
-    },
-    {
-      t: Date.parse("2020-01-07"),
-      y: 842,
-    },
-  ];
+
   const TEST_EMPTY_DATASET = [
     {
       data: [],
@@ -236,7 +274,7 @@ describe("getChartYMax", () => {
   });
 });
 
-describe("maxTicks", () => {
+describe("getMaxTicks", () => {
   const TEST_YMAX_NULL = null;
   const TEST_YMAX_ZERO = 0;
   const TEST_YMAX_ONE = 1;
@@ -245,24 +283,24 @@ describe("maxTicks", () => {
   const TEST_YMAX_MILLION = 1000000;
 
   it("yMax is null", () => {
-    expect(maxTicks(TEST_YMAX_NULL)).toStrictEqual(20);
+    expect(getMaxTicks(TEST_YMAX_NULL)).toStrictEqual(1);
   });
   it("yMax is undefined", () => {
-    expect(maxTicks()).toStrictEqual(20);
+    expect(getMaxTicks()).toStrictEqual(1);
   });
   it("yMax is 0", () => {
-    expect(maxTicks(TEST_YMAX_ZERO)).toStrictEqual(20);
+    expect(getMaxTicks(TEST_YMAX_ZERO)).toStrictEqual(1);
   });
   it("yMax is 1", () => {
-    expect(maxTicks(TEST_YMAX_ONE)).toStrictEqual(1);
+    expect(getMaxTicks(TEST_YMAX_ONE)).toStrictEqual(1);
   });
   it("yMax is 5", () => {
-    expect(maxTicks(TEST_YMAX_FIVE)).toStrictEqual(5);
+    expect(getMaxTicks(TEST_YMAX_FIVE)).toStrictEqual(5);
   });
   it("yMax is 20", () => {
-    expect(maxTicks(TEST_YMAX_TWENTY)).toStrictEqual(20);
+    expect(getMaxTicks(TEST_YMAX_TWENTY)).toStrictEqual(20);
   });
   it("yMax is more than 20", () => {
-    expect(maxTicks(TEST_YMAX_MILLION)).toStrictEqual(20);
+    expect(getMaxTicks(TEST_YMAX_MILLION)).toStrictEqual(20);
   });
 });
