@@ -85,30 +85,30 @@ function getSeriesYMax(dataset, dateRange) {
   return Math.max(...series.map((data) => data.y), 0);
 }
 
-export const getChartYMax = (datasets, dateRange) => {
+export function getChartYMax(datasets, dateRange) {
+  let yMax = 0;
   if (datasets === null || datasets === undefined || datasets.length === 0) {
-    return 0;
+    yMax = 0;
+  } else {
+    yMax = Math.max(
+      ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
+    );
   }
-  return Math.max(
-    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
-  );
+  maxTicks(yMax);
+  return yMax;
 }
 
-export const maxTicks = (getChartYMax) => {
-  if (
-    getChartYMax === null ||
-    getChartYMax === undefined ||
-    getChartYMax === 0 ||
-    getChartYMax >= 20
-  ) {
-    return 20;
+export const maxTicks = (yMax) => {
+  let maxTicks = 0;
+  if (yMax === null || yMax === undefined || yMax === 0 || yMax >= 20) {
+    maxTicks = 20;
   } else {
-    return getChartYMax;
+    maxTicks = yMax;
   }
+  return maxTicks;
 };
-console.log(maxTicks());
 
-export function commonChartConfiguration(datasets, dateRange = null) {
+export function commonChartConfiguration(datasets, dateRange = null, maxTicks) {
   let result = {
     type: "line",
     data: {
@@ -132,7 +132,7 @@ export function commonChartConfiguration(datasets, dateRange = null) {
             id: "y-axis-0",
             ticks: {
               beginAtZero: true,
-              maxTicksLimit: 20,
+              maxTicksLimit: maxTicks,
               callback: function (value, index, values) {
                 return Math.round(value);
               },
@@ -175,6 +175,10 @@ export function commonChartConfiguration(datasets, dateRange = null) {
       },
     },
   };
+
+  if (datasets.length > 0) {
+    getChartYMax(datasets, dateRange);
+  }
 
   if (datasets.length > 0) {
     result.options.annotation = { annotations: keyDates.map(getDateLine) };
