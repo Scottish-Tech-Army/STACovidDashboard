@@ -120,6 +120,10 @@
   background-color: #020202;
 }
 
+.darkmode .heatmapScale .l-7 {
+  color: white;
+}
+
 .heatmapScale {
   text-align: center;
   padding-top: 0;
@@ -132,6 +136,7 @@
 .darkmode .heatmapScale {
   border-color: #f2f2f2;
   background-color: #f2f2f2;
+  color: #020202;
 }
 
 .heatmapScale .row {
@@ -153,14 +158,6 @@
   .heatmapScale .col.largescale {
     display: none;
   }
-}
-
-.darkmode .heatmapScale {
-  color: #020202;
-}
-
-.darkmode .heatmapScale .l-7 {
-  color: white;
 }
 
 @media all and (max-width: 600px) {
