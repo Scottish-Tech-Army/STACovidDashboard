@@ -33,7 +33,7 @@ function getDateLine({ date, name }, index) {
       cornerRadius: 2,
       xPadding: 10,
       yPadding: 3,
-      position: "top",
+      position: "top-fitted",
       enabled: true,
       yAdjust: index * 20,
       content: name,
