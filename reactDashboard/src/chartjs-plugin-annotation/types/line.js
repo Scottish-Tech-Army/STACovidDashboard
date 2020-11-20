@@ -70,7 +70,7 @@ module.exports = function (Chart) {
         ret.y = y1 + ya;
         ret.x = (isFinite(line.m) ? line.getX(ret.y) : x1) - xa;
 
-        const lineVisible = x1 < view.clip.x2 && x2 > view.clip.x1;
+        const lineVisible = x1 <= view.clip.x2 && x2 >= view.clip.x1;
         if (!lineVisible) {
           // Line not visible - move label out of view too
           ret.x = view.clip.x2 + width;
