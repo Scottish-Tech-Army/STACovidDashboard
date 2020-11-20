@@ -20,7 +20,7 @@
 }
 
 .darkmode .fullscreen:hover {
-  border: 1px solid #c1def1;
+  border-color: 1px solid #c1def1;
 }
 
 .darkmode .fullscreen:hover,

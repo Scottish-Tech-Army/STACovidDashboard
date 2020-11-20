@@ -37,10 +37,6 @@
   font-weight: normal;
 }
 
-.table th {
-  border-top: none;
-}
-
 .darkmode .table thead th {
   border-bottom: 1px solid #020202;
 }

@@ -21,6 +21,7 @@
 
 #map,
 #regionmap {
+  border: 1px solid white;
   height: 100%;
   width: 100%;
   margin: 0 5px;
@@ -28,7 +29,7 @@
 
 .darkmode #map,
 .darkmode #regionmap {
-  border: 1px solid darkgray;
+  border-color: darkgray;
   border-radius: 1%;
 }
 
@@ -78,6 +79,7 @@ div.leaflet-popup-content {
   background-color: rgb(64, 64, 64);
   color: #f2f2f2;
   border-color: #b3b3b3;
+  /* styling for dark-theme with rounded edges */
   border-radius: 2%;
 }
 

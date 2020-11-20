@@ -14,8 +14,8 @@
   background-color: #c1def1;
 }
 
-/* background-color is default white for .region-selector-row */
 .region-selector-row {
+  background-color: inherit;
   padding: 0 20px 0 10px;
 }
 
