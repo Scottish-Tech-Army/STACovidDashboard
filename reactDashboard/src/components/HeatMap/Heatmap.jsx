@@ -186,11 +186,10 @@ function Heatmap({
   ) {
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
-    const scotlandTotal = totalCount();
     return (
       <tr  className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area": "area"} key={index}>
         <td>{name}</td>
-        <td>{featureCode === FEATURE_CODE_SCOTLAND ? scotlandTotal : total}</td>
+        <td>{total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
@@ -222,20 +221,6 @@ function Heatmap({
       // AREATYPE_HEALTH_BOARDS == areaType
       return parsedHealthBoardDataset;
     }
-  }
-
-  function totalCount() {
-    const dataset = getDataSet();
-    if (dataset !== null) {
-      const total =
-        VALUETYPE_DEATHS === valueType
-          ? dataset.scotland.totalDeaths
-          : dataset.scotland.totalCases;
-      if (total > 0) {
-        return total;
-      }
-    }
-    return "";
   }
 
   function dateRangeText() {
