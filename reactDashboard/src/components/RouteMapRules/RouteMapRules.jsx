@@ -20,7 +20,7 @@ const RouteMapRules = () => {
   }
   return (
     <Container fluid className="d-flex flex-column">
-      <Row fluid>
+      <Row>
         <Col className="hr-container">
           <hr className="full-width-hr" />
         </Col>
