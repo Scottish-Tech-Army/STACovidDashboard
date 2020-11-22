@@ -27,6 +27,7 @@ footer .sitemap .entry {
   padding: 20px 0 40px;
 }
 
+/* different styling for darkmode theme - rounded corners on header and footer */
 .darkmode .footer-base {
   background-color: #acacac;
   color: #121212;

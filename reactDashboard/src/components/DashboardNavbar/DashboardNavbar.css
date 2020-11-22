@@ -90,6 +90,7 @@
   padding-bottom: 0;
 }
 
+/* different styling for darkmode theme - rounded corners and gray background on header and footer */
 .darkmode .dashboard-navbar {
   background-color: #acacac;
   border-top-left-radius: 10px;
