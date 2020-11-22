@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Accessibility = () => {
   return (
-    <div fluid="true" className="accessibility-page">
+    <div className="accessibility-page">
       <div className="accessibility-details">
         <hr className="full-width-hr" />
         <h1>Accessibility</h1>

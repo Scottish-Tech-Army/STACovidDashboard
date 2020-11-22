@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Heatmap.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -187,7 +184,12 @@ function Heatmap({
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
-      <tr  className={featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area": "area"} key={index}>
+      <tr
+        className={
+          featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area" : "area"
+        }
+        key={index}
+      >
         <td>{name}</td>
         <td>{total}</td>
         <td className="heatbarCell">
@@ -268,27 +270,24 @@ function Heatmap({
 
   function heatbarScale() {
     return (
-      <Container fluid className="heatmapScale">
-      <Row>
+      <div className="heatmapScale">
         {heatLevels.map((value, index) => {
           return (
-            <Col key={"small" + index} className={"smallscale l-" + index}>
+            <span key={"small" + index} className={"smallscale l-" + index}>
               {value}
-            </Col>
+            </span>
           );
         })}
         {heatLevels.map((value, index) => {
           return (
-            <Col key={"large" + index} className={"largescale l-" + index}>
+            <span key={"large" + index} className={"largescale l-" + index}>
               &ge;&nbsp;{value}
-            </Col>
+            </span>
           );
         })}
-        </Row>
-      </Container>
+      </div>
     );
   }
-
   if (getDataSet() === null) {
     return <LoadingComponent />;
   }
@@ -298,12 +297,8 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th className="heatmap-table-heading">
-              {areaTitle()}
-            </th>
-            <th className="heatmap-table-heading">
-              {valueTitle()}
-            </th>
+            <th className="heatmap-table-heading">{areaTitle()}</th>
+            <th className="heatmap-table-heading">{valueTitle()}</th>
             <th className="heatmap-table-heading">
               <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>

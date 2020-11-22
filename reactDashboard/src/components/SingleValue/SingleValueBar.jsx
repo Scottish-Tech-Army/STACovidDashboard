@@ -81,8 +81,8 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
   }, [currentTotalsHealthBoardDataset]);
 
   return (
-    <div className="single-value-bar">
-      <div className="p-2 single-value-container">
+    <div className="overview-single-value-bar">
+      <div className="single-value-container">
         <SingleValue
           id="dailyCases"
           title="DAILY CASES"
@@ -91,7 +91,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           tooltip="These are the total cases reported on the above date and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
-      <div className="p-2 single-value-container">
+      <div className="single-value-container">
         <SingleValue
           id="totalCases"
           title="TOTAL CASES"
@@ -100,7 +100,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           tooltip="These are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
       </div>
-      <div className="p-2 single-value-container">
+      <div className="single-value-container">
         <SingleValue
           id="dailyDeaths"
           title="DAILY DEATHS"
@@ -111,7 +111,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           tooltip="These are the deaths reported on the above day, and updated after 2pm daily (can be delayed because of data fetching)."
         />
       </div>
-      <div className="p-2 single-value-container">
+      <div className="single-value-container">
         <SingleValue
           id="totalDeaths"
           title="TOTAL DEATHS"
@@ -120,7 +120,7 @@ function SingleValueBar({ currentTotalsHealthBoardDataset = null }) {
           tooltip="These are the total number of deaths where COVID-19 is noted on the death certificate since records began on 28 February, 2020."
         />
       </div>
-      <div className="p-2 single-value-container">
+      <div className="single-value-container">
         <SingleValue
           id="fatalityCaseRatio"
           title="DEATH/CASE RATIO"

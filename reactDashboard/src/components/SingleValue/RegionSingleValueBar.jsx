@@ -172,7 +172,7 @@ function RegionalSingleValueBar({
   return (
     <>
       <div className="region-single-value-bar">
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="dailyCases"
             title="DAILY CASES"
@@ -183,7 +183,7 @@ function RegionalSingleValueBar({
             tooltip="These are the cases reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="weeklyCases"
             title="WEEKLY CASES"
@@ -192,7 +192,7 @@ function RegionalSingleValueBar({
             tooltip="These are the cases over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="totalCases"
             title="TOTAL CASES"
@@ -204,7 +204,7 @@ function RegionalSingleValueBar({
       </div>
 
       <div className="region-single-value-bar">
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="dailyDeaths"
             title="DAILY DEATHS"
@@ -215,7 +215,7 @@ function RegionalSingleValueBar({
             tooltip="These are the deaths reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="weeklyDeaths"
             title="WEEKLY DEATHS"
@@ -224,7 +224,7 @@ function RegionalSingleValueBar({
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="totalDeaths"
             title="TOTAL DEATHS"

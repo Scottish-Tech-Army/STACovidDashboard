@@ -1,5 +1,27 @@
+.region-single-value-bar,
+.overview-single-value-bar {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  position: relative;
+}
+
+.overview-single-value-bar {
+  flex-wrap: wrap;
+}
+
+.darkmode .region-single-value-bar,
+.darkmode .overview-single-value-bar {
+  background-color: #121212;
+}
+
+.single-value-container {
+  padding: 0.5rem;
+}
+
 .subtitle {
-  font-size: 0.75rem;
   color: #6c6c6c;
   font-weight: bold;
 }
@@ -8,17 +30,9 @@
   color: #b3b3b3;
 }
 
-.single-value-heading {
-  height: 25%;
-  margin-left: 30px;
-  padding-right: 26px;
-}
-
 .single-value-number {
-  font-size: 2.5rem;
   color: #2a84bb;
   font-weight: bold;
-  margin-left: 30px;
 }
 
 .darkmode .single-value-number {
@@ -32,7 +46,6 @@
 .single-value {
   box-shadow: 10px 10px 5px #aaaaaa;
   padding: 10px 0 0;
-  height: 125px;
   background-color: white;
   color: #133a53;
   position: relative;
@@ -44,30 +57,6 @@
   color: #c1def1;
 }
 
-.region-single-value-bar,
-.single-value-bar {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  background-color: #f2f2f2;
-  position: relative;
-}
-
-.darkmode .region-single-value-bar,
-.darkmode .single-value-bar {
-  background-color: #121212;
-}
-
-.single-value-container {
-  width: 20%;
-}
-
-.region-single-value-container {
-  width: 33%;
-}
-
 .single-value-hr {
   margin-bottom: 0;
   padding-bottom: 0;
@@ -77,74 +66,117 @@
   border-color: #020202;
 }
 
-/* requires page specific selectors for single-value tiles on regional page to deal with different layout/stop text overlapping */
-@media screen and (max-width: 1324px) {
-  .single-value-bar {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .region-single-value-container .single-value-heading {
-    margin-top: 10px;
-    margin-left: 20px;
-    height: 30%;
-  }
-  .region-single-value-container .single-value-number {
-    margin-left: 20px;
-  }
-  .region-single-value-container .single-value {
-    height: 175px;
-  }
-  .single-value-container {
+/* Full-width default values for overview and regional page */
+.subtitle {
+  font-size: 0.75rem;
+}
+
+.single-value-heading {
+  height: 25%;
+  margin-left: 30px;
+  padding-right: 26px;
+}
+
+.single-value-number {
+  font-size: 2.5rem;
+  margin-left: 30px;
+}
+
+.single-value {
+  height: 125px;
+}
+
+.region-single-value-bar,
+.overview-single-value-bar {
+  flex-direction: row;
+}
+
+.overview-single-value-bar .single-value-container {
+  width: 20%;
+}
+
+.region-single-value-bar .single-value-container {
+  width: 33%;
+}
+
+/* Overview page - 2 column view for tiles */
+@media screen and (max-width: 1410px) {
+  .overview-single-value-bar .single-value-container {
     width: 50%;
   }
 }
 
-@media screen and (max-width: 640px) {
-  .region-single-value-bar {
-    flex-direction: column;
-  }
-  .region-single-value-container {
-    width: 100%;
-  }
-  .region-single-value-container .single-value {
-    height: 135px;
-  }
-  .region-single-value-container .single-value-heading {
-    height: 25%;
-  }
-}
-
-/* overview page and regional page single value tiles share the same stlying from this screen width downward */
-@media screen and (max-width: 575px) {
-  .single-value {
+/* Overview page - single column view for tiles */
+@media screen and (max-width: 585px) {
+  .overview-single-value-bar .single-value {
     height: 100px;
   }
-  .single-value-heading {
+  .overview-single-value-bar .single-value-heading {
     margin-left: 20px;
     padding-right: auto;
     font-size: 0.75rem;
   }
-  .subtitle {
+  .overview-single-value-bar .subtitle {
     font-size: 0.65rem;
   }
-  .single-value-number {
+  .overview-single-value-bar .single-value-number {
     font-size: 1.75rem;
     margin-left: 20px;
   }
 }
 
-@media screen and (max-width: 500px) {
-  .single-value {
-    height: 115px;
-  }
-  .single-value-bar {
+/* Overview page - single column for tiles */
+@media screen and (max-width: 520px) {
+  .overview-single-value-bar {
     flex-direction: column;
   }
-  .single-value-container {
+  .overview-single-value-bar .single-value-container {
     width: 100%;
   }
-  .single-value-heading {
+  .overview-single-value-bar .single-value {
+    height: 115px;
+  }
+  .overview-single-value-bar .single-value-heading {
     font-size: 1rem;
     height: 30%;
+    margin-left: 30px;
+  }
+  .overview-single-value-bar .subtitle {
+    font-size: 0.75rem;
+  }
+  .overview-single-value-bar .single-value-number {
+    font-size: 2.5rem;
+    margin-left: 30px;
+  }
+}
+
+/* Regional page - 3 column view for tiles */
+@media screen and (max-width: 1324px) {
+  .region-single-value-bar .single-value-heading {
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 30%;
+  }
+  .region-single-value-bar .single-value-number {
+    margin-left: 20px;
+  }
+  .region-single-value-bar .single-value {
+    height: 175px;
+  }
+}
+
+/* Regional page - single column view for tiles */
+@media screen and (max-width: 640px) {
+  .region-single-value-bar {
+    flex-direction: column;
+  }
+  .region-single-value-bar .single-value-container {
+    width: 100%;
+  }
+  .region-single-value-bar .single-value {
+    height: 135px;
+  }
+  .region-single-value-bar .single-value-heading {
+    height: 25%;
   }
 }

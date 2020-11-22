@@ -127,6 +127,10 @@
   margin-bottom: 10px;
   margin-left: 0;
   border: 1px solid darkgrey;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-right: 0;
 }
 
 .darkmode .heatmapScale {
@@ -135,23 +139,24 @@
   color: #020202;
 }
 
-.heatmapScale .row {
-  flex-wrap: nowrap;
-}
-
-.heatmapScale .col {
+.heatmapScale span {
   padding: 2px 15px;
 }
 
-.heatmapScale .col.smallscale {
+.heatmapScale span.smallscale {
   display: none;
 }
 
+.heatmapScale span {
+  padding: 2px 15px;
+  flex-grow: 1;
+}
+
 @media all and (max-width: 810px) {
-  .heatmapScale .col.smallscale {
+  .heatmapScale span.smallscale {
     display: inline;
   }
-  .heatmapScale .col.largescale {
+  .heatmapScale span.largescale {
     display: none;
   }
 }
@@ -163,7 +168,7 @@
 }
 
 @media all and (max-width: 500px) {
-  .heatmapScale .col {
+  .heatmapScale span {
     padding: 5px 5px;
   }
 }
