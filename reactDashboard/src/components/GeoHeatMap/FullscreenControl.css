@@ -9,7 +9,7 @@
 
 .darkmode .leaflet-touch .leaflet-control-layers,
 .darkmode .leaflet-touch .leaflet-bar {
-	border-color: rgba(255,255,255,0.5);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .darkmode .leaflet-bar a,
