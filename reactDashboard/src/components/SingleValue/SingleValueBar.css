@@ -1,3 +1,4 @@
+/*  Width independent css attributes - don't merge with default blocks below */
 .region-single-value-bar,
 .overview-single-value-bar {
   padding: 0;
@@ -52,7 +53,7 @@
 }
 
 .darkmode .single-value {
-  background-color: rgb(56, 56, 56);
+  background-color: #383838;
   box-shadow: none;
   color: #c1def1;
 }

@@ -24,8 +24,11 @@ header {
 .region-page-top-row {
   padding: 15px 10px;
   background-color: #f2f2f2;
-  /* required to keep the alignment down left and right hand side of pages */
   margin: 0;
+}
+
+.darkmode .region-page-top-row {
+  background-color: #383838;
 }
 
 .darkmode .heatmaps-row {
@@ -39,10 +42,6 @@ header {
 
 .darkmode .selector-group fieldset legend {
   color: #f2f2f2;
-}
-
-.darkmode .region-page-top-row {
-  background-color: rgb(56, 56, 56);
 }
 
 .geo-map-column {
@@ -183,7 +182,7 @@ button.MuiButtonBase-root:focus {
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
   background-color: #f2f2f2;
-  color: rgb(64, 64, 64);
+  color: #404040;
 }
 
 .darkmode button.MuiButtonBase-root:hover {

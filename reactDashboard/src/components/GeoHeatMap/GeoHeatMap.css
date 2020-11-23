@@ -76,7 +76,7 @@ div.leaflet-popup-content {
 }
 
 .darkmode .legend {
-  background-color: rgb(64, 64, 64);
+  background-color: #404040;
   color: #f2f2f2;
   border-color: #b3b3b3;
   /* styling for dark-theme with rounded edges */

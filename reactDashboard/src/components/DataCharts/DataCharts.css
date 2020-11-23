@@ -8,18 +8,12 @@
   justify-content: center;
   background-color: white;
   position: relative;
+  max-width: 100%;
 }
 
 .darkmode .chart-border {
-  background-color: rgb(64, 64, 64);
+  background-color: #404040;
   box-shadow: none;
-}
-
-.chart-border .container,
-.chart-border .container-lg,
-.chart-border .container-md,
-.chart-border .container-sm {
-  width: 100%;
 }
 
 .chart-title h2 {
@@ -54,16 +48,6 @@
 
 .date-range-selector {
   margin: 0;
-}
-
-/* block required to keep the chart at full-width when the screen is narrower */
-.container,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm,
-.container-xs {
-  max-width: 100%;
 }
 
 .chart-container {

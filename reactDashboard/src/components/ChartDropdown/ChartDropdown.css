@@ -28,12 +28,6 @@
   }
 }
 
-.selected-chart:hover {
-  background-color: #ec6730;
-  border-color: #ec6730;
-  color: white;
-}
-
 .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;

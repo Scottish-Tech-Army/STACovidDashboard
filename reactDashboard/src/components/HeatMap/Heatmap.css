@@ -6,7 +6,7 @@
 }
 
 .darkmode .heatmap {
-  background-color: rgb(64, 64, 64);
+  background-color: #404040;
   box-shadow: none;
 }
 
@@ -30,15 +30,16 @@
 
 .darkmode .heatmap table th {
   color: #f2f2f2;
-  background-color: rgb(64, 64, 64);
+  background-color: #404040;
+}
+
+/* overriding bootstrap table */
+.darkmode .table thead th {
+  border-bottom-color: #020202;
 }
 
 .heatmap table th div.subheading {
   font-weight: normal;
-}
-
-.darkmode .table thead th {
-  border-bottom: 1px solid #020202;
 }
 
 .heatmap table tr.area td {
@@ -48,8 +49,8 @@
 
 .darkmode .heatmap table tr.area td {
   color: #f2f2f2;
-  background-color: rgb(64, 64, 64);
-  border-top: 1px solid #020202;
+  background-color: #404040;
+  border-top-color: #020202;
 }
 
 .heatmap .l-0 {
@@ -140,16 +141,30 @@
 }
 
 .heatmapScale span {
-  padding: 2px 15px;
+  padding: 2px 0;
+  flex-grow: 1;
 }
 
 .heatmapScale span.smallscale {
   display: none;
 }
 
-.heatmapScale span {
-  padding: 2px 15px;
-  flex-grow: 1;
+@media all and (max-width: 1030px) {
+  .heatmapScale span.smallscale {
+    display: inline;
+  }
+  .heatmapScale span.largescale {
+    display: none;
+  }
+}
+
+@media all and (max-width: 991px) {
+  .heatmapScale span.smallscale {
+    display: none;
+  }
+  .heatmapScale span.largescale {
+    display: inline;
+  }
 }
 
 @media all and (max-width: 810px) {
@@ -164,12 +179,6 @@
 @media all and (max-width: 600px) {
   .heatmap {
     font-size: 80%;
-  }
-}
-
-@media all and (max-width: 500px) {
-  .heatmapScale span {
-    padding: 5px 5px;
   }
 }
 

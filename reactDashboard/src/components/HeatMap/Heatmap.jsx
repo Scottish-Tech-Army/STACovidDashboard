@@ -297,9 +297,9 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th className="heatmap-table-heading">{areaTitle()}</th>
-            <th className="heatmap-table-heading">{valueTitle()}</th>
-            <th className="heatmap-table-heading">
+            <th>{areaTitle()}</th>
+            <th>{valueTitle()}</th>
+            <th>
               <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}

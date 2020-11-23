@@ -2,29 +2,28 @@
   padding-top: 10px;
 }
 
-.darkmode .fullscreen {
-  color: #121212;
-  background-color: #c1def1;
-}
-
 .fullscreen svg {
   height: 25px;
   width: 25px;
-  color: #133a53;
 }
 
-.fullscreen:hover,
-.fullscreen svg:hover {
-  color: white;
-  background-color: #133a53;
+.darkmode .leaflet-touch .leaflet-control-layers,
+.darkmode .leaflet-touch .leaflet-bar {
+	border-color: rgba(255,255,255,0.5);
 }
 
-.darkmode .fullscreen:hover {
-  border-color: 1px solid #c1def1;
+.darkmode .leaflet-bar a,
+.darkmode .leaflet-bar a:hover {
+  background-color: black;
+  border-bottom-color: #333;
+  color: #ccc;
 }
 
-.darkmode .fullscreen:hover,
-.darkmode .fullscreen svg:hover {
-  color: #c1def1;
-  background-color: #121212;
+.darkmode .leaflet-bar a:hover {
+  background-color: #1f1f1f;
+}
+
+.darkmode .leaflet-bar a.leaflet-disabled {
+  background-color: #1f1f1f;
+  color: #444;
 }
