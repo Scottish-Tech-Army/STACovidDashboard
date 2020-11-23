@@ -37,11 +37,6 @@
   color: #020202;
 }
 
-.darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
-  background-color: #ec6730;
-  border-color: #ec6730;
-}
-
 .selected-chart.dropdown-toggle.btn.btn-primary:focus {
   box-shadow: none;
 }
