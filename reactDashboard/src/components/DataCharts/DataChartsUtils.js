@@ -5,6 +5,8 @@ import {
   LAST_TWO_WEEKS,
   LAST_MONTH,
   LAST_THREE_MONTHS,
+  REGION_DATASET_COLOUR,
+  AVERAGE_DATASET_COLOUR,
 } from "../DataCharts/DataChartsConsts";
 
 const keyDates = [
@@ -77,26 +79,19 @@ export function datasetConfiguration(
     pointRadius: 0,
     borderWidth: 2,
     lineTension: 0,
+    pointHoverBackgroundColor: colour,
   };
 }
 
-function getSeriesYMax(dataset, dateRange) {
-  let series = dataset.data;
-  if (dateRange !== null && dateRange !== undefined) {
-    series = series.filter(
-      (data) => data.t >= dateRange.startDate && data.t <= dateRange.endDate
-    );
-  }
-  return Math.max(...series.map((data) => data.y), 0);
+function getSeriesYMax(dataset) {
+  return Math.max(...dataset.data.map((data) => data.y), 0);
 }
 
-export function getChartYMax(datasets, dateRange) {
+export function getChartYMax(datasets) {
   if (datasets === null || datasets === undefined || datasets.length === 0) {
     return 0;
   }
-  return Math.max(
-    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
-  );
+  return Math.max(...datasets.map((dataset) => getSeriesYMax(dataset)));
 }
 
 export const getMaxTicks = (yMax) => {
@@ -110,7 +105,7 @@ export const getMaxTicks = (yMax) => {
 };
 
 export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
-  const maxTicks = getMaxTicks(getChartYMax(datasets, dateRange));
+  const maxTicks = getMaxTicks(getChartYMax(datasets));
 
   let result = {
     type: "line",
@@ -176,7 +171,10 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
           labelColor: function (tooltipItem, chart) {
             return {
               borderColor: "#000000",
-              backgroundColor: "#ec6730",
+              backgroundColor:
+                tooltipItem.datasetIndex === 0
+                  ? REGION_DATASET_COLOUR
+                  : AVERAGE_DATASET_COLOUR,
             };
           },
           label: (tooltipItem, data) => {

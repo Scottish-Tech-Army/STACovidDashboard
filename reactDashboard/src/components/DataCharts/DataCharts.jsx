@@ -11,6 +11,8 @@ import {
   DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
+  REGION_DATASET_COLOUR,
+  AVERAGE_DATASET_COLOUR,
 } from "../DataCharts/DataChartsConsts";
 import {
   createPlaceDateValuesMap,
@@ -224,14 +226,14 @@ const DataCharts = ({
       return scaledSeries;
     }
 
-    const REGION_DATASET_COLOUR = "#ec6730";
-    const AVERAGE_DATASET_COLOUR = "#767676";
-    const AVERAGE_DATASET_FILL_COLOUR = darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
+    const AVERAGE_DATASET_FILL_COLOUR = darkmode
+      ? "rgb(118, 118, 118, 0.50)"
+      : "rgb(118, 118, 118, 0.25)";
 
     function getAverageSeriesLabel(chartType) {
-      return (chartType = PERCENTAGE_TESTS
+      return chartType === PERCENTAGE_TESTS
         ? "Scotland average"
-        : "Scotland average (adjusted for population)");
+        : "Scotland average (adjusted for population)";
     }
 
     function getChartDatasets(chartType, seriesData, regionCode, datasetLabel) {
@@ -251,7 +253,7 @@ const DataCharts = ({
               getAverageSeriesLabel(chartType),
               getAverageSeriesData(seriesData, regionCode, chartType),
               AVERAGE_DATASET_COLOUR,
-              AVERAGE_DATASET_FILL_COLOUR,
+              AVERAGE_DATASET_FILL_COLOUR
             )
           );
         }
