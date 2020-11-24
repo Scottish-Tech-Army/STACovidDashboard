@@ -195,14 +195,6 @@ describe("calculateDateRange", () => {
 });
 
 describe("getChartYMax", () => {
-  const TEST_DATE_RANGE = {
-    startDate: Date.parse("2020-01-01"),
-    endDate: Date.parse("2020-01-08"),
-  };
-  const EMPTY_DATE_RANGE = {
-    startDate: Date.parse("1980-01-01"),
-    endDate: Date.parse("1980-01-08"),
-  };
   const TEST_EMPTY_DATASET = [{ data: [] }];
   const TEST_SINGLE_DATASET = [{ data: TEST_MAX_DATA_1 }];
   const TEST_DOUBLE_DATASET = [
@@ -211,47 +203,20 @@ describe("getChartYMax", () => {
   ];
 
   it("datasets empty", () => {
-    expect(getChartYMax([], TEST_DATE_RANGE)).toStrictEqual(0);
+    expect(getChartYMax([])).toStrictEqual(0);
   });
 
   it("datasets null", () => {
-    expect(getChartYMax(null, TEST_DATE_RANGE)).toStrictEqual(0);
+    expect(getChartYMax(null)).toStrictEqual(0);
   });
 
   it("datasets undefined", () => {
-    expect(getChartYMax(undefined, TEST_DATE_RANGE)).toStrictEqual(0);
+    expect(getChartYMax(undefined)).toStrictEqual(0);
   });
 
-  it("no data in dateRange", () => {
-    expect(getChartYMax(TEST_SINGLE_DATASET, EMPTY_DATE_RANGE)).toStrictEqual(
-      0
-    );
-  });
-
-  it("dateRange null", () => {
-    expect(getChartYMax(TEST_SINGLE_DATASET, null)).toStrictEqual(799);
-  });
-
-  it("dateRange undefined", () => {
+  it("normal datasets", () => {
+    expect(getChartYMax(TEST_SINGLE_DATASET)).toStrictEqual(799);
     expect(getChartYMax(TEST_DOUBLE_DATASET)).toStrictEqual(4056);
-  });
-
-  it("dateRange with double dataset and first array is bigger", () => {
-    expect(
-      getChartYMax(TEST_DOUBLE_DATASET, {
-        startDate: Date.parse("2020-01-03"),
-        endDate: Date.parse("2020-01-04"),
-      })
-    ).toStrictEqual(771);
-  });
-
-  it("dateRange with double dataset and second array is bigger", () => {
-    expect(
-      getChartYMax(TEST_DOUBLE_DATASET, {
-        startDate: Date.parse("2020-01-06"),
-        endDate: Date.parse("2020-01-07"),
-      })
-    ).toStrictEqual(842);
   });
 
   it("dataset without data points", () => {

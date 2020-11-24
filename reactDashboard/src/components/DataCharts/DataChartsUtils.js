@@ -80,22 +80,16 @@ export function datasetConfiguration(
   };
 }
 
-function getSeriesYMax(dataset, dateRange) {
-  let series = dataset.data;
-  if (dateRange !== null && dateRange !== undefined) {
-    series = series.filter(
-      (data) => data.t >= dateRange.startDate && data.t <= dateRange.endDate
-    );
-  }
-  return Math.max(...series.map((data) => data.y), 0);
+function getSeriesYMax(dataset) {
+  return Math.max(...dataset.data.map((data) => data.y), 0);
 }
 
-export function getChartYMax(datasets, dateRange) {
+export function getChartYMax(datasets) {
   if (datasets === null || datasets === undefined || datasets.length === 0) {
     return 0;
   }
   return Math.max(
-    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
+    ...datasets.map((dataset) => getSeriesYMax(dataset))
   );
 }
 
@@ -110,7 +104,7 @@ export const getMaxTicks = (yMax) => {
 };
 
 export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
-  const maxTicks = getMaxTicks(getChartYMax(datasets, dateRange));
+  const maxTicks = getMaxTicks(getChartYMax(datasets));
 
   let result = {
     type: "line",
