@@ -33,6 +33,12 @@
   background-color: #404040;
 }
 
+/* overriding bootstrap table default border */
+.heatmap .table td,
+.table th {
+  border-top: none;
+}
+
 /* overriding bootstrap table */
 .darkmode .table thead th {
   border-bottom-color: #020202;
