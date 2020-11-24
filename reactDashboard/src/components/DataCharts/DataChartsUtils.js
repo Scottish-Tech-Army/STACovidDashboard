@@ -17,18 +17,18 @@ const keyDates = [
   { date: Date.parse("2020-10-09"), name: "BARS CLOSE" },
 ];
 
-function getDateLine({ date, name }, index) {
+function getDateLine({ date, name }, darkmode, index) {
   return {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
     scaleID: "x-axis-0",
-    borderColor: "rgba(0,0,0,0.25)",
+    borderColor: darkmode ? "#f2f2f2" : "rgba(0,0,0,0.25)",
     borderWidth: 2,
     value: date,
     label: {
-      backgroundColor: "#007EB9",
-      fontColor: "#ffffff",
+      backgroundColor: darkmode ? "#c1def1" : "#007EB9",
+      fontColor: darkmode ? "#121212" : "#ffffff",
       fontStyle: "bold",
       cornerRadius: 2,
       xPadding: 10,
@@ -62,13 +62,18 @@ export function getWhoThresholdLine() {
   };
 }
 
-export function datasetConfiguration(datasetLabel, seriesData, colour) {
+export function datasetConfiguration(
+  datasetLabel,
+  seriesData,
+  colour,
+  fillColour = null
+) {
   return {
     label: datasetLabel,
     data: seriesData,
-    backgroundColor: colour,
+    backgroundColor: fillColour !== null ? fillColour : undefined,
     borderColor: colour,
-    fill: false,
+    fill: fillColour !== null,
     pointRadius: 0,
     borderWidth: 2,
     lineTension: 0,
@@ -104,7 +109,7 @@ export const getMaxTicks = (yMax) => {
   return yMax;
 };
 
-export function commonChartConfiguration(datasets, dateRange = null) {
+export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
   const maxTicks = getMaxTicks(getChartYMax(datasets, dateRange));
 
   let result = {
@@ -128,8 +133,12 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         yAxes: [
           {
             id: "y-axis-0",
+            gridLines: {
+              color: darkmode ? "#121212" : "#cccccc",
+            },
             ticks: {
               beginAtZero: true,
+              fontColor: darkmode ? "#f2f2f2" : "#767676",
               maxTicksLimit: maxTicks,
               callback: function (value, index, values) {
                 return Math.round(value);
@@ -147,6 +156,9 @@ export function commonChartConfiguration(datasets, dateRange = null) {
             gridLines: {
               display: false,
             },
+            ticks: {
+              fontColor: darkmode ? "#f2f2f2" : "#767676",
+            },
           },
         ],
       },
@@ -156,10 +168,17 @@ export function commonChartConfiguration(datasets, dateRange = null) {
         labels: {
           boxWidth: 20,
           fontSize: 14,
+          fontColor: darkmode ? "#f2f2f2" : "#767676",
         },
       },
       tooltips: {
         callbacks: {
+          labelColor: function (tooltipItem, chart) {
+            return {
+              borderColor: "#000000",
+              backgroundColor: "#ec6730",
+            };
+          },
           label: (tooltipItem, data) => {
             return (
               data.datasets[tooltipItem.datasetIndex].label +
@@ -175,11 +194,14 @@ export function commonChartConfiguration(datasets, dateRange = null) {
   };
 
   if (datasets.length > 0) {
-    result.options.annotation = { annotations: keyDates.map(getDateLine) };
+    result.options.annotation = {
+      annotations: keyDates.map((date, i) => getDateLine(date, darkmode, i)),
+    };
   }
 
   if (dateRange != null) {
     result.options.scales.xAxes[0].ticks = {
+      ...result.options.scales.xAxes[0].ticks,
       min: dateRange.startDate,
       max: dateRange.endDate,
     };

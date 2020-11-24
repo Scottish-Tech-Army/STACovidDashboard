@@ -50,27 +50,66 @@ describe("commonChartConfiguration", () => {
   ];
 
   it("with date range", () => {
-    const result = commonChartConfiguration(mockData, {
+    const result = commonChartConfiguration(mockData, false, {
       startDate: 0,
       endDate: 1,
     });
-    const expectedResult = { max: 1, min: 0 };
+    const expectedResult = { max: 1, min: 0, fontColor: "#767676" };
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
 
   it("without date range", () => {
-    const result = commonChartConfiguration(mockData);
-    expect(result.options.scales.xAxes[0].ticks).toBeUndefined();
+    const result = commonChartConfiguration(mockData, false);
+    const expectedResult = { fontColor: "#767676" };
+    expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
 
   it("annotations with dataset", () => {
-    const result = commonChartConfiguration(mockData);
+    const result = commonChartConfiguration(mockData, false);
     expect(result.options.annotation).not.toBeUndefined();
   });
 
   it("annotations without dataset", () => {
-    const result = commonChartConfiguration([]);
+    const result = commonChartConfiguration([], false);
     expect(result.options.annotation).toBeUndefined();
+  });
+  it("darkmode true", () => {
+    const result = commonChartConfiguration(mockData, true);
+    expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
+      "#121212"
+    );
+    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual(
+      "#f2f2f2"
+    );
+    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual(
+      "#f2f2f2"
+    );
+    expect(result.options.legend.labels.fontColor).toStrictEqual("#f2f2f2");
+    expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
+      "#f2f2f2"
+    );
+    expect(
+      result.options.annotation.annotations[0].label.backgroundColor
+    ).toStrictEqual("#c1def1");
+  });
+  it("darkmode false", () => {
+    const result = commonChartConfiguration(mockData, false);
+    expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
+      "#cccccc"
+    );
+    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual(
+      "#767676"
+    );
+    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual(
+      "#767676"
+    );
+    expect(result.options.legend.labels.fontColor).toStrictEqual("#767676");
+    expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
+      "rgba(0,0,0,0.25)"
+    );
+    expect(
+      result.options.annotation.annotations[0].label.backgroundColor
+    ).toStrictEqual("#007EB9");
   });
 
   it("receive maxTicks less than 20", () => {

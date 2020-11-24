@@ -23,6 +23,7 @@ const Overview = ({
   healthBoardDataset,
   currentTotalsHealthBoardDataset,
   populationProportionMap,
+  darkmode,
 }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
@@ -119,7 +120,7 @@ const Overview = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="widgets_block">
+        <Row>
           <Col
             xs={12}
             md={12}
@@ -141,8 +142,8 @@ const Overview = ({
                 <hr className="underHeatmapSelector" />
               </Col>
             </Row>
-            <Row>
-              <Col xs={12} lg={zoomGeoMap ? 12 : 4}>
+            <Row className="heatmaps-row">
+              <Col className="geo-map-column" xs={12} lg={zoomGeoMap ? 12 : 4}>
                 <GeoHeatMap
                   councilAreaDataset={councilAreaDataset}
                   healthBoardDataset={healthBoardDataset}
@@ -152,10 +153,11 @@ const Overview = ({
                     toggleFullscreen(zoomableMap, setZoomGeoMap)
                   }
                   fullscreenEnabled={zoomGeoMap}
+                  darkmode={darkmode}
                 />
               </Col>
-              <Col className="d-block d-lg-none">
-                <hr className="underHeatmapSelector" />
+              <Col className="responsive-divider">
+                <hr className="full-width-hr" />
               </Col>
               <Col
                 xs={zoomGeoMap ? 0 : 12}
@@ -186,6 +188,7 @@ const Overview = ({
             <DataCharts
               healthBoardDataset={healthBoardDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Col>
         </Row>

@@ -1,11 +1,16 @@
 .facts-container {
   margin: 0;
-  padding: 20px;
+  padding: 15px 0;
   height: 100%;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   font-size: 14px;
   background-color: #f2f2f2;
+}
+
+.darkmode .facts-container {
+  background-color: #262626;
 }
 
 .facts-row {
@@ -22,14 +27,18 @@
   width: 19%;
   padding: 10px;
   box-shadow: 10px 10px 5px #aaaaaa;
-  background-color: #ffffff;
+  background-color: white;
+}
+
+.darkmode .facts-component {
+  background-color: rgb(64,64,64);
+  box-shadow: none;
+  color: #f2f2f2;
 }
 
 .facts-icon {
   padding: 5px;
-  background-color: #ffffff;
   height: 5rem;
-  width: 5rem;
   margin: 0;
 }
 
@@ -37,7 +46,7 @@
   margin: 0 5px 0 10px;
   padding-right: 5px;
   width: 100%;
-  background-color: #ffffff;
+  background-color: inherit;
   text-align: left;
   display: flex;
   flex-direction: row;
@@ -63,6 +72,15 @@
   display: inline-block;
 }
 
+.darkmode .highlight-facts {
+  color: #ec6730;
+  opacity: 1;
+}
+
 #test-link {
   color: #2a84bb;
+}
+
+.darkmode #test-link {
+  color: #6BB3DD;
 }

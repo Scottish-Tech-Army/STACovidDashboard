@@ -1,5 +1,38 @@
-.sitemap .title {
+footer {
+  padding-bottom: 30px;
+}
+
+.darkmode footer {
+  background-color: #121212;
+}
+
+footer .sitemap .title {
   font-weight: bold;
+}
+
+.darkmode footer .sitemap .title {
+  color: #c1def1;
+}
+
+footer .sitemap .entry {
+  font-weight: normal;
+}
+
+.darkmode footer .sitemap .entry {
+  color: #f2f2f2;
+}
+
+.footer-base {
+  margin: 0;
+  padding: 20px 0 40px;
+}
+
+/* different styling for darkmode theme - rounded corners on header and footer */
+.darkmode .footer-base {
+  background-color: #acacac;
+  color: #121212;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .sitemap .entry:hover,
@@ -7,10 +40,6 @@
   text-decoration: underline;
   cursor: pointer;
   color: #0056b3;
-}
-
-.sitemap .entry {
-  font-weight: normal;
 }
 
 @media screen and (max-width: 768px) {
@@ -40,6 +69,10 @@
   padding: 0 5px;
 }
 
+.darkmode .third-party-logo {
+  color: #121212;
+}
+
 .sitemap {
   margin-right: 20px;
   margin-left: 20px;
@@ -61,8 +94,4 @@
 .sta-logo-text:hover {
   color: black;
   text-decoration: none;
-}
-
-footer {
-  padding-bottom: 30px;
 }

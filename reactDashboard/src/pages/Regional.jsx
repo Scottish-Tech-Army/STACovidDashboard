@@ -39,6 +39,7 @@ const Regional = ({
   currentTotalsHealthBoardDataset,
   currentTotalsCouncilAreaDataset,
   populationProportionMap,
+  darkmode,
 }) => {
   const match = useRouteMatch();
   const location = useLocation();
@@ -104,19 +105,18 @@ const Regional = ({
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row>
-          <Col xs={12} lg={4}>
+        <Row className="region-page-top-row">
+          <Col className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
               regionCode={regionCode}
               setRegionCode={setRegionCode}
+              darkmode={darkmode}
             />
           </Col>
-          <Col xs={12} lg={8}>
-            <hr className="d-flex d-md-none full-width-hr" />
-            <strong>Select region (or select on map):</strong>
-
+          <Col className="region-tiles-column" xs={12} lg={8}>
+            <hr className="full-width-hr" />
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
@@ -143,6 +143,7 @@ const Regional = ({
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Col>
         </Row>

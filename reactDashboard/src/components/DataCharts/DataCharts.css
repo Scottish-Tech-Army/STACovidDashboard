@@ -1,11 +1,19 @@
 .chart-border {
   box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 10px 50px 80px 50px;
+  padding: 10px 50px 80px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: white;
   position: relative;
+  max-width: 100%;
+}
+
+.darkmode .chart-border {
+  background-color: #404040;
+  box-shadow: none;
 }
 
 .chart-title h2 {
@@ -15,6 +23,10 @@
   padding-top: 20px;
   margin: 0 0 10px 5px;
   color: #133a53;
+}
+
+.darkmode .chart-title h2 {
+  color: #f2f2f2;
 }
 
 .chart-title {
@@ -38,16 +50,6 @@
   margin: 0;
 }
 
-@media screen and (min-width: 1200px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl {
-    max-width: 100%;
-  }
-}
-
 .chart-container {
   height: 100%;
   width: 100%;
@@ -58,24 +60,44 @@
 .region-chart-container {
   height: 100%;
   width: 100%;
-  background-color: #ffffff;
+  background-color: white;
 }
 
 .sonification-play-button {
   position: absolute;
   top: 20px;
   right: 40px;
-  background-color: #ffffff;
+  background-color: inherit;
   font-size: 0.5rem;
   border: 1px solid #6c6c6c;
   border-radius: 10px;
   padding: 7px;
   width: 7em;
   height: 7em;
+  color: black;
+  border-color: #cccccc;
 }
 
+/* to meet accessibility requirements */
 .sonification-play-button:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
+}
+
+.sonification-play-button h5 {
+  font-size: 0.75rem;
+  color: #6c6c6c;
+  margin-bottom: 0;
+}
+
+.darkmode .sonification-play-button h5 {
+  color: #f2f2f2;
+}
+
+/* to meet accessibility requirements */
+.darkmode .sonification-play-button:hover,
+.darkmode .sonification-play-button h5:hover {
+  box-shadow: none;
+  background-color: #133a53;
 }
 
 .sonification-play-button.col {
@@ -85,16 +107,10 @@
   background: none;
 }
 
-.sonification-play-button h5 {
-  font-size: 0.75rem;
-  color: #6c6c6c;
-  margin-bottom: 0;
-}
-
 #date-range-slider-position {
   position: absolute;
-  bottom: 0 !important;
-  max-width: 85vw;
+  bottom: 0;
+  max-width: 90vw;
   right: 40px;
   left: 40px;
   padding: 0 0 70px;
@@ -138,9 +154,6 @@
     padding: 10px 5px;
     top: 20px;
   }
-  .chart-border {
-    padding: 20px 20px 80px;
-  }
 }
 
 .data-charts-container {
@@ -149,7 +162,11 @@
   margin: 0;
 }
 
-legend {
+.darkmode .data-charts-container {
+  background-color: #262626;
+}
+
+.datacharts legend {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -161,4 +178,12 @@ canvas {
 
 .chart-dropdown-container.row {
   margin: 0;
+}
+
+.darkmode .MuiSlider-markLabel {
+  color: #f2f2f2;
+}
+
+.darkmode span.MuiSlider-thumb {
+  box-shadow: none;
 }

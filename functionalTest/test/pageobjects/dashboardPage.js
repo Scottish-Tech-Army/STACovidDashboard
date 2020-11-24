@@ -31,10 +31,7 @@ class DashboardPage extends Page {
     return $(".heatmap thead tr");
   }
   get heatmapBoundariesTitle() {
-    return this.heatmapHeaderRow.$("th:nth-child(1) div:nth-child(1)");
-  }
-  get heatmapBoundariesCount() {
-    return this.heatmapHeaderRow.$("th:nth-child(1) div.subheading");
+    return this.heatmapHeaderRow.$("th:nth-child(1)");
   }
   get selectHealthBoardsButton() {
     return $(".heatmap-selector #healthBoards");
@@ -43,10 +40,7 @@ class DashboardPage extends Page {
     return $(".heatmap-selector #councilAreas");
   }
   get heatmapValueTypeTitle() {
-    return this.heatmapHeaderRow.$("th:nth-child(2) div:nth-child(1)");
-  }
-  get heatmapValueTypeCount() {
-    return this.heatmapHeaderRow.$("th:nth-child(2) div.subheading");
+    return this.heatmapHeaderRow.$("th:nth-child(2)");
   }
   get selectCasesButton() {
     return $(".heatmap-selector #cases");
@@ -71,22 +65,22 @@ class DashboardPage extends Page {
     return $$(" div.leaflet-pane > svg > g > path");
   }
   get singleValueBar() {
-    return $(".single-value-bar");
+    return $(".overview-single-value-bar");
   }
   get dailyCases() {
-    return $(".single-value-bar #dailyCases");
+    return this.singleValueBar.$("#dailyCases");
   }
   get totalCases() {
-    return $(".single-value-bar #totalCases");
+    return this.singleValueBar.$("#totalCases");
   }
-  get dailyFatalities() {
-    return $(".single-value-bar #dailyFatalities");
+  get dailyDeaths() {
+    return this.singleValueBar.$("#dailyDeaths");
   }
-  get totalFatalities() {
-    return $(".single-value-bar #totalFatalities");
+  get totalDeaths() {
+    return this.singleValueBar.$("#totalDeaths");
   }
   get fatalityCaseRatio() {
-    return $(".single-value-bar #fatalityCaseRatio");
+    return this.singleValueBar.$("#fatalityCaseRatio");
   }
   get chartDropdown() {
     return $("button.selected-chart");

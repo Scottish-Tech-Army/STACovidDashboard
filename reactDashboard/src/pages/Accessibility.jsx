@@ -4,15 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Accessibility = () => {
   return (
-    <div fluid="true" className="accessibility-page">
-      <div className="accessibility-intro">
+    <div className="accessibility-page">
+      <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h1>Accessibility</h1>
         <hr className="full-width-hr" />
         <p>
           We want everyone who visits the Covid-19 Dashboard to feel welcome,
-          and able to find information whatever their circumstances.
+          and able to find information whatever their circumstances. To do this
+          we've:
         </p>
-        <p>To do this we've:</p>
         <ul>
           <li>
             Designed the dashboard to be accessible and usable for everyone.
@@ -24,6 +25,7 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Conformance Statement</h2>
         <hr className="full-width-hr" />
         <p>
@@ -32,33 +34,27 @@ const Accessibility = () => {
             href="https://www.w3.org/TR/WCAG20/"
             target="_blank"
             rel="noopener noreferrer"
+            className="link"
           >
             Web Content Accessibility Guidelines (WCAG) 2.0
           </a>
-          .
-        </p>
-
-        <p>
-          Automated testing has taken place against these standards and all
+          . Automated testing has taken place against these standards and all
           expectations are met under the directive.
         </p>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Browsers</h2>
         <hr className="full-width-hr" />
-        <p id="browsers-list">
-          We've tested the website using the following web browsers:
-        </p>
-        <ul className="browsers">
+        <p>We've tested the website using the following web browsers:</p>
+        <ul>
           <li>Google Chrome</li>
           <li>Mozilla Firefox</li>
           <li>Safari</li>
           <li>Microsoft Edge</li>
         </ul>
-        <p id="browsers-list">
-          We've tested the website using the following mobile browsers:
-        </p>
-        <ul className="browsers">
+        <p>We've tested the website using the following mobile browsers:</p>
+        <ul>
           <li>Google Chrome</li>
           <li>Mozilla Firefox</li>
           <li>Safari</li>
@@ -66,6 +62,7 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
+        <hr className="full-width-hr" />
         <h2>Screen Readers</h2>
         <hr className="full-width-hr" />
         <p>

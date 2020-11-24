@@ -5,8 +5,11 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon } from "@fortawesome/free-solid-svg-icons";
 
-const DashboardNavbar = () => {
+const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
@@ -20,21 +23,35 @@ const DashboardNavbar = () => {
     );
   }
 
+  const darkmodeIcon = (className) => {
+    return (
+      <FontAwesomeIcon
+        icon={darkmode ? faSun : faMoon}
+        className={className}
+        onClick={() => setDarkmode((value) => !value)}
+      />
+    );
+  };
+
   return (
-    <Navbar className="dashboard-navbar" bg="white" expand="sm">
+    <Navbar className="dashboard-navbar" expand="sm">
       <Link to={URL_OVERVIEW}>
-        <img id="logo" src="/STALogo.png" alt="Scottish Tech Army Logo" />
+        <img id="logo" src="/STALogoSquare.svg" alt="Scottish Tech Army Logo" />
       </Link>
+      <Nav className="hide-darkmode">
+      {darkmodeIcon("darkmode-btn-toggle")}
+      </Nav>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">
           <h1 className="heading">Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
         <Nav className="navbar-links">
-          {navLink(URL_OVERVIEW, "Summary Dashboard")}
+          {navLink(URL_OVERVIEW, "Summary Statistics")}
           {navLink(URL_REGIONAL, "Regional Insights", false)}
         </Nav>
       </Navbar.Collapse>
+      {darkmodeIcon("darkmode-btn")}
     </Navbar>
   );
 };

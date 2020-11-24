@@ -11,10 +11,14 @@ import {
   URL_REGIONAL,
 } from "../../pages/PageConsts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLinkedinIn, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import {
+  faLinkedinIn,
+  faTwitter,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 import { NavLink } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({ darkmode }) => {
   function sitemapEntry(pageUrl, text) {
     return (
       <div className="entry link">
@@ -24,6 +28,9 @@ const Footer = () => {
       </div>
     );
   }
+
+  const SOCIAL_LOGO = "black";
+  const DARK_SOCIAL_LOGO = "#9cd7ff";
 
   function sitemapExternalLink(href, content) {
     return (
@@ -48,14 +55,14 @@ const Footer = () => {
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row className="p-1">
+        <Row className="p-1 footer-main">
           <Col
             md={12}
             className="sitemap-container d-flex justify-content-between"
           >
             <div className="sitemap">
               <div className="title">DASHBOARDS</div>
-              {sitemapEntry(URL_OVERVIEW, "Summary Dashboard")}
+              {sitemapEntry(URL_OVERVIEW, "Summary Statistics")}
               {sitemapEntry(URL_REGIONAL, "Regional Insights")}
               {sitemapEntry(URL_DATA_SOURCES, "Data Sources")}
             </div>
@@ -88,22 +95,6 @@ const Footer = () => {
                 "mailto:info@scottishtecharmy.org?subject=Covid-19%20Dashboard%20Feedback",
                 "info@scottishtecharmy.org"
               )}
-              <a
-                href="https://www.scottishtecharmy.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sta-logo-text"
-              >
-                <div className="dedication">
-                  Proudly made by volunteers from
-                  <br />
-                  <img
-                    src="/STABanner.png"
-                    alt="Scottish Tech Army"
-                    width="270"
-                  />
-                </div>
-              </a>
             </div>
           </Col>
         </Row>
@@ -112,7 +103,7 @@ const Footer = () => {
             <hr className="full-width-hr" />
           </Col>
         </Row>
-        <Row>
+        <Row className="footer-base">
           <Col sm={12} md={9}>
             <div className="footer-copyright text-left">
               Unless otherwise stated, this webpage contains public sector
@@ -147,7 +138,7 @@ const Footer = () => {
               <FontAwesomeIcon
                 icon={faLinkedinIn}
                 size="2x"
-                color="#133a53"
+                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army LinkedIn account"
               />
@@ -156,10 +147,20 @@ const Footer = () => {
               "https://twitter.com/ScotTechArmy",
               <FontAwesomeIcon
                 icon={faTwitter}
-                size="3x"
-                color="#133a53"
+                size="2x"
+                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army Twitter account"
+              />
+            )}
+            {sitemapExternalLink(
+              "https://www.instagram.com/scottecharmy",
+              <FontAwesomeIcon
+                icon={faInstagram}
+                size="2x"
+                color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
+                className="third-party-logo"
+                title="Link to Scottish Tech Army Instagram account"
               />
             )}
           </Col>

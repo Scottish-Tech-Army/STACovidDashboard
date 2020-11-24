@@ -23,16 +23,16 @@ export default class Page {
     return $(".sitemap-container").$("a.link=Regional Insights");
   }
 
-  get sitemapLinkSummaryDashboard() {
-    return $(".sitemap-container").$("a.link=Summary Dashboard");
+  get sitemapLinkSummaryStatistics() {
+    return $(".sitemap-container").$("a.link=Summary Statistics");
   }
 
   get navbarLinkRegionalInsights() {
     return $(".dashboard-navbar").$(".nav-link=Regional Insights");
   }
 
-  get navbarLinkSummaryDashboard() {
-    return $(".dashboard-navbar").$(".nav-link=Summary Dashboard");
+  get navbarLinkSummaryStatistics() {
+    return $(".dashboard-navbar").$(".nav-link=Summary Statistics");
   }
 
   get navbarLinkLogo() {

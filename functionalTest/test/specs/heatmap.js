@@ -24,14 +24,9 @@ describe("heatmap selection", () => {
     checkHeatmapCouncilAreasBoundaries();
 
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
-    checkValueWithin(
-      Number(dashboard.heatmapValueTypeCount.getText()),
-      20000,
-      200000
-    );
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(33);
-    expect(heatmapValueTypeValues[0]).toHaveText("");
+    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 20000, 200000);
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 500, 10000);
 
@@ -87,14 +82,9 @@ describe("heatmap selection", () => {
     checkHeatmapHealthBoardsBoundaries();
 
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    checkValueWithin(
-      Number(dashboard.heatmapValueTypeCount.getText()),
-      2000,
-      10000
-    );
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(15);
-    expect(heatmapValueTypeValues[0]).toHaveText("");
+    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 2000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 0, 50);
 
@@ -132,14 +122,9 @@ describe("heatmap selection", () => {
     checkHeatmapCouncilAreasBoundaries();
 
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    checkValueWithin(
-      Number(dashboard.heatmapValueTypeCount.getText()),
-      2000,
-      10000
-    );
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(33);
-    expect(heatmapValueTypeValues[0]).toHaveText("");
+    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 2000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
     checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 50, 500);
 
@@ -170,7 +155,6 @@ describe("heatmap selection", () => {
 
   function checkHeatmapHealthBoardsBoundaries() {
     expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
-    expect(dashboard.heatmapBoundariesCount).toHaveText("14 Boards");
     const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
     expect(heatmapBoundariesValues).toHaveLength(15);
     expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
@@ -180,7 +164,6 @@ describe("heatmap selection", () => {
 
   function checkHeatmapCouncilAreasBoundaries() {
     expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    expect(dashboard.heatmapBoundariesCount).toHaveText("32 Areas");
     const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
     expect(heatmapBoundariesValues).toHaveLength(33);
     expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
@@ -190,14 +173,9 @@ describe("heatmap selection", () => {
 
   function checkHeatmapHealthBoardsCasesValues() {
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
-    checkValueWithin(
-      Number(dashboard.heatmapValueTypeCount.getText()),
-      30000,
-      200000
-    );
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(15);
-    expect(heatmapValueTypeValues[0]).toHaveText("");
+    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 30000, 200000);
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 50, 1000);
   }

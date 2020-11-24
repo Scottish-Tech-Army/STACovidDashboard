@@ -1,17 +1,44 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import App from "./App";
 
-test("renders learn react link", async () => {
+var container = null;
+beforeEach(() => {
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
+  fetch.resetMocks();
+});
+
+afterEach(() => {
+  // cleanup on exiting
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
+});
+
+test("darkmode class", async () => {
   fetch.mockReject(new Error("fetch failed"));
   global.suppressConsoleErrorLogs();
 
-  var result;
+  const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
+  const app = () => container.querySelector(".App");
+
   await act(async () => {
-    result = render(<App />);
+    render(<App />, container);
   });
-  // const { getByText } = render(<App />);
-  const linkElement = result.getByText(/Unless otherwise stated, this webpage contains public sector information licensed under/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(app().getAttribute("class")).not.toContain("darkmode");
+
+  darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  await act(async () => {
+    render(<App />, container);
+  });
+  expect(app().getAttribute("class")).toContain("darkmode");
+
+  darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  await act(async () => {
+    render(<App />, container);
+  });
+  expect(app().getAttribute("class")).not.toContain("darkmode");
 });

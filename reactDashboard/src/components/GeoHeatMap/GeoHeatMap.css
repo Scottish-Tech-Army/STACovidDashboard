@@ -21,19 +21,28 @@
 
 #map,
 #regionmap {
+  border: 1px solid white;
   height: 100%;
   width: 100%;
+  margin: 0 5px;
+}
+
+.darkmode #map,
+.darkmode #regionmap {
+  border-color: darkgray;
+  border-radius: 1%;
 }
 
 .region-popup {
-  color: #ffffff;
+  background-color: black;
+  color: white;
   font-weight: bold;
   font-size: 11px;
 }
 
 div.leaflet-tooltip {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: black;
+  color: white;
   font-weight: bold;
   border: none;
 }
@@ -65,6 +74,24 @@ div.leaflet-popup-content {
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
+
+.darkmode .legend {
+  background-color: #404040;
+  color: #f2f2f2;
+  border-color: #b3b3b3;
+  /* styling for dark-theme with rounded edges */
+  border-radius: 2%;
+}
+
+.boundaries-legend {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.darkmode .boundaries-legend {
+  color: #f2f2f2;
+}
+
 .legend .legend-title {
   font-weight: bold;
 }
@@ -87,6 +114,16 @@ div.leaflet-popup-content {
   border-bottom: 1px solid LightGray;
 }
 
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-attribution a {
+  color: black;
+}
+
+.darkmode .leaflet-container .leaflet-control-attribution,
+.darkmode .leaflet-container .leaflet-control-attribution a {
+  background-color: #0b0a0a;
+  color: #f2f2f2;
+}
 .map-cases-count {
   font-size: 12px;
   font-weight: normal;

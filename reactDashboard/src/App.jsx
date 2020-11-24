@@ -74,6 +74,7 @@ const App = () => {
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
+  const [darkmode, setDarkmode] = useState(false);
 
   // Load and parse datasets
   useEffect(() => {
@@ -143,15 +144,14 @@ const App = () => {
   }, [populationMap]);
 
   return (
-    <div className="App">
+    <div className={darkmode ? "App darkmode" : "App"}>
       <Router>
         <ScrollToTop />
         <StopAudio />
 
         <header>
-          <DashboardNavbar />
+          <DashboardNavbar darkmode={darkmode} setDarkmode={setDarkmode} />
         </header>
-
         <Switch>
           <Route exact path={URL_OVERVIEW}>
             <Overview
@@ -159,6 +159,7 @@ const App = () => {
               healthBoardDataset={healthBoardDataset}
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Route>
           <Route path={URL_REGIONAL}>
@@ -168,6 +169,7 @@ const App = () => {
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
               populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
             />
           </Route>
           <Route path={URL_ACCESSIBILITY}>
@@ -177,7 +179,7 @@ const App = () => {
             <DataSources />
           </Route>
           <Route path={URL_ABOUT_US}>
-            <AboutUs />
+            <AboutUs/>
           </Route>
           <Route path="*">{() => <Redirect to="/" />}</Route>
         </Switch>

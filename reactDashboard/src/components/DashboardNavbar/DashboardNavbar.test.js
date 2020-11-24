@@ -23,7 +23,7 @@ const findNavlink = (linkText) =>
   Array.from(document.querySelectorAll(".navbar-links a.nav-link")).find(
     (el) => el.textContent === linkText
   );
-const overviewNavlink = () => findNavlink("Summary Dashboard");
+const overviewNavlink = () => findNavlink("Summary Statistics");
 const regionalNavlink = () => findNavlink("Regional Insights");
 
 describe("nav links content and highlighting", () => {
@@ -93,5 +93,28 @@ describe("nav links content and highlighting", () => {
 
     expect(regionalNavlink().getAttribute("href")).toStrictEqual("/regional");
     expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
+  });
+});
+
+describe("darkmode button", () => {
+  var storedDarkmode = false;
+  const setDarkmode = (value) => (storedDarkmode = value(storedDarkmode));
+  const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
+
+  it("darkmode button", () => {
+    act(() => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <DashboardNavbar setDarkmode={setDarkmode} />
+        </MemoryRouter>,
+        container
+      );
+    });
+    expect(storedDarkmode).toStrictEqual(false);
+
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(true);
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(false);
   });
 });

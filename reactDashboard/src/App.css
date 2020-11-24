@@ -1,83 +1,166 @@
-.underHeatmapSelector {
-  border: 1px solid #2a84bb;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.full-width-hr {
-  border: 1px solid #2a84bb;
-  margin: 10px 0;
-  padding: 0;
+.darkmode {
+  background-color: #121212;
 }
 
 .full-screen {
-  background-color: White;
+  background-color: white;
 }
 
-.link {
-  color: #3c3c3b;
+/* color is default white for header */
+header {
+  padding-top: 10px;
+}
+
+.darkmode header {
+  background-color: #121212;
+}
+
+/* color is default white for .region-selector-label */
+.darkmode .region-selector-label {
+  color: #f2f2f2;
+}
+
+.heatmaps-row,
+.region-page-top-row {
+  padding: 15px 10px;
+  background-color: #f2f2f2;
+  margin: 0;
+}
+
+.darkmode .region-page-top-row {
+  background-color: #383838;
+}
+
+.darkmode .heatmaps-row {
+  background-color: #262626;
+}
+
+.selector-group fieldset legend {
+  font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
 }
 
+.darkmode .selector-group fieldset legend {
+  color: #f2f2f2;
+}
+
+.geo-map-column {
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px;
+}
+
+/* inserts an hr divider between the geo map and the heatmap table when they stack vertically */
+.responsive-divider {
+  padding: 0;
+  margin: 10px 0 15px;
+  display:none;
+}
+
+
+@media screen and (max-width: 990px) {
+  .responsive-divider {
+    display:block;
+  }
+}
+
+/* color is default white for .region-tiles-column */
+.region-tiles-column {
+  padding-top: 0;
+  margin-bottom: 5px;
+}
+
+.darkmode .region-tiles-column {
+  background-color: #121212;
+}
+
+.underHeatmapSelector {
+  border: 1px solid #2a84bb;
+}
+
+.darkmode .underHeatmapSelector {
+  border-color: #cccccc;
+}
+
+/* color and background-color are default for .about-us, .accessibility-page, .data-sources */
 .about-us,
 .accessibility-page,
 .data-sources {
+  padding: 0 15px;
   text-align: left;
-  padding-top: 3vh;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
-.data-sources {
-  padding-bottom: 3vh;
-}
-
-.about-us-details,
-.accessibility-intro,
-.accessibility-details {
-  padding-bottom: 30px;
+.darkmode .about-us,
+.darkmode .accessibility-page,
+.darkmode .data-sources {
+  background-color: #121212;
+  color: #f2f2f2;
 }
 
 .about-us h1,
 .about-us h2,
 .accessibility-page h1,
+.accessibility-page h2,
 .data-sources h1 {
-  padding-top: 2vh;
+  font-size: 1rem;
+  padding: 15px;
+  margin-bottom: 0;
+  background-color: #133a53;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
-.accessibility-page ul {
-  list-style-type: none;
-  margin: 0 0 1rem 0;
-  padding: 0;
+.data-sources-list {
+  min-height: 52.5vh;
+  padding: 20px 40px;
 }
 
-.accessibility-intro li {
-  padding-left: 20px;
+.accessibility-details li,
+.about-us-details li {
+  padding: 0 20px 0;
 }
 
-.accessibility-page .browsers {
-  font-style: italic;
-  padding-left: 20px;
-  margin-bottom: 15px;
+.about-us-details ul {
+  width: 50vw;
 }
 
-.accessibility-page #browsers-list {
-  margin-bottom: 5px;
+.accessibility-details,
+.about-us {
+  padding-bottom: 20px;
 }
 
-.about-us .name {
-  color: #3c3c3b;
-  font-size: 16pt;
+.accessibility-details ul {
+  padding-left: 50px;
+  margin: 0;
 }
 
-.team-members {
-  justify-content: left;
+.accessibility-details p,
+.about-us-details p {
+  padding: 20px;
+  margin: 0;
 }
 
-.widgets-block {
-  background-color: #f2f2f2;
-  padding: 0 0 40px 0;
+.team-members.col,
+.vendors.col {
+  padding: 0 0 20px;
+}
+
+.data-sources-list li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.darkmode .data-sources-list li {
+  border-bottom-color: rgb(106, 106, 106);
+}
+
+.darkmode .team-members .link,
+.darkmode .about-us-details .link,
+.darkmode .data-sources .link,
+.darkmode .accessibility-details .link {
+  color: #c1def1;
 }
 
 button.MuiButtonBase-root {
@@ -86,6 +169,22 @@ button.MuiButtonBase-root {
   font-size: 0.75rem;
 }
 
+.darkmode button.MuiButtonBase-root {
+  color: #f2f2f2;
+  border-color: #f2f2f2;
+}
+
+button.MuiButtonBase-root:focus {
+  outline: none;
+  background-color: inherit;
+}
+
 button.MuiButtonBase-root:hover {
   box-shadow: 5px 5px 5px #aaaaaa;
+  background-color: #f2f2f2;
+  color: #404040;
+}
+
+.darkmode button.MuiButtonBase-root:hover {
+  box-shadow: none;
 }

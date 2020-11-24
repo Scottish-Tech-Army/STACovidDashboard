@@ -98,6 +98,7 @@ export function parseNhsCsvData(csvData) {
 
 const DataCharts = ({
   healthBoardDataset = null,
+  darkmode,
   councilAreaDataset = null,
   regionCode = FEATURE_CODE_SCOTLAND,
   populationProportionMap = new Map(),
@@ -225,6 +226,7 @@ const DataCharts = ({
 
     const REGION_DATASET_COLOUR = "#ec6730";
     const AVERAGE_DATASET_COLOUR = "#767676";
+    const AVERAGE_DATASET_FILL_COLOUR = darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
 
     function getAverageSeriesLabel(chartType) {
       return (chartType = PERCENTAGE_TESTS
@@ -248,7 +250,8 @@ const DataCharts = ({
             datasetConfiguration(
               getAverageSeriesLabel(chartType),
               getAverageSeriesData(seriesData, regionCode, chartType),
-              AVERAGE_DATASET_COLOUR
+              AVERAGE_DATASET_COLOUR,
+              AVERAGE_DATASET_FILL_COLOUR,
             )
           );
         }
@@ -270,7 +273,11 @@ const DataCharts = ({
         regionCode,
         datasetLabel
       );
-      const chartConfiguration = commonChartConfiguration(datasets, dateRange);
+      const chartConfiguration = commonChartConfiguration(
+        datasets,
+        darkmode,
+        dateRange
+      );
 
       if (additionalConfiguration) {
         additionalConfiguration(chartConfiguration);
@@ -355,6 +362,7 @@ const DataCharts = ({
     populationProportionMap,
     regionCode,
     dateRange,
+    darkmode,
   ]);
 
   const isDataReady = () => {
@@ -409,6 +417,7 @@ const DataCharts = ({
           seriesTitle={seriesTitle}
           regionCode={regionCode}
           dateRange={dateRange}
+          darkmode={darkmode}
         />
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />

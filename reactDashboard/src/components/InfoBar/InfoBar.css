@@ -1,14 +1,25 @@
 .info-bar {
   background-color: #c1def1;
-  padding: 10px 40px 10px 20px;
+  padding: 10px 20px;
+}
+
+.darkmode .info-bar {
+   background-color: #90a6b5;
 }
 
 .scot-gov-link {
-  color: #133A53;
+  color: #133a53;
+  font-weight: bold;
 }
 
-.timestamp, .message, .news-item-title {
+.timestamp,
+.message,
+.news-item-title {
   color: #133a53;
+}
+
+a.news-item-link {
+  font-weight: bold;
 }
 
 .news-item-title {

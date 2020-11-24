@@ -1,5 +1,4 @@
 .data-definitions .data-accordion-toggle-down {
-  color: #ffffff;
   color: #c1def1;
   border: 2px solid #c1def1;
   border-radius: 50%;
@@ -9,19 +8,23 @@
 }
 
 .data-definitions .accordion-header {
-  color: #ffffff;
+  color: white;
   background-color: #133a53;
 }
 
 .data-definitions button.btn.btn-link {
-  color: #ffffff;
+  color: white;
   font-weight: bold;
   text-decoration: none;
 }
 
+.darkmode .data-definitions button.btn.btn-link {
+  color: #f2f2f2;
+}
+
 .data-definitions button.btn:active,
 .data-definitions button.btn:focus {
-  outline: none !important;
+  outline: none;
   box-shadow: none;
 }
 
@@ -47,10 +50,19 @@
 
 .data-definitions .data-definitions-body li {
   padding-bottom: 5px;
+  list-style: none;
+}
+
+.data-definitions .data-definitions-body ul {
+  padding-left: 10px;
 }
 
 .data-definitions .data-definitions-link {
   color: #2a84bb;
+}
+
+.darkmode .data-definitions .data-definitions-link {
+  color: #3094D0;
 }
 
 .data-definitions .data-definitions-link,
@@ -58,10 +70,32 @@
   font-weight: bold;
 }
 
+.darkmode .data-definitions .defined-term,
+.darkmode .data-definitions .definitions-heading {
+  color: #c1def1;
+}
+
+.darkmode .data-definitions hr {
+  border-color: #ffffff;
+}
+
 .data-definitions-body .source-attribution {
   color: #2a84bb;
 }
 
-.data-definitions .definition-paragraph {
-  padding-bottom: 20px !important;
+.darkmode .data-definitions-body .source-attribution {
+  color: #3094D0;
+}
+
+.darkmode .data-definitions .card-body {
+  background-color: #262626;
+  color: #f2f2f2;
+}
+
+.data-definitions .card {
+  border: none;
+}
+
+.data-definitions p.definition-paragraph {
+  padding-bottom: 20px;
 }

@@ -2,34 +2,61 @@
   overflow-y: auto;
   max-height: 600px;
   height: 100%;
-  background-color: #ffffff;
+  background-color: white;
+}
+
+.darkmode .heatmap {
+  background-color: #404040;
+  box-shadow: none;
+}
+
+.heatmap-container {
+  padding: 0;
 }
 
 .heatmap table {
-  overflow-y: auto;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .heatmap table th {
   vertical-align: top;
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
-  z-index: 2;
   background-color: white;
   color: #133a53;
 }
 
-.heatmap table th .subheading {
+.darkmode .heatmap table th {
+  color: #f2f2f2;
+  background-color: #404040;
+}
+
+/* overriding bootstrap table default border */
+.heatmap .table td,
+.table th {
+  border-top: none;
+}
+
+/* overriding bootstrap table */
+.darkmode .table thead th {
+  border-bottom-color: #020202;
+}
+
+.heatmap table th div.subheading {
   font-weight: normal;
 }
 
 .heatmap table tr.area td {
-  border: 0;
-  padding: 0;
   vertical-align: middle;
+  border-top: 1px solid #f2f2f2;
 }
 
-.heatmap table tr.area:first-child td {
-  padding-bottom: 10px;
+.darkmode .heatmap table tr.area td {
+  color: #f2f2f2;
+  background-color: #404040;
+  border-top-color: #020202;
 }
 
 .heatmap .l-0 {
@@ -78,21 +105,74 @@
 .heatmapScale .l-6 {
   background-color: #bd0026;
 }
+
+.darkmode .heatmapScale .l-0,
+.darkmode .heatmapScale .l-1,
+.darkmode .heatmapScale .l-2,
+.darkmode .heatmapScale .l-3 {
+  color: #020202;
+}
+
+/* to meet accessibility requirements */
+.heatmapScale .l-6,
+.heatmapScale .l-7 {
+  color: white;
+}
+
 .heatmapScale .l-7 {
   background-color: #020202;
+}
+
+.darkmode .heatmapScale .l-7 {
   color: white;
 }
 
 .heatmapScale {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 10px;
+  margin-left: 0;
+  border: 1px solid darkgrey;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-right: 0;
 }
+
+.darkmode .heatmapScale {
+  border-color: #f2f2f2;
+  background-color: #f2f2f2;
+  color: #020202;
+}
+
 .heatmapScale span {
-  padding: 5px 10px;
+  padding: 2px 0;
+  flex-grow: 1;
 }
+
 .heatmapScale span.smallscale {
   display: none;
 }
+
+@media all and (max-width: 1030px) {
+  .heatmapScale span.smallscale {
+    display: inline;
+  }
+  .heatmapScale span.largescale {
+    display: none;
+  }
+}
+
+@media all and (max-width: 991px) {
+  .heatmapScale span.smallscale {
+    display: none;
+  }
+  .heatmapScale span.largescale {
+    display: inline;
+  }
+}
+
 @media all and (max-width: 810px) {
   .heatmapScale span.smallscale {
     display: inline;
@@ -108,18 +188,25 @@
   }
 }
 
-@media all and (max-width: 450px) {
-  .heatmapScale span {
-    padding: 5px 5px;
-  }
-}
-
 .heatbarLine {
   border: 1px solid darkgrey;
   margin: 2px;
 }
 
+.darkmode .heatbarLine {
+  background-color: white;
+}
+
 svg.heatbar {
   height: 1.5em;
   width: 100%;
+}
+
+.heatmap table tr.scotland-total td {
+  font-weight: bold;
+  color: #287db2;
+}
+
+.darkmode .heatmap table tr.scotland-total td {
+  color: #c1def1;
 }

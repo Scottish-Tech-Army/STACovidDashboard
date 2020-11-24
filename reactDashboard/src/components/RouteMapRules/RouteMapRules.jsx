@@ -21,6 +21,11 @@ const RouteMapRules = () => {
   return (
     <Container fluid className="d-flex flex-column">
       <Row>
+        <Col className="hr-container">
+          <hr className="full-width-hr" />
+        </Col>
+      </Row>
+      <Row>
         <Col xs="12" className="headline-banner">
           <h2>
             There are a number of{" "}

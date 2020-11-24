@@ -100,7 +100,7 @@ describe("page linking sitemap", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    dashboard.sitemapLinkSummaryDashboard.click();
+    dashboard.sitemapLinkSummaryStatistics.click();
 
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
@@ -161,7 +161,7 @@ describe("page linking navbar", () => {
     browser.url("/regional");
     expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    dashboard.navbarLinkSummaryDashboard.click();
+    dashboard.navbarLinkSummaryStatistics.click();
 
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
     expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
@@ -254,7 +254,7 @@ describe("page routing history following links", () => {
     regionalInsights.regionDropdownMenuItem("Lothian").click();
     regionalInsights.selectedRegionButton.click();
     regionalInsights.regionDropdownMenuItem("Glasgow City").click();
-    dashboard.sitemapLinkSummaryDashboard.click();
+    dashboard.sitemapLinkSummaryStatistics.click();
 
     expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 

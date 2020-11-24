@@ -28,16 +28,13 @@
   }
 }
 
-.selected-chart:hover {
-  background-color: #ec6730;
-  border-color: #ec6730;
-  color: #ffffff;
-}
-
 .selected-chart.dropdown-toggle.btn.btn-primary {
   background-color: #ec6730;
   border-color: #ec6730;
-  color: #ffffff;
+}
+
+.darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
+  color: #020202;
 }
 
 .selected-chart.dropdown-toggle.btn.btn-primary:focus {

@@ -184,9 +184,14 @@ function Heatmap({
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
-      <tr className="area" key={index}>
+      <tr
+        className={
+          featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area" : "area"
+        }
+        key={index}
+      >
         <td>{name}</td>
-        <td>{featureCode === FEATURE_CODE_SCOTLAND ? "" : total}</td>
+        <td>{total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
@@ -218,20 +223,6 @@ function Heatmap({
       // AREATYPE_HEALTH_BOARDS == areaType
       return parsedHealthBoardDataset;
     }
-  }
-
-  function totalCount() {
-    const dataset = getDataSet();
-    if (dataset !== null) {
-      const total =
-        VALUETYPE_DEATHS === valueType
-          ? dataset.scotland.totalDeaths
-          : dataset.scotland.totalCases;
-      if (total > 0) {
-        return total;
-      }
-    }
-    return "";
   }
 
   function dateRangeText() {
@@ -273,15 +264,6 @@ function Heatmap({
       : "HEALTH BOARDS";
   }
 
-  function areaSubTitle() {
-    const dataset = getDataSet();
-    return (
-      dataset.regions.length +
-      " " +
-      (AREATYPE_COUNCIL_AREAS === areaType ? "Areas" : "Boards")
-    );
-  }
-
   function valueTitle() {
     return VALUETYPE_DEATHS === valueType ? "TOTAL DEATHS" : "TOTAL CASES";
   }
@@ -306,7 +288,6 @@ function Heatmap({
       </div>
     );
   }
-
   if (getDataSet() === null) {
     return <LoadingComponent />;
   }
@@ -316,14 +297,8 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th>
-              <div>{areaTitle()}</div>
-              <div className="subheading">{areaSubTitle()}</div>
-            </th>
-            <th>
-              <div>{valueTitle()}</div>
-              <div className="subheading">{totalCount()}</div>
-            </th>
+            <th>{areaTitle()}</th>
+            <th>{valueTitle()}</th>
             <th>
               <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>

@@ -1,7 +1,75 @@
+/*  Width independent css attributes - don't merge with default blocks below */
+.region-single-value-bar,
+.overview-single-value-bar {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  position: relative;
+}
+
+.overview-single-value-bar {
+  flex-wrap: wrap;
+}
+
+.darkmode .region-single-value-bar,
+.darkmode .overview-single-value-bar {
+  background-color: #121212;
+}
+
+.single-value-container {
+  padding: 0.5rem;
+}
+
+.subtitle {
+  color: #6c6c6c;
+  font-weight: bold;
+}
+
+.darkmode .subtitle {
+  color: #b3b3b3;
+}
+
+.single-value-number {
+  color: #2a84bb;
+  font-weight: bold;
+}
+
+.darkmode .single-value-number {
+  color: #f2f2f2;
+}
+
+.single-value-line {
+  margin: 0;
+}
+
+.single-value {
+  box-shadow: 10px 10px 5px #aaaaaa;
+  padding: 10px 0 0;
+  background-color: white;
+  color: #133a53;
+  position: relative;
+}
+
+.darkmode .single-value {
+  background-color: #383838;
+  box-shadow: none;
+  color: #c1def1;
+}
+
+.single-value-hr {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.darkmode .single-value-hr {
+  border-color: #020202;
+}
+
+/* Full-width default values for overview and regional page */
 .subtitle {
   font-size: 0.75rem;
-  color: #6C6C6C;
-  font-weight: bold;
 }
 
 .single-value-heading {
@@ -12,78 +80,104 @@
 
 .single-value-number {
   font-size: 2.5rem;
-  color: #2a84bb;
-  font-weight: bold;
-  margin-left: 40px;
-}
-
-.single-value-line {
-  margin: 0;
+  margin-left: 30px;
 }
 
 .single-value {
-  box-shadow: 10px 10px 5px #aaaaaa;
-  padding: 10px 0 0;
-  height: 100%;
-  background-color: #ffffff;
-  color: #133a53;
-  position: relative;
+  height: 125px;
 }
 
 .region-single-value-bar,
-.single-value-bar {
-  padding: 10px;
-  margin: 0;
-  margin-top: 0;
-  display: flex;
+.overview-single-value-bar {
   flex-direction: row;
-  background-color: #f2f2f2;
-  position: relative;
 }
 
-.single-value-container {
+.overview-single-value-bar .single-value-container {
   width: 20%;
 }
 
-.region-single-value-container {
+.region-single-value-bar .single-value-container {
   width: 33%;
 }
 
-.single-value-hr {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-@media screen and (max-width: 1324px) {
-  .single-value-bar {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .single-value-container {
+/* Overview page - 2 column view for tiles */
+@media screen and (max-width: 1410px) {
+  .overview-single-value-bar .single-value-container {
     width: 50%;
   }
 }
 
-@media screen and (max-width: 600px) {
+/* Overview page - single column view for tiles */
+@media screen and (max-width: 585px) {
+  .overview-single-value-bar .single-value {
+    height: 100px;
+  }
+  .overview-single-value-bar .single-value-heading {
+    margin-left: 20px;
+    padding-right: auto;
+    font-size: 0.75rem;
+  }
+  .overview-single-value-bar .subtitle {
+    font-size: 0.65rem;
+  }
+  .overview-single-value-bar .single-value-number {
+    font-size: 1.75rem;
+    margin-left: 20px;
+  }
+}
+
+/* Overview page - single column for tiles */
+@media screen and (max-width: 520px) {
+  .overview-single-value-bar {
+    flex-direction: column;
+  }
+  .overview-single-value-bar .single-value-container {
+    width: 100%;
+  }
+  .overview-single-value-bar .single-value {
+    height: 115px;
+  }
+  .overview-single-value-bar .single-value-heading {
+    font-size: 1rem;
+    height: 30%;
+    margin-left: 30px;
+  }
+  .overview-single-value-bar .subtitle {
+    font-size: 0.75rem;
+  }
+  .overview-single-value-bar .single-value-number {
+    font-size: 2.5rem;
+    margin-left: 30px;
+  }
+}
+
+/* Regional page - 3 column view for tiles */
+@media screen and (max-width: 1324px) {
+  .region-single-value-bar .single-value-heading {
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 30%;
+  }
+  .region-single-value-bar .single-value-number {
+    margin-left: 20px;
+  }
+  .region-single-value-bar .single-value {
+    height: 175px;
+  }
+}
+
+/* Regional page - single column view for tiles */
+@media screen and (max-width: 640px) {
   .region-single-value-bar {
     flex-direction: column;
   }
-  .region-single-value-container {
+  .region-single-value-bar .single-value-container {
     width: 100%;
   }
-}
-
-@media screen and (max-width: 500px) {
-  .single-value-bar {
-    flex-direction: column;
+  .region-single-value-bar .single-value {
+    height: 135px;
   }
-  .single-value-container {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .single-value-number {
-    font-size: 2rem;
+  .region-single-value-bar .single-value-heading {
+    height: 25%;
   }
 }

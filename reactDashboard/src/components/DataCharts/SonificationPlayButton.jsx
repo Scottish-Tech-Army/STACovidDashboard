@@ -23,6 +23,7 @@ const SonificationPlayButton = ({
   seriesTitle = "No data",
   regionCode = null,
   dateRange = null,
+  darkmode,
 }) => {
   const [audioPlaying, setAudioPlaying] = useState(false);
 
@@ -77,7 +78,7 @@ const SonificationPlayButton = ({
           <FontAwesomeIcon
             icon={audioPlaying ? faVolumeMute : faVolumeUp}
             size="2x"
-            color="#6c6c6c"
+            color={darkmode ? "#f2f2f2" : "#6c6c6c"}
           />
           <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
         </span>
