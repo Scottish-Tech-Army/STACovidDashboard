@@ -24,7 +24,9 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
 };
 
 // Suppress console error message
-global.suppressConsoleErrorLogs = () => spyOn(console, "error");
+global.suppressConsoleErrorLogs = () =>
+  jest.spyOn(console, "error").mockImplementation(() => {});
 
 // Suppress console warning message
-global.suppressConsoleWarnLogs = () => spyOn(console, "warn");
+global.suppressConsoleWarnLogs = () =>
+  jest.spyOn(console, "warn").mockImplementation(() => {});
