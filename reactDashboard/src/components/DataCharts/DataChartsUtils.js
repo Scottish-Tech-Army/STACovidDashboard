@@ -33,7 +33,7 @@ function getDateLine({ date, name }, darkmode, index) {
       cornerRadius: 2,
       xPadding: 10,
       yPadding: 3,
-      position: "top",
+      position: "top-fitted",
       enabled: true,
       yAdjust: index * 20,
       content: name,
@@ -80,7 +80,38 @@ export function datasetConfiguration(
   };
 }
 
+function getSeriesYMax(dataset, dateRange) {
+  let series = dataset.data;
+  if (dateRange !== null && dateRange !== undefined) {
+    series = series.filter(
+      (data) => data.t >= dateRange.startDate && data.t <= dateRange.endDate
+    );
+  }
+  return Math.max(...series.map((data) => data.y), 0);
+}
+
+export function getChartYMax(datasets, dateRange) {
+  if (datasets === null || datasets === undefined || datasets.length === 0) {
+    return 0;
+  }
+  return Math.max(
+    ...datasets.map((dataset) => getSeriesYMax(dataset, dateRange))
+  );
+}
+
+export const getMaxTicks = (yMax) => {
+  if (yMax === null || yMax === undefined || yMax === 0) {
+    return 1;
+  }
+  if (yMax >= 20) {
+    return 20;
+  }
+  return yMax;
+};
+
 export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
+  const maxTicks = getMaxTicks(getChartYMax(datasets, dateRange));
+
   let result = {
     type: "line",
     data: {
@@ -108,7 +139,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
             ticks: {
               beginAtZero: true,
               fontColor: darkmode ? "#f2f2f2" : "#767676",
-              maxTicksLimit: 20,
+              maxTicksLimit: maxTicks,
               callback: function (value, index, values) {
                 return Math.round(value);
               },
@@ -175,6 +206,7 @@ export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
       max: dateRange.endDate,
     };
   }
+
   return result;
 }
 
