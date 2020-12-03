@@ -6,10 +6,14 @@ const Facts = () => {
     <div className="facts-container">
       <div className="facts-row">
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/wear_face_coverings_no_bg.png" alt="" />
+          <img
+            className="facts-icon"
+            src="./assets/wear_face_coverings_no_bg.png"
+            alt="two faces wearing masks"
+          />
           <div className="facts-guidance">
             <div>
-              Wear a <span className="highlight-facts">F</span>ace covering.
+              <span className="highlight-facts">F</span>ace coverings
             </div>
           </div>
         </div>
@@ -17,20 +21,24 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/avoid_crovded_places_no_bg.png"
-            alt=""
+            alt="7 human figures with circles highlighting their personal space"
           />
           <div className="facts-guidance">
             <div>
-              <span className="highlight-facts">A</span>void crowded places.
+              <span className="highlight-facts">A</span>void crowded places
             </div>
           </div>
         </div>
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/clean_hands_no_bg.png" alt="" />
+          <img
+            className="facts-icon"
+            src="./assets/clean_hands_no_bg.png"
+            alt="two hands touching with soap suds betweem them"
+          />
           <div className="facts-guidance">
             <div>
-              <span className="highlight-facts">C</span>lean hands and surfaces
-              regularly.
+              <span className="highlight-facts">C</span>lean your hands
+              regularly
             </div>
           </div>
         </div>
@@ -38,12 +46,11 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/stay_2_m_apart_no_bg.png"
-            alt=""
+            alt="Two human figures standing 2 meters apart"
           />
           <div className="facts-guidance">
             <div>
-              Stay <span className="highlight-facts">T</span>wo metres away from
-              other people.
+              <span className="highlight-facts">T</span>wo metres distance
             </div>
           </div>
         </div>
@@ -51,7 +58,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/self_isolat_book_test_no_bg.png"
-            alt=""
+            alt="A generic location market, shaped like an inverted tear drop"
           />
           <div className="facts-guidance">
             <div>
@@ -62,8 +69,8 @@ const Facts = () => {
                 rel="noopener noreferrer"
                 href="https://www.gov.scot/coronavirus-covid-19/"
               >
-                <span className="highlight-facts">S</span>
-                elf-isolate and book a test if you have COVID-19 symptoms.
+                <span className="highlight-facts">S</span>elf isolate and book a
+                test if you have symptoms
               </a>
             </div>
           </div>
