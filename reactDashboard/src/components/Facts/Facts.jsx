@@ -9,7 +9,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/wear_face_coverings_no_bg.png"
-            alt="two faces wearing masks"
+            alt=""
           />
           <div className="facts-guidance">
             <div>
@@ -21,7 +21,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/avoid_crovded_places_no_bg.png"
-            alt="7 human figures with circles highlighting their personal space"
+            alt=""
           />
           <div className="facts-guidance">
             <div>
@@ -33,7 +33,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/clean_hands_no_bg.png"
-            alt="two hands touching with soap suds betweem them"
+            alt=""
           />
           <div className="facts-guidance">
             <div>
@@ -46,7 +46,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/stay_2_m_apart_no_bg.png"
-            alt="Two human figures standing 2 meters apart"
+            alt=""
           />
           <div className="facts-guidance">
             <div>
@@ -58,7 +58,7 @@ const Facts = () => {
           <img
             className="facts-icon"
             src="./assets/self_isolat_book_test_no_bg.png"
-            alt="A generic location market, shaped like an inverted tear drop"
+            alt=""
           />
           <div className="facts-guidance">
             <div>
