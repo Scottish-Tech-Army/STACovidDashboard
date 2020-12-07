@@ -6,10 +6,14 @@ const Facts = () => {
     <div className="facts-container">
       <div className="facts-row">
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/wear_face_coverings_no_bg.png" alt="" />
+          <img
+            className="facts-icon"
+            src="./assets/wear_face_coverings_no_bg.png"
+            alt=""
+          />
           <div className="facts-guidance">
             <div>
-              Wear a <span className="highlight-facts">F</span>ace covering.
+              <span className="highlight-facts">F</span>ace coverings
             </div>
           </div>
         </div>
@@ -21,16 +25,20 @@ const Facts = () => {
           />
           <div className="facts-guidance">
             <div>
-              <span className="highlight-facts">A</span>void crowded places.
+              <span className="highlight-facts">A</span>void crowded places
             </div>
           </div>
         </div>
         <div className="facts-component">
-          <img className="facts-icon" src="./assets/clean_hands_no_bg.png" alt="" />
+          <img
+            className="facts-icon"
+            src="./assets/clean_hands_no_bg.png"
+            alt=""
+          />
           <div className="facts-guidance">
             <div>
-              <span className="highlight-facts">C</span>lean hands and surfaces
-              regularly.
+              <span className="highlight-facts">C</span>lean your hands
+              regularly
             </div>
           </div>
         </div>
@@ -42,8 +50,7 @@ const Facts = () => {
           />
           <div className="facts-guidance">
             <div>
-              Stay <span className="highlight-facts">T</span>wo metres away from
-              other people.
+              <span className="highlight-facts">T</span>wo metres distance
             </div>
           </div>
         </div>
@@ -62,8 +69,8 @@ const Facts = () => {
                 rel="noopener noreferrer"
                 href="https://www.gov.scot/coronavirus-covid-19/"
               >
-                <span className="highlight-facts">S</span>
-                elf-isolate and book a test if you have COVID-19 symptoms.
+                <span className="highlight-facts">S</span>elf isolate and book a
+                test if you have symptoms
               </a>
             </div>
           </div>
