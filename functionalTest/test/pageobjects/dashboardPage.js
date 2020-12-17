@@ -103,12 +103,6 @@ class DashboardPage extends Page {
   get factsContainer() {
     return $(".facts-container");
   }
-  get newsContainer() {
-    return $("div.info-bar");
-  }
-  get newsContainerGovLink() {
-    return $(".info-bar a.scot-gov-link");
-  }
   /**
    * open base URL
    */
