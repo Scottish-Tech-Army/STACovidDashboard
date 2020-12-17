@@ -80,12 +80,4 @@ describe("Verify FACTS and NEWS Container", () => {
     dashboard.open();
     expect(dashboard.factsContainer).toBeDisplayed();
   });
-
-  it("NEWS Container", () => {
-    dashboard.open();
-    expect(dashboard.newsContainer).toBeDisplayed();
-    expect(dashboard.newsContainerGovLink).toHaveHrefContaining(
-      "https://news.gov.scot/news"
-    );
-  });
 });

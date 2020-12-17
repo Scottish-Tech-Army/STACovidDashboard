@@ -9,7 +9,6 @@ import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSe
 import Heatmap from "../components/HeatMap/Heatmap";
 import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataCharts from "../components/DataCharts/DataCharts";
-import InfoBar from "../components/InfoBar/InfoBar";
 import Facts from "../components/Facts/Facts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
@@ -202,16 +201,6 @@ const Overview = ({
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
           <Col>
             <Facts />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex">
-          <Col>
-            <hr className="full-width-hr" />
-          </Col>
-        </Row>
-        <Row className="d-none d-sm-flex justify-content-center align-items-center">
-          <Col>
-            <InfoBar />
           </Col>
         </Row>
       </Container>

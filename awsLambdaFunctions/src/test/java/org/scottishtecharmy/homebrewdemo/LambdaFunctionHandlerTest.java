@@ -117,11 +117,7 @@ public class LambdaFunctionHandlerTest {
             EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
             EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA);
 
-    private static final String[][] EXPECTED_S3_PUT_OBJECTS_RSS_DATA = {
-            { "data/newsScotGovRss.xml", "newsScotGovRss.output" }, };
-
-    private static final String[][] EXPECTED_S3_PUT_OBJECTS_ALL = flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DATA,
-            EXPECTED_S3_PUT_OBJECTS_RSS_DATA);
+    private static final String[][] EXPECTED_S3_PUT_OBJECTS_NO_UPDATES = new String[][] {};
 
     private static CloseableHttpResponse createHttpResponse(String content, int statusCode, String lastModifiedDate) {
         CloseableHttpResponse response = Mockito.mock(CloseableHttpResponse.class);
@@ -155,15 +151,11 @@ public class LambdaFunctionHandlerTest {
             createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
             createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), };
 
-    // rss feed response
-    private static final CloseableHttpResponse[] HTTP_QUERY_RESPONSES_RSS = {
-            createHttpResponse("newsScotGovRss.output"), };
-
     // Unexpected additional responses
     private static final CloseableHttpResponse[] HTTP_QUERY_RESPONSES_UNEXPECTED = { createHttpResponse("UNEXPECTED") };
 
     private static final CloseableHttpResponse[] HTTP_QUERY_RESPONSES = flatten(HTTP_QUERY_RESPONSES_NHS,
-            HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+            HTTP_QUERY_RESPONSES_UNEXPECTED);
 
     @Before
     public void setUp() throws IOException {
@@ -220,7 +212,7 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", output);
 
         checkRequests_allRequestsMade();
-        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_ALL);
+        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_NHS_DATA);
     }
 
     @Test
@@ -232,7 +224,7 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", subject.handleRequest(event, context));
 
         checkRequests_allRequestsMade();
-        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_ALL);
+        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_NHS_DATA);
 
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
         checkNhsGetRequestModificationDate((HttpGet) httpRequests.get(0), OLD_LAST_MODIFIED_DATE_DAILY_CA);
@@ -248,7 +240,7 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", subject.handleRequest(event, context));
 
         checkRequests_allRequestsMade();
-        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_ALL);
+        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_NHS_DATA);
     }
 
     @Test
@@ -263,7 +255,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_NHS, HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -273,7 +265,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -288,7 +280,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -299,7 +291,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -314,7 +306,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -325,7 +317,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -340,7 +332,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 304, OLD_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -351,7 +343,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -366,7 +358,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 304, OLD_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -377,7 +369,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -392,7 +384,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 304, OLD_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -403,7 +395,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA));
     }
 
     @Test
@@ -417,7 +409,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 304, OLD_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 304, OLD_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 304, OLD_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -425,7 +417,7 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", subject.handleRequest(event, context));
 
         checkRequests_allRequestsMade();
-        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_NO_UPDATES);
     }
 
     @Test
@@ -440,7 +432,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -450,7 +442,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -465,7 +457,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -476,7 +468,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -491,7 +483,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -502,7 +494,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -517,7 +509,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, OLD_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -528,7 +520,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -543,7 +535,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, OLD_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -554,7 +546,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_HB_DATA));
     }
 
     @Test
@@ -569,7 +561,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, NEW_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, NEW_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, OLD_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -580,7 +572,7 @@ public class LambdaFunctionHandlerTest {
         checkRequests_allRequestsMade();
         checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_DAILY_HB_DATA,
                 EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_CA_DATA, EXPECTED_S3_PUT_OBJECTS_NHS_TOTAL_HB_DATA,
-                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA, EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+                EXPECTED_S3_PUT_OBJECTS_NHS_TESTS_CA_DATA));
     }
 
     @Test
@@ -595,7 +587,7 @@ public class LambdaFunctionHandlerTest {
                         createHttpResponse("currentTotalsHealthBoards.output", 200, OLD_LAST_MODIFIED_DATE_TOTAL_HB),
                         createHttpResponse("testsCouncilAreas.output", 200, OLD_LAST_MODIFIED_DATE_TESTS_CA),
                         createHttpResponse("testsHealthBoards.output", 200, OLD_LAST_MODIFIED_DATE_TESTS_HB), },
-                HTTP_QUERY_RESPONSES_RSS, HTTP_QUERY_RESPONSES_UNEXPECTED);
+                HTTP_QUERY_RESPONSES_UNEXPECTED);
 
         httpRequestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         returnMultiple(when(httpClient.execute(httpRequestCaptor.capture())), httpResponses);
@@ -603,26 +595,18 @@ public class LambdaFunctionHandlerTest {
         assertEquals("Success", subject.handleRequest(event, context));
 
         checkRequests_allRequestsMade();
-        checkS3Writes(flatten(EXPECTED_S3_PUT_OBJECTS_RSS_DATA));
+        checkS3Writes(EXPECTED_S3_PUT_OBJECTS_NO_UPDATES);
     }
 
     private void checkRequests_allRequestsMade() throws UnsupportedOperationException {
         List<HttpUriRequest> httpRequests = httpRequestCaptor.getAllValues();
-        assertEquals(7, httpRequests.size());
-        // The first 6 are requests to nhs.scot
+        assertEquals(6, httpRequests.size());
         checkNhsGetRequest((HttpGet) httpRequests.get(0));
         checkNhsGetRequest((HttpGet) httpRequests.get(1));
         checkNhsGetRequest((HttpGet) httpRequests.get(2));
         checkNhsGetRequest((HttpGet) httpRequests.get(3));
         checkNhsGetRequest((HttpGet) httpRequests.get(4));
         checkNhsGetRequest((HttpGet) httpRequests.get(5));
-
-        // The last is a request to news.gov.scot rss feed
-        checkRssFeedGetRequest((HttpGet) httpRequests.get(6));
-    }
-
-    private void checkRssFeedGetRequest(HttpGet getRequest) throws UnsupportedOperationException {
-        assertEquals("https://news.gov.scot/feed/rss", getRequest.getURI().toString());
     }
 
     private void checkNhsGetRequest(HttpGet getRequest) throws UnsupportedOperationException {
