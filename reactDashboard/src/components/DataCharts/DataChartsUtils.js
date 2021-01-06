@@ -17,6 +17,7 @@ const keyDates = [
   { date: Date.parse("2020-07-15"), name: "BARS REOPEN" },
   { date: Date.parse("2020-08-11"), name: "SCHOOLS REOPEN" },
   { date: Date.parse("2020-10-09"), name: "BARS CLOSE" },
+  { date: Date.parse("2021-01-05"), name: "SCOTLAND LOCKDOWN" },
 ];
 
 function getDateLine({ date, name }, darkmode, index) {
