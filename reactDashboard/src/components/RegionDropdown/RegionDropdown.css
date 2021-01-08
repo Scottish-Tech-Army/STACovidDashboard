@@ -1,4 +1,24 @@
 .region-menu {
-    height: 250px;
-    overflow-y: scroll;
+  height: 250px;
+  overflow-y: scroll;
+  width: 220px;
+}
+
+.selected-region {
+  margin: 10px 0;
+  width: 220px;
+}
+
+.darkmode .selected-region {
+  color: #121212;
+  background-color: #c1def1;
+}
+
+.region-selector-row {
+  background-color: inherit;
+  padding: 0 20px 0 10px;
+}
+
+.darkmode .region-selector-row {
+  background-color: #133a53;
 }

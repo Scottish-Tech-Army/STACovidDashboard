@@ -14,7 +14,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
@@ -55,8 +54,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
             storeAllNhsScotData(context);
 
-            storeRssNewsFeed(context);
-
             context.getLogger().log("end");
         }
         catch (SdkClientException | IOException e) {
@@ -77,6 +74,10 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
                 OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TOTAL_COUNCIL_AREAS_URL);
         storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS,
                 OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TOTAL_HEALTH_BOARDS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS,
+                OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TESTS_COUNCIL_AREAS_URL);
+        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS,
+                OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TESTS_HEALTH_BOARDS_URL);
     }
 
     private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
@@ -89,8 +90,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             request.addHeader("If-Modified-Since", modificationDate);
         }
 
-        CloseableHttpClient client = createHttpClient();
-        try (CloseableHttpResponse response = client.execute(request)) {
+        try (CloseableHttpClient client = createHttpClient();
+                CloseableHttpResponse response = client.execute(request)) {
             int statusCode = response.getStatusLine().getStatusCode();
             if (HttpStatus.SC_NOT_MODIFIED == statusCode) {
                 context.getLogger().log("NHS data not updated - skipping\n");
@@ -106,6 +107,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             String newModificationDate = null;
             if (lastModifiedHeader != null) {
                 newModificationDate = lastModifiedHeader.getValue();
+            }
+
+            if (newModificationDate != null && newModificationDate.equals(modificationDate)) {
+                context.getLogger().log("NHS request not respecting If-Modified-Since - skipping\n");
+                return;
             }
 
             // Pipe straight to S3
@@ -138,37 +144,6 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         return HttpClients.createDefault();
     }
 
-    private void storeRssNewsFeed(Context context) throws UnsupportedOperationException, IOException {
-        getAndStoreObject(context, new HttpGet(RSS_NEWS_FEED_URL), OBJECTKEY_RSS_NEWS_FEED);
-    }
-
-    private void getAndStoreObject(Context context, HttpUriRequest request, String targetObjectKeyName)
-            throws UnsupportedOperationException, IOException {
-        context.getLogger().log("Call request\n");
-
-        CloseableHttpClient client = createHttpClient();
-        try (CloseableHttpResponse response = client.execute(request)) {
-            context.getLogger().log("Response received\n");
-
-            // Pipe straight to S3
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("text/plain");
-
-            HttpEntity entity = response.getEntity();
-            if (entity.getContentLength() > 0) {
-                metadata.setContentLength(entity.getContentLength());
-            }
-
-            AccessControlList acl = new AccessControlList();
-            acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
-
-            s3.putObject(new PutObjectRequest(BUCKET_NAME, targetObjectKeyName, entity.getContent(), metadata)
-                    .withAccessControlList(acl));
-        }
-
-        context.getLogger().log("Response stored in S3 at " + targetObjectKeyName + "\n");
-    }
-
     private void storeObject(Context context, String text, String objectKeyName) throws UnsupportedOperationException {
 
         byte[] textBytes = text.getBytes(StandardCharsets.UTF_8);
@@ -185,6 +160,7 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         context.getLogger().log("Object stored in S3 at " + objectKeyName + "\n");
     }
 
+    @SuppressWarnings("resource")
     private String getObject(Context context, String objectKeyName)
             throws UnsupportedOperationException, AmazonServiceException, SdkClientException, IOException {
         if (!s3.doesObjectExist(BUCKET_NAME, objectKeyName)) {
@@ -211,7 +187,10 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
     private final static String NHS_SCOT_TOTAL_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
             + "e8454cf0-1152-4bcb-b9da-4343f625dfef/download";
-    
+    private final static String NHS_SCOT_TESTS_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
+            + "8da654cd-293b-4286-96a4-b3ece86225f0/download";
+    private final static String NHS_SCOT_TESTS_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
+            + "3349540e-dc63-4d6d-a78b-00387b9aca50/download";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsDailyHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
@@ -220,6 +199,10 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "nhsTotalHealthBoardLastModified.txt";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
             + "nhsTotalCouncilAreaLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsTestsHealthBoardLastModified.txt";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
+            + "nhsTestsCouncilAreaLastModified.txt";
 
     private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
@@ -227,10 +210,8 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
             + "currentTotalsHealthBoards.csv";
     private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS = OBJECT_FOLDER
             + "currentTotalsCouncilAreas.csv";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS = OBJECT_FOLDER + "testsHealthBoards.csv";
+    private final static String OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS = OBJECT_FOLDER + "testsCouncilAreas.csv";
 
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
-
-    private static final String RSS_NEWS_FEED_URL = "https://news.gov.scot/feed/rss";
-    private static final String OBJECTKEY_RSS_NEWS_FEED = OBJECT_FOLDER + "newsScotGovRss.xml";
-
 }

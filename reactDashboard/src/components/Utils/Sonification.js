@@ -1,3 +1,6 @@
+import { AudioContext } from "standardized-audio-context";
+import moment from "moment";
+
 const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
 const NO_OF_TONES = 33;
@@ -5,6 +8,7 @@ const NO_OF_TONES = 33;
 var sonificationPlaying = false;
 var sonificationToneOscillator = null;
 const playStateChangeListeners = [];
+var utterance = null;
 
 // Calculate an array of 12-TET tones on chromatic scale from given base frequency and array length
 // https://en.wikipedia.org/wiki/Equal_temperament
@@ -17,7 +21,7 @@ function generate12TETTones() {
   return tones.slice(3).map((v) => Math.round(v));
 }
 
-// 12-TET scale from C4 to C8
+// 12-TET scale from C4 to G#6
 const TONES = generate12TETTones();
 const MIN_TONE = TONES[0];
 const MAX_TONE = TONES[TONES.length - 1];
@@ -36,16 +40,21 @@ function getToneDuration(minimumDuration, frequency) {
 
 function waitForSpeech(message) {
   if (!sonificationPlaying) {
+    console.log("sonification not playing");
     return;
   }
   return new Promise((resolve, reject) => {
-    var msg = new SpeechSynthesisUtterance(message);
-    msg.onerror = (event) => {
+    utterance = new SpeechSynthesisUtterance(message);
+    utterance.onerror = (event) => {
       console.error("web speech error");
       console.error(event);
+      utterance = null;
     };
-    msg.onend = resolve;
-    window.speechSynthesis.speak(msg);
+    utterance.onend = () => {
+      utterance = null;
+      resolve();
+    };
+    window.speechSynthesis.speak(utterance);
   });
 }
 
@@ -60,6 +69,11 @@ function waitForTone(audioCtx, frequency) {
     oscillator.connect(audioCtx.destination);
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + getToneDuration(0.5, frequency));
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume().then(() => {
+        console.log("resumed");
+      });
+    }
   });
 }
 
@@ -72,20 +86,39 @@ function webspeechAvailable() {
 // On Firefox this occasionally fails the first time, so call it now
 webspeechAvailable();
 
-async function playDataIntroduction(
+function playDataIntroduction(
   audioCtx,
   seriesTitle,
   maxDataValue,
+  dateRange,
   place
 ) {
   if (webspeechAvailable()) {
-    await waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ");
-    await waitForTone(audioCtx, MIN_TONE);
-    await waitForSpeech("Maximum value " + maxDataValue + ".");
-    await waitForTone(audioCtx, MAX_TONE);
-    await waitForSpeech(
-      "From 28th February until today. Each tone represents one day."
-    );
+    const startDate =
+      dateRange == null
+        ? "28th February"
+        : moment.utc(dateRange.startDate).format("Do MMMM");
+    const endDate =
+      dateRange == null
+        ? "Yesterday"
+        : moment.utc(dateRange.endDate).format("Do MMMM");
+
+    return new Promise((resolve, reject) => {
+      waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
+        .then(() => waitForTone(audioCtx, MIN_TONE))
+        .then(() => waitForSpeech("Maximum value " + maxDataValue + "."))
+        .then(() => waitForTone(audioCtx, MAX_TONE))
+        .then(() =>
+          waitForSpeech(
+            "From " +
+              startDate +
+              " until " +
+              endDate +
+              ". Each tone represents one day."
+          )
+        )
+        .then(resolve);
+    });
   } else {
     console.warn(
       "web speech API not available - skipping dataset introduction"
@@ -144,22 +177,46 @@ export function calculateMaxDataValue(seriesData = null) {
  * If audio is already playing, stop the currently playing audio and return.
  *
  * @param {string} seriesTitle - Name of dataset to sonify (eg 'daily cases').
+ * @param {object} dateRange - startDate and endDate for intro speech.
  * @param {number[]} seriesData - Dataset to sonify.
  * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
-export async function playAudio(seriesTitle, seriesData, place = "Scotland") {
+export function playAudio(
+  seriesTitle,
+  seriesData,
+  dateRange,
+  place = "Scotland"
+) {
   if (sonificationPlaying) {
     stopAudio();
     return;
   }
 
   setPlaying(true);
-  const maxDataValue = calculateMaxDataValue(seriesData);
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  await playDataIntroduction(audioCtx, seriesTitle, maxDataValue, place);
-  if (sonificationPlaying) {
-    playDataTones(audioCtx, seriesData, maxDataValue);
-  }
+  const maxDataValue = calculateMaxDataValue(seriesData.map(({ t, y }) => y));
+  const truncatedSeriesData =
+    dateRange === null
+      ? seriesData
+      : seriesData.filter(
+          ({ t, y }) => t >= dateRange.startDate && t <= dateRange.endDate
+        );
+
+  const audioCtx = new AudioContext();
+  playDataIntroduction(
+    audioCtx,
+    seriesTitle,
+    maxDataValue,
+    dateRange,
+    place
+  ).then(() => {
+    if (sonificationPlaying) {
+      playDataTones(
+        audioCtx,
+        truncatedSeriesData.map(({ t, y }) => y),
+        maxDataValue
+      );
+    }
+  });
 }
 
 /**
@@ -181,7 +238,10 @@ function setPlaying(isPlaying) {
  */
 export function stopAudio() {
   if (sonificationToneOscillator != null) {
-    sonificationToneOscillator.stop();
+    sonificationToneOscillator.onended = undefined;
+    sonificationToneOscillator.stop(
+      sonificationToneOscillator.context.currentTime
+    );
     sonificationToneOscillator = null;
   }
   if (window.speechSynthesis) {

@@ -1,23 +1,39 @@
-.current-phase {
+.headline-banner {
   background-color: #133a53;
-  color: #ffffff;
-  padding: 2rem;
+  color: white;
+  padding: 1rem;
 }
 
-.current-phase-number {
+.darkmode .headline-banner {
+  background-color: #133a53;
+}
+
+/* color is default white for .headline-banner h2 */
+.headline-banner h2 {
+  font-size: 1.5rem;
+}
+
+.darkmode .headline-banner h2 {
+  color: #f2f2f2;
+}
+
+.headline-banner-highlight {
   font-weight: bold;
   color: #fc8d59;
 }
 
 @media screen and (max-width: 768px) {
-  .current-phase {
+  .headline-banner {
     height: auto;
     padding: 3%;
   }
-
-  h2 {
-    font-size: 1.2em;
+  .headline-banner h2 {
+    font-size: 1.2rem;
   }
+}
+
+.hr-container {
+  padding: 0;
 }
 
 #link {

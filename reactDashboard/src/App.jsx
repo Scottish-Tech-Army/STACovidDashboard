@@ -7,17 +7,30 @@ import DataSources from "./pages/DataSources";
 import Overview from "./pages/Overview";
 import Regional from "./pages/Regional";
 import {
-  PAGE_ABOUT_US,
-  PAGE_ACCESSIBILITY,
-  PAGE_DATA_SOURCES,
-  PAGE_OVERVIEW,
-  PAGE_REGIONAL,
+  URL_ABOUT_US,
+  URL_ACCESSIBILITY,
+  URL_DATA_SOURCES,
+  URL_OVERVIEW,
+  URL_REGIONAL,
 } from "./pages/PageConsts";
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
-import { readCsvData, fetchAndStore } from "./components/Utils/CsvUtils";
+import {
+  readCsvData,
+  fetchAndStore,
+  calculatePopulationProportionMap,
+  getPopulationMap,
+  createPlaceDateValuesMap,
+} from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -25,9 +38,28 @@ const tagManagerArgs = {
 
 TagManager.initialize(tagManagerArgs);
 
-const App = () => {
-  const [currentPage, setCurrentPage] = useState(PAGE_OVERVIEW);
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return <></>;
+};
+
+const StopAudio = () => {
+  const { location } = useLocation();
+
+  // Stop audio on page change
+  useEffect(() => {
+    stopAudio();
+  }, [location]);
+
+  return <></>;
+};
+
+const App = () => {
   const [healthBoardDataset, setHealthBoardDataset] = useState(null);
   const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
   const [
@@ -38,18 +70,11 @@ const App = () => {
     currentTotalsCouncilAreaDataset,
     setCurrentTotalsCouncilAreaDataset,
   ] = useState(null);
-
-  function scrollToTop(page) {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-    });
-  }
-
-  // Stop audio on page change
-  useEffect(() => {
-    stopAudio();
-  }, [currentPage]);
+  const [populationMap, setPopulationMap] = useState(new Map());
+  const [populationProportionMap, setPopulationProportionMap] = useState(
+    new Map()
+  );
+  const [darkmode, setDarkmode] = useState(false);
 
   // Load and parse datasets
   useEffect(() => {
@@ -92,38 +117,74 @@ const App = () => {
     }
   }, [currentTotalsHealthBoardDataset]);
 
-  return (
-    <div className="App">
-      <header>
-        <DashboardNavbar
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-        />
-      </header>
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const populationMap = getPopulationMap(
+        createPlaceDateValuesMap(healthBoardDataset)
+      );
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
+      );
+    }
+  }, [healthBoardDataset]);
 
-      {currentPage === PAGE_OVERVIEW ? (
-        <Overview
-          councilAreaDataset={councilAreaDataset}
-          healthBoardDataset={healthBoardDataset}
-          currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-        />
-      ) : (
-        <></>
-      )}
-      {currentPage === PAGE_REGIONAL ? (
-        <Regional
-          councilAreaDataset={councilAreaDataset}
-          healthBoardDataset={healthBoardDataset}
-          currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-          currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-        />
-      ) : (
-        <></>
-      )}
-      {currentPage === PAGE_ACCESSIBILITY ? <Accessibility /> : <></>}
-      {currentPage === PAGE_DATA_SOURCES ? <DataSources /> : <></>}
-      {currentPage === PAGE_ABOUT_US ? <AboutUs /> : <></>}
-      <Footer setCurrentPage={scrollToTop} />
+  useEffect(() => {
+    if (councilAreaDataset != null) {
+      const populationMap = getPopulationMap(
+        createPlaceDateValuesMap(councilAreaDataset)
+      );
+      setPopulationMap(
+        (existingMap) => new Map([...existingMap, ...populationMap])
+      );
+    }
+  }, [councilAreaDataset]);
+
+  useEffect(() => {
+    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
+  }, [populationMap]);
+
+  return (
+    <div className={darkmode ? "App darkmode" : "App"}>
+      <Router>
+        <ScrollToTop />
+        <StopAudio />
+
+        <header>
+          <DashboardNavbar darkmode={darkmode} setDarkmode={setDarkmode} />
+        </header>
+        <Switch>
+          <Route exact path={URL_OVERVIEW}>
+            <Overview
+              councilAreaDataset={councilAreaDataset}
+              healthBoardDataset={healthBoardDataset}
+              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+              populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
+            />
+          </Route>
+          <Route path={URL_REGIONAL}>
+            <Regional
+              councilAreaDataset={councilAreaDataset}
+              healthBoardDataset={healthBoardDataset}
+              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
+              populationProportionMap={populationProportionMap}
+              darkmode={darkmode}
+            />
+          </Route>
+          <Route path={URL_ACCESSIBILITY}>
+            <Accessibility />
+          </Route>
+          <Route path={URL_DATA_SOURCES}>
+            <DataSources />
+          </Route>
+          <Route path={URL_ABOUT_US}>
+            <AboutUs/>
+          </Route>
+          <Route path="*">{() => <Redirect to="/" />}</Route>
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 import {
   createPlaceDateValuesMap,
   getPlaceNameByFeatureCode,
+  FEATURE_CODE_SCOTLAND,
 } from "../Utils/CsvUtils";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
@@ -17,6 +18,7 @@ export function parseCsvData(csvData) {
   const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
   var regions = [];
+  var scotland = null;
   placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
     const allCases = [];
     const allDeaths = [];
@@ -35,16 +37,57 @@ export function parseCsvData(csvData) {
       totalCases = cumulativeCases;
       totalDeaths = cumulativeDeaths;
     });
-    regions.push({
+    const region = {
+      featureCode: featureCode,
       name: getPlaceNameByFeatureCode(featureCode),
       totalDeaths: totalDeaths,
       totalCases: totalCases,
       cases: allCases,
       deaths: allDeaths,
-    });
+    };
+    if (featureCode === FEATURE_CODE_SCOTLAND) {
+      scotland = region;
+    } else {
+      regions.push(region);
+    }
   });
   regions = regions.sort((a, b) => (a.name < b.name ? -1 : 1));
-  return { dates: dates, regions: regions };
+
+  if (scotland == null) {
+    scotland = getScotlandRegion(regions);
+  }
+  return { dates: dates, scotland: scotland, regions: regions };
+}
+
+// Exported for tests
+export function getScotlandRegion(regions) {
+  var result = regions.find(
+    ({ featureCode }) => featureCode === FEATURE_CODE_SCOTLAND
+  );
+  if (result !== undefined) {
+    return result;
+  }
+  // Calculate Scotland region
+  const dayCount = regions[0] ? regions[0].cases.length : 0;
+
+  result = {
+    featureCode: FEATURE_CODE_SCOTLAND,
+    name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
+    totalDeaths: 0,
+    totalCases: 0,
+    cases: Array(dayCount).fill(0),
+    deaths: Array(dayCount).fill(0),
+  };
+
+  regions.forEach(({ totalDeaths, totalCases, cases, deaths }) => {
+    result.totalDeaths += totalDeaths;
+    result.totalCases += totalCases;
+    for (let i = 0; i < dayCount; i++) {
+      result.cases[i] += cases[i];
+      result.deaths[i] += deaths[i];
+    }
+  });
+  return result;
 }
 
 export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
@@ -93,7 +136,7 @@ function Heatmap({
   );
 
   function createHeatbar(elements, region, dates) {
-    const width = 300;
+    const width = 20;
     const height = 15;
     const viewBox = "0 0 " + width + " " + height;
     const count = elements.length;
@@ -134,14 +177,19 @@ function Heatmap({
   }
 
   function createRegionTableline(
-    { name, totalDeaths, totalCases, cases, deaths },
+    { featureCode, name, totalDeaths, totalCases, cases, deaths },
     index,
     dates
   ) {
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
-      <tr className="area" key={index}>
+      <tr
+        className={
+          featureCode === FEATURE_CODE_SCOTLAND ? "scotland-total area" : "area"
+        }
+        key={index}
+      >
         <td>{name}</td>
         <td>{total}</td>
         <td className="heatbarCell">
@@ -177,21 +225,6 @@ function Heatmap({
     }
   }
 
-  function totalCount() {
-    const dataset = getDataSet();
-    if (dataset !== null) {
-      const total = dataset.regions.reduce(
-        (acc, { totalDeaths, totalCases }) =>
-          acc + (VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases),
-        0
-      );
-      if (total > 0) {
-        return total;
-      }
-    }
-    return "";
-  }
-
   function dateRangeText() {
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
@@ -211,27 +244,24 @@ function Heatmap({
 
   function renderTableBody() {
     const dataset = getDataSet();
-    if (dataset !== null) {
-      return dataset.regions.map((region, i) =>
-        createRegionTableline(region, i, dataset.dates)
-      );
+    if (dataset === null) {
+      return [];
     }
-    return null;
+    if (dataset.regions.length === 0) {
+      return [];
+    }
+    const result = dataset.regions.map((region, i) =>
+      createRegionTableline(region, i + 1, dataset.dates)
+    );
+
+    result.unshift(createRegionTableline(dataset.scotland, 0, dataset.dates));
+    return result;
   }
 
   function areaTitle() {
     return AREATYPE_COUNCIL_AREAS === areaType
       ? "COUNCIL AREAS"
       : "HEALTH BOARDS";
-  }
-
-  function areaSubTitle() {
-    const dataset = getDataSet();
-    return (
-      dataset.regions.length +
-      " " +
-      (AREATYPE_COUNCIL_AREAS === areaType ? "Areas" : "Boards")
-    );
   }
 
   function valueTitle() {
@@ -258,7 +288,6 @@ function Heatmap({
       </div>
     );
   }
-
   if (getDataSet() === null) {
     return <LoadingComponent />;
   }
@@ -268,14 +297,8 @@ function Heatmap({
       <Table size="sm">
         <thead>
           <tr>
-            <th>
-              <div>{areaTitle()}</div>
-              <div className="subheading">{areaSubTitle()}</div>
-            </th>
-            <th>
-              <div>{valueTitle()}</div>
-              <div className="subheading">{totalCount()}</div>
-            </th>
+            <th>{areaTitle()}</th>
+            <th>{valueTitle()}</th>
             <th>
               <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>

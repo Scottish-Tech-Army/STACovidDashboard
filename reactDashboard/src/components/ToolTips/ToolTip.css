@@ -2,7 +2,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 5px;
 }
 
@@ -10,13 +10,21 @@
   color: #133a53;
 }
 
-#tooltip > .tooltip-inner {
-  background-color: #ffffff;
-  color: #000000;
-  border-radius: 10px;
-  padding: 20px;
+.darkmode .tooltip-icon .fa-question-circle {
+  color: #f2f2f2;
+}
 
-  border: 0.25px solid LightGray;
+#tooltip > .tooltip-inner {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 6px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.tooltip-inner {
+  text-align: left;
 }
 
 .tooltip.show {

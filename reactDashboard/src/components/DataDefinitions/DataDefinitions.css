@@ -1,0 +1,101 @@
+.data-definitions .data-accordion-toggle-down {
+  color: #c1def1;
+  border: 2px solid #c1def1;
+  border-radius: 50%;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.data-definitions .accordion-header {
+  color: white;
+  background-color: #133a53;
+}
+
+.data-definitions button.btn.btn-link {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.darkmode .data-definitions button.btn.btn-link {
+  color: #f2f2f2;
+}
+
+.data-definitions button.btn:active,
+.data-definitions button.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.data-definitions .data-accordion-toggle-down:hover {
+  color: #fd8d3c;
+  border-color: #fd8d3c;
+}
+
+.data-definitions .data-definitions-body {
+  padding: 15px 15px 5px;
+  margin: 0;
+  width: 100%;
+}
+
+.data-definitions .data-definitions-body p {
+  padding: 0 10px;
+  margin: 0;
+}
+
+.data-definitions .data-definitions-body ul {
+  padding-top: 15px;
+}
+
+.data-definitions .data-definitions-body li {
+  padding-bottom: 5px;
+  list-style: none;
+}
+
+.data-definitions .data-definitions-body ul {
+  padding-left: 10px;
+}
+
+.data-definitions .data-definitions-link {
+  color: #2a84bb;
+}
+
+.darkmode .data-definitions .data-definitions-link {
+  color: #3094D0;
+}
+
+.data-definitions .data-definitions-link,
+.data-definitions .definitions-heading {
+  font-weight: bold;
+}
+
+.darkmode .data-definitions .defined-term,
+.darkmode .data-definitions .definitions-heading {
+  color: #c1def1;
+}
+
+.darkmode .data-definitions hr {
+  border-color: #ffffff;
+}
+
+.data-definitions-body .source-attribution {
+  color: #2a84bb;
+}
+
+.darkmode .data-definitions-body .source-attribution {
+  color: #3094D0;
+}
+
+.darkmode .data-definitions .card-body {
+  background-color: #262626;
+  color: #f2f2f2;
+}
+
+.data-definitions .card {
+  border: none;
+}
+
+.data-definitions p.definition-paragraph {
+  padding-bottom: 20px;
+}

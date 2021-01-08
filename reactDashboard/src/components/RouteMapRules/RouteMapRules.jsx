@@ -5,23 +5,38 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const RouteMapRules = () => {
+  function createLink(url, text) {
+    return (
+      <a
+        className="link"
+        id="link"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={url}
+      >
+        {text}
+      </a>
+    );
+  }
   return (
     <Container fluid className="d-flex flex-column">
       <Row>
-        <Col xs="12" className="current-phase">
+        <Col className="hr-container">
+          <hr className="full-width-hr" />
+        </Col>
+      </Row>
+      <Row>
+        <Col xs="12" className="headline-banner">
           <h2>
-            We are currently in{" "}
-            <span className="current-phase-number">Phase 3</span> of the
-            Scottish Government's{" "}
-            <a
-              className="link"
-              id="link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.gov.scot/coronavirus-covid-19/"
-            >
-              COVID-19 Route Map
-            </a>
+            There are a number of{" "}
+            <span className="headline-banner-highlight">
+              Regional Restrictions
+            </span>{" "}
+            to help fight the pandemic. See the{" "}
+            {createLink(
+              "https://www.gov.scot/publications/coronavirus-covid-19-local-measures/",
+              "latest Scottish Government guidance"
+            )}
             .
           </h2>
         </Col>

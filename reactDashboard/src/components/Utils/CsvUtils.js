@@ -1,6 +1,23 @@
 import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
+export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
+  let dates = [...createDateSet(csvDataHB)];
+
+  if (csvDataCA != null) {
+    dates = [...dates, ...createDateSet(csvDataCA)];
+  }
+  dates.sort();
+  if (dates.length === 0) {
+    return { startDate: 0, endDate: 0 };
+  }
+
+  return {
+    startDate: dates[0],
+    endDate: dates.pop(),
+  };
+}
+
 export function readCsvData(csvData) {
   var allTextLines = csvData
     .toString()
@@ -52,9 +69,14 @@ export function createPlaceDateValuesMap(lines) {
         dailyCases,
         cumulativeCases,
         crudeRatePositive,
-        v3,
         dailyDeaths,
         cumulativeDeaths,
+        v2,
+        v3,
+        v4,
+        v5,
+        v6,
+        positivePercentage,
       ],
       i
     ) => {
@@ -69,6 +91,7 @@ export function createPlaceDateValuesMap(lines) {
         cumulativeCases: Number(cumulativeCases),
         cumulativeDeaths: Number(cumulativeDeaths),
         crudeRatePositive: Number(crudeRatePositive),
+        positivePercentage: Number(positivePercentage),
       });
       dateSet.add(date);
     }
@@ -85,53 +108,17 @@ export function createPlaceDateValuesMap(lines) {
 // Daily Case Trends By Council Area
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
 //
-// Returns a map of dates->summed values over all places
-export function createDateAggregateValuesMap(lines) {
-  const result = new Map();
 
-  lines.forEach(
-    (
-      [
-        dateString,
-        v1,
-        v5,
-        dailyCases,
-        cumulativeCases,
-        v2,
-        v3,
-        dailyDeaths,
-        cumulativeDeaths,
-        v4,
-        cumulativeNegativeTests,
-      ],
-      i
-    ) => {
-      const date = moment.utc(dateString).valueOf();
-      if (!result.has(date)) {
-        result.set(date, {
-          cases: 0,
-          deaths: 0,
-          cumulativeCases: 0,
-          cumulativeDeaths: 0,
-          cumulativeNegativeTests: 0,
-        });
-      }
-      var values = result.get(date);
-      result.set(date, {
-        cases: values.cases + Number(dailyCases),
-        deaths: values.deaths + Number(dailyDeaths),
-        cumulativeCases: values.cumulativeCases + Number(cumulativeCases),
-        cumulativeDeaths: values.cumulativeDeaths + Number(cumulativeDeaths),
-        cumulativeNegativeTests:
-          values.cumulativeNegativeTests + Number(cumulativeNegativeTests),
-      });
-    }
-  );
+function createDateSet(lines) {
+  const result = new Set();
+  lines.forEach(([dateString]) => {
+    result.add(moment.utc(dateString).valueOf());
+  });
 
   return result;
 }
 
-const queryUrl = "data/";
+const queryUrl = "/data/";
 
 // Retrieve a cached csv response, do some processing on it, then store the processed result
 export async function fetchAndStore(datasetName, setDataset, processCsvData) {
@@ -207,6 +194,43 @@ export function getRelativeReportedDate(date) {
   }
   return "reported on " + format(date, "dd MMMM, yyyy");
 }
+
+export function getPopulationMap(placeDateValuesResult) {
+  const { dates, placeDateValuesMap } = placeDateValuesResult;
+
+  const populationMap = new Map();
+  const finalDate = dates[dates.length - 1];
+
+  const places = [...placeDateValuesMap.keys()];
+  places.forEach((place) => {
+    const dateValuesMap = placeDateValuesMap.get(place);
+    const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
+    if (crudeRatePositive === 0) {
+      populationMap.set(place, 0);
+    } else {
+      const population = 100000 * (cumulativeCases / crudeRatePositive);
+      populationMap.set(place, population);
+    }
+  });
+
+  return populationMap;
+}
+
+// Exported for tests
+export function calculatePopulationProportionMap(populationMap) {
+  const result = new Map();
+
+  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
+  if (scotlandPopulation !== undefined) {
+    const places = [...populationMap.keys()];
+    places.forEach((place) => {
+      const population = populationMap.get(place);
+      result.set(place, population / scotlandPopulation);
+    });
+  }
+  return result;
+}
+
 
 export const FEATURE_CODE_SCOTLAND = "S92000003";
 

@@ -1,0 +1,42 @@
+.selected-chart {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 220px;
+  height: 35px;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .selected-chart {
+    margin-left: 5px;
+    width: 280px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .selected-chart {
+    margin-left: 5px;
+    width: 320px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .selected-chart {
+    margin-left: 5px;
+    width: 220px;
+  }
+}
+
+.selected-chart.dropdown-toggle.btn.btn-primary {
+  background-color: #ec6730;
+  border-color: #ec6730;
+}
+
+.darkmode .selected-chart.dropdown-toggle.btn.btn-primary {
+  color: #020202;
+}
+
+.selected-chart.dropdown-toggle.btn.btn-primary:focus {
+  box-shadow: none;
+}

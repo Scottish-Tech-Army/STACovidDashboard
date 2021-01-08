@@ -1,5 +1,5 @@
-export const PAGE_OVERVIEW = "overview";
-export const PAGE_REGIONAL = "regional";
-export const PAGE_DATA_SOURCES = "dataSources";
-export const PAGE_ABOUT_US = "aboutUs";
-export const PAGE_ACCESSIBILITY = "accessibility";
+export const URL_OVERVIEW = "/";
+export const URL_REGIONAL = "/regional";
+export const URL_DATA_SOURCES = "/data";
+export const URL_ABOUT_US = "/about";
+export const URL_ACCESSIBILITY = "/accessibility";

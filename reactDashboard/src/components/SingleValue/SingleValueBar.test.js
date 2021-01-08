@@ -22,6 +22,9 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
+const DATE_TODAY = "2020-10-17";
+const DATE_TOMORROW = "2020-10-18";
+
 test("singleValueBar renders default data when dataset is null", async () => {
   await act(async () => {
     render(
@@ -32,14 +35,13 @@ test("singleValueBar renders default data when dataset is null", async () => {
 
   checkSingleValue("dailyCases", "0", "reported on 01 January, 1999");
   checkSingleValue("totalCases", "0", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "0", "reported on 01 January, 1999");
-  checkSingleValue("totalFatalities", "0", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "0", "reported on 01 January, 1999");
+  checkSingleValue("totalDeaths", "0", "reported since 28 February, 2020");
   checkSingleValue("fatalityCaseRatio", "0");
 });
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
-  // Set today to be 2020-06-21
-  setMockDate("2020-06-21");
+  setMockDate(DATE_TODAY);
 
   await act(async () => {
     render(
@@ -50,20 +52,19 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
     );
   });
 
-  checkSingleValue("dailyCases", "47", "reported today");
-  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "0", "reported today");
+  checkSingleValue("dailyCases", "1,167", "reported today");
+  checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "15", "reported today");
   checkSingleValue(
-    "totalFatalities",
-    "2,491",
+    "totalDeaths",
+    "2,609",
     "reported since 28 February, 2020"
   );
-  checkSingleValue("fatalityCaseRatio", "13.0%");
+  checkSingleValue("fatalityCaseRatio", "5.6%");
 });
 
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
+  setMockDate(DATE_TOMORROW);
 
   await act(async () => {
     render(
@@ -74,20 +75,19 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
     );
   });
 
-  checkSingleValue("dailyCases", "47", "reported yesterday");
-  checkSingleValue("totalCases", "19,126", "reported since 28 February, 2020");
-  checkSingleValue("dailyFatalities", "0", "reported yesterday");
+  checkSingleValue("dailyCases", "1,167", "reported yesterday");
+  checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
+  checkSingleValue("dailyDeaths", "15", "reported yesterday");
   checkSingleValue(
-    "totalFatalities",
-    "2,491",
+    "totalDeaths",
+    "2,609",
     "reported since 28 February, 2020"
   );
-  checkSingleValue("fatalityCaseRatio", "13.0%");
+  checkSingleValue("fatalityCaseRatio", "5.6%");
 });
 
 test("singleValueBar renders dynamic fetched data with missing NHS data", async () => {
-  // Set today to be 2020-06-22
-  setMockDate("2020-06-22");
+  setMockDate(DATE_TOMORROW);
 
   await act(async () => {
     render(
@@ -98,16 +98,15 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
     );
   });
 
-  // console.log(container.textContent);
   checkSingleValue("dailyCases", "Not available", "Not available");
   checkSingleValue(
     "totalCases",
     "Not available",
     "reported since 28 February, 2020"
   );
-  checkSingleValue("dailyFatalities", "Not available", "Not available");
+  checkSingleValue("dailyDeaths", "Not available", "Not available");
   checkSingleValue(
-    "totalFatalities",
+    "totalDeaths",
     "Not available",
     "reported since 28 February, 2020"
   );
@@ -115,12 +114,13 @@ test("singleValueBar renders dynamic fetched data with missing NHS data", async 
 });
 
 test("parseNhsCsvData", () => {
+  const date = Date.parse(DATE_TODAY);
   const expectedResult = {
-    cases: { date: 1592697600000, value: 47 },
-    deaths: { date: 1592697600000, value: 0 },
-    cumulativeCases: { date: 1592697600000, value: 19126 },
-    cumulativeDeaths: { date: 1592697600000, value: 2491 },
-    fatalityCaseRatio: "13.0%",
+    cases: { date: date, value: 1167 },
+    deaths: { date: date, value: 15 },
+    cumulativeCases: { date: date, value: 46399 },
+    cumulativeDeaths: { date: date, value: 2609 },
+    fatalityCaseRatio: "5.6%",
   };
 
   expect(parseNhsCsvData(testCurrentTotalsHealthBoardDataset)).toStrictEqual(
@@ -148,23 +148,24 @@ function setMockDate(date) {
     .mockImplementation(() => Date.parse(date).valueOf());
 }
 
-const nhsCsvData = `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,TotalPositivePercent,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-20200621,S08000015,"",unknown,2,1285,347.899068659303,0.0476243421540286,0,171,46.2962962962963,25697,6957.16915746156
-20200621,S08000016,"",unknown,0,349,302.138343000606,0.0427015783677964,0,39,33.7633105358843,7824,6773.4395290451
-20200621,S08000017,"",unknown,0,305,204.890501142013,0.0252713563675532,0,40,26.8708853956738,11764,7902.72739486766
-20200621,S08000019,"",unknown,2,1106,360.68353769893,0.0500701706731857,0,131,42.7211061831464,20983,6842.87764153405
-20200621,S08000020,"",unknown,24,1733,295.88526549428,0.0358472612940592,0,149,25.4396448693871,46611,7958.16971145638
-20200621,S08000022,"",unknown,0,388,120.609263288778,0.0197686859937841,0,65,20.2051600870376,19239,5980.41653714641
-20200621,S08000024,"",unknown,5,3236,356.552590405254,0.0534319634100028,0,477,52.5573503162256,57327,6316.46796976575
-20200621,S08000025,"",unknown,0,9,40.4131118096093,0.008,0,1,4.49034575662326,1116,5011.22586439156
-20200621,S08000026,"",unknown,0,56,244.328097731239,0.0277915632754342,0,5,21.8150087260035,1959,8547.12041884817
-20200621,S08000028,"",unknown,0,7,26.1976047904192,0.00444726810673443,0,0,0,1567,5864.52095808383
-20200621,S08000029,"",unknown,0,957,256.190603667514,0.0386713541035277,0,127,33.9981260875385,23790,6368.62535135859
-20200621,S08000030,"",unknown,4,1815,434.76177928953,0.0570790615761998,0,205,49.1053249335282,29983,7182.07296332671
-20200621,S08000031,"",unknown,8,5079,429.288660490905,0.0530987329067871,0,728,61.5322198931638,90573,7655.4364730543
-20200621,S08000032,"",unknown,2,2801,423.175706300045,0.0533879729343372,0,353,53.331318930352,49664,7503.24822480737
-20200621,S92000003,d,unknown,47,19126,350.081452601907,0.046966895288331,0,2491,45.5951531125876,388097,7103.71021177676`;
+const nhsCsvData = `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+20201017,S08000015,"",NHS Ayrshire & Arran,103,2888,781.893004115226,1,182,49.2744206194499,54103,14647.7691141434
+20201017,S08000016,"",NHS Borders,7,612,529.824257640031,0,40,34.6290364470609,16419,14214.3537356073
+20201017,S08000017,"",NHS Dumfries & Galloway,10,663,445.384925433293,0,41,27.5426575305656,22549,15147.7898696762
+20201017,S08000019,"",NHS Forth Valley,40,2099,684.516044873467,0,135,44.025567440647,46851,15278.8285937908
+20201017,S08000020,"",NHS Grampian,38,2927,499.74389619259,1,153,26.1225883558136,87962,15018.2687382619
+20201017,S08000022,"",NHS Highland,11,867,269.505750699409,0,67,20.8268573204849,42067,13076.468759714
+20201017,S08000024,"",NHS Lothian,114,7579,835.077899468917,5,501,55.2017453006897,130740,14405.3416778686
+20201017,S08000025,"",NHS Orkney,0,26,116.748989672205,0,1,4.49034575662326,2120,9519.53300404131
+20201017,S08000026,"",NHS Shetland,0,63,274.869109947644,0,5,21.8150087260035,3462,15104.7120418848
+20201017,S08000028,"",NHS Western Isles,3,62,232.035928143713,1,1,3.74251497005988,2808,10508.9820359281
+20201017,S08000029,"",NHS Fife,27,1829,489.626556016597,0,129,34.5335296479722,51815,13870.9677419355
+20201017,S08000030,"",NHS Tayside,33,3221,771.552446882411,0,208,49.8239394447505,65028,15576.6881452559
+20201017,S08000031,"",NHS Greater Glasgow & Clyde,435,15279,1291.41591723578,6,767,64.8285888160119,207931,17574.8022178646
+20201017,S08000032,"",NHS Lanarkshire,346,8284,1251.54857229189,1,379,57.259404743919,112787,17039.8851790301
+20201017,S92000003,d,Scotland,1167,46399,849.285230538319,15,2609,47.7550198597917,846642,15496.8974795453
+`;
 
 const testCurrentTotalsHealthBoardDataset = readCsvData(nhsCsvData);
 
-const missingNhsCsvData = `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,TotalPositivePercent,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative`;
+const missingNhsCsvData = `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative`;

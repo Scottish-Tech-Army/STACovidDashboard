@@ -1,4 +1,5 @@
-.geo-map,  .full-screen-geo-map{
+.geo-map,
+.full-screen-geo-map {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,9 +19,52 @@
   display: none;
 }
 
-#map, #regionmap {
+#map,
+#regionmap {
+  border: 1px solid white;
   height: 100%;
   width: 100%;
+  margin: 0 5px;
+}
+
+.darkmode #map,
+.darkmode #regionmap {
+  border-color: darkgray;
+  border-radius: 1%;
+}
+
+.region-popup {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+div.leaflet-tooltip {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
+div.leaflet-tooltip p {
+  margin-bottom: 0;
+}
+
+div.leaflet-tooltip-left::before {
+  border-left-color: black;
+}
+
+div.leaflet-tooltip-right::before {
+  border-right-color: black;
+}
+
+div.leaflet-popup-content-wrapper {
+  background-color: black;
+}
+
+div.leaflet-popup-content {
+  margin: 5px;
 }
 
 .legend {
@@ -30,22 +74,57 @@
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
+
+.darkmode .legend {
+  background-color: #404040;
+  color: #f2f2f2;
+  border-color: #b3b3b3;
+  /* styling for dark-theme with rounded edges */
+  border-radius: 2%;
+}
+
+.boundaries-legend {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.darkmode .boundaries-legend {
+  color: #f2f2f2;
+}
+
 .legend .legend-title {
   font-weight: bold;
 }
+
 .legend-line {
   height: 18px;
   display: flex;
 }
+
 .legend .legend-line i {
   width: 18px;
   height: 18px;
   margin-right: 8px;
   opacity: 0.7;
 }
+
 .map-date-range {
   font-weight: bold;
-  color: #2a84bb;
+  color: #fd8d3c;
   border-bottom: 1px solid LightGray;
-  padding-bottom: 5px;
+}
+
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-attribution a {
+  color: black;
+}
+
+.darkmode .leaflet-container .leaflet-control-attribution,
+.darkmode .leaflet-container .leaflet-control-attribution a {
+  background-color: #0b0a0a;
+  color: #f2f2f2;
+}
+.map-cases-count {
+  font-size: 12px;
+  font-weight: normal;
 }

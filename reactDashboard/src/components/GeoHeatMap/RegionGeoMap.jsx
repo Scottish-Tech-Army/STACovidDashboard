@@ -2,7 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
+import {
+  Map as LeafletMap,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
@@ -21,6 +25,7 @@ import {
   setScotlandDefaultBounds,
   featureCodeForFeature,
   MAP_TILES_URL,
+  DARK_MAP_TILES_URL,
 } from "./GeoUtils";
 
 /*
@@ -38,6 +43,7 @@ const RegionGeoMap = ({
   healthBoardDataset,
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode = null,
+  darkmode,
 }) => {
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null
@@ -62,7 +68,9 @@ const RegionGeoMap = ({
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
       const content =
-        "<strong>" + getPlaceNameByFeatureCode(featureCode) + "</strong>";
+        "<p class='region-popup'><strong>" +
+        getPlaceNameByFeatureCode(featureCode) +
+        "</strong></p>";
       layer.bindTooltip(content).openTooltip(e.latlng);
     };
 
@@ -139,12 +147,19 @@ const RegionGeoMap = ({
   useEffect(() => {
     const SELECTED_COLOUR = "red";
     const UNSELECTED_COLOUR = "black";
+    const BORDER_COLOUR = "black";
+    const DARK_SELECTED_COLOUR = "#c1def1";
+    const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
       return {
-        color: "black",
+        color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
         fillColor:
-          featureCode === regionCode ? SELECTED_COLOUR : UNSELECTED_COLOUR,
+          featureCode === regionCode
+            ? darkmode
+              ? DARK_SELECTED_COLOUR
+              : SELECTED_COLOUR
+            : UNSELECTED_COLOUR,
         opacity: 0.5,
         fillOpacity: featureCode === regionCode ? 0.5 : 0,
         weight: 1,
@@ -160,7 +175,7 @@ const RegionGeoMap = ({
         getRegionStyle(featureCodeForFeature(feature))
       );
     }
-  }, [regionCode, currentBoundariesLayer]);
+  }, [regionCode, currentBoundariesLayer, darkmode]);
 
   return (
     <div className="geo-map">
@@ -174,7 +189,7 @@ const RegionGeoMap = ({
         zoomControl={false}
       >
         <TileLayer
-          url={MAP_TILES_URL}
+          url={darkmode ? DARK_MAP_TILES_URL : MAP_TILES_URL}
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         <ZoomControl position="topright" />

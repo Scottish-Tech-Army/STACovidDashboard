@@ -23,7 +23,6 @@ export function parseNhsHBCsvData(lines) {
         dailyCases,
         cumulativeCases,
         v2,
-        v3,
         dailyDeaths,
         cumulativeDeaths,
       ],
@@ -55,7 +54,6 @@ export function parseNhsCACsvData(lines) {
         dailyCases,
         cumulativeCases,
         v2,
-        v3,
         dailyDeaths,
         cumulativeDeaths,
       ],
@@ -94,6 +92,7 @@ function RegionalSingleValueBar({
   const [totalDeaths, setTotalDeaths] = useState(emptyDate);
 
   const missingData = "Not available";
+  const SUBTITLE_WEEKLY = "last 7 days";
   const SUBTITLE_TOTAL = "reported since 28 February, 2020";
 
   if (regionCode !== null && FEATURE_CODE_MAP[regionCode] === undefined) {
@@ -173,7 +172,7 @@ function RegionalSingleValueBar({
   return (
     <>
       <div className="region-single-value-bar">
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="dailyCases"
             title="DAILY CASES"
@@ -184,15 +183,16 @@ function RegionalSingleValueBar({
             tooltip="These are the cases reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="weeklyCases"
-            title="CASES THIS WEEK"
+            title="WEEKLY CASES"
+            subtitle={SUBTITLE_WEEKLY}
             value={guardMissingData(weeklyCases)}
             tooltip="These are the cases over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="totalCases"
             title="TOTAL CASES"
@@ -204,10 +204,10 @@ function RegionalSingleValueBar({
       </div>
 
       <div className="region-single-value-bar">
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="dailyDeaths"
-            title="DAILY FATALITIES"
+            title="DAILY DEATHS"
             subtitle={guardMissingData(
               getRelativeReportedDate(dailyDeaths.date)
             )}
@@ -215,18 +215,19 @@ function RegionalSingleValueBar({
             tooltip="These are the deaths reported today and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="weeklyDeaths"
-            title="FATALITIES THIS WEEK"
+            title="WEEKLY DEATHS"
+            subtitle={SUBTITLE_WEEKLY}
             value={guardMissingData(weeklyDeaths)}
             tooltip="These are the deaths over the last week and updated after 2pm daily (Can be delayed because of data fetching)."
           />
         </div>
-        <div className="p-2 region-single-value-container">
+        <div className="single-value-container">
           <SingleValue
             id="totalDeaths"
-            title="TOTAL FATALITIES"
+            title="TOTAL DEATHS"
             subtitle={SUBTITLE_TOTAL}
             value={guardMissingData(totalDeaths.value)}
             tooltip="These are the total deaths since the COVID-19 Pandemic began."

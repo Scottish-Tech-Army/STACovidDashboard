@@ -2,161 +2,299 @@ import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
-import moment from "moment";
+import DateRangeSlider from "./DateRangeSlider";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import SonificationPlayButton from "./SonificationPlayButton";
 import {
-  PERCENTAGE_CASES,
+  PERCENTAGE_TESTS,
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
   TOTAL_DEATHS,
-} from "./DataChartsConsts";
-import { createDateAggregateValuesMap } from "../Utils/CsvUtils";
-import "chartjs-plugin-annotation";
+  REGION_DATASET_COLOUR,
+  AVERAGE_DATASET_COLOUR,
+} from "../DataCharts/DataChartsConsts";
+import {
+  createPlaceDateValuesMap,
+  getNhsCsvDataDateRange,
+  FEATURE_CODE_SCOTLAND,
+} from "../Utils/CsvUtils";
 import {
   commonChartConfiguration,
   datasetConfiguration,
   getWhoThresholdLine,
 } from "./DataChartsUtils";
-import SonificationPlayButton from "./SonificationPlayButton";
+import QuickSelectDateRange from "./QuickSelectDateRange";
+import ChartDropdown from "../ChartDropdown/ChartDropdown";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { stopAudio } from "../Utils/Sonification";
+import "../../chartjs-plugin-annotation/index.js";
 
 // Exported for tests
 export function parseNhsCsvData(csvData) {
-  const dateAggregateValuesMap = createDateAggregateValuesMap(csvData);
+  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
-  const dates = [...dateAggregateValuesMap.keys()].sort();
+  const regionDailyCasesMap = new Map();
+  const regionDailyDeathsMap = new Map();
+  const regionTotalCasesMap = new Map();
+  const regionTotalDeathsMap = new Map();
+  const regionPercentageTestsMap = new Map();
 
-  const percentageCasesPoints = [];
-  const dailyCasesPoints = [];
-  const dailyDeathsPoints = [];
-  const totalCasesPoints = [];
-  const totalDeathsPoints = [];
+  const places = [...placeDateValuesMap.keys()];
+  places.forEach((place) => {
+    const dateValuesMap = placeDateValuesMap.get(place);
 
-  function get5DayDiff(valueMap, key, endDate, dateSet) {
-    const maximumStartDate = moment(endDate).subtract(5, "days");
-    for (let i = dateSet.length - 1; i >= 0; i--) {
-      if (maximumStartDate.isSameOrAfter(dateSet[i])) {
-        const startDate = dateSet[i];
-        return valueMap.get(endDate)[key] - valueMap.get(startDate)[key];
-      }
-    }
-    // Entire dataset is withing the 5 day window - just return the end cumulative total
-    return valueMap.get(endDate)[key];
-  }
+    const percentageTestsPoints = [];
+    const dailyCasesPoints = [];
+    const dailyDeathsPoints = [];
+    const totalCasesPoints = [];
+    const totalDeathsPoints = [];
 
-  dates.forEach((date) => {
-    const {
-      cases,
-      deaths,
-      cumulativeCases,
-      cumulativeDeaths,
-    } = dateAggregateValuesMap.get(date);
+    dates.forEach((date, i) => {
+      const {
+        cases,
+        deaths,
+        cumulativeCases,
+        cumulativeDeaths,
+        positivePercentage,
+      } = dateValuesMap.get(date);
 
-    const positiveCases5DayWindow = get5DayDiff(
-      dateAggregateValuesMap,
-      "cumulativeCases",
-      date,
-      dates
-    );
-    const negativeCases5DayWindow = get5DayDiff(
-      dateAggregateValuesMap,
-      "cumulativeNegativeTests",
-      date,
-      dates
-    );
-    const totalCases5DayWindow =
-      positiveCases5DayWindow + negativeCases5DayWindow;
-
-    percentageCasesPoints.push({
-      t: date,
-      y:
-        totalCases5DayWindow === 0
-          ? 0
-          : (positiveCases5DayWindow * 100) / totalCases5DayWindow,
+      percentageTestsPoints.push({
+        t: date,
+        y: positivePercentage,
+      });
+      dailyCasesPoints.push({
+        t: date,
+        y: cases,
+      });
+      dailyDeathsPoints.push({
+        t: date,
+        y: deaths,
+      });
+      totalCasesPoints.push({
+        t: date,
+        y: cumulativeCases,
+      });
+      totalDeathsPoints.push({
+        t: date,
+        y: cumulativeDeaths,
+      });
     });
-    dailyCasesPoints.push({
-      t: date,
-      y: cases,
-    });
-    dailyDeathsPoints.push({
-      t: date,
-      y: deaths,
-    });
-    totalCasesPoints.push({
-      t: date,
-      y: cumulativeCases,
-    });
-    totalDeathsPoints.push({
-      t: date,
-      y: cumulativeDeaths,
-    });
+    regionPercentageTestsMap.set(place, percentageTestsPoints);
+    regionDailyCasesMap.set(place, dailyCasesPoints);
+    regionDailyDeathsMap.set(place, dailyDeathsPoints);
+    regionTotalCasesMap.set(place, totalCasesPoints);
+    regionTotalDeathsMap.set(place, totalDeathsPoints);
   });
 
   return {
-    percentageCases: percentageCasesPoints,
-    dailyCases: dailyCasesPoints,
-    dailyDeaths: dailyDeathsPoints,
-    totalCases: totalCasesPoints,
-    totalDeaths: totalDeathsPoints,
+    regionPercentageTestsMap: regionPercentageTestsMap,
+    regionDailyCasesMap: regionDailyCasesMap,
+    regionDailyDeathsMap: regionDailyDeathsMap,
+    regionTotalCasesMap: regionTotalCasesMap,
+    regionTotalDeathsMap: regionTotalDeathsMap,
   };
 }
 
 const DataCharts = ({
-  chartType = PERCENTAGE_CASES,
   healthBoardDataset = null,
-  fullscreenEnabled = false,
-  toggleFullscreen,
+  darkmode,
+  councilAreaDataset = null,
+  regionCode = FEATURE_CODE_SCOTLAND,
+  populationProportionMap = new Map(),
 }) => {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
-  const [percentageCasesSeriesData, setPercentageCasesSeriesData] = useState(
-    null
+  const [percentageTestsSeriesData, setPercentageTestsSeriesData] = useState(
+    new Map()
   );
-  const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(null);
-  const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(null);
-  const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(null);
-  const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(null);
+  const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(new Map());
+  const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(new Map());
+  const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(new Map());
+  const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(new Map());
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
+  const [chartType, setChartType] = useState(DAILY_CASES);
+  const [dateRange, setDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
+  const [maxDateRange, setMaxDateRange] = useState({
+    startDate: 0,
+    endDate: 1,
+  });
 
-  const percentageCasesDatasetLabel =
-    "% of Positive Tests (5 day moving average)";
+  const percentageTestsDatasetLabel = "% of Tests Positive";
   const dailyCasesDatasetLabel = "Daily Cases";
   const dailyDeathsDatasetLabel = "Daily Deaths";
   const totalCasesDatasetLabel = "Total Cases";
   const totalDeathsDatasetLabel = "Total Deaths";
 
+  // Stop audio on chart or dateRange change
   useEffect(() => {
-    // Only attempt to fetch data once
+    stopAudio();
+  }, [chartType, dateRange]);
+
+  useEffect(() => {
     if (healthBoardDataset != null) {
       const {
-        percentageCases,
-        dailyCases,
-        dailyDeaths,
-        totalCases,
-        totalDeaths,
+        regionPercentageTestsMap,
+        regionDailyCasesMap,
+        regionDailyDeathsMap,
+        regionTotalCasesMap,
+        regionTotalDeathsMap,
       } = parseNhsCsvData(healthBoardDataset);
-      setPercentageCasesSeriesData(percentageCases);
-      setDailyCasesSeriesData(dailyCases);
-      setDailyDeathsSeriesData(dailyDeaths);
-      setTotalCasesSeriesData(totalCases);
-      setTotalDeathsSeriesData(totalDeaths);
+
+      setPercentageTestsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionPercentageTestsMap])
+      );
+      setDailyCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
+      );
+      setDailyDeathsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionDailyDeathsMap])
+      );
+      setTotalCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionTotalCasesMap])
+      );
+      setTotalDeathsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
+      );
     }
   }, [healthBoardDataset]);
 
   useEffect(() => {
-    const DATASET_COLOUR = "#ec6730";
+    if (councilAreaDataset != null) {
+      const {
+        regionPercentageTestsMap,
+        regionDailyCasesMap,
+        regionDailyDeathsMap,
+        regionTotalCasesMap,
+        regionTotalDeathsMap,
+      } = parseNhsCsvData(councilAreaDataset);
 
-    function percentageCasesChartConfiguration() {
-      const datasets = [
-        datasetConfiguration(
-          percentageCasesDatasetLabel,
-          percentageCasesSeriesData,
-          DATASET_COLOUR
-        ),
-      ];
-      const configuration = commonChartConfiguration(datasets);
+      setPercentageTestsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionPercentageTestsMap])
+      );
+      setDailyCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
+      );
+      setDailyDeathsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionDailyDeathsMap])
+      );
+      setTotalCasesSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionTotalCasesMap])
+      );
+      setTotalDeathsSeriesData(
+        (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
+      );
+    }
+  }, [councilAreaDataset]);
 
+  useEffect(() => {
+    if (healthBoardDataset != null) {
+      const parseDateRange = getNhsCsvDataDateRange(
+        healthBoardDataset,
+        councilAreaDataset
+      );
+      setMaxDateRange(parseDateRange);
+      setDateRange(parseDateRange);
+    }
+  }, [healthBoardDataset, councilAreaDataset]);
+
+  useEffect(() => {
+    function getAverageSeriesData(seriesData, regionCode, chartType) {
+      if (regionCode == null) {
+        return seriesData.get(FEATURE_CODE_SCOTLAND);
+      }
+      const populationProportion = populationProportionMap.get(regionCode);
+      const scotlandData = seriesData.get(FEATURE_CODE_SCOTLAND);
+      if (scotlandData == null) {
+        return null;
+      }
+      if (chartType === PERCENTAGE_TESTS) {
+        return scotlandData;
+      }
+      const scaledSeries = scotlandData.map(({ t, y }) => {
+        return {
+          t: t,
+          y: y * populationProportion,
+        };
+      });
+      return scaledSeries;
+    }
+
+    const AVERAGE_DATASET_FILL_COLOUR = darkmode
+      ? "rgb(118, 118, 118, 0.50)"
+      : "rgb(118, 118, 118, 0.25)";
+
+    function getAverageSeriesLabel(chartType) {
+      return chartType === PERCENTAGE_TESTS
+        ? "Scotland average"
+        : "Scotland average (adjusted for population)";
+    }
+
+    function getChartDatasets(chartType, seriesData, regionCode, datasetLabel) {
+      const datasets = [];
+      const regionSeriesData = seriesData.get(regionCode);
+      if (regionSeriesData !== undefined) {
+        datasets.push(
+          datasetConfiguration(
+            datasetLabel,
+            regionSeriesData,
+            REGION_DATASET_COLOUR
+          )
+        );
+        if (regionCode !== FEATURE_CODE_SCOTLAND) {
+          datasets.push(
+            datasetConfiguration(
+              getAverageSeriesLabel(chartType),
+              getAverageSeriesData(seriesData, regionCode, chartType),
+              AVERAGE_DATASET_COLOUR,
+              AVERAGE_DATASET_FILL_COLOUR
+            )
+          );
+        }
+      }
+      return datasets;
+    }
+
+    function setChart(
+      chartType,
+      datasetLabel,
+      seriesData,
+      regionCode,
+      additionalConfiguration,
+      sonificationLabel
+    ) {
+      const datasets = getChartDatasets(
+        chartType,
+        seriesData,
+        regionCode,
+        datasetLabel
+      );
+      const chartConfiguration = commonChartConfiguration(
+        datasets,
+        darkmode,
+        dateRange
+      );
+
+      if (additionalConfiguration) {
+        additionalConfiguration(chartConfiguration);
+      }
+
+      const chartRef = chartContainer.current.getContext("2d");
+      chartInstance.current = new Chart(chartRef, chartConfiguration);
+
+      setSonification(
+        seriesData.get(regionCode),
+        sonificationLabel !== undefined ? sonificationLabel : datasetLabel
+      );
+    }
+
+    function percentageTestsChartConfiguration(configuration) {
       configuration.options.scales.yAxes[0].ticks.callback = (
         value,
         index,
@@ -164,101 +302,72 @@ const DataCharts = ({
       ) => {
         return Math.round(value) + "%";
       };
-      configuration.options.tooltips = {
-        backgroundColor: "White",
-        titleFontColor: "#000000",
-        bodyFontColor: "#000000",
-        borderColor: "DarkGray;",
-        borderWidth: 1,
-        position: "nearest",
-        callbacks: {
-          label: (tooltipItem, data) => {
-            let chartLabel = tooltipItem.yLabel.toFixed(2) + "% Tests Positive";
-            return chartLabel;
-          },
-          labelColor: (tooltipItem, data) => {
-            return {
-              backgroundColor: "#ec6730",
-              borderColor: "#ec6730",
-            };
-          },
-        },
-      };
-      configuration.options.annotation.annotations = [
-        ...configuration.options.annotation.annotations,
-        getWhoThresholdLine(),
-      ];
-
-      return configuration;
+      configuration.options.annotation.annotations.push(getWhoThresholdLine());
     }
 
-    function basicChartConfiguration(datasetLabel, seriesData) {
-      const datasets = [
-        datasetConfiguration(datasetLabel, seriesData, DATASET_COLOUR),
-      ];
-      return commonChartConfiguration(datasets);
+    function setSonification(seriesData, seriesTitle) {
+      if (seriesData !== null && seriesData !== undefined) {
+        setAudio(seriesData);
+        setSeriesTitle(seriesTitle);
+      }
     }
 
     if (chartInstance.current !== null) {
       chartInstance.current.destroy();
     }
 
-    function setSonification(seriesData, seriesTitle) {
-      if (seriesData !== null && seriesData !== undefined) {
-        setAudio(seriesData.map(({ t, y }) => y));
-        setSeriesTitle(seriesTitle);
-      }
-    }
-
-    const chartRef = chartContainer.current.getContext("2d");
-    if (chartType === PERCENTAGE_CASES) {
-      chartInstance.current = new Chart(
-        chartRef,
-        percentageCasesChartConfiguration()
+    if (chartType === DAILY_CASES) {
+      setChart(
+        chartType,
+        dailyCasesDatasetLabel,
+        dailyCasesSeriesData,
+        regionCode
       );
-      if (percentageCasesSeriesData !== undefined) {
-        setSonification(percentageCasesSeriesData, "Percentage tests positive");
-      }
-    } else if (chartType === DAILY_CASES) {
-      chartInstance.current = new Chart(
-        chartRef,
-        basicChartConfiguration(dailyCasesDatasetLabel, dailyCasesSeriesData)
-      );
-      setSonification(dailyCasesSeriesData, dailyCasesDatasetLabel);
     } else if (chartType === DAILY_DEATHS) {
-      chartInstance.current = new Chart(
-        chartRef,
-        basicChartConfiguration(dailyDeathsDatasetLabel, dailyDeathsSeriesData)
+      setChart(
+        chartType,
+        dailyDeathsDatasetLabel,
+        dailyDeathsSeriesData,
+        regionCode
       );
-      setSonification(dailyDeathsSeriesData, dailyDeathsDatasetLabel);
     } else if (chartType === TOTAL_CASES) {
-      chartInstance.current = new Chart(
-        chartRef,
-        basicChartConfiguration(totalCasesDatasetLabel, totalCasesSeriesData)
+      setChart(
+        chartType,
+        totalCasesDatasetLabel,
+        totalCasesSeriesData,
+        regionCode
       );
-      setSonification(totalCasesSeriesData, totalCasesDatasetLabel);
     } else if (chartType === TOTAL_DEATHS) {
-      chartInstance.current = new Chart(
-        chartRef,
-        basicChartConfiguration(totalDeathsDatasetLabel, totalDeathsSeriesData)
+      setChart(
+        chartType,
+        totalDeathsDatasetLabel,
+        totalDeathsSeriesData,
+        regionCode
       );
-      setSonification(totalDeathsSeriesData, totalDeathsDatasetLabel);
+    } else if (chartType === PERCENTAGE_TESTS) {
+      setChart(
+        chartType,
+        percentageTestsDatasetLabel,
+        percentageTestsSeriesData,
+        regionCode,
+        percentageTestsChartConfiguration,
+        "Percentage tests positive"
+      );
     }
   }, [
-    percentageCasesSeriesData,
+    percentageTestsSeriesData,
     dailyCasesSeriesData,
     dailyDeathsSeriesData,
     totalCasesSeriesData,
     totalDeathsSeriesData,
     chartType,
-    fullscreenEnabled,
-    toggleFullscreen,
+    populationProportionMap,
+    regionCode,
+    dateRange,
+    darkmode,
   ]);
 
   const isDataReady = () => {
-    if (chartType === PERCENTAGE_CASES) {
-      return percentageCasesSeriesData !== null;
-    }
     if (chartType === DAILY_CASES) {
       return dailyCasesSeriesData !== null;
     }
@@ -271,27 +380,53 @@ const DataCharts = ({
     if (chartType === TOTAL_DEATHS) {
       return totalDeathsSeriesData !== null;
     }
+    if (chartType === PERCENTAGE_TESTS) {
+      return percentageTestsSeriesData !== null;
+    }
     return false;
   };
 
   function getScreenModeClassName() {
-    if (isDataReady()) {
-      return fullscreenEnabled
-        ? "full-screen chart-container"
-        : "chart-container";
-    } else {
-      return "chart-container hidden-chart";
-    }
+    return isDataReady() ? "chart-container" : "chart-container hidden-chart";
   }
 
   return (
-    <div className="chart-border">
-      <SonificationPlayButton seriesData={audio} seriesTitle={seriesTitle} />
-      <div className={getScreenModeClassName()}>
-        <canvas ref={chartContainer} />
-      </div>
-      {isDataReady() ? <></> : <LoadingComponent />}
-    </div>
+    <Container className="chart-border">
+      <Row className="chart-dropdown-container">
+        <Col className="chart-title">
+          <h2>Select Chart:</h2>
+          <ChartDropdown chartType={chartType} setChartType={setChartType} />
+        </Col>
+      </Row>
+      <Row className="chart-dropdown-container">
+        <QuickSelectDateRange
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+          setMaxDateRange={setMaxDateRange}
+        />
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+          councilAreaDataset={councilAreaDataset}
+        />
+        <SonificationPlayButton
+          seriesData={audio}
+          seriesTitle={seriesTitle}
+          regionCode={regionCode}
+          dateRange={dateRange}
+          darkmode={darkmode}
+        />
+        <div className={getScreenModeClassName()}>
+          <canvas ref={chartContainer} />
+        </div>
+        {isDataReady() ? <></> : <LoadingComponent />}
+      </Row>
+    </Container>
   );
 };
 
