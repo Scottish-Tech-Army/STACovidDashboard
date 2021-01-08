@@ -72,7 +72,19 @@ exports.config = {
   // before running any tests.
   framework: "mocha",
   //
-  reporters: ["spec"],
+  reporters: [
+    "spec",
+    [
+      "junit",
+      {
+        outputDir: "./test-report"//,
+        // outputFileFormat: function (options) {
+        //   // optional
+        //   return `results-${options.cid}.${options.capabilities}.xml`;
+        // },
+      },
+    ],
+  ],
 
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
