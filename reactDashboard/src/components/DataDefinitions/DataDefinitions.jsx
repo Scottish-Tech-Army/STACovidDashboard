@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./DataDefinitions.css";
 import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
+import AccordionContext from "react-bootstrap/AccordionContext";
+import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import {
   URL_OVERVIEW,
   URL_REGIONAL,
   URL_DATA_SOURCES,
 } from "../../pages/PageConsts";
 import { Switch, Route } from "react-router-dom";
+
+function ContextAwareToggle({ children, callback }) {
+  const currentEventKey = useContext(AccordionContext);
+
+  const decoratedOnClick = useAccordionToggle(
+    "0",
+    () => callback && callback("0")
+  );
+
+  const isCurrentEventKey = currentEventKey === "0";
+
+  return (
+    <Card.Header className="accordion-header" onClick={decoratedOnClick}>
+      <span>Understanding the data</span>
+      <FontAwesomeIcon
+        icon={isCurrentEventKey ? faAngleUp : faAngleDown}
+        className="data-accordion-toggle"
+        size="3x"
+      />
+    </Card.Header>
+  );
+}
 
 function DataDefinitions() {
   function createLink(url, text) {
@@ -50,10 +73,15 @@ function DataDefinitions() {
           patient. The specimen date is used in the following components:-{" "}
           <ul>
             <li>
-              <b>STA Summary Page</b>: (a) the map; (b) the heatmap table; and (c) the chart component.
+              <b>STA Summary Page</b>: (a) the map; (b) the heatmap table; and
+              (c) the chart component.
             </li>
             <li>
-              <b>Regional Insights Page</b>: (a) the chart component to show the % positive samples for each day and number of test samples taken for each day; and (b) the weekly headline figures i.e. totals over the last 7 days. This is the date most suited for surveillance to show trends of COVID-19 over a period of time.
+              <b>Regional Insights Page</b>: (a) the chart component to show the
+              % positive samples for each day and number of test samples taken
+              for each day; and (b) the weekly headline figures i.e. totals over
+              the last 7 days. This is the date most suited for surveillance to
+              show trends of COVID-19 over a period of time.
             </li>
           </ul>
         </Route>
@@ -64,36 +92,21 @@ function DataDefinitions() {
   return (
     <Accordion className="data-definitions">
       <Card>
-        <Card.Header className="accordion-header">
-          <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            Understanding the data
-          </Accordion.Toggle>
-          <Accordion.Toggle as={Button} variant="link" eventKey="0">
-            <FontAwesomeIcon
-              icon={faAngleDown}
-              className="data-accordion-toggle-down"
-              size="3x"
-              color="black"
-            />
-          </Accordion.Toggle>
-        </Card.Header>
+        <ContextAwareToggle />
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
             <p className="definitions-heading">Reporting and Specimen Dates</p>
             <hr />
-              <p>
-                <strong>Reported Dates</strong>: Since the
-                time taken to test samples and report the results varies, new
-                cases reported on a daily basis in the headline summary figures
-                on the dashboard pages may be distributed across a range of
-                specimen dates.
-              </p>
-              <br/>
-              <p>
-                <strong>Specimen Dates</strong>:{" "}
-                {specimenDateDefinition()}
-              </p>
-
+            <p>
+              <strong>Reported Dates</strong>: Since the time taken to test
+              samples and report the results varies, new cases reported on a
+              daily basis in the headline summary figures on the dashboard pages
+              may be distributed across a range of specimen dates.
+            </p>
+            <br />
+            <p>
+              <strong>Specimen Dates</strong>: {specimenDateDefinition()}
+            </p>
             <p>
               There is a reporting delay in testing results, so data on tests
               carried out in the most recent 2-3 days will be incomplete. On
