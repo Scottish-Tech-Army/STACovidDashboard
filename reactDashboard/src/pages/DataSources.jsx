@@ -9,19 +9,6 @@ const DataSources = () => {
       <hr className="full-width-hr" />
       <h1>Data sources and attributions</h1>
       <ul className="data-sources-list">
-        {/* <li>
-          Routemap information:
-          <a
-            href={
-              "https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link "
-          >
-            https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/overview/
-          </a>
-        </li> */}
         <li>
           Data source:{" "}
           <a
@@ -30,7 +17,7 @@ const DataSources = () => {
             rel="noopener noreferrer"
             className="link "
           >
-            https://www.opendata.nhs.scot/dataset/covid-19-in-scotland
+            Public Health Scotland
           </a>
         </li>
         <li>
@@ -43,7 +30,7 @@ const DataSources = () => {
             rel="noopener noreferrer"
             className="link "
           >
-            https://data.gov.uk/dataset/27d0fe5f-79bb-4116-aec9-a8e565ff756a/nhs-health-boards
+            Scottish Government SpatialData.gov.scot
           </a>
         </li>
         <li>
@@ -54,7 +41,7 @@ const DataSources = () => {
             rel="noopener noreferrer"
             className="link "
           >
-            https://osdatahub.os.uk/downloads/open/BoundaryLine
+            Ordnance Survey Data Hub
           </a>
         </li>
       </ul>
