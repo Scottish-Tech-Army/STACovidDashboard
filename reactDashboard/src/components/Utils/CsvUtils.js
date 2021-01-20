@@ -76,6 +76,7 @@ export function createPlaceDateValuesMap(lines) {
         v4,
         v5,
         v6,
+        v7,
         positivePercentage,
       ],
       i
