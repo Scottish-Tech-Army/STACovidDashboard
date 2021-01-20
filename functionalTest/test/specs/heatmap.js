@@ -26,7 +26,11 @@ describe("heatmap selection", () => {
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(33);
-    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 20000, 200000);
+    checkValueWithin(
+      Number(heatmapValueTypeValues[0].getText()),
+      20000,
+      200000
+    );
     checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
     checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 500, 10000);
 
@@ -35,10 +39,10 @@ describe("heatmap selection", () => {
     // City of Edinburgh heatbar
     const expectedValues1 = [
       { l: 0, w: 5 },
-      { l: 1, w: 3 },
-      { l: 2, w: 2 },
-      { l: 1, w: 2 },
-      { l: 2, w: 1 },
+      { l: 1, w: 1 },
+      { l: 0, w: 1 },
+      { l: 1, w: 1 },
+      { l: 2, w: 3 },
     ];
 
     checkHeatbarValues(5, expectedValues1);
@@ -85,7 +89,7 @@ describe("heatmap selection", () => {
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(15);
     checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 2000, 10000);
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
+    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 1000);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 0, 50);
 
     checkScotlandDeathsHeatbar();
@@ -175,8 +179,12 @@ describe("heatmap selection", () => {
     expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
     const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
     expect(heatmapValueTypeValues).toHaveLength(15);
-    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 30000, 200000);
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
+    checkValueWithin(
+      Number(heatmapValueTypeValues[0].getText()),
+      30000,
+      200000
+    );
+    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 20000);
     checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 50, 1000);
   }
 
