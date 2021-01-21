@@ -48,7 +48,7 @@ function isValidCsvRow(cells) {
   );
 }
 
-// Expects the input CVS columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
+// Expects the input CSV columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
 // as returned from :
 // Daily Case Trends By Health Board
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2
@@ -69,14 +69,15 @@ export function createPlaceDateValuesMap(lines) {
         dailyCases,
         cumulativeCases,
         crudeRatePositive,
+        v2,
         dailyDeaths,
         cumulativeDeaths,
-        v2,
         v3,
         v4,
         v5,
         v6,
         v7,
+        v8,
         positivePercentage,
       ],
       i
@@ -102,7 +103,7 @@ export function createPlaceDateValuesMap(lines) {
   return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
 
-// Expects the input CVS columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
+// Expects the input CSV columns to be: Date,[HB or CA],DailyPositive,U1,U2,U3,DailyDeaths,CumulativeDeaths,...
 // as returned from :
 // Daily Case Trends By Health Board
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/2dd8534b-0a6f-4744-9253-9565d62f96c2

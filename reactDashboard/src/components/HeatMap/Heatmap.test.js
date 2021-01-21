@@ -27,52 +27,52 @@ const emptyCsvData = readCsvData(
   `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative`
 );
 
-const dailyHealthBoardWithScotlandCsvData = readCsvData(`Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-    20200306,S08000031,unknown,0,21,0,1,10,0,0,0
-    20200306,S08000022,unknown,1,22,0,2,20,0,0,0
-    20200306,S08000020,unknown,1,23,0,3,30,0,0,0
-    20200306,S92000003,Scotland,51,53,0,73,130,0,0,0
-    20200309,S08000031,unknown,0,24,0,4,40,0,0,0
-    20200309,S08000022,unknown,300,25,0,5,50,0,0,0
-    20200309,S08000020,unknown,-8,26,0,6,60,0,0,0
-    20200309,S92000003,Scotland,51,63,0,74,140,0,0,0
-    20200308,S08000031,unknown,0,27,0,7,70,0,0,0
-    20200308,S08000022,unknown,201,28,0,8,80,0,0,0
-    20200308,S08000020,unknown,26,29,0,9,90,0,0,0
-    20200308,S92000003,Scotland,57,73,0,75,150,0,0,0
-    20200307,S08000031,unknown,0,0,0,0,0,0,0,0
-    20200307,S08000022,unknown,-1,-21,0,-1,-10,0,0,0
-    20200307,S08000020,unknown,-1,-22,0,-2,-20,0,0,0
-    20200307,S92000003,Scotland,-51,83,0,76,160,0,0,0
+const dailyHealthBoardWithScotlandCsvData = readCsvData(`Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200306,S08000031,unknown,0,21,0,0,1,10,0,0,0
+    20200306,S08000022,unknown,1,22,0,0,2,20,0,0,0
+    20200306,S08000020,unknown,1,23,0,0,3,30,0,0,0
+    20200306,S92000003,Scotland,51,53,0,0,73,130,0,0,0
+    20200309,S08000031,unknown,0,24,0,0,4,40,0,0,0
+    20200309,S08000022,unknown,300,25,0,0,5,50,0,0,0
+    20200309,S08000020,unknown,-8,26,0,0,6,60,0,0,0
+    20200309,S92000003,Scotland,51,63,0,0,74,140,0,0,0
+    20200308,S08000031,unknown,0,27,0,0,7,70,0,0,0
+    20200308,S08000022,unknown,201,28,0,0,8,80,0,0,0
+    20200308,S08000020,unknown,26,29,0,0,9,90,0,0,0
+    20200308,S92000003,Scotland,57,73,0,0,75,150,0,0,0
+    20200307,S08000031,unknown,0,0,0,0,0,0,0,0,0
+    20200307,S08000022,unknown,-1,-21,0,0,-1,-10,0,0,0
+    20200307,S08000020,unknown,-1,-22,0,0,-2,-20,0,0,0
+    20200307,S92000003,Scotland,-51,83,0,0,76,160,0,0,0
     `);
-const dailyHealthBoardWithoutScotlandCsvData = readCsvData(`Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-    20200306,S08000031,unknown,0,21,0,1,10,0,0,0
-    20200306,S08000022,unknown,1,22,0,2,20,0,0,0
-    20200306,S08000020,unknown,1,23,0,3,30,0,0,0
-    20200309,S08000031,unknown,0,24,0,4,40,0,0,0
-    20200309,S08000022,unknown,300,25,0,5,50,0,0,0
-    20200309,S08000020,unknown,-8,26,0,6,60,0,0,0
-    20200308,S08000031,unknown,0,27,0,7,70,0,0,0
-    20200308,S08000022,unknown,201,28,0,8,80,0,0,0
-    20200308,S08000020,unknown,26,29,0,9,90,0,0,0
-    20200307,S08000031,unknown,0,0,0,0,0,0,0,0
-    20200307,S08000022,unknown,-1,-21,0,-1,-10,0,0,0
-    20200307,S08000020,unknown,-1,-22,0,-2,-20,0,0,0
+const dailyHealthBoardWithoutScotlandCsvData = readCsvData(`Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200306,S08000031,unknown,0,21,0,0,1,10,0,0,0
+    20200306,S08000022,unknown,1,22,0,0,2,20,0,0,0
+    20200306,S08000020,unknown,1,23,0,0,3,30,0,0,0
+    20200309,S08000031,unknown,0,24,0,0,4,40,0,0,0
+    20200309,S08000022,unknown,300,25,0,0,5,50,0,0,0
+    20200309,S08000020,unknown,-8,26,0,0,6,60,0,0,0
+    20200308,S08000031,unknown,0,27,0,0,7,70,0,0,0
+    20200308,S08000022,unknown,201,28,0,0,8,80,0,0,0
+    20200308,S08000020,unknown,26,29,0,0,9,90,0,0,0
+    20200307,S08000031,unknown,0,0,0,0,0,0,0,0,0
+    20200307,S08000022,unknown,-1,-21,0,0,-1,-10,0,0,0
+    20200307,S08000020,unknown,-1,-22,0,0,-2,-20,0,0,0
     `);
 
-const dailyCouncilAreaCsvData = readCsvData(`Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-    20200306,S12000013,unknown,0,21,0,1,10,0,0,0
-    20200306,S12000035,unknown,1,22,0,2,20,0,0,0
-    20200306,S12000019,unknown,1,23,0,3,30,0,0,0
-    20200309,S12000013,unknown,0,24,0,4,40,0,0,0
-    20200309,S12000035,unknown,300,25,0,5,50,0,0,0
-    20200309,S12000019,unknown,-8,26,0,6,60,0,0,0
-    20200308,S12000013,unknown,0,27,0,7,70,0,0,0
-    20200308,S12000035,unknown,201,28,0,8,80,0,0,0
-    20200308,S12000019,unknown,26,29,0,9,90,0,0,0
-    20200307,S12000013,unknown,0,0,0,0,0,0,0,0
-    20200307,S12000035,unknown,-1,-21,0,-1,-10,0,0,0
-    20200307,S12000019,unknown,-1,-22,0,-2,-20,0,0,0
+const dailyCouncilAreaCsvData = readCsvData(`Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+    20200306,S12000013,unknown,0,21,0,0,1,10,0,0,0
+    20200306,S12000035,unknown,1,22,0,0,2,20,0,0,0
+    20200306,S12000019,unknown,1,23,0,0,3,30,0,0,0
+    20200309,S12000013,unknown,0,24,0,0,4,40,0,0,0
+    20200309,S12000035,unknown,300,25,0,0,5,50,0,0,0
+    20200309,S12000019,unknown,-8,26,0,0,6,60,0,0,0
+    20200308,S12000013,unknown,0,27,0,0,7,70,0,0,0
+    20200308,S12000035,unknown,201,28,0,0,8,80,0,0,0
+    20200308,S12000019,unknown,26,29,0,0,9,90,0,0,0
+    20200307,S12000013,unknown,0,0,0,0,0,0,0,0,0
+    20200307,S12000035,unknown,-1,-21,0,0,-1,-10,0,0,0
+    20200307,S12000019,unknown,-1,-22,0,0,-2,-20,0,0,0
     `);
 
 test("heatmap renders no data when fetch fails, shows loadingComponent", async () => {
