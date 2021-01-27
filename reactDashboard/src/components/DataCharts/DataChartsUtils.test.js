@@ -7,6 +7,7 @@ import {
 } from "./DataChartsUtils";
 import {
   ALL_DATES,
+  LAST_FOUR_DAYS,
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
@@ -73,6 +74,30 @@ describe("commonChartConfiguration", () => {
     const result = commonChartConfiguration([], false);
     expect(result.options.annotation).toBeUndefined();
   });
+
+  it("key date annotations", () => {
+    const result = commonChartConfiguration(mockData, false);
+    const annotations = result.options.annotation.annotations;
+    expect(annotations[0].value).toStrictEqual(Date.parse("2020-03-24"));
+    expect(annotations[0].label.yAdjust).toStrictEqual(0);
+    expect(annotations[0].label.content).toStrictEqual("LOCKDOWN");
+
+    expect(annotations[1].value).toStrictEqual(Date.parse("2020-05-29"));
+    expect(annotations[1].label.yAdjust).toStrictEqual(20);
+    expect(annotations[1].label.content).toStrictEqual("PHASE 1");
+  });
+
+  it("uncertain date annotations", () => {
+    const result = commonChartConfiguration(mockData, false);
+    const annotations = result.options.annotation.annotations;
+
+    // Assuming the box annotation is the last annotation in the array
+    const annotation = annotations[annotations.length - 1];
+
+    expect(annotation.xMin).toStrictEqual(Date.parse("2020-01-04"));
+    expect(annotation.xMax).toStrictEqual(Date.parse("2020-01-07"));
+  });
+
   it("darkmode true", () => {
     const result = commonChartConfiguration(mockData, true);
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
@@ -233,5 +258,21 @@ describe("getMaxTicks", () => {
     expect(getMaxTicks(5)).toStrictEqual(5);
     expect(getMaxTicks(20)).toStrictEqual(20);
     expect(getMaxTicks(1000000)).toStrictEqual(20);
+  });
+});
+
+describe("dates with uncertain data", () => {
+  const TEST_DATE_RANGE = {
+    startDate: Date.parse("2020-02-28"),
+    endDate: Date.parse("2020-09-30"),
+  };
+
+  it("last four days", () => {
+    const result = calculateDateRange(TEST_DATE_RANGE, LAST_FOUR_DAYS);
+    const expectedResult = {
+      startDate: Date.parse("2020-09-26"),
+      endDate: Date.parse("2020-09-30"),
+    };
+    expect(result).toStrictEqual(expectedResult);
   });
 });

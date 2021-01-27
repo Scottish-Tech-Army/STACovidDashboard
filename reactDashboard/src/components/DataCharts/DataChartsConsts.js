@@ -4,6 +4,7 @@ export const TOTAL_DEATHS = "totalDeaths";
 export const DAILY_CASES = "dailyCases";
 export const DAILY_DEATHS = "dailyDeaths";
 
+export const LAST_FOUR_DAYS = "lastFourDays";
 export const LAST_WEEK = "lastWeek";
 export const LAST_TWO_WEEKS = "lastTwoWeeks";
 export const LAST_MONTH = "lastMonth";
