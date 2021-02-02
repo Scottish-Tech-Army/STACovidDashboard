@@ -1,7 +1,9 @@
 import moment from "moment";
 import {
   ALL_DATES,
-  LAST_FOUR_DAYS,
+  LAST_DAY,
+  LAST_TWO_DAYS,
+  LAST_THREE_DAYS,
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
@@ -46,62 +48,14 @@ function getDateLine({ date, name }, darkmode, index) {
 }
 
 function getBox(dates) {
-  console.log("dates: ", dates);
-
   return {
     type: "box",
-
-    // If true, display the annotation, default is true
-    // A callback can also be used:
-    //   display(context) {
-    //     // context: {chart, element}
-    //     return true;
-    //   },
     display: true,
-
-    // optional drawTime to control layering, overrides global drawTime setting
     drawTime: "beforeDatasetsDraw",
-
-    // ID of the X scale to bind onto
     xScaleID: "x-axis-0",
-
-    // ID of the Y scale to bind onto
-    // yScaleID: "y",
-
-    // Left edge of the box. in units along the x axis
-    // xMin: "END -4",
     xMin: dates.startDate,
-    // xMin: 20,
-
-    // Right edge of the box
-    // xMax: 40,
-    // xMax: "END",
     xMax: dates.endDate,
-
-    // Top edge of the box in units along the y axis
-    // yMax: 20,
-    // yMax: "TEST",
-
-    // Bottom edge of the box
-    // yMin: 15,
-
-    // Stroke color
-    // borderColor: "red",
-
-    // Stroke width
-    // borderWidth: 2,
-
-    // Fill color
-    backgroundColor: "blue",
-
-    // Radius of box rectangle, default below
-    // cornerRadius: 0,
-
-    // Event hooks - context: {chart, element}
-    // enter: function (context) {},
-    // leave: function (context) {},
-    // click: function (context) {},
-    // dblclick: function (context) {},
+    backgroundColor: "#287db220",
   };
 }
 
@@ -259,15 +213,17 @@ export function commonChartConfiguration(
   };
 
   if (datasets.length > 0) {
-    const boxDates = calculateDateRange(ALL_DATES, LAST_FOUR_DAYS);
+    const boxDatesOneDay = calculateDateRange(maxDateRange, LAST_DAY);
+    const boxDatesTwoDays = calculateDateRange(maxDateRange, LAST_TWO_DAYS);
+    const boxDatesThreeDays = calculateDateRange(maxDateRange, LAST_THREE_DAYS);
     result.options.annotation = {
       annotations: [
         ...keyDates.map((date, i) => getDateLine(date, darkmode, i)),
-        getBox(boxDates),
+        getBox(boxDatesOneDay),
+        getBox(boxDatesTwoDays),
+        getBox(boxDatesThreeDays),
       ],
     };
-    console.log("maxDateRange: ", maxDateRange);
-    console.log("boxDates: ", boxDates);
   }
 
   if (dateRange != null) {
@@ -288,8 +244,14 @@ export function calculateDateRange(maxDateRange, timePeriod) {
   switch (timePeriod) {
     case ALL_DATES:
       return maxDateRange;
-    case LAST_FOUR_DAYS:
-      startDate = moment(endDate).subtract(4, "days").valueOf();
+    case LAST_DAY:
+      startDate = moment(endDate).subtract(1, "days").valueOf();
+      break;
+    case LAST_TWO_DAYS:
+      startDate = moment(endDate).subtract(2, "days").valueOf();
+      break;
+    case LAST_THREE_DAYS:
+      startDate = moment(endDate).subtract(3, "days").valueOf();
       break;
     case LAST_WEEK:
       startDate = moment(endDate).subtract(1, "weeks").valueOf();

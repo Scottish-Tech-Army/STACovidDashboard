@@ -278,6 +278,7 @@ const DataCharts = ({
       const chartConfiguration = commonChartConfiguration(
         datasets,
         darkmode,
+        maxDateRange,
         dateRange
       );
 

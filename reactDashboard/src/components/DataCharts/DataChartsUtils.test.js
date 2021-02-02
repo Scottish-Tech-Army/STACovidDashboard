@@ -7,7 +7,9 @@ import {
 } from "./DataChartsUtils";
 import {
   ALL_DATES,
-  LAST_FOUR_DAYS,
+  LAST_DAY,
+  LAST_TWO_DAYS,
+  LAST_THREE_DAYS,
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
@@ -32,6 +34,14 @@ const TEST_MAX_DATA_2 = [
   { t: Date.parse("2020-01-06"), y: 163 },
   { t: Date.parse("2020-01-07"), y: 842 },
 ];
+const MAX_DATE_RANGE = {
+  startDate: Date.parse("2020-01-01"),
+  endDate: Date.parse("2020-01-07"),
+};
+const SMALL_MAX_DATE_RANGE = {
+  startDate: Date.parse("2020-01-01"),
+  endDate: Date.parse("2020-01-04"),
+};
 
 describe("commonChartConfiguration", () => {
   const mockData = [
@@ -51,7 +61,7 @@ describe("commonChartConfiguration", () => {
   ];
 
   it("with date range", () => {
-    const result = commonChartConfiguration(mockData, false, {
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE, {
       startDate: 0,
       endDate: 1,
     });
@@ -60,23 +70,23 @@ describe("commonChartConfiguration", () => {
   });
 
   it("without date range", () => {
-    const result = commonChartConfiguration(mockData, false);
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE);
     const expectedResult = { fontColor: "#767676" };
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
 
   it("annotations with dataset", () => {
-    const result = commonChartConfiguration(mockData, false);
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE);
     expect(result.options.annotation).not.toBeUndefined();
   });
 
   it("annotations without dataset", () => {
-    const result = commonChartConfiguration([], false);
+    const result = commonChartConfiguration([], false, MAX_DATE_RANGE);
     expect(result.options.annotation).toBeUndefined();
   });
 
   it("key date annotations", () => {
-    const result = commonChartConfiguration(mockData, false);
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE);
     const annotations = result.options.annotation.annotations;
     expect(annotations[0].value).toStrictEqual(Date.parse("2020-03-24"));
     expect(annotations[0].label.yAdjust).toStrictEqual(0);
@@ -88,7 +98,10 @@ describe("commonChartConfiguration", () => {
   });
 
   it("uncertain date annotations", () => {
-    const result = commonChartConfiguration(mockData, false);
+    const result = commonChartConfiguration(mockData, false, {
+      startDate: Date.parse("2020-01-01"),
+      endDate: Date.parse("2020-01-07"),
+    });
     const annotations = result.options.annotation.annotations;
 
     // Assuming the box annotation is the last annotation in the array
@@ -99,7 +112,7 @@ describe("commonChartConfiguration", () => {
   });
 
   it("darkmode true", () => {
-    const result = commonChartConfiguration(mockData, true);
+    const result = commonChartConfiguration(mockData, true, MAX_DATE_RANGE);
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
       "#121212"
     );
@@ -118,7 +131,7 @@ describe("commonChartConfiguration", () => {
     ).toStrictEqual("#c1def1");
   });
   it("darkmode false", () => {
-    const result = commonChartConfiguration(mockData, false);
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE);
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
       "#cccccc"
     );
@@ -138,12 +151,16 @@ describe("commonChartConfiguration", () => {
   });
 
   it("receive maxTicks less than 20", () => {
-    const result = commonChartConfiguration(smallMockData);
+    const result = commonChartConfiguration(
+      smallMockData,
+      false,
+      SMALL_MAX_DATE_RANGE
+    );
     expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(1);
   });
 
   it("receive maxTicks more than 20", () => {
-    const result = commonChartConfiguration(mockData);
+    const result = commonChartConfiguration(mockData, false, MAX_DATE_RANGE);
     expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(
       20
     );
@@ -267,10 +284,10 @@ describe("dates with uncertain data", () => {
     endDate: Date.parse("2020-09-30"),
   };
 
-  it("last four days", () => {
-    const result = calculateDateRange(TEST_DATE_RANGE, LAST_FOUR_DAYS);
+  it("last four days inclusive", () => {
+    const result = calculateDateRange(TEST_DATE_RANGE, LAST_THREE_DAYS);
     const expectedResult = {
-      startDate: Date.parse("2020-09-26"),
+      startDate: Date.parse("2020-09-27"),
       endDate: Date.parse("2020-09-30"),
     };
     expect(result).toStrictEqual(expectedResult);
