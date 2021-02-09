@@ -25,9 +25,17 @@ exports.config = {
       browserName: "chrome",
       "goog:chromeOptions": {
         // to run chrome headless the following flags are required
-        args: ["--headless", "--disable-gpu", "--window-size=1000,1080"],
+        args: [
+          "--headless",
+          "--disable-gpu",
+          "--window-size=1000,1080",
+          "--enable-logging=stderr",
+          "--log-level=0",
+          "--v=1",
+        ],
       },
       acceptInsecureCerts: true,
+      outputDir: "outputlogs",
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -62,7 +70,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
+  services: [["chromedriver"]],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -98,5 +106,14 @@ exports.config = {
   // =====
   before: function (capabilities, specs) {
     require("@babel/register");
+  },
+  beforeTest: function (test, context) {
+    // Clear logs
+    browser.getLogs("browser");
+  },
+  afterTest: function (test, context, { error }) {
+    if (error) {
+      console.log("Browser console log", browser.getLogs("browser"));
+    }
   },
 };
