@@ -20,12 +20,12 @@ exports.config = {
       // maxInstances can get overwritten per capability. So if you have an in-house Selenium
       // grid with only 5 firefox instances available you can make sure that not more than
       // 5 instances get started at a time.
-      maxInstances: 5,
+      maxInstances: 2,
       //
       browserName: "chrome",
       "goog:chromeOptions": {
         // to run chrome headless the following flags are required
-        args: ["--headless", "--disable-gpu", "--window-size=1000,1080"],
+        args: ["--headless", "--disable-gpu", "--window-size=1000,1080", "--disable-dev-shm-usage"],
       },
       acceptInsecureCerts: true,
       // If outputDir is provided WebdriverIO can capture driver session logs
@@ -77,11 +77,11 @@ exports.config = {
     [
       "junit",
       {
-        outputDir: "./test-report"//,
-        // outputFileFormat: function (options) {
-        //   // optional
-        //   return `results-${options.cid}.${options.capabilities}.xml`;
-        // },
+        outputDir: "./test-report",
+        outputFileFormat: function (options) {
+          // optional
+          return `results-${options.cid}.xml`;
+        },
       },
     ],
   ],
