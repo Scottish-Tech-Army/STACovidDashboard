@@ -261,7 +261,6 @@ const DataCharts = ({
           }
         }
       }
-      console.error("getChartDatasets datasets", JSON.stringify(datasets));
       return datasets;
     }
 
