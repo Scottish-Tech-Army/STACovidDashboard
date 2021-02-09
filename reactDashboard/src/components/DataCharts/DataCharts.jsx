@@ -206,24 +206,20 @@ const DataCharts = ({
 
   useEffect(() => {
     function getAverageSeriesData(seriesData, regionCode, chartType) {
-      if (regionCode == null) {
-        return seriesData.get(FEATURE_CODE_SCOTLAND);
-      }
-      const populationProportion = populationProportionMap.get(regionCode);
       const scotlandData = seriesData.get(FEATURE_CODE_SCOTLAND);
-      if (scotlandData == null) {
-        return null;
+      if (!regionCode || !scotlandData) {
+        return scotlandData;
       }
       if (chartType === PERCENTAGE_TESTS) {
         return scotlandData;
       }
-      const scaledSeries = scotlandData.map(({ t, y }) => {
-        return {
-          t: t,
-          y: y * populationProportion,
-        };
+      const populationProportion = populationProportionMap.get(regionCode);
+      if (!populationProportion) {
+        return null;
+      }
+      return scotlandData.map(({ t, y }) => {
+        return { t: t, y: y * populationProportion };
       });
-      return scaledSeries;
     }
 
     const AVERAGE_DATASET_FILL_COLOUR = darkmode
@@ -248,14 +244,21 @@ const DataCharts = ({
           )
         );
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
-          datasets.push(
-            datasetConfiguration(
-              getAverageSeriesLabel(chartType),
-              getAverageSeriesData(seriesData, regionCode, chartType),
-              AVERAGE_DATASET_COLOUR,
-              AVERAGE_DATASET_FILL_COLOUR
-            )
+          const averageSeriesData = getAverageSeriesData(
+            seriesData,
+            regionCode,
+            chartType
           );
+          if (averageSeriesData) {
+            datasets.push(
+              datasetConfiguration(
+                getAverageSeriesLabel(chartType),
+                getAverageSeriesData(seriesData, regionCode, chartType),
+                AVERAGE_DATASET_COLOUR,
+                AVERAGE_DATASET_FILL_COLOUR
+              )
+            );
+          }
         }
       }
       return datasets;
