@@ -60,11 +60,10 @@ jobs:
     environment: 
       name: Live
     runs-on: ubuntu-latest
+    env:
+      CLOUDFRONT_DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+      S3_TARGET_BUCKET: ${{ secrets.AWS_S3_SITE_BUCKET }}
     steps:
-      - env:
-          CLOUDFRONT_DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
-          S3_TARGET_BUCKET: ${{ secrets.AWS_S3_SITE_BUCKET }}
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
