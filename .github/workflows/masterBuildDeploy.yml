@@ -60,6 +60,9 @@ jobs:
     environment: 
       name: Live
     runs-on: ubuntu-latest
+    env:
+      CLOUDFRONT_DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+      S3_TARGET_BUCKET: ${{ secrets.AWS_S3_SITE_BUCKET }}
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -69,5 +72,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy build to live
-        run: aws s3 cp s3://sta-dashboard-builds/builds/master/$GITHUB_SHA/ s3://sta-dashboard-livetest/ --recursive
+        run: aws s3 cp s3://sta-dashboard-builds/builds/master/$GITHUB_SHA/ s3://$S3_TARGET_BUCKET/ --recursive
         
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION" --paths "/*"
+     
