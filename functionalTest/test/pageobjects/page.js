@@ -39,7 +39,7 @@ export default class Page {
     return $(".dashboard-navbar").$("#logo");
   }
 
-  open(path = "/index.html") {
+  open(path = browser.options.baseUrl) {
     return browser.url(path);
   }
 }

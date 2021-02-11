@@ -145,7 +145,7 @@ const App = () => {
 
   return (
     <div className={darkmode ? "App darkmode" : "App"}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
         <StopAudio />
 
@@ -179,7 +179,7 @@ const App = () => {
             <DataSources />
           </Route>
           <Route path={URL_ABOUT_US}>
-            <AboutUs/>
+            <AboutUs />
           </Route>
           <Route path="*">{() => <Redirect to="/" />}</Route>
         </Switch>

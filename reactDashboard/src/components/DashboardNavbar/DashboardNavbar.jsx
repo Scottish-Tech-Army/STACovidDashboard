@@ -36,11 +36,13 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   return (
     <Navbar className="dashboard-navbar" expand="sm">
       <Link to={URL_OVERVIEW}>
-        <img id="logo" src="/STALogoSquare.svg" alt="Scottish Tech Army Logo" />
+        <img
+          id="logo"
+          src={process.env.PUBLIC_URL + "/STALogoSquare.svg"}
+          alt="Scottish Tech Army Logo"
+        />
       </Link>
-      <Nav className="hide-darkmode">
-      {darkmodeIcon("darkmode-btn-toggle")}
-      </Nav>
+      <Nav className="hide-darkmode">{darkmodeIcon("darkmode-btn-toggle")}</Nav>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">

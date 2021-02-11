@@ -3,7 +3,7 @@ import dashboard from "../pageobjects/dashboardPage";
 describe("Regional Insights", () => {
   it("should have correct title", () => {
     dashboard.open();
-    browser.url("/regional");
+    dashboard.navbarLinkRegionalInsights.click();
     let title = "Scottish COVID-19 Statistics";
     expect(browser).toHaveTitle(title);
     expect(dashboard.imgLogo).toBeDisplayed();

@@ -10,7 +10,7 @@ class RegionalPage extends Page {
   }
 
   open() {
-    return super.open("/regional");
+    return super.open("regional");
   }
 }
 
