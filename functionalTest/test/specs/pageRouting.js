@@ -104,7 +104,7 @@ describe("page routing history from urls", () => {
   it("no more forward", () => {
     // Create a history
     dashboard.open();
-    browser.url(browser.options.baseUrl + "/"about");
+    browser.url(browser.options.baseUrl + "/about");
 
     expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
 
