@@ -1,22 +1,31 @@
 # Build, test and deploy to live the master branch on push or PR merge
 # Requires manual approval after functional tests run successfully on staging
-# Uses the following AWS CodeBuild projects: dashboardbuild, dashboardStagingFunctionalTests
 
-name: Master Build Test and Deploy
+name: Master Dashboard Build Test and Deploy
 
 on:
   # Triggers the workflow on push event (which should include PR merges) for the master branch
   push:
-    branches: [ master ]
+    branches: [master]
+    paths-ignore:
+      - 'awsLambdaFunctions/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  S3_BUILD_PATH: s3://sta-dashboard-builds/builds/master/${{ github.sha }}/
+  S3_STAGING_DEPLOY_PATH: s3://sta-dashboard-staging/
+  STAGING_URL: http://sta-dashboard-staging.s3-website.eu-west-2.amazonaws.com
 
 jobs:
   # Build and deploy the candidate to staging
   build:
     runs-on: ubuntu-latest
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -24,40 +33,37 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: "AWS CodeBuild Build"
-        id: covid-dashboard-merge-build
-        uses: aws-actions/aws-codebuild-run-build@v1.0.3
-        with:
-          # AWS CodeBuild Project Name
-          project-name: covid-dashboard-merge-build
-
-      - name: CodeBuild output 
+      - name: Build and copy artifacts
         run: |
-          echo AWS BuildId: ${{ steps.covid-dashboard-merge-build.outputs.aws-build-id}}
-          echo S3 build archive: s3://sta-dashboard-builds/builds/master/$GITHUB_SHA/
-          echo S3 staging deployment: s3://sta-dashboard-staging
+          cd reactDashboard
+          npm install
+          npm test -- --watchAll=false
+          npm run build
+          aws s3 cp build $S3_STAGING_DEPLOY_PATH --recursive
+          aws s3 cp build $S3_BUILD_PATH --recursive --exclude "data/*"
+
+      - name: Build output
+        run: |
+          echo S3 build archive: $S3_BUILD_PATH
+          echo S3 staging deployment: $S3_STAGING_DEPLOY_PATH
 
   # Run functional tests against staging
   functionalTests:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-      - name: "AWS CodeBuild Functional Tests"
-        uses: aws-actions/aws-codebuild-run-build@v1.0.3
-        with:
-          # AWS CodeBuild Project Name
-          project-name: covid-dashboard-staging-functional-tests
+      - name: Run functional tests
+        run: |
+          cd functionalTest
+          npm install
+          npm test -- --baseUrl $STAGING_URL
 
   deployToLive:
-    needs: [build,functionalTests]
-    environment: 
+    needs: [build, functionalTests]
+    environment:
       name: Live
     runs-on: ubuntu-latest
     env:
@@ -72,8 +78,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy build to live
-        run: aws s3 cp s3://sta-dashboard-builds/builds/master/$GITHUB_SHA/ s3://$S3_TARGET_BUCKET/ --recursive
-        
+        run: aws s3 cp $S3_BUILD_PATH s3://$S3_TARGET_BUCKET/ --recursive
+
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION" --paths "/*"
-     

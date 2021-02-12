@@ -1,0 +1,61 @@
+# Build, test and deploy to live the PR branch on PR creation or update
+
+name: Pull Request Dashboard Build and Test
+
+on:
+  # Triggers the workflow on pull request events
+  pull_request:
+    types: [ opened, synchronize, reopened, edited ]
+    paths-ignore:
+      - 'awsLambdaFunctions/**'
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
+  S3_BUILD_PATH: s3://sta-dashboard-builds/builds/PR/${{ github.event.number }}/
+  S3_STAGING_DEPLOY_PATH: s3://sta-dashboard-staging/PR/${{ github.event.number }}/
+  STAGING_URL: http://sta-dashboard-staging.s3-website.eu-west-2.amazonaws.com/PR/${{ github.event.number }}
+
+jobs:
+  # Build and deploy the candidate to staging
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build context
+        run: |
+          echo PR Number: "$PR_NUMBER"
+          echo S3 build archive: $S3_BUILD_PATH
+          echo S3 staging deployment: $S3_STAGING_DEPLOY_PATH
+          echo Staging URL: $STAGING_URL
+      # Runs a set of commands using the runners shell
+      - name: Build and copy artifacts
+        run: |
+          cd reactDashboard
+          npm install
+          npm test -- --watchAll=false
+          PUBLIC_URL=/PR/$PR_NUMBER npm run build
+          aws s3 cp build $S3_STAGING_DEPLOY_PATH --recursive
+          aws s3 cp build $S3_BUILD_PATH --recursive --exclude "data/*"
+
+  # Run functional tests against staging
+  functionalTests:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Run functional tests
+        run: |
+          cd functionalTest
+          npm install
+          npm test -- --baseUrl $STAGING_URL --exclude test/specs/pageRouting.js
