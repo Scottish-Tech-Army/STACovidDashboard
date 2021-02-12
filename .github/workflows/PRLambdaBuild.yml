@@ -1,6 +1,6 @@
 # Build, test and deploy to live the PR branch on PR creation or update
 
-name: Pull Request Build and Test
+name: Pull Request Lambda Build and Test
 
 on:
   # Triggers the workflow on pull request events
