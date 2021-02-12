@@ -1,0 +1,61 @@
+# Build, test and deploy to live the master branch on push or PR merge
+# Requires manual approval after functional tests run successfully on staging
+
+name: Master Lambda Function Build Test and Deploy
+
+on:
+  # Triggers the workflow on push event (which should include PR merges) for the master branch
+  push:
+    branches: [master]
+    paths-ignore:
+      - 'reactDashboard/**'
+      - 'functionalTest/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  AWS_LAMBDA_FUNCTION_NAME: sta-homebrew-iteam-poll
+  BUILD_ARCHIVE: target/homebrewdemo-1.0.0.jar
+  S3_BUILD_BUCKET: sta-dashboard-builds
+  S3_BUILD_KEY: lambdaBuilds/master/${{ github.sha }}/functionCode.zip
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Build with Maven and copy artifacts
+      run: |
+        cd awsLambdaFunctions
+        mvn -B package --file pom.xml
+        aws s3 cp $BUILD_ARCHIVE s3://$S3_BUILD_BUCKET/$S3_BUILD_KEY
+
+  deployToLive:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Deploy to AWS Live
+      run: aws lambda update-function-code --function-name  $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $S3_BUILD_BUCKET --s3-key $S3_BUILD_KEY

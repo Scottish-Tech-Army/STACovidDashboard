@@ -6,6 +6,8 @@ on:
   # Triggers the workflow on pull request events
   pull_request:
     types: [ opened, synchronize, reopened, edited ]
+    paths-ignore:
+      - 'awsLambdaFunctions/**'
 
 env:
   PR_NUMBER: ${{ github.event.number }}
