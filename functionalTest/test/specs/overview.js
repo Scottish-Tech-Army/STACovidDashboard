@@ -38,36 +38,36 @@ describe("Verify Single Value Bar Visibility", () => {
   });
 });
 
-describe("Analitycal Chart with timeSpan", () => {
-  it("Analitycal charts-->Daily Cases", () => {
+describe("Analytical Chart with timeSpan", () => {
+  it("Analytical charts-->Daily Cases", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Daily Cases").click();
     reusable.sliderTrackResult();
   });
 
-  it("Analitycal charts-->Total Cases", () => {
+  it("Analytical charts-->Total Cases", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Total Cases").click();
     reusable.sliderTrackResult();
   });
 
-  it("Analitycal charts-->Daily Deaths", () => {
+  it("Analytical charts-->Daily Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Daily Deaths").click();
     reusable.sliderTrackResult();
   });
 
-  it("Analitycal charts-->Total Deaths", () => {
+  it("Analytical charts-->Total Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Total Deaths").click();
     reusable.sliderTrackResult();
   });
 
-  it("Analitycal charts-->% Tests Positive", () => {
+  it("Analytical charts-->% Tests Positive", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("% Tests Positive").click();
