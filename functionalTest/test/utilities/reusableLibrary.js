@@ -12,8 +12,14 @@ class reusableLibrary {
     const TIMESPAN_TWO_WEEKS = "select-last-two-weeks";
     const TIMESPAN_ONE_WEEK = "select-last-week";
 
+    const DATE_FORMAT = "DD MMM, YYYY";
+
     function calculateLeftButtonPercentage(fromDate, toDate, timespan) {
-      let totalDays = moment(toDate).diff(moment(fromDate), "days") + 1;
+      let totalDays =
+        moment(toDate, DATE_FORMAT).diff(
+          moment(fromDate, DATE_FORMAT),
+          "days"
+        ) + 1;
       let expectedDays;
       switch (timespan) {
         case TIMESPAN_ALL:
