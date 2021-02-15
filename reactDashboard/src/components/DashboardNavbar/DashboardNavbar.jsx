@@ -48,7 +48,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
       <Nav className="hide-darkmode">{darkmodeIcon("darkmode-btn-toggle")}</Nav>
       <Navbar.Toggle
         aria-controls="basic-navbar-nav"
-        onClick={() => setExpanded(expanded ? false : "expanded")}
+        onClick={() => setExpanded((expanded) => !expanded)}
       />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">
