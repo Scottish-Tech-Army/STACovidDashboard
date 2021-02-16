@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./DashboardNavbar.css";
 import Navbar from "react-bootstrap/Navbar";
@@ -10,6 +10,8 @@ import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 
 const DashboardNavbar = ({ darkmode, setDarkmode }) => {
+  const [expanded, setExpanded] = useState(false);
+
   function navLink(pageUrl, title, exact = true) {
     return (
       <NavLink
@@ -17,6 +19,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
         to={pageUrl}
         exact={exact}
         activeClassName="selected"
+        onClick={() => setExpanded(false)}
       >
         {title}
       </NavLink>
@@ -34,7 +37,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   };
 
   return (
-    <Navbar className="dashboard-navbar" expand="sm">
+    <Navbar className="dashboard-navbar" expand="sm" expanded={expanded}>
       <Link to={URL_OVERVIEW}>
         <img
           id="logo"
@@ -43,7 +46,10 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
         />
       </Link>
       <Nav className="hide-darkmode">{darkmodeIcon("darkmode-btn-toggle")}</Nav>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle
+        aria-controls="basic-navbar-nav"
+        onClick={() => setExpanded((expanded) => !expanded)}
+      />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">
           <h1 className="heading">Scottish COVID-19 Statistics</h1>
