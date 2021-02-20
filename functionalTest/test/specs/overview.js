@@ -1,5 +1,5 @@
 import dashboard from "../pageobjects/dashboardPage";
-import reusable from "../utilities/reusableLibrary";
+import { checkChartTimespanSelection } from "../utilities/utils";
 
 describe("Covid-19 Dashboard", () => {
   it("should have correct title", () => {
@@ -43,35 +43,35 @@ describe("Analytical Chart with timeSpan", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Daily Cases").click();
-    reusable.sliderTrackResult();
+    checkChartTimespanSelection();
   });
 
   it("Analytical charts-->Total Cases", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Total Cases").click();
-    reusable.sliderTrackResult();
+    checkChartTimespanSelection();
   });
 
   it("Analytical charts-->Daily Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Daily Deaths").click();
-    reusable.sliderTrackResult();
+    checkChartTimespanSelection();
   });
 
   it("Analytical charts-->Total Deaths", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("Total Deaths").click();
-    reusable.sliderTrackResult();
+    checkChartTimespanSelection();
   });
 
   it("Analytical charts-->% Tests Positive", () => {
     dashboard.open();
     dashboard.chartDropdown.click();
     dashboard.selectChartDropdownOption("% Tests Positive").click();
-    reusable.sliderTrackResult();
+    checkChartTimespanSelection();
   });
 });
 
