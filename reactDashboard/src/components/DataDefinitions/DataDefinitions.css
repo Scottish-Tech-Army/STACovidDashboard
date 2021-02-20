@@ -48,15 +48,12 @@
 
 .data-definitions .data-definitions-body ul {
   padding-top: 15px;
+  padding-left: 10px;
 }
 
 .data-definitions .data-definitions-body li {
   padding-bottom: 5px;
   list-style: none;
-}
-
-.data-definitions .data-definitions-body ul {
-  padding-left: 10px;
 }
 
 .data-definitions .data-definitions-link {

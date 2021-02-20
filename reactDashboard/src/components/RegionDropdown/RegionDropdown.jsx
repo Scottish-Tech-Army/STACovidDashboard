@@ -15,7 +15,7 @@ const RegionDropdown = ({
   setRegionCode,
   showCouncilAreas = true,
 }) => {
-  function isValidRegionCode(regionCode) {
+  function isValidRegionCode() {
     return (
       regionCode !== null &&
       (FEATURE_CODE_SCOTLAND === regionCode ||
@@ -24,7 +24,7 @@ const RegionDropdown = ({
     );
   }
 
-  if (!isValidRegionCode(regionCode)) {
+  if (!isValidRegionCode()) {
     throw new Error("Unrecognised regionCode: " + regionCode);
   }
   if (setRegionCode === null || setRegionCode === undefined) {

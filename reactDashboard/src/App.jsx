@@ -119,22 +119,22 @@ const App = () => {
 
   useEffect(() => {
     if (healthBoardDataset != null) {
-      const populationMap = getPopulationMap(
+      const datasetPopulationMap = getPopulationMap(
         createPlaceDateValuesMap(healthBoardDataset)
       );
       setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
+        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
       );
     }
   }, [healthBoardDataset]);
 
   useEffect(() => {
     if (councilAreaDataset != null) {
-      const populationMap = getPopulationMap(
+      const datasetPopulationMap = getPopulationMap(
         createPlaceDateValuesMap(councilAreaDataset)
       );
       setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
+        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
       );
     }
   }, [councilAreaDataset]);
