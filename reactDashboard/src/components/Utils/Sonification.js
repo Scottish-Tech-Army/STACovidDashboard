@@ -154,7 +154,7 @@ export function calculateMaxDataValue(seriesData = null) {
   if (seriesData === null || seriesData.length === 0) {
     return 100;
   }
-  var maximum = seriesData.reduce((acc, value) => Math.max(acc, value), 0);
+  var maximum = seriesData.reduce((acc, current) => Math.max(acc, current), 0);
 
   if (maximum === 0) {
     return 100;

@@ -6,8 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
 const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   const [expanded, setExpanded] = useState(false);
@@ -48,7 +47,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
       <Nav className="hide-darkmode">{darkmodeIcon("darkmode-btn-toggle")}</Nav>
       <Navbar.Toggle
         aria-controls="basic-navbar-nav"
-        onClick={() => setExpanded((expanded) => !expanded)}
+        onClick={() => setExpanded((value) => !value)}
       />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">

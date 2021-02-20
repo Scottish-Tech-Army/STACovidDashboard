@@ -105,38 +105,38 @@ function RegionalSingleValueBar({
 
   useEffect(() => {
     if (currentTotalsHealthBoardDataset !== null) {
-      const placeStatsMap = parseNhsHBCsvData(currentTotalsHealthBoardDataset);
+      const datasetPlaceStatsMap = parseNhsHBCsvData(currentTotalsHealthBoardDataset);
       setPlaceStatsMap(
-        (existingMap) => new Map([...existingMap, ...placeStatsMap])
+        (existingMap) => new Map([...existingMap, ...datasetPlaceStatsMap])
       );
     }
   }, [currentTotalsHealthBoardDataset]);
 
   useEffect(() => {
     if (currentTotalsCouncilAreaDataset !== null) {
-      const placeStatsMap = parseNhsCACsvData(currentTotalsCouncilAreaDataset);
+      const datasetPlaceStatsMap = parseNhsCACsvData(currentTotalsCouncilAreaDataset);
       setPlaceStatsMap(
-        (existingMap) => new Map([...placeStatsMap, ...existingMap])
+        (existingMap) => new Map([...datasetPlaceStatsMap, ...existingMap])
       );
     }
   }, [currentTotalsCouncilAreaDataset]);
 
   useEffect(() => {
     if (null !== councilAreaDataset) {
-      const placeStatsMap = parse7DayWindowCsvData(councilAreaDataset);
+      const datasetPlaceStatsMap = parse7DayWindowCsvData(councilAreaDataset);
       setPlaceWeeklyStatsMap(
         // In case of duplicate (Scotland), HB takes precedence
-        (existingMap) => new Map([...placeStatsMap, ...existingMap])
+        (existingMap) => new Map([...datasetPlaceStatsMap, ...existingMap])
       );
     }
   }, [councilAreaDataset]);
 
   useEffect(() => {
     if (null !== healthBoardDataset) {
-      const placeStatsMap = parse7DayWindowCsvData(healthBoardDataset);
+      const datasetPlaceStatsMap = parse7DayWindowCsvData(healthBoardDataset);
       setPlaceWeeklyStatsMap(
         // In case of duplicate (Scotland), HB takes precedence
-        (existingMap) => new Map([...existingMap, ...placeStatsMap])
+        (existingMap) => new Map([...existingMap, ...datasetPlaceStatsMap])
       );
     }
   }, [healthBoardDataset]);

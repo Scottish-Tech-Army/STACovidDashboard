@@ -20,17 +20,10 @@ export function getMarks({ startDate, endDate }) {
   if (startDate === 0 || endDate === 0) {
     return [];
   }
-  const result = [
-    {
-      value: startDate,
-      label: moment.utc(startDate).format("DD MMM, YYYY"),
-    },
-    {
-      value: endDate,
-      label: moment.utc(endDate).format("DD MMM, YYYY"),
-    },
+  return [
+    { value: startDate, label: moment.utc(startDate).format("DD MMM, YYYY") },
+    { value: endDate, label: moment.utc(endDate).format("DD MMM, YYYY") },
   ];
-  return result;
 }
 
 const DateSlider = withStyles({

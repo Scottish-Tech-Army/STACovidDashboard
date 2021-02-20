@@ -12,8 +12,8 @@ import {
 } from "../DataCharts/DataChartsConsts";
 
 const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
-  function getChartTypeText(chartType) {
-    switch (chartType) {
+  function getChartTypeText(itemChartType) {
+    switch (itemChartType) {
       case DAILY_CASES:
         return "Daily Cases";
       case TOTAL_CASES:
@@ -25,14 +25,14 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
       case PERCENTAGE_TESTS:
         return "% Tests Positive";
       default:
-        throw new Error("Unrecognised chartType: " + chartType);
+        throw new Error("Unrecognised chartType: " + itemChartType);
     }
   }
 
-  function menuItem(chartType) {
+  function menuItem(itemChartType) {
     return (
-      <Dropdown.Item key={chartType} eventKey={chartType}>
-        {getChartTypeText(chartType)}
+      <Dropdown.Item key={itemChartType} eventKey={itemChartType}>
+        {getChartTypeText(itemChartType)}
       </Dropdown.Item>
     );
   }
