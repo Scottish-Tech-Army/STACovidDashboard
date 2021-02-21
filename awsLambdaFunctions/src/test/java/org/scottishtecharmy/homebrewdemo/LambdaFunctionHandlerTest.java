@@ -312,11 +312,14 @@ public class LambdaFunctionHandlerTest {
         assertEquals(expectedS3Objects.size() * 2, s3Requests.size());
         for (int i = 0; i < expectedS3Objects.size(); i++) {
             TestDataset expected = expectedS3Objects.get(i);
-            assertEquals(expected.s3ObjectKey, s3Requests.get(i * 2).getKey());
-            assertEquals(expected.fileContent, readInputStream(s3Requests.get(i * 2).getInputStream()));
-            assertEquals(expected.s3ObjectLastModifiedKey, s3Requests.get(i * 2 + 1).getKey());
+            PutObjectRequest actualDataObject = s3Requests.get(i * 2);
+            PutObjectRequest actualLastModifiedObject = s3Requests.get(i * 2 + 1);
+            
+            assertEquals(expected.s3ObjectKey, actualDataObject.getKey());
+            assertEquals(expected.fileContent, readInputStream(actualDataObject.getInputStream()));
+            assertEquals(expected.s3ObjectLastModifiedKey, actualLastModifiedObject.getKey());
             assertEquals(expected.s3ObjectLastModifiedDate,
-                    readInputStream(s3Requests.get(i * 2 + 1).getInputStream()));
+                    readInputStream(actualLastModifiedObject.getInputStream()));
         }
     }
 
