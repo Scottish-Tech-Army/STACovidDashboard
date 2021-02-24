@@ -19,7 +19,9 @@ afterEach(() => {
 
 test("default render", async () => {
   act(() => {
-    render(<GeoHeatMap toggleFullscreen={() => {}} />, container);
+    render(<GeoHeatMap toggleFullscreen={() => {
+        // Do nothing
+    }} />, container);
   });
   expect(map()).not.toBeNull();
 });

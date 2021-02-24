@@ -109,7 +109,7 @@ const Footer = ({ darkmode }) => {
               Unless otherwise stated, this webpage contains public sector
               information licensed under{" "}
               <a
-                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                 target="_blank"
                 rel="noopener noreferrer licence"
                 className="entry link"
