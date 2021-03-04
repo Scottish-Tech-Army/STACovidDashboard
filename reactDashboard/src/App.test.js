@@ -18,11 +18,10 @@ afterEach(() => {
   container = null;
 });
 
-test("darkmode class", async () => {
+test("default render", async () => {
   fetch.mockReject(new Error("fetch failed"));
   global.suppressConsoleErrorLogs();
 
-  const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
   const app = () => container.querySelector(".App");
 
   await act(async () => {
@@ -30,15 +29,4 @@ test("darkmode class", async () => {
   });
   expect(app().getAttribute("class")).not.toContain("darkmode");
 
-  darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  await act(async () => {
-    render(<App />, container);
-  });
-  expect(app().getAttribute("class")).toContain("darkmode");
-
-  darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  await act(async () => {
-    render(<App />, container);
-  });
-  expect(app().getAttribute("class")).not.toContain("darkmode");
 });
