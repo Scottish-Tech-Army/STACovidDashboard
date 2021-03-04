@@ -50,11 +50,11 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
         context.getLogger().log("Received event: " + event);
 
         try {
-            context.getLogger().log("start");
+            context.getLogger().log("\nstart\n");
 
             storeAllNhsScotData(context);
 
-            context.getLogger().log("end");
+            context.getLogger().log("\nend\n");
         }
         catch (SdkClientException | IOException e) {
             context.getLogger().log("Error: " + e + "\n");
@@ -66,18 +66,12 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
     }
 
     private void storeAllNhsScotData(Context context) throws IOException, ClientProtocolException {
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS,
-                OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_DAILY_COUNCIL_AREAS_URL);
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS,
-                OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_DAILY_HEALTH_BOARDS_URL);
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS,
-                OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TOTAL_COUNCIL_AREAS_URL);
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS,
-                OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TOTAL_HEALTH_BOARDS_URL);
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS,
-                OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS_LAST_MODIFIED, NHS_SCOT_TESTS_COUNCIL_AREAS_URL);
-        storeNhsScotData(context, OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS,
-                OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED, NHS_SCOT_TESTS_HEALTH_BOARDS_URL);
+        for (String[] dataset : DATASETS) {
+            String retrievalUrl = dataset[0];
+            String objectKeyData = OBJECT_FOLDER + dataset[1] + ".csv";
+            String objectKeyModificationDate = OBJECT_FOLDER + dataset[1] + "LastModified.txt";
+            storeNhsScotData(context, objectKeyData, objectKeyModificationDate, retrievalUrl);
+        }
     }
 
     private void storeNhsScotData(Context context, String objectKeyData, String objectKeyModificationDate,
@@ -178,40 +172,46 @@ public class LambdaFunctionHandler implements RequestHandler<S3Event, String> {
 
     private static final String OBJECT_FOLDER = "data/";
 
-    private final static String NHS_SCOT_URL_PREFIX = "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/";
-    private final static String NHS_SCOT_DAILY_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
-            + "2dd8534b-0a6f-4744-9253-9565d62f96c2/download";
-    private final static String NHS_SCOT_DAILY_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
-            + "427f9a25-db22-4014-a3bc-893b68243055/download";
-    private final static String NHS_SCOT_TOTAL_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
-            + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
-    private final static String NHS_SCOT_TOTAL_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
-            + "e8454cf0-1152-4bcb-b9da-4343f625dfef/download";
-    private final static String NHS_SCOT_TESTS_HEALTH_BOARDS_URL = NHS_SCOT_URL_PREFIX
-            + "8da654cd-293b-4286-96a4-b3ece86225f0/download";
-    private final static String NHS_SCOT_TESTS_COUNCIL_AREAS_URL = NHS_SCOT_URL_PREFIX
-            + "3349540e-dc63-4d6d-a78b-00387b9aca50/download";
-    private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsDailyHealthBoardLastModified.txt";
-    private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsDailyCouncilAreaLastModified.txt";
-    private final static String OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsTotalHealthBoardLastModified.txt";
-    private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsTotalCouncilAreaLastModified.txt";
-    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsTestsHealthBoardLastModified.txt";
-    private final static String OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS_LAST_MODIFIED = OBJECT_FOLDER
-            + "nhsTestsCouncilAreaLastModified.txt";
+    private final static String NHS_SCOT_URL_PREFIX = "https://www.opendata.nhs.scot/dataset/";
+    private final static String NHS_SCOT_DAILY_URL_PREFIX = NHS_SCOT_URL_PREFIX
+            + "b318bddf-a4dc-4262-971f-0ba329e09b87/resource/";
 
-    private final static String OBJECTKEY_NHS_SCOT_DAILY_HEALTH_BOARDS = OBJECT_FOLDER + "dailyHealthBoards.csv";
-    private final static String OBJECTKEY_NHS_SCOT_DAILY_COUNCIL_AREAS = OBJECT_FOLDER + "dailyCouncilAreas.csv";
-    private final static String OBJECTKEY_NHS_SCOT_TOTAL_HEALTH_BOARDS = OBJECT_FOLDER
-            + "currentTotalsHealthBoards.csv";
-    private final static String OBJECTKEY_NHS_SCOT_TOTAL_COUNCIL_AREAS = OBJECT_FOLDER
-            + "currentTotalsCouncilAreas.csv";
-    private final static String OBJECTKEY_NHS_SCOT_TESTS_HEALTH_BOARDS = OBJECT_FOLDER + "testsHealthBoards.csv";
-    private final static String OBJECTKEY_NHS_SCOT_TESTS_COUNCIL_AREAS = OBJECT_FOLDER + "testsCouncilAreas.csv";
+    private final static String DAILY_HEALTH_BOARDS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "2dd8534b-0a6f-4744-9253-9565d62f96c2/download";
+    private final static String DAILY_COUNCIL_AREAS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "427f9a25-db22-4014-a3bc-893b68243055/download";
+    private final static String TOTAL_HEALTH_BOARDS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "7fad90e5-6f19-455b-bc07-694a22f8d5dc/download";
+    private final static String TOTAL_COUNCIL_AREAS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "e8454cf0-1152-4bcb-b9da-4343f625dfef/download";
+    private final static String TESTS_HEALTH_BOARDS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "8da654cd-293b-4286-96a4-b3ece86225f0/download";
+    private final static String TESTS_COUNCIL_AREAS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "3349540e-dc63-4d6d-a78b-00387b9aca50/download";
+    private final static String DAILY_AND_CUMULATIVE_TESTS_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "287fc645-4352-4477-9c8c-55bc054b7e76/download";
+    private final static String WEEKLY_TRENDS_BY_NEIGHBOURHOOD_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "8906de12-f413-4b3f-95a0-11ed15e61773/download";
+    private final static String DAILY_CASE_TRENDS_BY_AGE_AND_SEX_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "9393bd66-5012-4f01-9bc5-e7a10accacf4/download";
+    private final static String DAILY_CASE_TRENDS_BY_DEPRIVATION_URL = NHS_SCOT_DAILY_URL_PREFIX
+            + "a38a4c21-7c75-4ecd-a511-3f83e0e8f0c3/download";
+
+    private final static String HOSPITAL_ONSET_URL = NHS_SCOT_URL_PREFIX
+            + "d67b13ef-73a4-482d-b5df-d39d777540fd/resource/5acbccb1-e9d6-4ab2-a7ac-f3e4d378e7ec/download";
+
+    private final static String[][] DATASETS = {
+            { DAILY_COUNCIL_AREAS_URL, "dailyCouncilAreas" },
+            { DAILY_HEALTH_BOARDS_URL, "dailyHealthBoards" },
+            { TOTAL_COUNCIL_AREAS_URL, "currentTotalsCouncilAreas" },
+            { TOTAL_HEALTH_BOARDS_URL, "currentTotalsHealthBoards" },
+            { TESTS_COUNCIL_AREAS_URL, "testsCouncilAreas" },
+            { TESTS_HEALTH_BOARDS_URL, "testsHealthBoards" },
+            { DAILY_AND_CUMULATIVE_TESTS_URL, "dailyAndCumulativeTests" },
+            { WEEKLY_TRENDS_BY_NEIGHBOURHOOD_URL, "weeklyTrendsByNeighbourhood" },
+            { DAILY_CASE_TRENDS_BY_AGE_AND_SEX_URL, "dailyCaseTrendsByAgeAndSex" },
+            { DAILY_CASE_TRENDS_BY_DEPRIVATION_URL, "dailyCaseTrendsByDeprivation" },
+            { HOSPITAL_ONSET_URL, "hospitalOnset" }, };
 
     private static final String BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 }
