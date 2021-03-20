@@ -29,7 +29,7 @@ function aggregateWeeks(dates, placeDateValuesMap) {
     const weeklyDateValueMap = new Map();
     weeklyPlaceDateValuesMap.set(place, weeklyDateValueMap);
 
-    weeklyDates.forEach((weekStart, i) => {
+    weeklyDates.forEach((weekStart) => {
       const weekEnd = weekStart + millisInWeek;
 
       let total = {
@@ -39,7 +39,7 @@ function aggregateWeeks(dates, placeDateValuesMap) {
         cumulativeDeaths: 0,
       };
       weeklyDateValueMap.set(weekStart, total);
-      dates.forEach((date, i) => {
+      dates.forEach((date) => {
         if (date >= weekStart && date < weekEnd) {
           const current = dateValueMap.get(date);
           total.cases += current.cases;
@@ -101,7 +101,13 @@ export function parseCsvData(csvData) {
   if (scotland == null) {
     scotland = getScotlandRegion(regions);
   }
-  return { startDate:dates[0], endDate:dates[dates.length-1], dates: weeklyDates, scotland: scotland, regions: regions };
+  return {
+    startDate: dates[0],
+    endDate: dates[dates.length - 1],
+    dates: weeklyDates,
+    scotland: scotland,
+    regions: regions,
+  };
 }
 
 // Exported for tests
