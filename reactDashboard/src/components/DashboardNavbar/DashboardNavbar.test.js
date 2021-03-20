@@ -27,11 +27,13 @@ const overviewNavlink = () => findNavlink("Summary Statistics");
 const regionalNavlink = () => findNavlink("Regional Insights");
 
 describe("nav links content and highlighting", () => {
+  const darkmode = { value: false };
+
   it("summary page", async () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <DashboardNavbar />
+          <DashboardNavbar darkmode={darkmode} />
         </MemoryRouter>,
         container
       );
@@ -48,7 +50,7 @@ describe("nav links content and highlighting", () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={["/regional"]}>
-          <DashboardNavbar />
+          <DashboardNavbar darkmode={darkmode} />
         </MemoryRouter>,
         container
       );
@@ -65,7 +67,7 @@ describe("nav links content and highlighting", () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={["/regional/S08000026"]}>
-          <DashboardNavbar />
+          <DashboardNavbar darkmode={darkmode} />
         </MemoryRouter>,
         container
       );
@@ -82,7 +84,7 @@ describe("nav links content and highlighting", () => {
     await act(async () => {
       render(
         <MemoryRouter initialEntries={["/about"]}>
-          <DashboardNavbar />
+          <DashboardNavbar darkmode={darkmode} />
         </MemoryRouter>,
         container
       );
@@ -97,15 +99,18 @@ describe("nav links content and highlighting", () => {
 });
 
 describe("darkmode button", () => {
-  var storedDarkmode = false;
-  const setDarkmode = (value) => (storedDarkmode = value(storedDarkmode));
   const darkmodeButton = () => container.querySelector(".darkmode-btn-toggle");
+  var storedDarkmode = false;
+  const darkmode = {
+    value: storedDarkmode,
+    toggle: () => (storedDarkmode = !storedDarkmode),
+  };
 
   it("darkmode button", () => {
     act(() => {
       render(
         <MemoryRouter initialEntries={["/"]}>
-          <DashboardNavbar setDarkmode={setDarkmode} />
+          <DashboardNavbar darkmode={darkmode} />
         </MemoryRouter>,
         container
       );

@@ -36,8 +36,8 @@ test("getCanonicalUrl", () => {
     getCanonicalUrl("http://localhost:3000/regional", FEATURE_CODE_SCOTLAND)
   ).toStrictEqual("http://localhost:3000/regional");
 
-  expect(getCanonicalUrl("http://other", "S08000016")).toStrictEqual(
-    "http://other/S08000016"
+  expect(getCanonicalUrl("https://other", "S08000016")).toStrictEqual(
+    "https://other/S08000016"
   );
 
   expect(

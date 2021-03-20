@@ -9,6 +9,23 @@ import {
 } from "../Utils/CsvUtils";
 import moment from "moment";
 
+function getPlaceStats(
+  dateString,
+  dailyCases,
+  cumulativeCases,
+  dailyDeaths,
+  cumulativeDeaths
+) {
+  const date = moment.utc(dateString).valueOf();
+
+  return {
+    cases: { date: date, value: Number(dailyCases) },
+    deaths: { date: date, value: Number(dailyDeaths) },
+    cumulativeCases: { date: date, value: Number(cumulativeCases) },
+    cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
+  };
+}
+
 // Exported for tests
 export function parseNhsHBCsvData(lines) {
   const placeStatsMap = new Map();
@@ -28,14 +45,16 @@ export function parseNhsHBCsvData(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-
-      placeStatsMap.set(place, {
-        cases: { date: date, value: Number(dailyCases) },
-        deaths: { date: date, value: Number(dailyDeaths) },
-        cumulativeCases: { date: date, value: Number(cumulativeCases) },
-        cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-      });
+      placeStatsMap.set(
+        place,
+        getPlaceStats(
+          dateString,
+          dailyCases,
+          cumulativeCases,
+          dailyDeaths,
+          cumulativeDeaths
+        )
+      );
     }
   );
   return placeStatsMap;
@@ -59,14 +78,16 @@ export function parseNhsCACsvData(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-
-      placeStatsMap.set(place, {
-        cases: { date: date, value: Number(dailyCases) },
-        deaths: { date: date, value: Number(dailyDeaths) },
-        cumulativeCases: { date: date, value: Number(cumulativeCases) },
-        cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-      });
+      placeStatsMap.set(
+        place,
+        getPlaceStats(
+          dateString,
+          dailyCases,
+          cumulativeCases,
+          dailyDeaths,
+          cumulativeDeaths
+        )
+      );
     }
   );
   return placeStatsMap;
@@ -105,7 +126,9 @@ function RegionalSingleValueBar({
 
   useEffect(() => {
     if (currentTotalsHealthBoardDataset !== null) {
-      const datasetPlaceStatsMap = parseNhsHBCsvData(currentTotalsHealthBoardDataset);
+      const datasetPlaceStatsMap = parseNhsHBCsvData(
+        currentTotalsHealthBoardDataset
+      );
       setPlaceStatsMap(
         (existingMap) => new Map([...existingMap, ...datasetPlaceStatsMap])
       );
@@ -114,7 +137,9 @@ function RegionalSingleValueBar({
 
   useEffect(() => {
     if (currentTotalsCouncilAreaDataset !== null) {
-      const datasetPlaceStatsMap = parseNhsCACsvData(currentTotalsCouncilAreaDataset);
+      const datasetPlaceStatsMap = parseNhsCACsvData(
+        currentTotalsCouncilAreaDataset
+      );
       setPlaceStatsMap(
         (existingMap) => new Map([...datasetPlaceStatsMap, ...existingMap])
       );

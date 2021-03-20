@@ -8,7 +8,7 @@ import { NavLink, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
-const DashboardNavbar = ({ darkmode, setDarkmode }) => {
+const DashboardNavbar = ({ darkmode }) => {
   const [expanded, setExpanded] = useState(false);
 
   function navLink(pageUrl, title, exact = true) {
@@ -28,9 +28,9 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
   const darkmodeIcon = (className) => {
     return (
       <FontAwesomeIcon
-        icon={darkmode ? faSun : faMoon}
+        icon={darkmode.value ? faSun : faMoon}
         className={className}
-        onClick={() => setDarkmode((value) => !value)}
+        onClick={() => darkmode.toggle()}
       />
     );
   };
