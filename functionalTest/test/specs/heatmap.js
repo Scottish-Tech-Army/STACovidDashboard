@@ -38,25 +38,25 @@ describe("heatmap selection", () => {
 
     // City of Edinburgh heatbar
     const expectedValues1 = [
-      { l: 0, w: 5 },
-      { l: 1, w: 1 },
       { l: 0, w: 1 },
-      { l: 1, w: 1 },
-      { l: 2, w: 3 },
+      { l: 2, w: 2 },
+      { l: 4, w: 1 },
+      { l: 5, w: 7 },
+      { l: 4, w: 1 },
     ];
 
     checkHeatbarValues(5, expectedValues1);
 
-    // Orkney Islands
+    // Scottish Borders
     const expectedValues2 = [
-      { l: 0, w: 29 },
-      { l: 1, w: 2 },
-      { l: 0, w: 1 },
-      { l: 1, w: 1 },
-      { l: 0, w: 1 },
+      { l: 0, w: 3 },
+      { l: 3, w: 1 },
+      { l: 4, w: 2 },
+      { l: 3, w: 3 },
+      { l: 2, w: 1 },
     ];
 
-    checkHeatbarValues(23, expectedValues2);
+    checkHeatbarValues(26, expectedValues2);
   });
 
   it("health boards cases", () => {
@@ -96,23 +96,17 @@ describe("heatmap selection", () => {
 
     // Greater Glasgow & Clyde heatbar
     const expectedValues2 = [
-      { l: 0, w: 15 },
+      { l: 0, w: 3 },
       { l: 2, w: 1 },
-      { l: 0, w: 4 },
-      { l: 1, w: 1 },
-      { l: 2, w: 1 },
+      { l: 4, w: 1 },
+      { l: 5, w: 1 },
+      { l: 4, w: 6 },
     ];
 
     checkHeatbarValues(7, expectedValues2);
 
     // Shetland heatbar
-    const expectedValues3 = [
-      { l: 0, w: 34 },
-      { l: 1, w: 1 },
-      { l: 0, w: 3 },
-      { l: 2, w: 1 },
-      { l: 0, w: 2 },
-    ];
+    const expectedValues3 = [{ l: 0 }];
 
     checkHeatbarValues(12, expectedValues3);
   });
@@ -136,22 +130,22 @@ describe("heatmap selection", () => {
 
     // City of Edinburgh heatbar
     const expectedValues1 = [
-      { l: 0, w: 13 },
+      { l: 0, w: 4 },
+      { l: 2, w: 1 },
+      { l: 3, w: 7 },
       { l: 1, w: 1 },
-      { l: 0, w: 8 },
-      { l: 1, w: 1 },
-      { l: 0, w: 3 },
+      { l: 0, w: 1 },
     ];
 
     checkHeatbarValues(5, expectedValues1);
 
     // Perth & Kinross
     const expectedValues2 = [
-      { l: 0, w: 27 },
-      { l: 1, w: 1 },
-      { l: 0, w: 3 },
+      { l: 0, w: 5 },
       { l: 1, w: 2 },
+      { l: 2, w: 1 },
       { l: 0, w: 1 },
+      { l: 1, w: 2 },
     ];
 
     checkHeatbarValues(24, expectedValues2);
@@ -193,20 +187,20 @@ describe("heatmap selection", () => {
 
     // Greater Glasgow & Clyde heatbar
     const expectedValues2 = [
-      { l: 0, w: 4 },
-      { l: 1, w: 1 },
       { l: 0, w: 1 },
-      { l: 1, w: 2 },
-      { l: 0, w: 2 },
+      { l: 3, w: 1 },
+      { l: 4, w: 1 },
+      { l: 5, w: 1 },
+      { l: 6, w: 6 },
     ];
 
     checkHeatbarValues(7, expectedValues2);
 
     // Western Isles heatbar
     const expectedValues3 = [
-      { l: 0, w: 27 },
-      { l: 1, w: 1 },
-      { l: 0, w: 2 },
+      { l: 0, w: 30 },
+      { l: 3, w: 1 },
+      { l: 2, w: 1 },
       { l: 1, w: 2 },
       { l: 0, w: 2 },
     ];
@@ -216,11 +210,11 @@ describe("heatmap selection", () => {
 
   function checkScotlandCasesHeatbar() {
     const expectedValues = [
-      { l: 1, w: 1 },
-      { l: 0, w: 1 },
       { l: 2, w: 1 },
-      { l: 1, w: 1 },
-      { l: 2, w: 1 },
+      { l: 5, w: 2 },
+      { l: 6, w: 1 },
+      { l: 7, w: 7 },
+      { l: 6, w: 1 },
     ];
 
     checkHeatbarValues(0, expectedValues);
@@ -228,11 +222,11 @@ describe("heatmap selection", () => {
 
   function checkScotlandDeathsHeatbar() {
     const expectedValues = [
-      { l: 0, w: 13 },
+      { l: 0, w: 2 },
       { l: 1, w: 1 },
-      { l: 0, w: 1 },
-      { l: 2, w: 1 },
-      { l: 0, w: 1 },
+      { l: 3, w: 1 },
+      { l: 5, w: 8 },
+      { l: 4, w: 1 },
     ];
 
     checkHeatbarValues(0, expectedValues);
@@ -244,14 +238,18 @@ describe("heatmap selection", () => {
       expect(strokes[i]).toHaveElementClass("l-" + element.l);
     });
 
-    const calculatedDayWidth =
-      Number(strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
-    expectedValues.forEach((element, i) => {
-      expect(Number(strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
-        calculatedDayWidth * expectedValues[i].w,
-        4
-      );
-    });
+    if (expectedValues.length === 1) {
+      expect(strokes).toHaveLength(1);
+    } else {
+      const calculatedDayWidth =
+        Number(strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
+      expectedValues.forEach((element, i) => {
+        expect(Number(strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
+          calculatedDayWidth * expectedValues[i].w,
+          4
+        );
+      });
+    }
   }
 });
 
