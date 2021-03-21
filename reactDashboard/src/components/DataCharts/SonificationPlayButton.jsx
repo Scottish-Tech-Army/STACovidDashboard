@@ -74,14 +74,12 @@ const SonificationPlayButton = ({
         onClick={handleAudio}
         aria-label={createTitle()}
       >
-        <span>
-          <FontAwesomeIcon
-            icon={audioPlaying ? faVolumeMute : faVolumeUp}
-            size="2x"
-            color={darkmode ? "#f2f2f2" : "#6c6c6c"}
-          />
-          <h5>{audioPlaying ? "Stop" : "Listen"}</h5>
-        </span>
+        <FontAwesomeIcon
+          icon={audioPlaying ? faVolumeMute : faVolumeUp}
+          size="2x"
+          color={darkmode ? "#f2f2f2" : "#6c6c6c"}
+        />
+        <span>{audioPlaying ? "Stop" : "Listen"}</span>
       </button>
     </OverlayTrigger>
   );

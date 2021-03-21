@@ -192,7 +192,7 @@ function Heatmap({
       >
         <td>{name}</td>
         <td>{total}</td>
-        <td className="heatbarCell">
+        <td aria-hidden={true} className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, dates)}
           </div>
@@ -299,7 +299,7 @@ function Heatmap({
           <tr>
             <th>{areaTitle()}</th>
             <th>{valueTitle()}</th>
-            <th>
+            <th aria-hidden={true}>
               <div>DAILY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}

@@ -7,6 +7,19 @@
   font-size: 1rem;
 }
 
+#select-chart {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: left;
+  padding-top: 20px;
+  margin: 0 0 10px 5px;
+  color: #133a53;
+}
+
+.darkmode #select-chart {
+  color: #f2f2f2;
+}
+
 @media screen and (max-width: 600px) {
   .selected-chart {
     margin-left: 5px;

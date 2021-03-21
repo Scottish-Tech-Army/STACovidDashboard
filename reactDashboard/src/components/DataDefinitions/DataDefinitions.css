@@ -14,6 +14,10 @@
   align-items: center;
 }
 
+.data-definitions .accordion-header h2 {
+  font-size: 16px;
+}
+
 .data-definitions button.btn.btn-link {
   color: white;
   font-weight: bold;

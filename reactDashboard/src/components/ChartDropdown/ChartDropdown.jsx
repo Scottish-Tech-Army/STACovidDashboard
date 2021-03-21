@@ -38,14 +38,17 @@ const ChartDropdown = ({ chartType = DAILY_CASES, setChartType }) => {
   }
 
   return (
-    <Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
-      <Dropdown.Toggle className="selected-chart" value={chartType}>
-        {getChartTypeText(chartType)}
-      </Dropdown.Toggle>
-      <Dropdown.Menu className="chart-menu">
-        {[DAILY_CASES, TOTAL_CASES, DAILY_DEATHS, TOTAL_DEATHS, PERCENTAGE_TESTS].map(menuItem)}
-      </Dropdown.Menu>
-    </Dropdown>
+    <>
+      <label id="select-chart">Select Chart:</label>
+      <Dropdown onSelect={(eventKey) => setChartType(eventKey)}>
+        <Dropdown.Toggle className="selected-chart" value={chartType}>
+          {getChartTypeText(chartType)}
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="chart-menu">
+          {[DAILY_CASES, TOTAL_CASES, DAILY_DEATHS, TOTAL_DEATHS, PERCENTAGE_TESTS].map(menuItem)}
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
   );
 };
 

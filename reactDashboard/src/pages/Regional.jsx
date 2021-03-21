@@ -102,7 +102,7 @@ const Regional = ({
       <Container fluid className="regional-page">
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="region-page-top-row">
@@ -116,12 +116,12 @@ const Regional = ({
             />
           </Col>
           <Col className="region-tiles-column" xs={12} lg={8}>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
             />
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
             <RegionSingleValueBar
               regionCode={regionCode}
               councilAreaDataset={councilAreaDataset}
@@ -133,7 +133,7 @@ const Regional = ({
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="data-charts-container">
@@ -149,7 +149,7 @@ const Regional = ({
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
             <DataDefinitions />
           </Col>
         </Row>

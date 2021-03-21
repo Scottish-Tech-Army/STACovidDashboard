@@ -25,7 +25,7 @@ function ContextAwareToggle({ children, callback }) {
 
   return (
     <Card.Header className="accordion-header" onClick={decoratedOnClick}>
-      <span>Understanding the data</span>
+      <h2>Understanding the data</h2>
       <FontAwesomeIcon
         icon={isCurrentEventKey ? faAngleUp : faAngleDown}
         className="data-accordion-toggle"
@@ -96,7 +96,7 @@ function DataDefinitions() {
         <Accordion.Collapse eventKey="0">
           <Card.Body className="data-definitions-body">
             <p className="definitions-heading">Reporting and Specimen Dates</p>
-            <hr />
+            <hr aria-hidden={true} />
             <p>
               <strong>Reported Dates</strong>: Since the time taken to test
               samples and report the results varies, new cases reported on a
@@ -121,11 +121,11 @@ function DataDefinitions() {
                 </a>
               </span>
             </p>
-            <hr />
+            <hr aria-hidden={true} />
             <p className="definitions-heading">
               Total Counts for Health Boards and Council Areas
             </p>
-            <hr />
+            <hr aria-hidden={true} />
             <p className="definition-paragraph">
               NHS Board is assigned in the laboratory dataset and is based on
               postcode of residence, or if postcode is missing to the NHS Board

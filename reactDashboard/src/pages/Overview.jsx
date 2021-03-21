@@ -104,11 +104,12 @@ const Overview = ({
       <Container fluid>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row>
           <Col>
+            <h2 className="visually-hidden">Headline statistics</h2>
             <SingleValueBar
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
             />
@@ -116,7 +117,7 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row>
@@ -128,6 +129,9 @@ const Overview = ({
           >
             <Row>
               <Col>
+                <h2 className="visually-hidden">
+                  Select regions and data type
+                </h2>
                 <HeatmapDataSelector
                   areaType={areaType}
                   valueType={valueType}
@@ -138,7 +142,7 @@ const Overview = ({
             </Row>
             <Row>
               <Col>
-                <hr className="underHeatmapSelector" />
+                <hr aria-hidden={true} className="underHeatmapSelector" />
               </Col>
             </Row>
             <Row className="heatmaps-row">
@@ -156,7 +160,7 @@ const Overview = ({
                 />
               </Col>
               <Col className="responsive-divider">
-                <hr className="full-width-hr" />
+                <hr aria-hidden={true} className="full-width-hr" />
               </Col>
               <Col
                 xs={zoomGeoMap ? 0 : 12}
@@ -166,12 +170,15 @@ const Overview = ({
                 {zoomGeoMap ? (
                   <></>
                 ) : (
-                  <Heatmap
-                    councilAreaDataset={councilAreaDataset}
-                    healthBoardDataset={healthBoardDataset}
-                    areaType={areaType}
-                    valueType={valueType}
-                  />
+                  <>
+                    <h2 className="visually-hidden">Region statistics</h2>
+                    <Heatmap
+                      councilAreaDataset={councilAreaDataset}
+                      healthBoardDataset={healthBoardDataset}
+                      areaType={areaType}
+                      valueType={valueType}
+                    />
+                  </>
                 )}
               </Col>
             </Row>
@@ -179,11 +186,14 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
+            <h2 className="visually-hidden">
+              Time series statistics for Scotland
+            </h2>
             <DataCharts
               healthBoardDataset={healthBoardDataset}
               populationProportionMap={populationProportionMap}
@@ -193,13 +203,14 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
             <DataDefinitions />
-            <hr className="full-width-hr d-none d-sm-flex" />
+            <hr aria-hidden={true} className="full-width-hr d-none d-sm-flex" />
           </Col>
         </Row>
         <Row className="d-none d-sm-flex justify-content-center align-items-center">
           <Col>
+            <h2 className="visually-hidden">FACTS guidance</h2>
             <Facts />
           </Col>
         </Row>

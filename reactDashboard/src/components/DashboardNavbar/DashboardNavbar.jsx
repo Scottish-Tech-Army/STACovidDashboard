@@ -46,7 +46,7 @@ const DashboardNavbar = ({ darkmode, setDarkmode }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">
-          <h1 className="heading">Scottish COVID-19 Statistics</h1>
+          <h1 aria-hidden={true} className="heading">Scottish COVID-19 Statistics</h1>
         </Navbar.Brand>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Statistics")}

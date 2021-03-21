@@ -328,7 +328,7 @@ const GeoHeatMap = ({
   }, [currentHeatLevels]);
 
   return (
-    <div className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
+    <div aria-hidden={true} className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
       <LeafletMap
         ref={mapRef}
         id="map"
