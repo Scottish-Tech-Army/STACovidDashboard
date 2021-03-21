@@ -14,11 +14,7 @@ import {
   REGION_DATASET_COLOUR,
   AVERAGE_DATASET_COLOUR,
 } from "../DataCharts/DataChartsConsts";
-import {
-  createPlaceDateValuesMap,
-  getNhsCsvDataDateRange,
-  FEATURE_CODE_SCOTLAND,
-} from "../Utils/CsvUtils";
+import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import {
   commonChartConfiguration,
   datasetConfiguration,
@@ -32,96 +28,23 @@ import Col from "react-bootstrap/Col";
 import { stopAudio } from "../Utils/Sonification";
 import "../../chartjs-plugin-annotation/index.js";
 
-// Exported for tests
-export function parseNhsCsvData(csvData) {
-  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
-
-  const regionDailyCasesMap = new Map();
-  const regionDailyDeathsMap = new Map();
-  const regionTotalCasesMap = new Map();
-  const regionTotalDeathsMap = new Map();
-  const regionPercentageTestsMap = new Map();
-
-  const places = [...placeDateValuesMap.keys()];
-  places.forEach((place) => {
-    const dateValuesMap = placeDateValuesMap.get(place);
-
-    const percentageTestsPoints = [];
-    const dailyCasesPoints = [];
-    const dailyDeathsPoints = [];
-    const totalCasesPoints = [];
-    const totalDeathsPoints = [];
-
-    dates.forEach((date, i) => {
-      const {
-        cases,
-        deaths,
-        cumulativeCases,
-        cumulativeDeaths,
-        positivePercentage,
-      } = dateValuesMap.get(date);
-
-      percentageTestsPoints.push({
-        t: date,
-        y: positivePercentage,
-      });
-      dailyCasesPoints.push({
-        t: date,
-        y: cases,
-      });
-      dailyDeathsPoints.push({
-        t: date,
-        y: deaths,
-      });
-      totalCasesPoints.push({
-        t: date,
-        y: cumulativeCases,
-      });
-      totalDeathsPoints.push({
-        t: date,
-        y: cumulativeDeaths,
-      });
-    });
-    regionPercentageTestsMap.set(place, percentageTestsPoints);
-    regionDailyCasesMap.set(place, dailyCasesPoints);
-    regionDailyDeathsMap.set(place, dailyDeathsPoints);
-    regionTotalCasesMap.set(place, totalCasesPoints);
-    regionTotalDeathsMap.set(place, totalDeathsPoints);
-  });
-
-  return {
-    regionPercentageTestsMap: regionPercentageTestsMap,
-    regionDailyCasesMap: regionDailyCasesMap,
-    regionDailyDeathsMap: regionDailyDeathsMap,
-    regionTotalCasesMap: regionTotalCasesMap,
-    regionTotalDeathsMap: regionTotalDeathsMap,
-  };
-}
-
-const DataCharts = ({
-  healthBoardDataset = null,
+export default function DataCharts({
+  percentageTestsSeriesData = new Map(),
+  dailyCasesSeriesData = new Map(),
+  dailyDeathsSeriesData = new Map(),
+  totalCasesSeriesData = new Map(),
+  totalDeathsSeriesData = new Map(),
   darkmode,
-  councilAreaDataset = null,
   regionCode = FEATURE_CODE_SCOTLAND,
   populationProportionMap = new Map(),
-}) => {
+  maxDateRange = { startDate: 0, endDate: 1 },
+}) {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
-  const [percentageTestsSeriesData, setPercentageTestsSeriesData] = useState(
-    new Map()
-  );
-  const [dailyCasesSeriesData, setDailyCasesSeriesData] = useState(new Map());
-  const [dailyDeathsSeriesData, setDailyDeathsSeriesData] = useState(new Map());
-  const [totalCasesSeriesData, setTotalCasesSeriesData] = useState(new Map());
-  const [totalDeathsSeriesData, setTotalDeathsSeriesData] = useState(new Map());
   const [audio, setAudio] = useState(null);
   const [seriesTitle, setSeriesTitle] = useState("No data");
   const [chartType, setChartType] = useState(DAILY_CASES);
   const [dateRange, setDateRange] = useState({
-    startDate: 0,
-    endDate: 1,
-  });
-  const [maxDateRange, setMaxDateRange] = useState({
     startDate: 0,
     endDate: 1,
   });
@@ -138,71 +61,8 @@ const DataCharts = ({
   }, [chartType, dateRange]);
 
   useEffect(() => {
-    if (healthBoardDataset != null) {
-      const {
-        regionPercentageTestsMap,
-        regionDailyCasesMap,
-        regionDailyDeathsMap,
-        regionTotalCasesMap,
-        regionTotalDeathsMap,
-      } = parseNhsCsvData(healthBoardDataset);
-
-      setPercentageTestsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionPercentageTestsMap])
-      );
-      setDailyCasesSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
-      );
-      setDailyDeathsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionDailyDeathsMap])
-      );
-      setTotalCasesSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionTotalCasesMap])
-      );
-      setTotalDeathsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
-      );
-    }
-  }, [healthBoardDataset]);
-
-  useEffect(() => {
-    if (councilAreaDataset != null) {
-      const {
-        regionPercentageTestsMap,
-        regionDailyCasesMap,
-        regionDailyDeathsMap,
-        regionTotalCasesMap,
-        regionTotalDeathsMap,
-      } = parseNhsCsvData(councilAreaDataset);
-
-      setPercentageTestsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionPercentageTestsMap])
-      );
-      setDailyCasesSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionDailyCasesMap])
-      );
-      setDailyDeathsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionDailyDeathsMap])
-      );
-      setTotalCasesSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionTotalCasesMap])
-      );
-      setTotalDeathsSeriesData(
-        (existingMap) => new Map([...existingMap, ...regionTotalDeathsMap])
-      );
-    }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(
-        healthBoardDataset,
-        councilAreaDataset
-      );
-      setMaxDateRange(parseDateRange);
-      setDateRange(parseDateRange);
-    }
-  }, [healthBoardDataset, councilAreaDataset]);
+    setDateRange({ ...maxDateRange });
+  }, [maxDateRange]);
 
   useEffect(() => {
     function getAverageSeriesData(seriesData) {
@@ -370,10 +230,8 @@ const DataCharts = ({
       </Row>
       <Row className="chart-dropdown-container">
         <QuickSelectDateRange
-          dateRange={dateRange}
           setDateRange={setDateRange}
           maxDateRange={maxDateRange}
-          setMaxDateRange={setMaxDateRange}
         />
       </Row>
       <Row className="d-flex justify-content-center">
@@ -381,8 +239,7 @@ const DataCharts = ({
           id="date-range-slider-position"
           dateRange={dateRange}
           setDateRange={setDateRange}
-          healthBoardDataset={healthBoardDataset}
-          councilAreaDataset={councilAreaDataset}
+          maxDateRange={maxDateRange}
         />
         <SonificationPlayButton
           seriesData={audio}
@@ -398,6 +255,4 @@ const DataCharts = ({
       </Row>
     </Container>
   );
-};
-
-export default DataCharts;
+}

@@ -13,6 +13,15 @@ import {
   FEATURE_CODE_HEALTH_BOARDS,
   FEATURE_CODE_SCOTLAND,
 } from "../Utils/CsvUtils";
+/*
+  geoJSONHealthBoards data from
+  https://www.spatialdata.gov.scot/geonetwork/srv/eng/catalog.search;#/metadata/f12c3826-4b4b-40e6-bf4f-77b9ed01dc14
+  geoJSONCouncilAreas data the district_borough_unitary_region dataset from
+  https://osdatahub.os.uk/downloads/open/BoundaryLine
+
+  Both were converted to WGS84 and simplified to 0.5% of original detail and converted to GEOJson using mapshaper.org
+  Additionally, the non Scotland features of the council areas data were removed.
+*/
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
 import Control from "react-leaflet-control";
@@ -24,23 +33,11 @@ import {
   DARK_MAP_TILES_URL,
 } from "./GeoUtils";
 
-/*
-  geoJSONHealthBoards data from
-  https://www.spatialdata.gov.scot/geonetwork/srv/eng/catalog.search;#/metadata/f12c3826-4b4b-40e6-bf4f-77b9ed01dc14
-  geoJSONCouncilAreas data the district_borough_unitary_region dataset from
-  https://osdatahub.os.uk/downloads/open/BoundaryLine
-
-  Both were converted to WGS84 and simplified to 0.5% of original detail and converted to GEOJson using mapshaper.org
-  Additionally, the non Scotland features of the council areas data were removed.
-*/
-
-const RegionGeoMap = ({
-  councilAreaDataset,
-  healthBoardDataset,
+export default function RegionGeoMap({
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode = null,
   darkmode,
-}) => {
+}) {
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null
   );
@@ -193,6 +190,4 @@ const RegionGeoMap = ({
       </LeafletMap>
     </div>
   );
-};
-
-export default RegionGeoMap;
+}

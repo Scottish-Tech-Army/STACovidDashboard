@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SingleValueBar from "../components/SingleValue/SingleValueBar";
+import SingleValueBar from "../containers/SingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
-import Heatmap from "../components/HeatMap/Heatmap";
-import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
-import DataCharts from "../components/DataCharts/DataCharts";
+import Heatmap from "../containers/Heatmap";
+import GeoHeatMap from "../containers/GeoHeatMap";
+import DataCharts from "../containers/DataCharts";
 import Facts from "../components/Facts/Facts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";

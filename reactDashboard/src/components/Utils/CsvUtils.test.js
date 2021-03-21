@@ -438,29 +438,29 @@ test("parse7DayWindowCsvData", () => {
   // Highland : 09/03 - 06/03 : 4 days of data
   const expectedResult = new Map()
     .set("S08000020", {
-      cases: 21,
-      deaths: 1,
+      weeklyCases: 21,
+      weeklyDeaths: 1,
       name: "Grampian",
       fromDate: Date.parse("2020-03-03"),
       toDate: Date.parse("2020-03-09"),
     })
     .set("S08000031", {
-      cases: 1050,
-      deaths: 51,
+      weeklyCases: 1050,
+      weeklyDeaths: 51,
       name: "Greater Glasgow & Clyde",
       fromDate: Date.parse("2020-03-03"),
       toDate: Date.parse("2020-03-09"),
     })
     .set("S08000022", {
-      cases: 501,
-      deaths: 34,
+      weeklyCases: 501,
+      weeklyDeaths: 34,
       name: "Highland",
       fromDate: Date.parse("2020-03-03"),
       toDate: Date.parse("2020-03-09"),
     })
     .set("S92000003", {
-      cases: 1572,
-      deaths: 86,
+      weeklyCases: 1572,
+      weeklyDeaths: 86,
       name: "Scotland",
       fromDate: Date.parse("2020-03-03"),
       toDate: Date.parse("2020-03-09"),

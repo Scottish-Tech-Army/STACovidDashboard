@@ -158,8 +158,8 @@ export function parse7DayWindowCsvData(csvData) {
       }
     });
     regions.set(featureCode, {
-      cases: regionTotalCases,
-      deaths: regionTotalDeaths,
+      weeklyCases: regionTotalCases,
+      weeklyDeaths: regionTotalDeaths,
       fromDate: filteredDates[0],
       name: getPlaceNameByFeatureCode(featureCode),
       toDate: endDate,
@@ -169,8 +169,8 @@ export function parse7DayWindowCsvData(csvData) {
   });
 
   regions.set(FEATURE_CODE_SCOTLAND, {
-    cases: scotlandTotalCases,
-    deaths: scotlandTotalDeaths,
+    weeklyCases: scotlandTotalCases,
+    weeklyDeaths: scotlandTotalDeaths,
     fromDate: filteredDates[0],
     name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
     toDate: endDate,

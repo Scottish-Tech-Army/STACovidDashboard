@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
+import RegionSingleValueBar from "../containers/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
-import DataCharts from "../components/DataCharts/DataCharts";
+import DataCharts from "../containers/DataCharts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
@@ -108,8 +108,6 @@ const Regional = ({
         <Row className="region-page-top-row">
           <Col className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
               regionCode={regionCode}
               setRegionCode={setRegionCode}
               darkmode={darkmode}
