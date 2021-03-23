@@ -96,24 +96,35 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
   }
 
   const result = [];
-  var i = 0;
-  while (i < elements.length) {
-    const startElement = elements[i];
-    var width = 1;
-    for (width = 1; i + width < elements.length; width++) {
-      if (startElement !== elements[i + width]) {
+  var startDateIndex = 0;
+  while (startDateIndex < elements.length) {
+    const startElement = elements[startDateIndex];
+    let dayCount;
+    for (
+      dayCount = 1;
+      startDateIndex + dayCount < elements.length;
+      dayCount++
+    ) {
+      if (startElement !== elements[startDateIndex + dayCount]) {
         break;
       }
     }
     const dateString =
-      width === 1
-        ? formatDate(dates[i])
-        : formatDate(dates[i]) + " - " + formatDate(dates[i + width - 1]);
+      dayCount === 1
+        ? formatDate(dates[startDateIndex])
+        : formatDate(dates[startDateIndex]) +
+          " - " +
+          formatDate(dates[startDateIndex + dayCount - 1]);
 
     result.push(
-      createHeatbarLine(startElement, i, width, region + "\n" + dateString)
+      createHeatbarLine(
+        startElement,
+        startDateIndex,
+        dayCount,
+        region + "\n" + dateString
+      )
     );
-    i += width;
+    startDateIndex += dayCount;
   }
 
   return result;
@@ -142,17 +153,17 @@ function Heatmap({
     const count = elements.length;
     const elementWidth = width / count;
 
-    function createHeatbarLine(element, startIndex, width, titleText) {
-      const x = elementWidth * (startIndex + width / 2);
+    function createHeatbarLine(element, startDateIndex, dayCount, titleText) {
+      const x = elementWidth * (startDateIndex + dayCount / 2);
       return (
         <line
-          key={startIndex}
+          key={startDateIndex}
           className={"l-" + element}
           x1={x}
           y1="0"
           x2={x}
           y2="100%"
-          strokeWidth={elementWidth * width}
+          strokeWidth={elementWidth * dayCount}
         >
           <title>{titleText}</title>
         </line>

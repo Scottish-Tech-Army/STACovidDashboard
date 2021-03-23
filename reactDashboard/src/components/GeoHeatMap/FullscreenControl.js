@@ -1,8 +1,7 @@
 import { Control, DomUtil, DomEvent } from "leaflet";
 import { withLeaflet } from "react-leaflet";
 import { Component } from "react";
-import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
-import { faSearchMinus } from "@fortawesome/free-solid-svg-icons";
+import { faSearchPlus, faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 import "./FullscreenControl.css";
 
 var Zoom = Control.extend({
@@ -51,7 +50,9 @@ var Zoom = Control.extend({
     return icon;
   },
 
-  onRemove: function (map) {},
+  onRemove: function (map) {
+      // Do nothing
+  },
 
   setFullscreenIcon: function (fullscreenEnabled) {
     this._enterFullscreenIcon.setAttribute(

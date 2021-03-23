@@ -9,6 +9,23 @@ import {
 } from "../Utils/CsvUtils";
 import moment from "moment";
 
+function getPlaceStats(
+  dateString,
+  dailyCases,
+  cumulativeCases,
+  dailyDeaths,
+  cumulativeDeaths
+) {
+  const date = moment.utc(dateString).valueOf();
+
+  return {
+    cases: { date: date, value: Number(dailyCases) },
+    deaths: { date: date, value: Number(dailyDeaths) },
+    cumulativeCases: { date: date, value: Number(cumulativeCases) },
+    cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
+  };
+}
+
 // Exported for tests
 export function parseNhsHBCsvData(lines) {
   const placeStatsMap = new Map();
@@ -28,14 +45,16 @@ export function parseNhsHBCsvData(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-
-      placeStatsMap.set(place, {
-        cases: { date: date, value: Number(dailyCases) },
-        deaths: { date: date, value: Number(dailyDeaths) },
-        cumulativeCases: { date: date, value: Number(cumulativeCases) },
-        cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-      });
+      placeStatsMap.set(
+        place,
+        getPlaceStats(
+          dateString,
+          dailyCases,
+          cumulativeCases,
+          dailyDeaths,
+          cumulativeDeaths
+        )
+      );
     }
   );
   return placeStatsMap;
@@ -59,14 +78,16 @@ export function parseNhsCACsvData(lines) {
       ],
       i
     ) => {
-      const date = moment.utc(dateString).valueOf();
-
-      placeStatsMap.set(place, {
-        cases: { date: date, value: Number(dailyCases) },
-        deaths: { date: date, value: Number(dailyDeaths) },
-        cumulativeCases: { date: date, value: Number(cumulativeCases) },
-        cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-      });
+      placeStatsMap.set(
+        place,
+        getPlaceStats(
+          dateString,
+          dailyCases,
+          cumulativeCases,
+          dailyDeaths,
+          cumulativeDeaths
+        )
+      );
     }
   );
   return placeStatsMap;
@@ -105,38 +126,42 @@ function RegionalSingleValueBar({
 
   useEffect(() => {
     if (currentTotalsHealthBoardDataset !== null) {
-      const placeStatsMap = parseNhsHBCsvData(currentTotalsHealthBoardDataset);
+      const datasetPlaceStatsMap = parseNhsHBCsvData(
+        currentTotalsHealthBoardDataset
+      );
       setPlaceStatsMap(
-        (existingMap) => new Map([...existingMap, ...placeStatsMap])
+        (existingMap) => new Map([...existingMap, ...datasetPlaceStatsMap])
       );
     }
   }, [currentTotalsHealthBoardDataset]);
 
   useEffect(() => {
     if (currentTotalsCouncilAreaDataset !== null) {
-      const placeStatsMap = parseNhsCACsvData(currentTotalsCouncilAreaDataset);
+      const datasetPlaceStatsMap = parseNhsCACsvData(
+        currentTotalsCouncilAreaDataset
+      );
       setPlaceStatsMap(
-        (existingMap) => new Map([...placeStatsMap, ...existingMap])
+        (existingMap) => new Map([...datasetPlaceStatsMap, ...existingMap])
       );
     }
   }, [currentTotalsCouncilAreaDataset]);
 
   useEffect(() => {
     if (null !== councilAreaDataset) {
-      const placeStatsMap = parse7DayWindowCsvData(councilAreaDataset);
+      const datasetPlaceStatsMap = parse7DayWindowCsvData(councilAreaDataset);
       setPlaceWeeklyStatsMap(
         // In case of duplicate (Scotland), HB takes precedence
-        (existingMap) => new Map([...placeStatsMap, ...existingMap])
+        (existingMap) => new Map([...datasetPlaceStatsMap, ...existingMap])
       );
     }
   }, [councilAreaDataset]);
 
   useEffect(() => {
     if (null !== healthBoardDataset) {
-      const placeStatsMap = parse7DayWindowCsvData(healthBoardDataset);
+      const datasetPlaceStatsMap = parse7DayWindowCsvData(healthBoardDataset);
       setPlaceWeeklyStatsMap(
         // In case of duplicate (Scotland), HB takes precedence
-        (existingMap) => new Map([...existingMap, ...placeStatsMap])
+        (existingMap) => new Map([...existingMap, ...datasetPlaceStatsMap])
       );
     }
   }, [healthBoardDataset]);

@@ -31,6 +31,7 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
+import useDarkMode from 'use-dark-mode';
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -74,7 +75,7 @@ const App = () => {
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
-  const [darkmode, setDarkmode] = useState(false);
+  const darkmode = useDarkMode(false, {classNameDark: "darkmode"});
 
   // Load and parse datasets
   useEffect(() => {
@@ -119,22 +120,22 @@ const App = () => {
 
   useEffect(() => {
     if (healthBoardDataset != null) {
-      const populationMap = getPopulationMap(
+      const datasetPopulationMap = getPopulationMap(
         createPlaceDateValuesMap(healthBoardDataset)
       );
       setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
+        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
       );
     }
   }, [healthBoardDataset]);
 
   useEffect(() => {
     if (councilAreaDataset != null) {
-      const populationMap = getPopulationMap(
+      const datasetPopulationMap = getPopulationMap(
         createPlaceDateValuesMap(councilAreaDataset)
       );
       setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...populationMap])
+        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
       );
     }
   }, [councilAreaDataset]);
@@ -144,13 +145,13 @@ const App = () => {
   }, [populationMap]);
 
   return (
-    <div className={darkmode ? "App darkmode" : "App"}>
+    <div className="App">
       <Router basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
         <StopAudio />
         <header>
           <h1 className="visually-hidden">Scottish COVID-19 Statistics</h1>
-          <DashboardNavbar darkmode={darkmode} setDarkmode={setDarkmode} />
+          <DashboardNavbar darkmode={darkmode} />
         </header>
         <Switch>
           <Route exact path={URL_OVERVIEW}>
@@ -159,7 +160,7 @@ const App = () => {
               healthBoardDataset={healthBoardDataset}
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               populationProportionMap={populationProportionMap}
-              darkmode={darkmode}
+              darkmode={darkmode.value}
             />
           </Route>
           <Route path={URL_REGIONAL}>
@@ -169,7 +170,7 @@ const App = () => {
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
               currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
               populationProportionMap={populationProportionMap}
-              darkmode={darkmode}
+              darkmode={darkmode.value}
             />
           </Route>
           <Route path={URL_ACCESSIBILITY}>

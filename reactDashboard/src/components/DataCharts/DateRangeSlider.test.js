@@ -1,9 +1,8 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import DateRangeSlider from "./DateRangeSlider";
+import DateRangeSlider, { getMarks } from "./DateRangeSlider";
 import { readCsvData } from "../Utils/CsvUtils";
-import { getMarks } from "./DateRangeSlider";
 
 var container = null;
 beforeEach(() => {
@@ -50,7 +49,6 @@ const dateRange = {
 };
 
 describe("getMarks", () => {
-
   it("normalRange", () => {
     const expectedResult = [
       {
@@ -100,7 +98,6 @@ describe("getMarks", () => {
   });
 
   describe("check maximum date ranges", () => {
-
     const minimumDateValue = () =>
       container
         .querySelector(".MuiSlider-root .MuiSlider-thumb")
@@ -159,6 +156,5 @@ describe("getMarks", () => {
         String(Date.parse("2020-03-09"))
       );
     });
-
   });
 });

@@ -17,7 +17,9 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
     qualifiedName === "svg"
   ) {
     var element = createElementNSOrig.apply(this, arguments);
-    element.createSVGRect = function () {};
+    element.createSVGRect = function () {
+      // Do nothing
+    };
     return element;
   }
   return createElementNSOrig.apply(this, arguments);
@@ -25,8 +27,12 @@ global.document.createElementNS = function (namespaceURI, qualifiedName) {
 
 // Suppress console error message
 global.suppressConsoleErrorLogs = () =>
-  jest.spyOn(console, "error").mockImplementation(() => {});
+  jest.spyOn(console, "error").mockImplementation(() => {
+    // Do nothing
+  });
 
 // Suppress console warning message
 global.suppressConsoleWarnLogs = () =>
-  jest.spyOn(console, "warn").mockImplementation(() => {});
+  jest.spyOn(console, "warn").mockImplementation(() => {
+    // Do nothing
+  });

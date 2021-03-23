@@ -205,7 +205,7 @@ const DataCharts = ({
   }, [healthBoardDataset, councilAreaDataset]);
 
   useEffect(() => {
-    function getAverageSeriesData(seriesData, regionCode, chartType) {
+    function getAverageSeriesData(seriesData) {
       const scotlandData = seriesData.get(FEATURE_CODE_SCOTLAND);
       if (!regionCode || !scotlandData) {
         return scotlandData;
@@ -226,13 +226,13 @@ const DataCharts = ({
       ? "rgb(118, 118, 118, 0.50)"
       : "rgb(118, 118, 118, 0.25)";
 
-    function getAverageSeriesLabel(chartType) {
+    function getAverageSeriesLabel() {
       return chartType === PERCENTAGE_TESTS
         ? "Scotland average"
         : "Scotland average (adjusted for population)";
     }
 
-    function getChartDatasets(chartType, seriesData, regionCode, datasetLabel) {
+    function getChartDatasets(seriesData, datasetLabel) {
       const datasets = [];
       const regionSeriesData = seriesData.get(regionCode);
       if (regionSeriesData !== undefined) {
@@ -244,16 +244,12 @@ const DataCharts = ({
           )
         );
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
-          const averageSeriesData = getAverageSeriesData(
-            seriesData,
-            regionCode,
-            chartType
-          );
+          const averageSeriesData = getAverageSeriesData(seriesData);
           if (averageSeriesData) {
             datasets.push(
               datasetConfiguration(
-                getAverageSeriesLabel(chartType),
-                getAverageSeriesData(seriesData, regionCode, chartType),
+                getAverageSeriesLabel(),
+                getAverageSeriesData(seriesData),
                 AVERAGE_DATASET_COLOUR,
                 AVERAGE_DATASET_FILL_COLOUR
               )
@@ -265,19 +261,12 @@ const DataCharts = ({
     }
 
     function setChart(
-      chartType,
       datasetLabel,
       seriesData,
-      regionCode,
       additionalConfiguration,
       sonificationLabel
     ) {
-      const datasets = getChartDatasets(
-        chartType,
-        seriesData,
-        regionCode,
-        datasetLabel
-      );
+      const datasets = getChartDatasets(seriesData, datasetLabel);
       const chartConfiguration = commonChartConfiguration(
         datasets,
         darkmode,
@@ -308,10 +297,10 @@ const DataCharts = ({
       configuration.options.annotation.annotations.push(getWhoThresholdLine());
     }
 
-    function setSonification(seriesData, seriesTitle) {
+    function setSonification(seriesData, seriesLabel) {
       if (seriesData !== null && seriesData !== undefined) {
         setAudio(seriesData);
-        setSeriesTitle(seriesTitle);
+        setSeriesTitle(seriesLabel);
       }
     }
 
@@ -320,39 +309,17 @@ const DataCharts = ({
     }
 
     if (chartType === DAILY_CASES) {
-      setChart(
-        chartType,
-        dailyCasesDatasetLabel,
-        dailyCasesSeriesData,
-        regionCode
-      );
+      setChart(dailyCasesDatasetLabel, dailyCasesSeriesData);
     } else if (chartType === DAILY_DEATHS) {
-      setChart(
-        chartType,
-        dailyDeathsDatasetLabel,
-        dailyDeathsSeriesData,
-        regionCode
-      );
+      setChart(dailyDeathsDatasetLabel, dailyDeathsSeriesData);
     } else if (chartType === TOTAL_CASES) {
-      setChart(
-        chartType,
-        totalCasesDatasetLabel,
-        totalCasesSeriesData,
-        regionCode
-      );
+      setChart(totalCasesDatasetLabel, totalCasesSeriesData);
     } else if (chartType === TOTAL_DEATHS) {
-      setChart(
-        chartType,
-        totalDeathsDatasetLabel,
-        totalDeathsSeriesData,
-        regionCode
-      );
+      setChart(totalDeathsDatasetLabel, totalDeathsSeriesData);
     } else if (chartType === PERCENTAGE_TESTS) {
       setChart(
-        chartType,
         percentageTestsDatasetLabel,
         percentageTestsSeriesData,
-        regionCode,
         percentageTestsChartConfiguration,
         "Percentage tests positive"
       );

@@ -2,11 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import {
-  Map as LeafletMap,
-  TileLayer,
-  ZoomControl,
-} from "react-leaflet";
+import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
@@ -152,14 +148,12 @@ const RegionGeoMap = ({
     const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
+      const selectedColour = darkmode ? DARK_SELECTED_COLOUR : SELECTED_COLOUR;
+
       return {
         color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
         fillColor:
-          featureCode === regionCode
-            ? darkmode
-              ? DARK_SELECTED_COLOUR
-              : SELECTED_COLOUR
-            : UNSELECTED_COLOUR,
+          featureCode === regionCode ? selectedColour : UNSELECTED_COLOUR,
         opacity: 0.5,
         fillOpacity: featureCode === regionCode ? 0.5 : 0,
         weight: 1,

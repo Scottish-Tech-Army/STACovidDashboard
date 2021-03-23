@@ -1,5 +1,5 @@
 import dashboard from "../pageobjects/dashboardPage";
-import reusable from "../utilities/reusableLibrary";
+import { checkChartTimespanSelection } from "../utilities/utils";
 
 describe("Covid-19 Dashboard", () => {
   it("should have correct title", () => {
@@ -38,41 +38,41 @@ describe("Verify Single Value Bar Visibility", () => {
   });
 });
 
-describe("Analitycal Chart with timeSpan", () => {
-  it("Analitycal charts-->Daily Cases", () => {
+describe("Analytical Chart with timeSpan", () => {
+  it("Analytical charts-->Daily Cases", () => {
     dashboard.open();
-    dashboard.chartDropdown.click();
-    dashboard.selectChartDropdownOption("Daily Cases").click();
-    reusable.sliderTrackResult();
+    selectChartType("Daily Cases");
+    checkChartTimespanSelection();
   });
 
-  it("Analitycal charts-->Total Cases", () => {
+  it("Analytical charts-->Total Cases", () => {
     dashboard.open();
-    dashboard.chartDropdown.click();
-    dashboard.selectChartDropdownOption("Total Cases").click();
-    reusable.sliderTrackResult();
+    selectChartType("Total Cases");
+    checkChartTimespanSelection();
   });
 
-  it("Analitycal charts-->Daily Deaths", () => {
+  it("Analytical charts-->Daily Deaths", () => {
     dashboard.open();
-    dashboard.chartDropdown.click();
-    dashboard.selectChartDropdownOption("Daily Deaths").click();
-    reusable.sliderTrackResult();
+    selectChartType("Daily Deaths");
+    checkChartTimespanSelection();
   });
 
-  it("Analitycal charts-->Total Deaths", () => {
+  it("Analytical charts-->Total Deaths", () => {
     dashboard.open();
-    dashboard.chartDropdown.click();
-    dashboard.selectChartDropdownOption("Total Deaths").click();
-    reusable.sliderTrackResult();
+    selectChartType("Total Deaths");
+    checkChartTimespanSelection();
   });
 
-  it("Analitycal charts-->% Tests Positive", () => {
+  it("Analytical charts-->% Tests Positive", () => {
     dashboard.open();
-    dashboard.chartDropdown.click();
-    dashboard.selectChartDropdownOption("% Tests Positive").click();
-    reusable.sliderTrackResult();
+    selectChartType("% Tests Positive");
+    checkChartTimespanSelection();
   });
+
+  function selectChartType(chartTypeLabel) {
+    dashboard.chartDropdown.click();
+    dashboard.selectChartDropdownOption(chartTypeLabel).click();
+  }
 });
 
 describe("Verify FACTS and NEWS Container", () => {
