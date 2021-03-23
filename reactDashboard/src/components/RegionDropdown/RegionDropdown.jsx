@@ -33,7 +33,7 @@ const RegionDropdown = ({
 
   return (
     <div className="region-selector-row">
-      <strong className="region-selector-label">
+      <strong aria-hidden={true} className="region-selector-label">
         Select region (or select on map):
       </strong>
       <Dropdown onSelect={(eventKey) => setRegionCode(eventKey)}>

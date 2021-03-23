@@ -12,6 +12,7 @@ import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_MAP,
+  getPlaceNameByFeatureCode,
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
@@ -106,7 +107,7 @@ const Regional = ({
           </Col>
         </Row>
         <Row className="region-page-top-row">
-          <Col className="geo-map-column" xs={12} lg={4}>
+          <Col aria-hidden={true} className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
               councilAreaDataset={councilAreaDataset}
               healthBoardDataset={healthBoardDataset}
@@ -117,11 +118,15 @@ const Regional = ({
           </Col>
           <Col className="region-tiles-column" xs={12} lg={8}>
             <hr aria-hidden={true} className="full-width-hr" />
+            <h2 className="visually-hidden">
+              Select region
+            </h2>
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
             />
             <hr aria-hidden={true} className="full-width-hr" />
+            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(regionCode)}`}</h2>
             <RegionSingleValueBar
               regionCode={regionCode}
               councilAreaDataset={councilAreaDataset}
@@ -138,6 +143,9 @@ const Regional = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
+          <h2 className="visually-hidden">
+            {`Time series statistics for ${getPlaceNameByFeatureCode(regionCode)}`}
+          </h2>
             <DataCharts
               regionCode={regionCode}
               councilAreaDataset={councilAreaDataset}

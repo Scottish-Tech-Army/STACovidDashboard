@@ -109,7 +109,7 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <h2 className="visually-hidden">Headline statistics</h2>
+            <h2 className="visually-hidden">Headline statistics for Scotland</h2>
             <SingleValueBar
               currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
             />
