@@ -49,7 +49,7 @@ function toggleFullscreen(element, setter) {
   }
 }
 
-const Overview = ({ allData, populationProportionMap, darkmode }) => {
+const Overview = ({ allData, darkmode }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);

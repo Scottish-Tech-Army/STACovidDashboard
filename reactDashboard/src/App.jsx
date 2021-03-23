@@ -63,104 +63,22 @@ const StopAudio = () => {
 
 const App = () => {
   const [allData, setAllData] = useState(null);
-  const [healthBoardDataset, setHealthBoardDataset] = useState(null);
-  const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
-  const [
-    currentTotalsHealthBoardDataset,
-    setCurrentTotalsHealthBoardDataset,
-  ] = useState(null);
-  const [
-    currentTotalsCouncilAreaDataset,
-    setCurrentTotalsCouncilAreaDataset,
-  ] = useState(null);
-  const [populationMap, setPopulationMap] = useState(new Map());
-  const [populationProportionMap, setPopulationProportionMap] = useState(
-    new Map()
-  );
   const darkmode = useDarkMode(false, { classNameDark: "darkmode" });
 
-  // Load and parse datasets
   useEffect(() => {
-    if (null === councilAreaDataset) {
-      fetchAndStore(
-        "dailyCouncilAreas.csv",
-        setCouncilAreaDataset,
-        readCsvData
-      );
+    if (null === allData) {
+      fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((jsonData) => {
+          setAllData(jsonData);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    if (null === healthBoardDataset) {
-      fetchAndStore(
-        "dailyHealthBoards.csv",
-        setHealthBoardDataset,
-        readCsvData
-      );
-    }
-  }, [healthBoardDataset]);
-
-  useEffect(() => {
-    if (null === currentTotalsCouncilAreaDataset) {
-      fetchAndStore(
-        "currentTotalsCouncilAreas.csv",
-        setCurrentTotalsCouncilAreaDataset,
-        readCsvData
-      );
-    }
-  }, [currentTotalsCouncilAreaDataset]);
-
-  useEffect(() => {
-    if (null === currentTotalsHealthBoardDataset) {
-      fetchAndStore(
-        "currentTotalsHealthBoards.csv",
-        setCurrentTotalsHealthBoardDataset,
-        readCsvData
-      );
-    }
-  }, [currentTotalsHealthBoardDataset]);
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const datasetPopulationMap = getPopulationMap(
-        createPlaceDateValuesMap(healthBoardDataset)
-      );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
-      );
-    }
-  }, [healthBoardDataset]);
-
-  useEffect(() => {
-    if (councilAreaDataset != null) {
-      const datasetPopulationMap = getPopulationMap(
-        createPlaceDateValuesMap(councilAreaDataset)
-      );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
-      );
-    }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
-  }, [populationMap]);
-
-  useEffect(() => {
-    setAllData(
-      getAllData(
-        currentTotalsHealthBoardDataset,
-        currentTotalsCouncilAreaDataset,
-        councilAreaDataset,
-        healthBoardDataset
-      )
-    );
-  }, [
-    currentTotalsCouncilAreaDataset,
-    currentTotalsHealthBoardDataset,
-    healthBoardDataset,
-    councilAreaDataset,
-  ]);
+  }, []);
 
   return (
     <div className="App">
@@ -173,18 +91,10 @@ const App = () => {
         </header>
         <Switch>
           <Route exact path={URL_OVERVIEW}>
-            <Overview
-              allData={allData}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode.value}
-            />
+            <Overview allData={allData} darkmode={darkmode.value} />
           </Route>
           <Route path={URL_REGIONAL}>
-            <Regional
-              allData={allData}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode.value}
-            />
+            <Regional allData={allData} darkmode={darkmode.value} />
           </Route>
           <Route path={URL_ACCESSIBILITY}>
             <Accessibility />

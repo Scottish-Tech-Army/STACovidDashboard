@@ -33,7 +33,7 @@ export function getCanonicalUrl(baseUrl, regionCode) {
   );
 }
 
-const Regional = ({ allData, populationProportionMap, darkmode }) => {
+const Regional = ({ allData, darkmode }) => {
   const match = useRouteMatch();
   const location = useLocation();
   const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
