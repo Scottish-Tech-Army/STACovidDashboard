@@ -1,5 +1,6 @@
 import moment from "moment";
 import { differenceInDays, format } from "date-fns";
+import deepmerge from "deepmerge";
 
 export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
   let dates = [...createDateSet(csvDataHB)];
@@ -137,8 +138,7 @@ export async function fetchAndStore(datasetName, setDataset, processCsvData) {
 }
 
 // Return summary stats per region for the last 7 days
-export function parse7DayWindowCsvData(csvData) {
-  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
+export function parse7DayWindowCsvData({ dates, placeDateValuesMap }) {
   const endDate = dates[dates.length - 1];
   const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
   const filteredDates = dates.filter((date) => date >= startDate);
@@ -201,11 +201,12 @@ export function getPopulationMap(placeDateValuesResult) {
   const { dates, placeDateValuesMap } = placeDateValuesResult;
 
   const populationMap = new Map();
-  const finalDate = dates[dates.length - 1];
+  const reverseDates = [...dates].reverse();
 
   const places = [...placeDateValuesMap.keys()];
   places.forEach((place) => {
     const dateValuesMap = placeDateValuesMap.get(place);
+    const finalDate = reverseDates.find((date) => dateValuesMap.get(date));
     const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
     if (crudeRatePositive === 0) {
       populationMap.set(place, 0);
@@ -314,4 +315,348 @@ export function getPhoneticPlaceNameByFeatureCode(featureCode) {
     return "Nahelen an sheer";
   }
   return getPlaceNameByFeatureCode(featureCode);
+}
+
+function getPlaceTotalsStats(
+  dateString,
+  dailyCases,
+  cumulativeCases,
+  dailyDeaths,
+  cumulativeDeaths
+) {
+  const date = moment.utc(dateString).valueOf();
+  const fatalityCaseRatio =
+    cumulativeCases !== undefined && cumulativeDeaths !== undefined
+      ? ((cumulativeDeaths * 100) / cumulativeCases).toFixed(1) + "%"
+      : undefined;
+
+  return {
+    dailyCases: { date: date, value: Number(dailyCases) },
+    dailyDeaths: { date: date, value: Number(dailyDeaths) },
+    cumulativeCases: { date: date, value: Number(cumulativeCases) },
+    cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
+    fatalityCaseRatio: fatalityCaseRatio,
+  };
+}
+
+function parseNhsHBTotalsCsvData(lines) {
+  const placeStatsMap = {};
+
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        v1,
+        v4,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      placeStatsMap[place] = getPlaceTotalsStats(
+        dateString,
+        dailyCases,
+        cumulativeCases,
+        dailyDeaths,
+        cumulativeDeaths
+      );
+    }
+  );
+  return placeStatsMap;
+}
+
+function parseNhsCATotalsCsvData(lines) {
+  const placeStatsMap = {};
+
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        v1,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      placeStatsMap[place] = getPlaceTotalsStats(
+        dateString,
+        dailyCases,
+        cumulativeCases,
+        dailyDeaths,
+        cumulativeDeaths
+      );
+    }
+  );
+  return placeStatsMap;
+}
+
+function aggregateWeeks(dates, placeDateValuesMap) {
+  const startDate = dates[0];
+  const endDate = dates[dates.length - 1];
+  const millisInWeek = 7 * 24 * 3600 * 1000;
+
+  const weeklyDates = [];
+  let currentDate = startDate;
+  while (currentDate < endDate) {
+    weeklyDates.push(currentDate);
+    currentDate = currentDate + millisInWeek;
+  }
+  const weeklyPlaceDateValuesMap = new Map();
+  placeDateValuesMap.forEach((dateValueMap, place) => {
+    const weeklyDateValueMap = new Map();
+    weeklyPlaceDateValuesMap.set(place, weeklyDateValueMap);
+
+    weeklyDates.forEach((weekStart) => {
+      const weekEnd = weekStart + millisInWeek;
+
+      let total = {
+        cases: 0,
+        deaths: 0,
+        cumulativeCases: 0,
+        cumulativeDeaths: 0,
+      };
+      weeklyDateValueMap.set(weekStart, total);
+      dates.forEach((date) => {
+        if (date >= weekStart && date < weekEnd) {
+          const current = dateValueMap.get(date);
+          total.cases += current.cases;
+          total.deaths += current.deaths;
+          total.cumulativeCases = current.cumulativeCases;
+          total.cumulativeDeaths = current.cumulativeDeaths;
+        }
+      });
+    });
+  });
+  return { weeklyDates, weeklyPlaceDateValuesMap };
+}
+
+// Exported for tests
+export function parseHeatmapCsvData({ dates, placeDateValuesMap }) {
+  const { weeklyDates, weeklyPlaceDateValuesMap } = aggregateWeeks(
+    dates,
+    placeDateValuesMap
+  );
+  var regions = {};
+  var scotland = null;
+  weeklyPlaceDateValuesMap.forEach((dateValuesMap, featureCode) => {
+    const allCases = [];
+    const allDeaths = [];
+    var totalCases = 0;
+    var totalDeaths = 0;
+    weeklyDates.forEach((date) => {
+      const {
+        cases,
+        deaths,
+        cumulativeCases,
+        cumulativeDeaths,
+      } = dateValuesMap.get(date);
+      allCases.push(cases);
+      allDeaths.push(deaths);
+      // Only using the last of each of the cumulative values
+      totalCases = cumulativeCases;
+      totalDeaths = cumulativeDeaths;
+    });
+    const region = {
+      featureCode: featureCode,
+      name: getPlaceNameByFeatureCode(featureCode),
+      totalDeaths: totalDeaths,
+      totalCases: totalCases,
+      cases: allCases,
+      deaths: allDeaths,
+    };
+    regions[featureCode] = region;
+  });
+
+  return {
+    startDate: dates[0],
+    endDate: dates[dates.length - 1],
+    dates: weeklyDates,
+    scotland: scotland,
+    regions: regions,
+  };
+}
+
+// Exported for tests
+export function getScotlandHeatmapRegion(regions) {
+  var result = regions.find(
+    ({ featureCode }) => featureCode === FEATURE_CODE_SCOTLAND
+  );
+  if (result !== undefined) {
+    return result;
+  }
+  // Calculate Scotland region
+  const weekCount = regions[0] ? regions[0].cases.length : 0;
+
+  result = {
+    featureCode: FEATURE_CODE_SCOTLAND,
+    name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
+    totalDeaths: 0,
+    totalCases: 0,
+    cases: Array(weekCount).fill(0),
+    deaths: Array(weekCount).fill(0),
+  };
+
+  regions.forEach(({ totalDeaths, totalCases, cases, deaths }) => {
+    result.totalDeaths += totalDeaths;
+    result.totalCases += totalCases;
+    for (let i = 0; i < weekCount; i++) {
+      result.cases[i] += cases[i];
+      result.deaths[i] += deaths[i];
+    }
+  });
+  return result;
+}
+
+// Exported for tests
+export function parseDatachartsNhsCsvData({ dates, placeDateValuesMap }) {
+  const regionDailyCasesMap = new Map();
+  const regionDailyDeathsMap = new Map();
+  const regionTotalCasesMap = new Map();
+  const regionTotalDeathsMap = new Map();
+  const regionPercentageTestsMap = new Map();
+
+  const places = [...placeDateValuesMap.keys()];
+  places.forEach((place) => {
+    const dateValuesMap = placeDateValuesMap.get(place);
+
+    const percentageTestsPoints = [];
+    const dailyCasesPoints = [];
+    const dailyDeathsPoints = [];
+    const totalCasesPoints = [];
+    const totalDeathsPoints = [];
+
+    dates.forEach((date, i) => {
+      const {
+        cases,
+        deaths,
+        cumulativeCases,
+        cumulativeDeaths,
+        positivePercentage,
+      } = dateValuesMap.get(date);
+
+      percentageTestsPoints.push(positivePercentage);
+      dailyCasesPoints.push(cases);
+      dailyDeathsPoints.push(deaths);
+      totalCasesPoints.push(cumulativeCases);
+      totalDeathsPoints.push(cumulativeDeaths);
+    });
+    regionPercentageTestsMap.set(place, percentageTestsPoints);
+    regionDailyCasesMap.set(place, dailyCasesPoints);
+    regionDailyDeathsMap.set(place, dailyDeathsPoints);
+    regionTotalCasesMap.set(place, totalCasesPoints);
+    regionTotalDeathsMap.set(place, totalDeathsPoints);
+  });
+
+  return {
+    regionPercentageTestsMap: regionPercentageTestsMap,
+    regionDailyCasesMap: regionDailyCasesMap,
+    regionDailyDeathsMap: regionDailyDeathsMap,
+    regionTotalCasesMap: regionTotalCasesMap,
+    regionTotalDeathsMap: regionTotalDeathsMap,
+  };
+}
+
+export function getAllData(
+  currentTotalsHealthBoardDataset = null,
+  currentTotalsCouncilAreaDataset = null,
+  councilAreaDataset = null,
+  healthBoardDataset = null
+) {
+  if (
+    currentTotalsHealthBoardDataset === null ||
+    currentTotalsCouncilAreaDataset === null ||
+    councilAreaDataset === null ||
+    healthBoardDataset === null
+  ) {
+    return null;
+  }
+
+  const hbPlaceDateValuesMap = createPlaceDateValuesMap(healthBoardDataset);
+  const caPlaceDateValuesMap = createPlaceDateValuesMap(councilAreaDataset);
+
+  const hbPopulationMap = getPopulationMap(hbPlaceDateValuesMap);
+  const caPopulationMap = getPopulationMap(caPlaceDateValuesMap);
+  const populationMap = new Map([...caPopulationMap, ...hbPopulationMap]);
+
+  const populationProportionMap = calculatePopulationProportionMap(
+    populationMap
+  );
+
+  let regions = {
+    ...Object.fromEntries(parse7DayWindowCsvData(caPlaceDateValuesMap)),
+    ...Object.fromEntries(parse7DayWindowCsvData(hbPlaceDateValuesMap)),
+  };
+  const regionTotals = {
+    ...parseNhsCATotalsCsvData(currentTotalsCouncilAreaDataset),
+    ...parseNhsHBTotalsCsvData(currentTotalsHealthBoardDataset),
+  };
+
+  const hbHeatmap = parseHeatmapCsvData(hbPlaceDateValuesMap);
+  const caHeatmap = parseHeatmapCsvData(caPlaceDateValuesMap);
+  const heatmapDataset = {
+    ...hbHeatmap,
+    regions: { ...caHeatmap.regions, ...hbHeatmap.regions },
+  };
+
+  const maxDateRange = {
+    startDate: hbPlaceDateValuesMap.dates[0],
+    endDate: hbPlaceDateValuesMap.dates[hbPlaceDateValuesMap.dates.length - 1],
+  };
+
+  const hbDatacharts = parseDatachartsNhsCsvData(hbPlaceDateValuesMap);
+  const caDatacharts = parseDatachartsNhsCsvData(caPlaceDateValuesMap);
+
+  const percentageTestsSeriesData = {
+    ...Object.fromEntries(caDatacharts.regionPercentageTestsMap),
+    ...Object.fromEntries(hbDatacharts.regionPercentageTestsMap),
+  };
+  const dailyCasesSeriesData = {
+    ...Object.fromEntries(caDatacharts.regionDailyCasesMap),
+    ...Object.fromEntries(hbDatacharts.regionDailyCasesMap),
+  };
+  const dailyDeathsSeriesData = {
+    ...Object.fromEntries(caDatacharts.regionDailyDeathsMap),
+    ...Object.fromEntries(hbDatacharts.regionDailyDeathsMap),
+  };
+  const totalCasesSeriesData = {
+    ...Object.fromEntries(caDatacharts.regionTotalCasesMap),
+    ...Object.fromEntries(hbDatacharts.regionTotalCasesMap),
+  };
+  const totalDeathsSeriesData = {
+    ...Object.fromEntries(caDatacharts.regionTotalDeathsMap),
+    ...Object.fromEntries(hbDatacharts.regionTotalDeathsMap),
+  };
+
+  Object.keys(regions).forEach((region, i) => {
+    const regionData = regions[region];
+    regionData.population = populationMap.get(region);
+    regionData.populationProportion = populationProportionMap.get(region);
+    Object.assign(regionData, regionTotals[region]);
+    regionData.heatmap = heatmapDataset.regions[region];
+    regionData.dataseries = {
+      percentageTestsSeriesData: percentageTestsSeriesData[region],
+      dailyCasesSeriesData: dailyCasesSeriesData[region],
+      dailyDeathsSeriesData: dailyDeathsSeriesData[region],
+      totalCasesSeriesData: totalCasesSeriesData[region],
+      totalDeathsSeriesData: totalDeathsSeriesData[region],
+    };
+  });
+
+  const result = {
+    regions: regions,
+    dates: hbPlaceDateValuesMap.dates,
+    startDate: heatmapDataset.startDate,
+    endDate: heatmapDataset.endDate,
+    maxDateRange: maxDateRange,
+  };
+  console.log(JSON.stringify(result));
+  return result;
 }

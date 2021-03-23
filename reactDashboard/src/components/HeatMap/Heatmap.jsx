@@ -5,7 +5,11 @@ import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
-import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
+import {
+  FEATURE_CODE_SCOTLAND,
+  FEATURE_CODE_COUNCIL_AREAS,
+  FEATURE_CODE_HEALTH_BOARDS,
+} from "../Utils/CsvUtils";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
@@ -50,8 +54,7 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
 }
 
 export default function Heatmap({
-  parsedHealthBoardDataset = null,
-  parsedCouncilAreaDataset = null,
+  allData = null,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
 }) {
@@ -124,41 +127,48 @@ export default function Heatmap({
     );
   }
 
-  function getDataSet() {
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      return parsedCouncilAreaDataset;
-    } else {
-      // AREATYPE_HEALTH_BOARDS == areaType
-      return parsedHealthBoardDataset;
-    }
-  }
-
   function dateRangeText() {
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
     }
-
-    const dataset = getDataSet();
-    if (!dataset.startDate || !dataset.endDate) {
+    if (!allData) {
       return "Data not available";
     }
 
-    return formatDate(dataset.startDate) + " - " + formatDate(dataset.endDate);
+    if (!allData.startDate || !allData.endDate) {
+      return "Data not available";
+    }
+
+    return formatDate(allData.startDate) + " - " + formatDate(allData.endDate);
   }
 
   function renderTableBody() {
-    const dataset = getDataSet();
-    if (dataset === null) {
+    if (allData === null) {
       return [];
     }
-    if (!dataset.regions || dataset.regions.length === 0) {
+    if (!allData.regions || allData.regions.length === 0) {
       return [];
     }
-    const result = dataset.regions.map((region, i) =>
-      createRegionTableline(region, i + 1, dataset.dates)
+
+    const featureCodes =
+      AREATYPE_COUNCIL_AREAS === areaType
+        ? FEATURE_CODE_COUNCIL_AREAS
+        : FEATURE_CODE_HEALTH_BOARDS;
+    const result = featureCodes.map((region, i) =>
+      createRegionTableline(
+        allData.regions[region].heatmap,
+        i + 1,
+        allData.dates
+      )
     );
 
-    result.unshift(createRegionTableline(dataset.scotland, 0, dataset.dates));
+    result.unshift(
+      createRegionTableline(
+        allData.regions[FEATURE_CODE_SCOTLAND].heatmap,
+        0,
+        allData.dates
+      )
+    );
     return result;
   }
 
@@ -192,7 +202,7 @@ export default function Heatmap({
       </div>
     );
   }
-  if (getDataSet() === null) {
+  if (allData === null) {
     return <LoadingComponent />;
   }
 

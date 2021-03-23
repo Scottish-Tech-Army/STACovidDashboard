@@ -1,21 +1,28 @@
 import "./SingleValueBar.css";
 import SingleValue from "./SingleValue";
 import React from "react";
-import { getRelativeReportedDate } from "../Utils/CsvUtils";
+import {
+  getRelativeReportedDate,
+  FEATURE_CODE_SCOTLAND,
+} from "../Utils/CsvUtils";
 
 const SUBTITLE_TOTAL = "reported since 28 February, 2020";
 const MISSING_DATA = "Not available";
 
-export default function SingleValueBar({
-  dailyCases,
-  totalCases,
-  dailyDeaths,
-  totalDeaths,
-  fatalityCaseRatio,
-}) {
+export default function SingleValueBar({ allData = null }) {
   function guardMissingData(input) {
     return input === undefined ? MISSING_DATA : input.toLocaleString();
   }
+
+  const scotlandData =
+    (allData && allData.regions[FEATURE_CODE_SCOTLAND]) || {};
+  const {
+    dailyCases,
+    cumulativeCases,
+    dailyDeaths,
+    cumulativeDeaths,
+    fatalityCaseRatio,
+  } = scotlandData;
 
   return (
     <div className="overview-single-value-bar">
@@ -35,7 +42,7 @@ export default function SingleValueBar({
           id="totalCases"
           title="TOTAL CASES"
           subtitle={SUBTITLE_TOTAL}
-          value={guardMissingData(totalCases && totalCases.value)}
+          value={guardMissingData(cumulativeCases && cumulativeCases.value)}
           tooltip="These are the total number of cases which have tested positive for COVID-19 since records began on 28 February, 2020."
         />
       </div>
@@ -55,7 +62,7 @@ export default function SingleValueBar({
           id="totalDeaths"
           title="TOTAL DEATHS"
           subtitle={SUBTITLE_TOTAL}
-          value={guardMissingData(totalDeaths && totalDeaths.value)}
+          value={guardMissingData(cumulativeDeaths && cumulativeDeaths.value)}
           tooltip="These are the total number of deaths where COVID-19 is noted on the death certificate since records began on 28 February, 2020."
         />
       </div>

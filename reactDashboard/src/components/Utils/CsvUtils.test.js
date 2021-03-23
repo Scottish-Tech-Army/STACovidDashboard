@@ -9,6 +9,7 @@ import {
   getNhsCsvDataDateRange,
   calculatePopulationProportionMap,
   getPopulationMap,
+  getAllData
 } from "../Utils/CsvUtils";
 import { act } from "react-dom/test-utils";
 
@@ -562,3 +563,87 @@ function setMockDate(date) {
     .spyOn(global.Date, "now")
     .mockImplementation(() => Date.parse(date).valueOf());
 }
+
+describe("getAllData", () => {
+  it("all data", () => {
+    expect(
+      getAllData(
+        testCurrentTotalsCouncilAreaDataset,
+        testCurrentTotalsHealthBoardDataset,
+        testCouncilAreaDataset,
+        testHealthBoardDataset
+      )
+  ).toStrictEqual({test: 2});
+  });
+});
+
+
+const totalCACsvData = `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+20201017,S12000005,unknown,0,200,388.048117966628,1,31,60.1474582848273,4465,8663.17423360497
+20201017,S12000006,unknown,1,311,208.921133951364,2,40,26.8708853956738,14060,9445.11621657934
+20201017,S12000008,unknown,0,458,375.379067289566,0,51,41.7998524711089,9662,7919.02303089911`;
+
+const totalHBCsvData = `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+20201017,S08000015,"",unknown,3,1285,347.8990686593031,1,171,46.2962962962963,25697,6957.16915746156
+20201017,S08000016,"",unknown,0,349,302.138343000606,2,39,33.7633105358843,7824,6773.4395290451
+20201017,S08000017,"",unknown,4,305,204.890501142013,0,40,26.8708853956738,11764,7902.72739486766
+20201017,S92000003,d,unknown,7,19126,350.081452601907,3,2491,45.5951531125876,388097,7103.71021177676`;
+
+const dailyCACsvData = `
+  Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+  20200309,S12000005,unknown,-8,0,0,0,-2,0,0,28,7.58068009529998
+  20200308,S12000005,unknown,26,0,0,0,0,0,0,28,7.58068009529998
+  20200307,S12000005,unknown,-1,0,0,0,-1,0,0,28,7.58068009529998
+  20200306,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200305,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200304,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200303,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200302,S12000005,unknown,-6,0,0,0,-2,0,0,28,7.58068009529998
+  20200301,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200229,S12000005,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+  20200308,S12000006,unknown,0,0,0,0,11,0,0,26,22.5088736905896
+  20200307,S12000006,unknown,40,0,0,0,10,0,0,26,22.5088736905896
+  20200306,S12000006,unknown,30,0,0,0,5,0,0,26,22.5088736905896
+  20200305,S12000006,unknown,20,0,0,0,3,0,0,26,22.5088736905896
+  20200304,S12000006,unknown,10,0,0,0,2,0,0,26,22.5088736905896
+  20200303,S12000006,unknown,50,0,0,0,6,0,0,26,22.5088736905896
+  20200226,S12000006,unknown,20,0,0,0,5,0,0,26,22.5088736905896
+  20200225,S12000006,unknown,0,0,0,0,4,0,0,26,22.5088736905896
+  20200224,S12000006,unknown,10,0,0,0,3,0,0,26,22.5088736905896
+  20200309,S12000008,unknown,300,0,0,0,10,0,0,21,14.1072148327287
+  20200308,S12000008,unknown,201,0,0,0,9,0,0,21,14.1072148327287
+  20200306,S12000008,unknown,1,0,0,0,8,0,0,21,14.1072148327287
+  20200307,S12000008,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
+    `;
+
+const dailyHBCsvData = `
+      Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
+      20200309,S08000015,unknown,-8,0,0,0,-2,0,0,28,7.58068009529998
+      20200308,S08000015,unknown,26,0,0,0,0,0,0,28,7.58068009529998
+      20200307,S08000015,unknown,-1,0,0,0,-1,0,0,28,7.58068009529998
+      20200306,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200305,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200304,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200303,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200302,S08000015,unknown,-6,0,0,0,-2,0,0,28,7.58068009529998
+      20200301,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200229,S08000015,unknown,1,0,0,0,1,0,0,28,7.58068009529998
+      20200308,S08000016,unknown,0,0,0,0,11,0,0,26,22.5088736905896
+      20200307,S08000016,unknown,400,0,0,0,10,0,0,26,22.5088736905896
+      20200306,S08000016,unknown,300,0,0,0,9,0,0,26,22.5088736905896
+      20200305,S08000016,unknown,200,0,0,0,8,0,0,26,22.5088736905896
+      20200304,S08000016,unknown,100,0,0,0,7,0,0,26,22.5088736905896
+      20200303,S08000016,unknown,50,0,0,0,6,0,0,26,22.5088736905896
+      20200226,S08000016,unknown,20,0,0,0,5,0,0,26,22.5088736905896
+      20200225,S08000016,unknown,0,0,0,0,4,0,0,26,22.5088736905896
+      20200224,S08000016,unknown,10,0,0,0,3,0,0,26,22.5088736905896
+      20200309,S08000017,unknown,300,0,0,0,10,0,0,21,14.1072148327287
+      20200308,S08000017,unknown,201,0,0,0,9,0,0,21,14.1072148327287
+      20200306,S08000017,unknown,1,0,0,0,8,0,0,21,14.1072148327287
+      20200307,S08000017,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
+        `;
+
+const testCurrentTotalsCouncilAreaDataset = readCsvData(totalCACsvData);
+const testCurrentTotalsHealthBoardDataset = readCsvData(totalHBCsvData);
+const testCouncilAreaDataset = readCsvData(dailyCACsvData);
+const testHealthBoardDataset = readCsvData(dailyHBCsvData);

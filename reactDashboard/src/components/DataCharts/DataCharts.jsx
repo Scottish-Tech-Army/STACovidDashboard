@@ -29,15 +29,9 @@ import { stopAudio } from "../Utils/Sonification";
 import "../../chartjs-plugin-annotation/index.js";
 
 export default function DataCharts({
-  percentageTestsSeriesData = new Map(),
-  dailyCasesSeriesData = new Map(),
-  dailyDeathsSeriesData = new Map(),
-  totalCasesSeriesData = new Map(),
-  totalDeathsSeriesData = new Map(),
+  allData = null,
   darkmode,
   regionCode = FEATURE_CODE_SCOTLAND,
-  populationProportionMap = new Map(),
-  maxDateRange = { startDate: 0, endDate: 1 },
 }) {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
@@ -61,21 +55,17 @@ export default function DataCharts({
   }, [chartType, dateRange]);
 
   useEffect(() => {
-    setDateRange({ ...maxDateRange });
-  }, [maxDateRange]);
+    if (allData !== null) {
+      setDateRange({ ...allData.maxDateRange });
+    }
+  }, [allData]);
 
   useEffect(() => {
-    function getAverageSeriesData(seriesData) {
-      const scotlandData = seriesData.get(FEATURE_CODE_SCOTLAND);
-      if (!regionCode || !scotlandData) {
-        return scotlandData;
-      }
+    function getAverageSeriesData(seriesDataName, populationProportion) {
+      const scotlandData =
+        allData.regions[FEATURE_CODE_SCOTLAND].dataseries[seriesDataName];
       if (chartType === PERCENTAGE_TESTS) {
         return scotlandData;
-      }
-      const populationProportion = populationProportionMap.get(regionCode);
-      if (!populationProportion) {
-        return null;
       }
       return scotlandData.map(({ t, y }) => {
         return { t: t, y: y * populationProportion };
@@ -92,9 +82,10 @@ export default function DataCharts({
         : "Scotland average (adjusted for population)";
     }
 
-    function getChartDatasets(seriesData, datasetLabel) {
+    function getChartDatasets(datasetLabel, seriesDataName) {
       const datasets = [];
-      const regionSeriesData = seriesData.get(regionCode);
+      const regionSeriesData =
+        allData.regions[regionCode].dataseries[seriesDataName];
       if (regionSeriesData !== undefined) {
         datasets.push(
           datasetConfiguration(
@@ -104,12 +95,15 @@ export default function DataCharts({
           )
         );
         if (regionCode !== FEATURE_CODE_SCOTLAND) {
-          const averageSeriesData = getAverageSeriesData(seriesData);
+          const averageSeriesData = getAverageSeriesData(
+            seriesDataName,
+            allData.regions[regionCode].populationProportion
+          );
           if (averageSeriesData) {
             datasets.push(
               datasetConfiguration(
                 getAverageSeriesLabel(),
-                getAverageSeriesData(seriesData),
+                averageSeriesData,
                 AVERAGE_DATASET_COLOUR,
                 AVERAGE_DATASET_FILL_COLOUR
               )
@@ -122,12 +116,13 @@ export default function DataCharts({
 
     function setChart(
       datasetLabel,
-      seriesData,
+      seriesDataName,
       additionalConfiguration,
       sonificationLabel
     ) {
-      const datasets = getChartDatasets(seriesData, datasetLabel);
+      const datasets = getChartDatasets(datasetLabel, seriesDataName);
       const chartConfiguration = commonChartConfiguration(
+          allData.dates,
         datasets,
         darkmode,
         dateRange
@@ -141,7 +136,7 @@ export default function DataCharts({
       chartInstance.current = new Chart(chartRef, chartConfiguration);
 
       setSonification(
-        seriesData.get(regionCode),
+        allData.regions[regionCode].dataseries[seriesDataName],
         sonificationLabel !== undefined ? sonificationLabel : datasetLabel
       );
     }
@@ -163,63 +158,39 @@ export default function DataCharts({
         setSeriesTitle(seriesLabel);
       }
     }
+    if (allData !== null) {
+      if (chartInstance.current !== null) {
+        chartInstance.current.destroy();
+      }
 
-    if (chartInstance.current !== null) {
-      chartInstance.current.destroy();
+      if (chartType === DAILY_CASES) {
+        setChart(dailyCasesDatasetLabel, "dailyCasesSeriesData");
+      } else if (chartType === DAILY_DEATHS) {
+        setChart(dailyDeathsDatasetLabel, "dailyDeathsSeriesData");
+      } else if (chartType === TOTAL_CASES) {
+        setChart(totalCasesDatasetLabel, "totalCasesSeriesData");
+      } else if (chartType === TOTAL_DEATHS) {
+        setChart(totalDeathsDatasetLabel, "totalDeathsSeriesData");
+      } else if (chartType === PERCENTAGE_TESTS) {
+        setChart(
+          percentageTestsDatasetLabel,
+          "percentageTestsSeriesData",
+          percentageTestsChartConfiguration,
+          "Percentage tests positive"
+        );
+      }
     }
-
-    if (chartType === DAILY_CASES) {
-      setChart(dailyCasesDatasetLabel, dailyCasesSeriesData);
-    } else if (chartType === DAILY_DEATHS) {
-      setChart(dailyDeathsDatasetLabel, dailyDeathsSeriesData);
-    } else if (chartType === TOTAL_CASES) {
-      setChart(totalCasesDatasetLabel, totalCasesSeriesData);
-    } else if (chartType === TOTAL_DEATHS) {
-      setChart(totalDeathsDatasetLabel, totalDeathsSeriesData);
-    } else if (chartType === PERCENTAGE_TESTS) {
-      setChart(
-        percentageTestsDatasetLabel,
-        percentageTestsSeriesData,
-        percentageTestsChartConfiguration,
-        "Percentage tests positive"
-      );
-    }
-  }, [
-    percentageTestsSeriesData,
-    dailyCasesSeriesData,
-    dailyDeathsSeriesData,
-    totalCasesSeriesData,
-    totalDeathsSeriesData,
-    chartType,
-    populationProportionMap,
-    regionCode,
-    dateRange,
-    darkmode,
-  ]);
+  }, [chartType, regionCode, dateRange, darkmode, allData]);
 
   const isDataReady = () => {
-    if (chartType === DAILY_CASES) {
-      return dailyCasesSeriesData !== null;
-    }
-    if (chartType === DAILY_DEATHS) {
-      return dailyDeathsSeriesData !== null;
-    }
-    if (chartType === TOTAL_CASES) {
-      return totalCasesSeriesData !== null;
-    }
-    if (chartType === TOTAL_DEATHS) {
-      return totalDeathsSeriesData !== null;
-    }
-    if (chartType === PERCENTAGE_TESTS) {
-      return percentageTestsSeriesData !== null;
-    }
-    return false;
+    return allData !== null;
   };
 
   function getScreenModeClassName() {
     return isDataReady() ? "chart-container" : "chart-container hidden-chart";
   }
 
+  const maxDateRange = allData ? allData.maxDateRange : { startDate: 0, endDate: 1 };
   return (
     <Container className="chart-border">
       <Row className="chart-dropdown-container">

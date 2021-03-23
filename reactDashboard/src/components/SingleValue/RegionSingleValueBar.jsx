@@ -10,7 +10,7 @@ import {
 const emptyDate = { date: undefined, value: undefined };
 
 export default function RegionSingleValueBar({
-  placeStatsMap = new Map(),
+  allData = null,
   regionCode = null,
 }) {
   const [dailyCases, setDailyCases] = useState(emptyDate);
@@ -33,11 +33,11 @@ export default function RegionSingleValueBar({
   }
 
   useEffect(() => {
-    if (placeStatsMap == null) {
+    if (allData == null) {
       return;
     }
     const results =
-      placeStatsMap[regionCode == null ? FEATURE_CODE_SCOTLAND : regionCode];
+      allData.regions[regionCode == null ? FEATURE_CODE_SCOTLAND : regionCode];
     if (results !== null && results !== undefined) {
       setDailyCases(results.dailyCases);
       setDailyDeaths(results.dailyDeaths);
@@ -46,7 +46,7 @@ export default function RegionSingleValueBar({
       setTotalCases(results.cumulativeCases);
       setTotalDeaths(results.cumulativeDeaths);
     }
-  }, [placeStatsMap, regionCode]);
+  }, [allData, regionCode]);
 
   return (
     <>

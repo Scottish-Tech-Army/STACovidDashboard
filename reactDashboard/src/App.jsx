@@ -21,6 +21,7 @@ import {
   calculatePopulationProportionMap,
   getPopulationMap,
   createPlaceDateValuesMap,
+  getAllData,
 } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
@@ -31,7 +32,7 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
-import useDarkMode from 'use-dark-mode';
+import useDarkMode from "use-dark-mode";
 
 const tagManagerArgs = {
   gtmId: "GTM-5LKHW33",
@@ -61,6 +62,7 @@ const StopAudio = () => {
 };
 
 const App = () => {
+  const [allData, setAllData] = useState(null);
   const [healthBoardDataset, setHealthBoardDataset] = useState(null);
   const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
   const [
@@ -75,7 +77,7 @@ const App = () => {
   const [populationProportionMap, setPopulationProportionMap] = useState(
     new Map()
   );
-  const darkmode = useDarkMode(false, {classNameDark: "darkmode"});
+  const darkmode = useDarkMode(false, { classNameDark: "darkmode" });
 
   // Load and parse datasets
   useEffect(() => {
@@ -144,6 +146,22 @@ const App = () => {
     setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
   }, [populationMap]);
 
+  useEffect(() => {
+    setAllData(
+      getAllData(
+        currentTotalsHealthBoardDataset,
+        currentTotalsCouncilAreaDataset,
+        councilAreaDataset,
+        healthBoardDataset
+      )
+    );
+  }, [
+    currentTotalsCouncilAreaDataset,
+    currentTotalsHealthBoardDataset,
+    healthBoardDataset,
+    councilAreaDataset,
+  ]);
+
   return (
     <div className="App">
       <Router basename={process.env.PUBLIC_URL}>
@@ -156,19 +174,14 @@ const App = () => {
         <Switch>
           <Route exact path={URL_OVERVIEW}>
             <Overview
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
+              allData={allData}
               populationProportionMap={populationProportionMap}
               darkmode={darkmode.value}
             />
           </Route>
           <Route path={URL_REGIONAL}>
             <Regional
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
+              allData={allData}
               populationProportionMap={populationProportionMap}
               darkmode={darkmode.value}
             />

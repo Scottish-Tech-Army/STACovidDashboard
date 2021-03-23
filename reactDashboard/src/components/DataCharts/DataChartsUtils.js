@@ -105,12 +105,18 @@ export const getMaxTicks = (yMax) => {
   return yMax;
 };
 
-export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
+export function commonChartConfiguration(
+  dates,
+  datasets,
+  darkmode,
+  dateRange = null
+) {
   const maxTicks = getMaxTicks(getChartYMax(datasets));
 
   let result = {
     type: "line",
     data: {
+      labels: dates,
       datasets: datasets,
     },
     options: {

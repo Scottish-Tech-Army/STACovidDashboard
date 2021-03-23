@@ -52,7 +52,7 @@ const heatcolours = [
 */
 
 export default function GeoHeatMap({
-  sevenDayDataset,
+  allData = null,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
@@ -98,13 +98,13 @@ export default function GeoHeatMap({
     };
 
     const handleRegionPopup = (e) => {
-      if (sevenDayDataset === null) {
+      if (allData === null) {
         return;
       }
       const map = mapRef.current.leafletElement;
       const layer = e.target;
       const featureCode = featureCodeForFeature(layer.feature);
-      const regionData = sevenDayDataset.get(featureCode);
+      const regionData = allData.regions[featureCode];
       var content =
         "<p class='region-popup'>" +
         regionData.name +
@@ -158,7 +158,7 @@ export default function GeoHeatMap({
     setHealthBoardBoundariesLayer(
       L.geoJSON(healthBoardBoundaries, regionLayerOptions)
     );
-  }, []);
+  }, [allData]);
 
   // Fit bounds and restrict the panning
   useEffect(() => {
@@ -212,7 +212,7 @@ export default function GeoHeatMap({
     const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
-      const regionData = sevenDayDataset.get(featureCode);
+      const regionData = allData.regions[featureCode];
       var count = 0;
       if (regionData) {
         count =
@@ -234,18 +234,12 @@ export default function GeoHeatMap({
       mapRef.current.leafletElement.closePopup();
     }
 
-    if (currentBoundariesLayer && sevenDayDataset) {
+    if (currentBoundariesLayer && allData) {
       currentBoundariesLayer.setStyle((feature) =>
         getRegionStyle(featureCodeForFeature(feature))
       );
     }
-  }, [
-    valueType,
-    currentBoundariesLayer,
-    currentHeatLevels,
-    sevenDayDataset,
-    darkmode,
-  ]);
+  }, [valueType, currentBoundariesLayer, currentHeatLevels, allData, darkmode]);
 
   // Create legend
   useEffect(() => {

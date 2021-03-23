@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SingleValueBar from "../containers/SingleValueBar";
+import SingleValueBar from "../components/SingleValue/SingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HeatmapDataSelector from "../components/HeatmapDataSelector/HeatmapDataSelector";
-import Heatmap from "../containers/Heatmap";
-import GeoHeatMap from "../containers/GeoHeatMap";
-import DataCharts from "../containers/DataCharts";
+import Heatmap from "../components/HeatMap/Heatmap";
+import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
+import DataCharts from "../components/DataCharts/DataCharts";
 import Facts from "../components/Facts/Facts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
@@ -49,13 +49,7 @@ function toggleFullscreen(element, setter) {
   }
 }
 
-const Overview = ({
-  councilAreaDataset,
-  healthBoardDataset,
-  currentTotalsHealthBoardDataset,
-  populationProportionMap,
-  darkmode,
-}) => {
+const Overview = ({ allData, populationProportionMap, darkmode }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
@@ -109,9 +103,7 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <SingleValueBar
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-            />
+            <SingleValueBar allData={allData} />
           </Col>
         </Row>
         <Row>
@@ -144,8 +136,7 @@ const Overview = ({
             <Row className="heatmaps-row">
               <Col className="geo-map-column" xs={12} lg={zoomGeoMap ? 12 : 4}>
                 <GeoHeatMap
-                  councilAreaDataset={councilAreaDataset}
-                  healthBoardDataset={healthBoardDataset}
+                  allData={allData}
                   areaType={areaType}
                   valueType={valueType}
                   toggleFullscreen={() =>
@@ -167,8 +158,7 @@ const Overview = ({
                   <></>
                 ) : (
                   <Heatmap
-                    councilAreaDataset={councilAreaDataset}
-                    healthBoardDataset={healthBoardDataset}
+                    allData={allData}
                     areaType={areaType}
                     valueType={valueType}
                   />
@@ -184,11 +174,7 @@ const Overview = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
-            <DataCharts
-              healthBoardDataset={healthBoardDataset}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode}
-            />
+            <DataCharts allData={allData} darkmode={darkmode} />
           </Col>
         </Row>
         <Row>

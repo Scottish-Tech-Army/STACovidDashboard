@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import RegionSingleValueBar from "../containers/RegionSingleValueBar";
+import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import RegionGeoMap from "../components/GeoHeatMap/RegionGeoMap";
-import DataCharts from "../containers/DataCharts";
+import DataCharts from "../components/DataCharts/DataCharts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
 import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
@@ -33,14 +33,7 @@ export function getCanonicalUrl(baseUrl, regionCode) {
   );
 }
 
-const Regional = ({
-  councilAreaDataset,
-  healthBoardDataset,
-  currentTotalsHealthBoardDataset,
-  currentTotalsCouncilAreaDataset,
-  populationProportionMap,
-  darkmode,
-}) => {
+const Regional = ({ allData, populationProportionMap, darkmode }) => {
   const match = useRouteMatch();
   const location = useLocation();
   const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
@@ -120,13 +113,7 @@ const Regional = ({
               setRegionCode={setRegionCode}
             />
             <hr className="full-width-hr" />
-            <RegionSingleValueBar
-              regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-            />
+            <RegionSingleValueBar regionCode={regionCode} allData={allData} />
           </Col>
         </Row>
         <Row>
@@ -138,9 +125,7 @@ const Regional = ({
           <Col xs={12}>
             <DataCharts
               regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              populationProportionMap={populationProportionMap}
+              allData={allData}
               darkmode={darkmode}
             />
           </Col>
