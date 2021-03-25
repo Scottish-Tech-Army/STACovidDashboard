@@ -141,11 +141,21 @@ export function getScotlandRegion(regions) {
   return result;
 }
 
-export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
+const DAY_IN_MS = 24 * 3600 * 1000;
+
+export function getDateRangeString(dates, startDateIndex, weekCount) {
   function formatDate(date) {
     return format(date, "dd MMM");
   }
 
+  return (
+    formatDate(dates[startDateIndex]) +
+    " - " +
+    formatDate(dates[startDateIndex] + (weekCount * 7 - 1) * DAY_IN_MS)
+  );
+}
+
+export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
   const result = [];
   var startDateIndex = 0;
   while (startDateIndex < elements.length) {
@@ -160,19 +170,13 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
         break;
       }
     }
-    const dateString =
-      weekCount === 1
-        ? formatDate(dates[startDateIndex])
-        : formatDate(dates[startDateIndex]) +
-          " - " +
-          formatDate(dates[startDateIndex + weekCount - 1]);
 
     result.push(
       createHeatbarLine(
         startElement,
         startDateIndex,
         weekCount,
-        region + "\n" + dateString
+        region + "\n" + getDateRangeString(dates, startDateIndex, weekCount)
       )
     );
     startDateIndex += weekCount;

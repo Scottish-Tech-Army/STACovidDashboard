@@ -3,6 +3,7 @@ import Heatmap, {
   parseCsvData,
   createHeatbarLines,
   getScotlandRegion,
+  getDateRangeString,
 } from "./Heatmap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
@@ -613,6 +614,23 @@ describe("createHeatbarLines", () => {
       { element: 5, startIndex: 32, width: 10 },
       { element: 4, startIndex: 42, width: 6 },
     ]);
+  });
+});
+
+describe("getDateRangeString", () => {
+  const DATES = [
+    Date.parse("2020-03-06"),
+    Date.parse("2020-03-13"),
+    Date.parse("2020-03-20"),
+    Date.parse("2020-03-27"),
+    Date.parse("2020-04-03"),
+  ];
+
+  it("test date ranges", () => {
+    expect(getDateRangeString(DATES, 0, 1)).toStrictEqual("06 Mar - 12 Mar");
+    expect(getDateRangeString(DATES, 0, 2)).toStrictEqual("06 Mar - 19 Mar");
+    expect(getDateRangeString(DATES, 0, 5)).toStrictEqual("06 Mar - 09 Apr");
+    expect(getDateRangeString(DATES, 4, 1)).toStrictEqual("03 Apr - 09 Apr");
   });
 });
 
