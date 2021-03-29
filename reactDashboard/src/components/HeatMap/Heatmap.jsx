@@ -13,18 +13,63 @@ import {
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
+function aggregateWeeks(dates, placeDateValuesMap) {
+  const startDate = dates[0];
+  const endDate = dates[dates.length - 1];
+  const millisInWeek = 7 * 24 * 3600 * 1000;
+
+  const weeklyDates = [];
+  let currentDate = startDate;
+  while (currentDate < endDate) {
+    weeklyDates.push(currentDate);
+    currentDate = currentDate + millisInWeek;
+  }
+  const weeklyPlaceDateValuesMap = new Map();
+  placeDateValuesMap.forEach((dateValueMap, place) => {
+    const weeklyDateValueMap = new Map();
+    weeklyPlaceDateValuesMap.set(place, weeklyDateValueMap);
+
+    weeklyDates.forEach((weekStart) => {
+      const weekEnd = weekStart + millisInWeek;
+
+      let total = {
+        cases: 0,
+        deaths: 0,
+        cumulativeCases: 0,
+        cumulativeDeaths: 0,
+      };
+      weeklyDateValueMap.set(weekStart, total);
+      dates.forEach((date) => {
+        if (date >= weekStart && date < weekEnd) {
+          const current = dateValueMap.get(date);
+          total.cases += current.cases;
+          total.deaths += current.deaths;
+          total.cumulativeCases = current.cumulativeCases;
+          total.cumulativeDeaths = current.cumulativeDeaths;
+        }
+      });
+    });
+  });
+  return { weeklyDates, weeklyPlaceDateValuesMap };
+}
+
 // Exported for tests
 export function parseCsvData(csvData) {
   const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
 
+  const { weeklyDates, weeklyPlaceDateValuesMap } = aggregateWeeks(
+    dates,
+    placeDateValuesMap
+  );
+
   var regions = [];
   var scotland = null;
-  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
+  weeklyPlaceDateValuesMap.forEach((dateValuesMap, featureCode) => {
     const allCases = [];
     const allDeaths = [];
     var totalCases = 0;
     var totalDeaths = 0;
-    dates.forEach((date) => {
+    weeklyDates.forEach((date) => {
       const {
         cases,
         deaths,
@@ -56,7 +101,13 @@ export function parseCsvData(csvData) {
   if (scotland == null) {
     scotland = getScotlandRegion(regions);
   }
-  return { dates: dates, scotland: scotland, regions: regions };
+  return {
+    startDate: dates[0],
+    endDate: dates[dates.length - 1],
+    dates: weeklyDates,
+    scotland: scotland,
+    regions: regions,
+  };
 }
 
 // Exported for tests
@@ -68,21 +119,21 @@ export function getScotlandRegion(regions) {
     return result;
   }
   // Calculate Scotland region
-  const dayCount = regions[0] ? regions[0].cases.length : 0;
+  const weekCount = regions[0] ? regions[0].cases.length : 0;
 
   result = {
     featureCode: FEATURE_CODE_SCOTLAND,
     name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
     totalDeaths: 0,
     totalCases: 0,
-    cases: Array(dayCount).fill(0),
-    deaths: Array(dayCount).fill(0),
+    cases: Array(weekCount).fill(0),
+    deaths: Array(weekCount).fill(0),
   };
 
   regions.forEach(({ totalDeaths, totalCases, cases, deaths }) => {
     result.totalDeaths += totalDeaths;
     result.totalCases += totalCases;
-    for (let i = 0; i < dayCount; i++) {
+    for (let i = 0; i < weekCount; i++) {
       result.cases[i] += cases[i];
       result.deaths[i] += deaths[i];
     }
@@ -90,41 +141,45 @@ export function getScotlandRegion(regions) {
   return result;
 }
 
-export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
+const DAY_IN_MS = 24 * 3600 * 1000;
+
+export function getDateRangeString(dates, startDateIndex, weekCount) {
   function formatDate(date) {
     return format(date, "dd MMM");
   }
 
+  return (
+    formatDate(dates[startDateIndex]) +
+    " - " +
+    formatDate(dates[startDateIndex] + (weekCount * 7 - 1) * DAY_IN_MS)
+  );
+}
+
+export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
   const result = [];
   var startDateIndex = 0;
   while (startDateIndex < elements.length) {
     const startElement = elements[startDateIndex];
-    let dayCount;
+    let weekCount;
     for (
-      dayCount = 1;
-      startDateIndex + dayCount < elements.length;
-      dayCount++
+      weekCount = 1;
+      startDateIndex + weekCount < elements.length;
+      weekCount++
     ) {
-      if (startElement !== elements[startDateIndex + dayCount]) {
+      if (startElement !== elements[startDateIndex + weekCount]) {
         break;
       }
     }
-    const dateString =
-      dayCount === 1
-        ? formatDate(dates[startDateIndex])
-        : formatDate(dates[startDateIndex]) +
-          " - " +
-          formatDate(dates[startDateIndex + dayCount - 1]);
 
     result.push(
       createHeatbarLine(
         startElement,
         startDateIndex,
-        dayCount,
-        region + "\n" + dateString
+        weekCount,
+        region + "\n" + getDateRangeString(dates, startDateIndex, weekCount)
       )
     );
-    startDateIndex += dayCount;
+    startDateIndex += weekCount;
   }
 
   return result;
@@ -137,7 +192,7 @@ function Heatmap({
   areaType = AREATYPE_COUNCIL_AREAS,
 }) {
   // Remember to update the css classes if level count changes
-  const heatLevels = [0, 1, 2, 5, 10, 20, 50, 100];
+  const heatLevels = [0, 5, 10, 20, 50, 100, 500, 1000];
 
   const [parsedHealthBoardDataset, setParsedHealthBoardDataset] = useState(
     null
@@ -153,8 +208,8 @@ function Heatmap({
     const count = elements.length;
     const elementWidth = width / count;
 
-    function createHeatbarLine(element, startDateIndex, dayCount, titleText) {
-      const x = elementWidth * (startDateIndex + dayCount / 2);
+    function createHeatbarLine(element, startDateIndex, weekCount, titleText) {
+      const x = elementWidth * (startDateIndex + weekCount / 2);
       return (
         <line
           key={startDateIndex}
@@ -163,7 +218,7 @@ function Heatmap({
           y1="0"
           x2={x}
           y2="100%"
-          strokeWidth={elementWidth * dayCount}
+          strokeWidth={elementWidth * weekCount}
         >
           <title>{titleText}</title>
         </line>
@@ -242,15 +297,11 @@ function Heatmap({
     }
 
     const dataset = getDataSet();
-    const dates = dataset["dates"];
-    let startDate = dates[0];
-    let endDate = dates[dates.length - 1];
-
-    if (!startDate || !endDate) {
+    if (!dataset.startDate || !dataset.endDate) {
       return "Data not available";
     }
 
-    return formatDate(startDate) + " - " + formatDate(endDate);
+    return formatDate(dataset.startDate) + " - " + formatDate(dataset.endDate);
   }
 
   function renderTableBody() {
@@ -311,7 +362,7 @@ function Heatmap({
             <th>{areaTitle()}</th>
             <th>{valueTitle()}</th>
             <th>
-              <div>DAILY COUNT</div>
+              <div>WEEKLY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}
             </th>
