@@ -255,12 +255,6 @@ export function calculateDateRange(maxDateRange, timePeriod) {
   return { startDate: startDate, endDate: endDate };
 }
 
-const percentageTestsDatasetLabel = "% of Tests Positive";
-const dailyCasesDatasetLabel = "Daily Cases";
-const dailyDeathsDatasetLabel = "Daily Deaths";
-const totalCasesDatasetLabel = "Total Cases";
-const totalDeathsDatasetLabel = "Total Deaths";
-
 function getAverageSeriesData(
   allData,
   chartType,
@@ -322,12 +316,12 @@ function getChartDatasets(allData, chartType, regionCode, darkmode) {
 }
 
 const datasetInfo = {
-  [DAILY_CASES]: { label: dailyCasesDatasetLabel, seriesName: "dailyCases" },
-  [DAILY_DEATHS]: { label: dailyDeathsDatasetLabel, seriesName: "dailyDeaths" },
-  [TOTAL_CASES]: { label: totalCasesDatasetLabel, seriesName: "totalCases" },
-  [TOTAL_DEATHS]: { label: totalDeathsDatasetLabel, seriesName: "totalDeaths" },
+  [DAILY_CASES]: { label:  "Daily Cases", seriesName: "dailyCases" },
+  [DAILY_DEATHS]: { label: "Daily Deaths", seriesName: "dailyDeaths" },
+  [TOTAL_CASES]: { label: "Total Cases", seriesName: "totalCases" },
+  [TOTAL_DEATHS]: { label: "Total Deaths", seriesName: "totalDeaths" },
   [PERCENTAGE_TESTS]: {
-    label: percentageTestsDatasetLabel,
+    label: "% of Tests Positive",
     seriesName: "percentPositiveTests",
   },
 };
@@ -375,7 +369,5 @@ export function createChart(
   }
 
   const chartContext = chartContainer.getContext("2d");
-  const chart = new Chart(chartContext, chartConfiguration);
-
-  return chart;
+  return new Chart(chartContext, chartConfiguration);
 }
