@@ -97,67 +97,69 @@ export default function GeoHeatMap({
       fillOpacity: 0,
     };
 
-    const handleRegionPopup = (e) => {
-      if (allData === null) {
-        return;
-      }
-      const map = mapRef.current.leafletElement;
-      const layer = e.target;
-      const featureCode = featureCodeForFeature(layer.feature);
-      const regionData = allData.regions[featureCode];
-      var content =
-        "<p class='region-popup'>" +
-        regionData.name +
-        "<br />Not available</p>";
+    if (allData !== null) {
+      const handleRegionPopup = (e) => {
+        if (allData === null) {
+          return;
+        }
+        const map = mapRef.current.leafletElement;
+        const layer = e.target;
+        const featureCode = featureCodeForFeature(layer.feature);
+        const regionData = allData.regions[featureCode];
+        var content =
+          "<p class='region-popup'>" +
+          regionData.name +
+          "<br />Not available</p>";
 
-      function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function (txt) {
-          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-      }
+        function toTitleCase(str) {
+          return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+        }
 
-      const count =
-        currentValueTypeRef.current === VALUETYPE_DEATHS
-          ? regionData.weeklyDeaths
-          : regionData.weeklyCases;
+        const count =
+          currentValueTypeRef.current === VALUETYPE_DEATHS
+            ? regionData.weeklyDeaths
+            : regionData.weeklyCases;
 
-      if (regionData) {
-        content =
-          "<div class='region-popup'><div>" +
-          regionData.name.toUpperCase() +
-          "</div><div class='map-date-range'>" +
-          moment(allData.currentWeekStartDate).format("DD MMM") +
-          " - " +
-          moment(allData.endDate).format("DD MMM") +
-          "</div> <div class='map-cases-count'>" +
-          toTitleCase(currentValueTypeRef.current) +
-          ": " +
-          count +
-          "</div></div>";
-      }
+        if (regionData) {
+          content =
+            "<div class='region-popup'><div>" +
+            regionData.name.toUpperCase() +
+            "</div><div class='map-date-range'>" +
+            moment(allData.currentWeekStartDate).format("DD MMM") +
+            " - " +
+            moment(allData.endDate).format("DD MMM") +
+            "</div> <div class='map-cases-count'>" +
+            toTitleCase(currentValueTypeRef.current) +
+            ": " +
+            count +
+            "</div></div>";
+        }
 
-      L.popup({ closeButton: false })
-        .setLatLng(e.latlng)
-        .setContent(content)
-        .openOn(map);
-    };
+        L.popup({ closeButton: false })
+          .setLatLng(e.latlng)
+          .setContent(content)
+          .openOn(map);
+      };
 
-    const regionLayerOptions = {
-      style: INVISIBLE_LAYER_STYLE,
-      onEachFeature: (feature, layer) => {
-        layer.on({
-          mouseover: handleRegionPopup,
-          click: handleRegionPopup,
-        });
-      },
-    };
+      const regionLayerOptions = {
+        style: INVISIBLE_LAYER_STYLE,
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: handleRegionPopup,
+            click: handleRegionPopup,
+          });
+        },
+      };
 
-    setCouncilAreaBoundariesLayer(
-      L.geoJSON(councilAreaBoundaries, regionLayerOptions)
-    );
-    setHealthBoardBoundariesLayer(
-      L.geoJSON(healthBoardBoundaries, regionLayerOptions)
-    );
+      setCouncilAreaBoundariesLayer(
+        L.geoJSON(councilAreaBoundaries, regionLayerOptions)
+      );
+      setHealthBoardBoundariesLayer(
+        L.geoJSON(healthBoardBoundaries, regionLayerOptions)
+      );
+    }
   }, [allData]);
 
   // Fit bounds and restrict the panning
