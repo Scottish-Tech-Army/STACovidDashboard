@@ -2,7 +2,6 @@ import React from "react";
 import Heatmap, { createHeatbarLines } from "./Heatmap";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 
 var container = null;
 beforeEach(() => {
@@ -19,139 +18,9 @@ afterEach(() => {
   container = null;
 });
 
-const emptyData = {};
-
-const dailyHealthBoardWithScotlandData = {
-  startDate: Date.parse("2020-03-01"),
-  endDate: Date.parse("2020-03-09"),
-  dates: [Date.parse("2020-03-01"), Date.parse("2020-03-08")],
-  scotland: {
-    featureCode: FEATURE_CODE_SCOTLAND,
-    name: "Scotland",
-    cases: [0, 108],
-    deaths: [149, 149],
-    totalCases: 63,
-    totalDeaths: 140,
-  },
-  regions: [
-    // In alphabetical order of area name
-    {
-      featureCode: "S08000020",
-      name: "Grampian",
-      cases: [0, 18],
-      deaths: [1, 15],
-      totalCases: 26,
-      totalDeaths: 60,
-    },
-    {
-      featureCode: "S08000031",
-      name: "Greater Glasgow & Clyde",
-      cases: [0, 0],
-      deaths: [1, 11],
-      totalCases: 24,
-      totalDeaths: 40,
-    },
-    {
-      featureCode: "S08000022",
-      name: "Highland",
-      cases: [0, 501],
-      deaths: [1, 13],
-      totalCases: 25,
-      totalDeaths: 50,
-    },
-  ],
-};
-const dailyHealthBoardWithoutScotlandData = {
-  startDate: Date.parse("2020-03-01"),
-  endDate: Date.parse("2020-03-09"),
-  dates: [Date.parse("2020-03-01"), Date.parse("2020-03-08")],
-  scotland: {
-    featureCode: FEATURE_CODE_SCOTLAND,
-    name: "Scotland",
-    cases: [0, 519],
-    deaths: [3, 39],
-    totalCases: 75,
-    totalDeaths: 150,
-  },
-  regions: [
-    // In alphabetical order of area name
-    {
-      featureCode: "S08000020",
-      name: "Grampian",
-      cases: [0, 18],
-      deaths: [1, 15],
-      totalCases: 26,
-      totalDeaths: 60,
-    },
-    {
-      featureCode: "S08000031",
-      name: "Greater Glasgow & Clyde",
-      cases: [0, 0],
-      deaths: [1, 11],
-      totalCases: 24,
-      totalDeaths: 40,
-    },
-    {
-      featureCode: "S08000022",
-      name: "Highland",
-      cases: [0, 501],
-      deaths: [1, 13],
-      totalCases: 25,
-      totalDeaths: 50,
-    },
-  ],
-};
-
-const dailyCouncilAreaData = {
-  startDate: Date.parse("2020-03-01"),
-  endDate: Date.parse("2020-03-09"),
-  dates: [Date.parse("2020-03-01"), Date.parse("2020-03-08")],
-  scotland: {
-    featureCode: FEATURE_CODE_SCOTLAND,
-    name: "Scotland",
-    cases: [0, 519],
-    deaths: [3, 39],
-    totalCases: 75,
-    totalDeaths: 150,
-  },
-  regions: [
-    // In alphabetical order of area name
-    {
-      featureCode: "S12000035",
-      name: "Argyll & Bute",
-      cases: [0, 501],
-      deaths: [1, 13],
-      totalCases: 25,
-      totalDeaths: 50,
-    },
-    {
-      featureCode: "S12000019",
-      name: "Midlothian",
-      cases: [0, 18],
-      deaths: [1, 15],
-      totalCases: 26,
-      totalDeaths: 60,
-    },
-    {
-      featureCode: "S12000013",
-      name: "Na h-Eileanan Siar",
-      cases: [0, 0],
-      deaths: [1, 11],
-      totalCases: 24,
-      totalDeaths: 40,
-    },
-  ],
-};
-
 test("heatmap renders no data when fetch fails, shows loadingComponent", async () => {
   await act(async () => {
-    render(
-      <Heatmap
-        parsedCouncilAreaDataset={null}
-        parsedHealthBoardDataset={null}
-      />,
-      container
-    );
+    render(<Heatmap />, container);
   });
 
   expect(loadingComponent()).not.toBeNull();
@@ -163,8 +32,7 @@ describe("heatmap renders dynamic fetched data", () => {
     await act(async () => {
       render(
         <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
+          allData={testAllData}
           valueType="deaths"
           areaType="council-areas"
         />,
@@ -183,7 +51,7 @@ describe("heatmap renders dynamic fetched data", () => {
     expect(dataRows).toHaveLength(4);
 
     // counts = 3, 39
-    checkRow(dataRows[0], "Scotland", "150", [0, 3]);
+    checkRow(dataRows[0], "Scotland", "140", [5]);
     // counts = 1, 13
     checkRow(dataRows[1], "Argyll & Bute", "50", [0, 2]);
     // counts = 1, 15
@@ -192,12 +60,11 @@ describe("heatmap renders dynamic fetched data", () => {
     checkRow(dataRows[3], "Na h-Eileanan Siar", "40", [0, 2]);
   });
 
-  it("health boards; deaths (with Scotland)", async () => {
+  it("health boards; deaths", async () => {
     await act(async () => {
       render(
         <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
+          allData={testAllData}
           valueType="deaths"
           areaType="health-boards"
         />,
@@ -224,72 +91,11 @@ describe("heatmap renders dynamic fetched data", () => {
     checkRow(dataRows[3], "Highland", "50", [0, 2]);
   });
 
-  it("health boards; deaths (without Scotland)", async () => {
+  it("health boards; cases", async () => {
     await act(async () => {
       render(
         <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithoutScotlandData}
-          valueType="deaths"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
-
-    expect(loadingComponent()).toBeNull();
-    checkHeaderRow(
-      "HEALTH BOARDS",
-      "TOTAL DEATHS",
-      "01 Mar 2020 - 09 Mar 2020"
-    );
-
-    const dataRows = rows();
-    expect(dataRows).toHaveLength(4);
-    // counts = 3, 39
-    checkRow(dataRows[0], "Scotland", "150", [0, 3]);
-    // counts = 1, 13
-    checkRow(dataRows[1], "Grampian", "60", [0, 2]);
-    // counts = 1, 11
-    checkRow(dataRows[2], "Greater Glasgow & Clyde", "40", [0, 2]);
-    // counts = 1, 13
-    checkRow(dataRows[3], "Highland", "50", [0, 2]);
-  });
-
-  it("health boards; cases (with Scotland)", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
-          valueType="cases"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
-
-    expect(loadingComponent()).toBeNull();
-    checkHeaderRow("HEALTH BOARDS", "TOTAL CASES", "01 Mar 2020 - 09 Mar 2020");
-
-    const dataRows = rows();
-    expect(dataRows).toHaveLength(4);
-    // counts = 0, 108
-    checkRow(dataRows[0], "Scotland", "63", [0, 5]);
-    // counts = 0, 18
-    checkRow(dataRows[1], "Grampian", "26", [0, 2]);
-    // counts = 0, 0
-    checkRow(dataRows[2], "Greater Glasgow & Clyde", "24", [0]);
-    // counts = 0, 501
-    checkRow(dataRows[3], "Highland", "25", [0, 6]);
-  });
-
-  it("health boards; cases (without Scotland)", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithoutScotlandData}
+          allData={testAllData}
           valueType="cases"
           areaType="health-boards"
         />,
@@ -303,7 +109,7 @@ describe("heatmap renders dynamic fetched data", () => {
     const dataRows = rows();
     expect(dataRows).toHaveLength(4);
     // counts = 0, 519
-    checkRow(dataRows[0], "Scotland", "75", [0, 6]);
+    checkRow(dataRows[0], "Scotland", "63", [0, 6]);
     // counts = 0, 18
     checkRow(dataRows[1], "Grampian", "26", [0, 2]);
     // counts = 0, 0
@@ -316,8 +122,7 @@ describe("heatmap renders dynamic fetched data", () => {
     await act(async () => {
       render(
         <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
+          allData={testAllData}
           valueType="cases"
           areaType="council-areas"
         />,
@@ -331,7 +136,7 @@ describe("heatmap renders dynamic fetched data", () => {
     const dataRows = rows();
     expect(dataRows).toHaveLength(4);
     // counts = 0, 519
-    checkRow(dataRows[0], "Scotland", "75", [0, 6]);
+    checkRow(dataRows[0], "Scotland", "63", [0, 6]);
     // counts = 0, 501
     checkRow(dataRows[1], "Argyll & Bute", "25", [0, 6]);
     // counts = 0, 18
@@ -339,15 +144,12 @@ describe("heatmap renders dynamic fetched data", () => {
     // counts = 0, 0
     checkRow(dataRows[3], "Na h-Eileanan Siar", "24", [0]);
   });
-});
 
-describe("heatmap handles missing data", () => {
-  it("council areas; deaths", async () => {
+  it("missing region data", async () => {
     await act(async () => {
       render(
         <Heatmap
-          parsedCouncilAreaDataset={emptyData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
+          allData={{ regions: {} }}
           valueType="deaths"
           areaType="council-areas"
         />,
@@ -357,66 +159,6 @@ describe("heatmap handles missing data", () => {
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow("COUNCIL AREAS", "TOTAL DEATHS", "Data not available");
-
-    const dataRows = rows();
-    expect(dataRows).toHaveLength(0);
-  });
-
-  it("health boards; deaths", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={emptyData}
-          valueType="deaths"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
-
-    expect(loadingComponent()).toBeNull();
-    checkHeaderRow("HEALTH BOARDS", "TOTAL DEATHS", "Data not available");
-
-    const dataRows = rows();
-    expect(dataRows).toHaveLength(0);
-  });
-
-  it("health boards; cases", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          parsedCouncilAreaDataset={dailyCouncilAreaData}
-          parsedHealthBoardDataset={emptyData}
-          valueType="cases"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
-
-    expect(loadingComponent()).toBeNull();
-    checkHeaderRow("HEALTH BOARDS", "TOTAL CASES", "Data not available");
-
-    const dataRows = rows();
-    expect(dataRows).toHaveLength(0);
-  });
-
-  it("council areas; cases", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          parsedCouncilAreaDataset={emptyData}
-          parsedHealthBoardDataset={dailyHealthBoardWithScotlandData}
-          valueType="cases"
-          areaType="council-areas"
-        />,
-        container
-      );
-    });
-
-    expect(loadingComponent()).toBeNull();
-    checkHeaderRow("COUNCIL AREAS", "TOTAL CASES", "Data not available");
 
     const dataRows = rows();
     expect(dataRows).toHaveLength(0);
@@ -542,3 +284,75 @@ function checkHeatbar(heatbar, distinctHeatLevels) {
     lastX = currentX;
   });
 }
+
+const endDate = Date.parse("2020-03-09");
+const testAllData = {
+  startDate: Date.parse("2020-03-01"),
+  endDate: endDate,
+  weekStartDates: [Date.parse("2020-03-01"), Date.parse("2020-03-08")],
+  regions: {
+    S08000020: {
+      name: "Grampian",
+      weeklySeries: {
+        cases: [0, 18],
+        deaths: [1, 15],
+      },
+      cumulativeCases: { date: endDate, value: 26 },
+      cumulativeDeaths: { date: endDate, value: 60 },
+    },
+    S08000031: {
+      name: "Greater Glasgow & Clyde",
+      weeklySeries: {
+        cases: [0, 0],
+        deaths: [1, 11],
+      },
+      cumulativeCases: { date: endDate, value: 24 },
+      cumulativeDeaths: { date: endDate, value: 40 },
+    },
+    S08000022: {
+      name: "Highland",
+      weeklySeries: {
+        cases: [0, 501],
+        deaths: [1, 13],
+      },
+      cumulativeCases: { date: endDate, value: 25 },
+      cumulativeDeaths: { date: endDate, value: 50 },
+    },
+    S92000003: {
+      name: "Scotland",
+      weeklySeries: {
+        cases: [0, 519],
+        deaths: [149, 149],
+      },
+      cumulativeCases: { date: endDate, value: 63 },
+      cumulativeDeaths: { date: endDate, value: 140 },
+    },
+    S12000035: {
+      name: "Argyll & Bute",
+      weeklySeries: {
+        cases: [0, 501],
+        deaths: [1, 13],
+      },
+      cumulativeCases: { date: endDate, value: 25 },
+      cumulativeDeaths: { date: endDate, value: 50 },
+    },
+    S12000019: {
+      name: "Midlothian",
+      weeklySeries: {
+        cases: [0, 18],
+        deaths: [1, 15],
+      },
+      cumulativeCases: { date: endDate, value: 26 },
+      cumulativeDeaths: { date: endDate, value: 60 },
+    },
+    S12000013: {
+      name: "Na h-Eileanan Siar",
+      weeklySeries: {
+        cases: [0, 0],
+        deaths: [1, 11],
+      },
+      cumulativeCases: { date: endDate, value: 24 },
+      cumulativeDeaths: { date: endDate, value: 40 },
+    },
+  },
+};

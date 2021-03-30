@@ -9,7 +9,6 @@ import moment from "moment";
 import MockDate from "mockdate";
 
 const DATE_TODAY = "2020-10-17";
-const DATE_TOMORROW = "2020-10-18";
 
 var container = null;
 beforeEach(() => {
@@ -34,7 +33,7 @@ describe("single value bar rendering", () => {
     act(() => {
       render(
         <RegionSingleValueBar
-          placeStatsMap={testPlaceStatsMap}
+          allData={testAllData}
           regionCode={FEATURE_CODE_SCOTLAND}
         />,
         container
@@ -44,11 +43,11 @@ describe("single value bar rendering", () => {
     expectNormalScotlandValues();
   });
 
-  it("health board available", () => {
+  it("region available", () => {
     act(() => {
       render(
         <RegionSingleValueBar
-          placeStatsMap={testPlaceStatsMap}
+          allData={testAllData}
           regionCode="S08000017"
         />,
         container
@@ -63,31 +62,11 @@ describe("single value bar rendering", () => {
     checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
   });
 
-  it("council area available", () => {
-    MockDate.set(DATE_TOMORROW);
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          placeStatsMap={testPlaceStatsMap}
-          regionCode="S12000006"
-        />,
-        container
-      );
-    });
-
-    checkSingleValue("dailyCases", "1", "reported yesterday");
-    checkSingleValue("weeklyCases", "150", "last 7 days");
-    checkSingleValue("totalCases", "311", "reported since 28 February, 2020");
-    checkSingleValue("dailyDeaths", "2", "reported yesterday");
-    checkSingleValue("weeklyDeaths", "37", "last 7 days");
-    checkSingleValue("totalDeaths", "40", "reported since 28 February, 2020");
-  });
-
   it("scotland unavailable", () => {
     act(() => {
       render(
         <RegionSingleValueBar
-          placeStatsMap={{}}
+          allData={{ regions: {} }}
           regionCode={FEATURE_CODE_SCOTLAND}
         />,
         container
@@ -95,12 +74,22 @@ describe("single value bar rendering", () => {
     });
 
     expectValuesUnavailable();
-  });
 
-  it("health board unavailable", () => {
     act(() => {
       render(
-        <RegionSingleValueBar placeStatsMap={{}} regionCode="S08000017" />,
+        <RegionSingleValueBar
+          allData={{}}
+          regionCode={FEATURE_CODE_SCOTLAND}
+        />,
+        container
+      );
+    });
+
+    expectValuesUnavailable();
+
+    act(() => {
+      render(
+        <RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />,
         container
       );
     });
@@ -108,10 +97,13 @@ describe("single value bar rendering", () => {
     expectValuesUnavailable();
   });
 
-  it("council area unavailable", () => {
+  it("region unavailable", () => {
     act(() => {
       render(
-        <RegionSingleValueBar placeStatsMap={{}} regionCode="S12000006" />,
+        <RegionSingleValueBar
+          allData={{ regions: {} }}
+          regionCode="S08000017"
+        />,
         container
       );
     });
@@ -123,10 +115,7 @@ describe("single value bar rendering", () => {
 describe("regionCode", () => {
   it("missing should default to Scotland", () => {
     act(() => {
-      render(
-        <RegionSingleValueBar placeStatsMap={testPlaceStatsMap} />,
-        container
-      );
+      render(<RegionSingleValueBar allData={testAllData} />, container);
     });
 
     expectNormalScotlandValues();
@@ -135,10 +124,7 @@ describe("regionCode", () => {
   it("null should default to Scotland", () => {
     act(() => {
       render(
-        <RegionSingleValueBar
-          placeStatsMap={testPlaceStatsMap}
-          regionCode={null}
-        />,
+        <RegionSingleValueBar allData={testAllData} regionCode={null} />,
         container
       );
     });
@@ -151,10 +137,7 @@ describe("regionCode", () => {
 
     expect(() => {
       render(
-        <RegionSingleValueBar
-          placeStatsMap={testPlaceStatsMap}
-          regionCode="unknown"
-        />,
+        <RegionSingleValueBar allData={testAllData} regionCode="unknown" />,
         container
       );
     }).toThrow("Unrecognised regionCode: unknown");
@@ -203,29 +186,31 @@ function checkSingleValue(
 
 const testDate = moment.utc(DATE_TODAY).valueOf();
 
-const testPlaceStatsMap = {
-  S12000006: {
-    dailyCases: { date: testDate, value: 1 },
-    cumulativeCases: { date: testDate, value: 311 },
-    cumulativeDeaths: { date: testDate, value: 40 },
-    dailyDeaths: { date: testDate, value: 2 },
-    weeklyCases: 150,
-    weeklyDeaths: 37,
-  },
-  S08000017: {
-    dailyCases: { date: testDate, value: 4 },
-    cumulativeCases: { date: testDate, value: 305 },
-    cumulativeDeaths: { date: testDate, value: 40 },
-    dailyDeaths: { date: testDate, value: 0 },
-    weeklyCases: 501,
-    weeklyDeaths: 34,
-  },
-  S92000003: {
-    dailyCases: { date: testDate, value: 7 },
-    cumulativeCases: { date: testDate, value: 19126 },
-    cumulativeDeaths: { date: testDate, value: 2491 },
-    dailyDeaths: { date: testDate, value: 3 },
-    weeklyCases: 1572,
-    weeklyDeaths: 86,
+const testAllData = {
+  regions: {
+    S12000006: {
+      dailyCases: { date: testDate, value: 1 },
+      cumulativeCases: { date: testDate, value: 311 },
+      cumulativeDeaths: { date: testDate, value: 40 },
+      dailyDeaths: { date: testDate, value: 2 },
+      weeklyCases: 150,
+      weeklyDeaths: 37,
+    },
+    S08000017: {
+      dailyCases: { date: testDate, value: 4 },
+      cumulativeCases: { date: testDate, value: 305 },
+      cumulativeDeaths: { date: testDate, value: 40 },
+      dailyDeaths: { date: testDate, value: 0 },
+      weeklyCases: 501,
+      weeklyDeaths: 34,
+    },
+    S92000003: {
+      dailyCases: { date: testDate, value: 7 },
+      cumulativeCases: { date: testDate, value: 19126 },
+      cumulativeDeaths: { date: testDate, value: 2491 },
+      dailyDeaths: { date: testDate, value: 3 },
+      weeklyCases: 1572,
+      weeklyDeaths: 86,
+    },
   },
 };

@@ -13,7 +13,14 @@ import {
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
-export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
+const SIX_DAYS_IN_MILLIS = 6 * 24 * 3600 * 1000;
+
+export function createHeatbarLines(
+  elements,
+  createHeatbarLine,
+  region,
+  weekStartDates
+) {
   function formatDate(date) {
     return format(date, "dd MMM");
   }
@@ -33,11 +40,11 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
       }
     }
     const dateString =
-      weekCount === 1
-        ? formatDate(dates[startDateIndex])
-        : formatDate(dates[startDateIndex]) +
-          " - " +
-          formatDate(dates[startDateIndex + weekCount - 1]);
+      formatDate(weekStartDates[startDateIndex]) +
+      " - " +
+      formatDate(
+        weekStartDates[startDateIndex + weekCount - 1] + SIX_DAYS_IN_MILLIS
+      );
 
     result.push(
       createHeatbarLine(
@@ -61,7 +68,7 @@ export default function Heatmap({
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 5, 10, 20, 50, 100, 500, 1000];
 
-  function createHeatbar(elements, region, dates) {
+  function createHeatbar(elements, region, weekStartDates) {
     const width = 20;
     const height = 15;
     const viewBox = "0 0 " + width + " " + height;
@@ -87,7 +94,12 @@ export default function Heatmap({
 
     return (
       <svg className="heatbar" viewBox={viewBox} preserveAspectRatio="none">
-        {createHeatbarLines(elements, createHeatbarLine, region, dates)}
+        {createHeatbarLines(
+          elements,
+          createHeatbarLine,
+          region,
+          weekStartDates
+        )}
       </svg>
     );
   }
@@ -103,10 +115,15 @@ export default function Heatmap({
   }
 
   function createRegionTableline(
-    { featureCode, name, totalDeaths, totalCases, cases, deaths },
+    featureCode,
+    name,
+    totalCases,
+    totalDeaths,
+    { cases, deaths },
     index,
-    dates
+    weekStartDates
   ) {
+
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
@@ -120,7 +137,7 @@ export default function Heatmap({
         <td>{total}</td>
         <td className="heatbarCell">
           <div className="heatbarLine">
-            {createHeatbar(counts.map(getHeatLevel), name, dates)}
+            {createHeatbar(counts.map(getHeatLevel), name, weekStartDates)}
           </div>
         </td>
       </tr>
@@ -150,25 +167,30 @@ export default function Heatmap({
       return [];
     }
 
-    const featureCodes =
+    const regionFeatureCodes =
       AREATYPE_COUNCIL_AREAS === areaType
         ? FEATURE_CODE_COUNCIL_AREAS
         : FEATURE_CODE_HEALTH_BOARDS;
-    const result = featureCodes.map((region, i) =>
-      createRegionTableline(
-        allData.regions[region].heatmap,
-        i + 1,
-        allData.dates
-      )
-    );
+    const featureCodes = [FEATURE_CODE_SCOTLAND, ...regionFeatureCodes];
 
-    result.unshift(
-      createRegionTableline(
-        allData.regions[FEATURE_CODE_SCOTLAND].heatmap,
-        0,
-        allData.dates
-      )
-    );
+    const result = featureCodes
+      .map((region, i) => {
+        const regionData = allData.regions[region];
+        return (
+          regionData ?
+          createRegionTableline(
+            region,
+            regionData.name,
+            regionData.cumulativeCases.value,
+            regionData.cumulativeDeaths.value,
+            regionData.weeklySeries,
+            i + 1,
+            allData.weekStartDates
+        ) : null
+        );
+      })
+      .filter(Boolean);
+
     return result;
   }
 

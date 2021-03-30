@@ -51,16 +51,7 @@ test("singleValueBar renders default data when dataset is null", async () => {
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
   await act(async () => {
-    render(
-      <SingleValueBar
-        dailyCases={{ date: DATE_TODAY, value: 1167 }}
-        dailyDeaths={{ date: DATE_TODAY, value: 15 }}
-        totalCases={{ date: DATE_TODAY, value: 46399 }}
-        totalDeaths={{ date: DATE_TODAY, value: 2609 }}
-        fatalityCaseRatio="5.6%"
-      />,
-      container
-    );
+    render(<SingleValueBar allData={testAllData} />, container);
   });
 
   checkSingleValue("dailyCases", "1,167", "reported today");
@@ -74,16 +65,7 @@ test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   MockDate.set(DATE_TOMORROW);
 
   await act(async () => {
-    render(
-      <SingleValueBar
-        dailyCases={{ date: DATE_TODAY, value: 1167 }}
-        dailyDeaths={{ date: DATE_TODAY, value: 15 }}
-        totalCases={{ date: DATE_TODAY, value: 46399 }}
-        totalDeaths={{ date: DATE_TODAY, value: 2609 }}
-        fatalityCaseRatio="5.6%"
-      />,
-      container
-    );
+    render(<SingleValueBar allData={testAllData} />, container);
   });
 
   checkSingleValue("dailyCases", "1,167", "reported yesterday");
@@ -106,3 +88,15 @@ function checkSingleValue(
   );
   expect(value.textContent).toBe(expectedValue);
 }
+
+const testAllData = {
+  regions: {
+    S92000003: {
+      dailyCases: { date: DATE_TODAY, value: 1167 },
+      dailyDeaths: { date: DATE_TODAY, value: 15 },
+      cumulativeCases: { date: DATE_TODAY, value: 46399 },
+      cumulativeDeaths: { date: DATE_TODAY, value: 2609 },
+      fatalityCaseRatio: "5.6%",
+    },
+  },
+};

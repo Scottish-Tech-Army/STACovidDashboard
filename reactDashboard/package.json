@@ -12,7 +12,6 @@
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "date-fns": "^2.16.1",
-    "deepmerge": "^4.2.2",
     "leaflet": "^1.7.1",
     "moment": "^2.28.0",
     "react": "^16.13.1",

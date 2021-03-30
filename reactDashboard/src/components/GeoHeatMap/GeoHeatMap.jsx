@@ -126,9 +126,9 @@ export default function GeoHeatMap({
           "<div class='region-popup'><div>" +
           regionData.name.toUpperCase() +
           "</div><div class='map-date-range'>" +
-          moment(regionData.fromDate).format("DD MMM") +
+          moment(allData.currentWeekStartDate).format("DD MMM") +
           " - " +
-          moment(regionData.toDate).format("DD MMM") +
+          moment(allData.endDate).format("DD MMM") +
           "</div> <div class='map-cases-count'>" +
           toTitleCase(currentValueTypeRef.current) +
           ": " +

@@ -33,7 +33,7 @@ export default function RegionSingleValueBar({
   }
 
   useEffect(() => {
-    if (allData == null) {
+    if (!allData || !allData.regions) {
       return;
     }
     const results =

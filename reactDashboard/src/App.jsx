@@ -15,14 +15,7 @@ import {
 } from "./pages/PageConsts";
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
-import {
-  readCsvData,
-  fetchAndStore,
-  calculatePopulationProportionMap,
-  getPopulationMap,
-  createPlaceDateValuesMap,
-  getAllData,
-} from "./components/Utils/CsvUtils";
+import { generateAllData } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 import {
@@ -34,9 +27,7 @@ import {
 } from "react-router-dom";
 import useDarkMode from "use-dark-mode";
 
-const tagManagerArgs = {
-  gtmId: "GTM-5LKHW33",
-};
+const tagManagerArgs = { gtmId: "GTM-5LKHW33" };
 
 TagManager.initialize(tagManagerArgs);
 
@@ -67,18 +58,24 @@ const App = () => {
 
   useEffect(() => {
     if (null === allData) {
-      fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
-        method: "GET",
-      })
-        .then((res) => res.json())
-        .then((jsonData) => {
-          setAllData(jsonData);
-        })
+      // fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
+      //   method: "GET",
+      // })
+      //   .then((res) => res.json())
+      //   .then((jsonData) => {
+      //     setAllData(jsonData);
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+      // Temporarily create allData from csv - intend to do in lambda soon
+      generateAllData()
+        .then(setAllData)
         .catch((error) => {
           console.error(error);
         });
     }
-  }, []);
+  }, [allData]);
 
   return (
     <div className="App">

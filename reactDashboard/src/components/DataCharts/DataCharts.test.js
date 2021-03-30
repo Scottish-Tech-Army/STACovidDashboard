@@ -18,13 +18,11 @@ afterEach(() => {
   container = null;
 });
 
-const MAX_DATE_RANGE = { startDate: 0, endDate: 1 };
-
 test("dataCharts renders default data input dataset is null", async () => {
   global.suppressConsoleErrorLogs();
 
   await act(async () => {
-    render(<DataCharts maxDateRange={MAX_DATE_RANGE} />, container);
+    render(<DataCharts />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -33,17 +31,7 @@ test("dataCharts renders default data input dataset is null", async () => {
 
 test("dataCharts renders dynamic fetched data", async () => {
   await act(async () => {
-    render(
-      <DataCharts
-        percentageTestsSeriesData={percentageTestsSeriesData}
-        dailyCasesSeriesData={dailyCasesSeriesData}
-        dailyDeathsSeriesData={dailyDeathsSeriesData}
-        totalCasesSeriesData={totalCasesSeriesData}
-        totalDeathsSeriesData={totalDeathsSeriesData}
-        maxDateRange={MAX_DATE_RANGE}
-      />,
-      container
-    );
+    render(<DataCharts allData={testAllData} />, container);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -51,212 +39,53 @@ test("dataCharts renders dynamic fetched data", async () => {
   // TODO need to figure out how to test chart.js content
 });
 
-const percentageTestsSeriesData = new Map()
-  .set("S08000031", [
-    { t: Date.parse("2020-03-02"), y: 0.1 },
-    { t: Date.parse("2020-03-03"), y: 3.1 },
-    { t: Date.parse("2020-03-04"), y: 6.1 },
-    { t: Date.parse("2020-03-05"), y: 9.1 },
-    { t: Date.parse("2020-03-06"), y: 12.1 },
-    { t: Date.parse("2020-03-07"), y: 15.1 },
-    { t: Date.parse("2020-03-08"), y: 18.1 },
-    { t: Date.parse("2020-03-09"), y: 21.1 },
-  ])
-  .set("S08000022", [
-    { t: Date.parse("2020-03-02"), y: 1.1 },
-    { t: Date.parse("2020-03-03"), y: 4.1 },
-    { t: Date.parse("2020-03-04"), y: 7.1 },
-    { t: Date.parse("2020-03-05"), y: 10.1 },
-    { t: Date.parse("2020-03-06"), y: 13.1 },
-    { t: Date.parse("2020-03-07"), y: 16.1 },
-    { t: Date.parse("2020-03-08"), y: 19.1 },
-    { t: Date.parse("2020-03-09"), y: 22.1 },
-  ])
-  .set("S12000013", [
-    { t: Date.parse("2020-03-02"), y: 2.1 },
-    { t: Date.parse("2020-03-03"), y: 5.1 },
-    { t: Date.parse("2020-03-04"), y: 8.1 },
-    { t: Date.parse("2020-03-05"), y: 11.1 },
-    { t: Date.parse("2020-03-06"), y: 14.1 },
-    { t: Date.parse("2020-03-07"), y: 17.1 },
-    { t: Date.parse("2020-03-08"), y: 20.1 },
-    { t: Date.parse("2020-03-09"), y: 23.1 },
-  ])
-  .set("S92000003", [
-    { t: Date.parse("2020-03-02"), y: 3.3 },
-    { t: Date.parse("2020-03-03"), y: 12.3 },
-    { t: Date.parse("2020-03-04"), y: 21.3 },
-    { t: Date.parse("2020-03-05"), y: 30.3 },
-    { t: Date.parse("2020-03-06"), y: 39.3 },
-    { t: Date.parse("2020-03-07"), y: 48.3 },
-    { t: Date.parse("2020-03-08"), y: 57.3 },
-    { t: Date.parse("2020-03-09"), y: 66.3 },
-  ]);
-
-const dailyCasesSeriesData = new Map()
-  .set("S08000031", [
-    { t: Date.parse("2020-03-02"), y: 1 },
-    { t: Date.parse("2020-03-03"), y: 31 },
-    { t: Date.parse("2020-03-04"), y: 61 },
-    { t: Date.parse("2020-03-05"), y: 91 },
-    { t: Date.parse("2020-03-06"), y: 121 },
-    { t: Date.parse("2020-03-07"), y: 151 },
-    { t: Date.parse("2020-03-08"), y: 181 },
-    { t: Date.parse("2020-03-09"), y: 211 },
-  ])
-  .set("S08000022", [
-    { t: Date.parse("2020-03-02"), y: 11 },
-    { t: Date.parse("2020-03-03"), y: 41 },
-    { t: Date.parse("2020-03-04"), y: 71 },
-    { t: Date.parse("2020-03-05"), y: 101 },
-    { t: Date.parse("2020-03-06"), y: 131 },
-    { t: Date.parse("2020-03-07"), y: 161 },
-    { t: Date.parse("2020-03-08"), y: 191 },
-    { t: Date.parse("2020-03-09"), y: 221 },
-  ])
-  .set("S12000013", [
-    { t: Date.parse("2020-03-02"), y: 21 },
-    { t: Date.parse("2020-03-03"), y: 51 },
-    { t: Date.parse("2020-03-04"), y: 81 },
-    { t: Date.parse("2020-03-05"), y: 111 },
-    { t: Date.parse("2020-03-06"), y: 141 },
-    { t: Date.parse("2020-03-07"), y: 171 },
-    { t: Date.parse("2020-03-08"), y: 201 },
-    { t: Date.parse("2020-03-09"), y: 231 },
-  ])
-  .set("S92000003", [
-    { t: Date.parse("2020-03-02"), y: 33 },
-    { t: Date.parse("2020-03-03"), y: 123 },
-    { t: Date.parse("2020-03-04"), y: 213 },
-    { t: Date.parse("2020-03-05"), y: 303 },
-    { t: Date.parse("2020-03-06"), y: 393 },
-    { t: Date.parse("2020-03-07"), y: 483 },
-    { t: Date.parse("2020-03-08"), y: 573 },
-    { t: Date.parse("2020-03-09"), y: 663 },
-  ]);
-
-const dailyDeathsSeriesData = new Map()
-  .set("S08000031", [
-    { t: Date.parse("2020-03-02"), y: 5 },
-    { t: Date.parse("2020-03-03"), y: 35 },
-    { t: Date.parse("2020-03-04"), y: 65 },
-    { t: Date.parse("2020-03-05"), y: 95 },
-    { t: Date.parse("2020-03-06"), y: 125 },
-    { t: Date.parse("2020-03-07"), y: 155 },
-    { t: Date.parse("2020-03-08"), y: 185 },
-    { t: Date.parse("2020-03-09"), y: 215 },
-  ])
-  .set("S08000022", [
-    { t: Date.parse("2020-03-02"), y: 15 },
-    { t: Date.parse("2020-03-03"), y: 45 },
-    { t: Date.parse("2020-03-04"), y: 75 },
-    { t: Date.parse("2020-03-05"), y: 105 },
-    { t: Date.parse("2020-03-06"), y: 135 },
-    { t: Date.parse("2020-03-07"), y: 165 },
-    { t: Date.parse("2020-03-08"), y: 195 },
-    { t: Date.parse("2020-03-09"), y: 225 },
-  ])
-  .set("S12000013", [
-    { t: Date.parse("2020-03-02"), y: 25 },
-    { t: Date.parse("2020-03-03"), y: 55 },
-    { t: Date.parse("2020-03-04"), y: 85 },
-    { t: Date.parse("2020-03-05"), y: 115 },
-    { t: Date.parse("2020-03-06"), y: 145 },
-    { t: Date.parse("2020-03-07"), y: 175 },
-    { t: Date.parse("2020-03-08"), y: 205 },
-    { t: Date.parse("2020-03-09"), y: 235 },
-  ])
-  .set("S92000003", [
-    { t: Date.parse("2020-03-02"), y: 45 },
-    { t: Date.parse("2020-03-03"), y: 135 },
-    { t: Date.parse("2020-03-04"), y: 225 },
-    { t: Date.parse("2020-03-05"), y: 315 },
-    { t: Date.parse("2020-03-06"), y: 405 },
-    { t: Date.parse("2020-03-07"), y: 495 },
-    { t: Date.parse("2020-03-08"), y: 585 },
-    { t: Date.parse("2020-03-09"), y: 675 },
-  ]);
-
-const totalCasesSeriesData = new Map()
-  .set("S08000031", [
-    { t: Date.parse("2020-03-02"), y: 2 },
-    { t: Date.parse("2020-03-03"), y: 32 },
-    { t: Date.parse("2020-03-04"), y: 62 },
-    { t: Date.parse("2020-03-05"), y: 92 },
-    { t: Date.parse("2020-03-06"), y: 122 },
-    { t: Date.parse("2020-03-07"), y: 152 },
-    { t: Date.parse("2020-03-08"), y: 182 },
-    { t: Date.parse("2020-03-09"), y: 212 },
-  ])
-  .set("S08000022", [
-    { t: Date.parse("2020-03-02"), y: 12 },
-    { t: Date.parse("2020-03-03"), y: 42 },
-    { t: Date.parse("2020-03-04"), y: 72 },
-    { t: Date.parse("2020-03-05"), y: 102 },
-    { t: Date.parse("2020-03-06"), y: 132 },
-    { t: Date.parse("2020-03-07"), y: 162 },
-    { t: Date.parse("2020-03-08"), y: 192 },
-    { t: Date.parse("2020-03-09"), y: 222 },
-  ])
-  .set("S12000013", [
-    { t: Date.parse("2020-03-02"), y: 22 },
-    { t: Date.parse("2020-03-03"), y: 52 },
-    { t: Date.parse("2020-03-04"), y: 82 },
-    { t: Date.parse("2020-03-05"), y: 112 },
-    { t: Date.parse("2020-03-06"), y: 142 },
-    { t: Date.parse("2020-03-07"), y: 172 },
-    { t: Date.parse("2020-03-08"), y: 202 },
-    { t: Date.parse("2020-03-09"), y: 232 },
-  ])
-  .set("S92000003", [
-    { t: Date.parse("2020-03-02"), y: 36 },
-    { t: Date.parse("2020-03-03"), y: 126 },
-    { t: Date.parse("2020-03-04"), y: 216 },
-    { t: Date.parse("2020-03-05"), y: 306 },
-    { t: Date.parse("2020-03-06"), y: 396 },
-    { t: Date.parse("2020-03-07"), y: 486 },
-    { t: Date.parse("2020-03-08"), y: 576 },
-    { t: Date.parse("2020-03-09"), y: 888 },
-  ]);
-
-const totalDeathsSeriesData = new Map()
-  .set("S08000031", [
-    { t: Date.parse("2020-03-02"), y: 6 },
-    { t: Date.parse("2020-03-03"), y: 36 },
-    { t: Date.parse("2020-03-04"), y: 66 },
-    { t: Date.parse("2020-03-05"), y: 96 },
-    { t: Date.parse("2020-03-06"), y: 126 },
-    { t: Date.parse("2020-03-07"), y: 156 },
-    { t: Date.parse("2020-03-08"), y: 186 },
-    { t: Date.parse("2020-03-09"), y: 216 },
-  ])
-  .set("S08000022", [
-    { t: Date.parse("2020-03-02"), y: 16 },
-    { t: Date.parse("2020-03-03"), y: 46 },
-    { t: Date.parse("2020-03-04"), y: 76 },
-    { t: Date.parse("2020-03-05"), y: 106 },
-    { t: Date.parse("2020-03-06"), y: 136 },
-    { t: Date.parse("2020-03-07"), y: 166 },
-    { t: Date.parse("2020-03-08"), y: 196 },
-    { t: Date.parse("2020-03-09"), y: 226 },
-  ])
-  .set("S12000013", [
-    { t: Date.parse("2020-03-02"), y: 26 },
-    { t: Date.parse("2020-03-03"), y: 56 },
-    { t: Date.parse("2020-03-04"), y: 86 },
-    { t: Date.parse("2020-03-05"), y: 116 },
-    { t: Date.parse("2020-03-06"), y: 146 },
-    { t: Date.parse("2020-03-07"), y: 176 },
-    { t: Date.parse("2020-03-08"), y: 206 },
-    { t: Date.parse("2020-03-09"), y: 236 },
-  ])
-  .set("S92000003", [
-    { t: Date.parse("2020-03-02"), y: 48 },
-    { t: Date.parse("2020-03-03"), y: 138 },
-    { t: Date.parse("2020-03-04"), y: 228 },
-    { t: Date.parse("2020-03-05"), y: 318 },
-    { t: Date.parse("2020-03-06"), y: 408 },
-    { t: Date.parse("2020-03-07"), y: 498 },
-    { t: Date.parse("2020-03-08"), y: 588 },
-    { t: Date.parse("2020-03-09"), y: 678 },
-  ]);
+const testAllData = {
+  dates: [
+    Date.parse("2020-03-02"),
+    Date.parse("2020-03-03"),
+    Date.parse("2020-03-04"),
+    Date.parse("2020-03-05"),
+    Date.parse("2020-03-06"),
+    Date.parse("2020-03-07"),
+    Date.parse("2020-03-08"),
+    Date.parse("2020-03-09"),
+  ],
+  regions: {
+    S08000031: {
+      dailySeries: {
+        dailyCases: [1, 31, 61, 91, 121, 151, 181, 211],
+        dailyDeaths: [5, 35, 65, 95, 125, 155, 185, 215],
+        totalCases: [2, 32, 62, 92, 122, 152, 182, 212],
+        totalDeaths: [6, 36, 66, 96, 126, 156, 186, 216],
+        percentPositiveTests: [0.1, 3.1, 6.1, 9.1, 12.1, 15.1, 18.1, 21.1],
+      },
+    },
+    S08000022: {
+      dailySeries: {
+        dailyCases: [11, 41, 71, 101, 131, 161, 191, 221],
+        dailyDeaths: [15, 45, 75, 105, 135, 165, 195, 225],
+        totalCases: [12, 42, 72, 102, 132, 162, 192, 222],
+        totalDeaths: [16, 46, 76, 106, 136, 166, 196, 226],
+        percentPositiveTests: [1.1, 4.1, 7.1, 10.1, 13.1, 16.1, 19.1, 22.1],
+      },
+    },
+    S12000013: {
+      dailySeries: {
+        dailyCases: [21, 51, 81, 111, 141, 171, 201, 231],
+        dailyDeaths: [25, 55, 85, 115, 145, 175, 205, 235],
+        totalCases: [22, 52, 82, 112, 142, 172, 202, 232],
+        totalDeaths: [26, 56, 86, 116, 146, 176, 206, 236],
+        percentPositiveTests: [2.1, 5.1, 8.1, 11.1, 14.1, 17.1, 20.1, 23.1],
+      },
+    },
+    S92000003: {
+      dailySeries: {
+        dailyCases: [33, 123, 213, 303, 393, 483, 573, 663],
+        dailyDeaths: [45, 135, 225, 315, 405, 495, 585, 675],
+        totalCases: [36, 126, 216, 306, 396, 486, 576, 888],
+        totalDeaths: [48, 138, 228, 318, 408, 498, 588, 678],
+        percentPositiveTests: [3.3, 12.3, 21.3, 30.3, 39.3, 48.3, 57.3, 66.3],
+      },
+    },
+  },
+};

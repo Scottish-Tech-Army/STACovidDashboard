@@ -7,7 +7,7 @@ import {
   LAST_MONTH,
   LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
-import { calculateDateRange } from "./DataChartsUtils";
+import { calculateDateRange } from "./DataChartsModel";
 
 function QuickSelectDateRange({ maxDateRange, setDateRange }) {
   if (maxDateRange === undefined) {
