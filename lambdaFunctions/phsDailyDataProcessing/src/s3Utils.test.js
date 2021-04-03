@@ -94,8 +94,6 @@ describe("storeObject", () => {
     return expect(
       storeObject("test data", "MyObject", "Yesterday at teatime")
     ).rejects.toThrow("Store failed");
-
-    checkPutObjectCalled("MyObject", "test data", 9, "Yesterday at teatime");
   });
 
   it("when putObject succeeds", async () => {
@@ -662,17 +660,6 @@ describe("storeJsonProcessedData", () => {
     return expect(storeJsonProcessedData({ test: "data" })).rejects.toThrow(
       "Store failed"
     );
-
-    expect(AWS.mockPutObject).toHaveBeenCalledTimes(1);
-    expect(AWS.mockPutObject).toHaveBeenCalledWith({
-      ACL: "public-read",
-      Body: Buffer.from('{"test":"data"}'),
-      Bucket: BUCKET_NAME,
-      ContentLength: 15,
-      ContentType: "text/json",
-      Key: "data/phsData.json",
-    });
-    checkPutObjectCalled("MyObject", "test data", 9, "Yesterday at teatime");
   });
 
   it("when putObject succeeds", async () => {
