@@ -503,7 +503,7 @@ export function createJsonData(
     regionData.dailySeries = regionDailySeries[region];
   });
 
-  const result = {
+  return {
     regions: regions,
     dates: placeDateValuesMap.dates,
     weekStartDates: weekStartDates,
@@ -511,6 +511,4 @@ export function createJsonData(
     endDate: endDate,
     currentWeekStartDate: currentWeekStartDate,
   };
-  // console.log(result);
-  return result;
 }

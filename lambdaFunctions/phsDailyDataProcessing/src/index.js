@@ -23,9 +23,5 @@ exports.handler = async (event) => {
 
   await downloadAndStoreAdditionalCsvData();
 
-  const response = {
-    statusCode: 200,
-    body: result,
-  };
-  return response;
+  return { statusCode: 200, body: result };
 };
