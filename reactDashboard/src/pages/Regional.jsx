@@ -12,6 +12,7 @@ import RegionDropdown from "../components/RegionDropdown/RegionDropdown";
 import {
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_MAP,
+  getPlaceNameByFeatureCode,
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
@@ -95,11 +96,11 @@ const Regional = ({ allData, darkmode }) => {
       <Container fluid className="regional-page">
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="region-page-top-row">
-          <Col className="geo-map-column" xs={12} lg={4}>
+          <Col aria-hidden={true} className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
               regionCode={regionCode}
               setRegionCode={setRegionCode}
@@ -107,22 +108,31 @@ const Regional = ({ allData, darkmode }) => {
             />
           </Col>
           <Col className="region-tiles-column" xs={12} lg={8}>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
+            <h2 className="visually-hidden">Select region</h2>
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
             />
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
+            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(
+              regionCode
+            )}`}</h2>
             <RegionSingleValueBar regionCode={regionCode} allData={allData} />
           </Col>
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
+            <h2 className="visually-hidden">
+              {`Time series statistics for ${getPlaceNameByFeatureCode(
+                regionCode
+              )}`}
+            </h2>
             <DataCharts
               regionCode={regionCode}
               allData={allData}
@@ -132,7 +142,7 @@ const Regional = ({ allData, darkmode }) => {
         </Row>
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
             <DataDefinitions />
           </Col>
         </Row>

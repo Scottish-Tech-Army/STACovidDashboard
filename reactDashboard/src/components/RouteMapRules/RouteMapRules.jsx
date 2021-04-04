@@ -22,12 +22,12 @@ const RouteMapRules = () => {
     <Container fluid className="d-flex flex-column">
       <Row>
         <Col className="hr-container">
-          <hr className="full-width-hr" />
+          <hr aria-hidden={true} className="full-width-hr" />
         </Col>
       </Row>
       <Row>
         <Col xs="12" className="headline-banner">
-          <h2>
+          <p>
             There are a number of{" "}
             <span className="headline-banner-highlight">
               Regional Restrictions
@@ -38,7 +38,7 @@ const RouteMapRules = () => {
               "latest Scottish Government guidance"
             )}
             .
-          </h2>
+          </p>
         </Col>
       </Row>
     </Container>

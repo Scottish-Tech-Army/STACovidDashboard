@@ -1,0 +1,26 @@
+# Build, test and deploy to live the PR branch on PR creation or update
+
+name: Pull Request JS Lambda Build and Test
+
+on:
+  # Triggers the workflow on pull request events
+  pull_request:
+    types: [ opened, synchronize, reopened, edited ]
+    paths-ignore:
+      - 'awsLambdaFunctions/**'
+      - 'reactDashboard/**'
+      - 'functionalTest/**'
+
+jobs:
+  # Build and deploy the candidate to staging
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Build and copy artifacts
+        run: |
+          cd lambdaFunctions/phsDailyDataProcessing
+          npm install
+          npm test -- --watchAll=false

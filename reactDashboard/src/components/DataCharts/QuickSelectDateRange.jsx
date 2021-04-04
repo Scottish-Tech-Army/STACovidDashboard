@@ -17,13 +17,14 @@ function QuickSelectDateRange({ maxDateRange, setDateRange }) {
     setDateRange(calculateDateRange(maxDateRange, newTimePeriod));
   };
 
-  function createButton(id, timePeriod, buttonText) {
+  function createButton(id, timePeriod, buttonText, accessibleText) {
     return (
       <Button
         id={id}
         className="quick-select"
         onClick={() => handleClick(timePeriod)}
         variant="outlined"
+        aria-label={accessibleText}
       >
         {buttonText}
       </Button>
@@ -32,11 +33,12 @@ function QuickSelectDateRange({ maxDateRange, setDateRange }) {
 
   return (
     <div className="quick-select-dates">
-      {createButton("select-all", ALL_DATES, "ALL")}
-      {createButton("select-last-three-months", LAST_THREE_MONTHS, "Last 3M")}
-      {createButton("select-last-month", LAST_MONTH, "Last 1M")}
-      {createButton("select-last-two-weeks", LAST_TWO_WEEKS, "Last 2W")}
-      {createButton("select-last-week", LAST_WEEK, "Last 1W")}
+    <label className="visually-hidden">Choose date range</label>
+      {createButton("select-all", ALL_DATES, "ALL", "all dates")}
+      {createButton("select-last-three-months", LAST_THREE_MONTHS, "Last 3M", "last three months")}
+      {createButton("select-last-month", LAST_MONTH, "Last 1M", "last four weeks")}
+      {createButton("select-last-two-weeks", LAST_TWO_WEEKS, "Last 2W", "last two weeks")}
+      {createButton("select-last-week", LAST_WEEK, "Last 1W", "last 7 days")}
     </div>
   );
 }

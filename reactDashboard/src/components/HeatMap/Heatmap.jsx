@@ -135,7 +135,7 @@ export default function Heatmap({
       >
         <td>{name}</td>
         <td>{total}</td>
-        <td className="heatbarCell">
+        <td aria-hidden={true} className="heatbarCell">
           <div className="heatbarLine">
             {createHeatbar(counts.map(getHeatLevel), name, weekStartDates)}
           </div>
@@ -235,7 +235,7 @@ export default function Heatmap({
           <tr>
             <th>{areaTitle()}</th>
             <th>{valueTitle()}</th>
-            <th>
+            <th aria-hidden={true}>
               <div>WEEKLY COUNT</div>
               <div className="subheading">{dateRangeText()}</div>
               {heatbarScale()}

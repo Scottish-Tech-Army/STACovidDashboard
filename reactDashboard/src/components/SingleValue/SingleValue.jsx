@@ -17,7 +17,7 @@ function SingleValue({
 
         <div className="subtitle">{subtitle !== null ? subtitle : ""}</div>
       </div>
-      <hr className="single-value-hr" />
+      <hr aria-hidden={true} className="single-value-hr" />
       <div className="single-value-number">{value}</div>
     </div>
   );
