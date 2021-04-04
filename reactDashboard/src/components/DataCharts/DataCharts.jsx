@@ -364,7 +364,6 @@ const DataCharts = ({
     <Container className="chart-border">
       <Row className="chart-dropdown-container">
         <Col className="chart-title">
-          <h2>Select Chart:</h2>
           <ChartDropdown chartType={chartType} setChartType={setChartType} />
         </Col>
       </Row>
@@ -375,21 +374,21 @@ const DataCharts = ({
           maxDateRange={maxDateRange}
           setMaxDateRange={setMaxDateRange}
         />
-      </Row>
-      <Row className="d-flex justify-content-center">
-        <DateRangeSlider
-          id="date-range-slider-position"
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          healthBoardDataset={healthBoardDataset}
-          councilAreaDataset={councilAreaDataset}
-        />
         <SonificationPlayButton
           seriesData={audio}
           seriesTitle={seriesTitle}
           regionCode={regionCode}
           dateRange={dateRange}
           darkmode={darkmode}
+        />
+      </Row>
+      <Row aria-hidden={true} className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          healthBoardDataset={healthBoardDataset}
+          councilAreaDataset={councilAreaDataset}
         />
         <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />

@@ -8,7 +8,9 @@ import { Tooltip as ReactBootstrapTooltip } from "react-bootstrap";
 function ToolTip({ id, tooltip }) {
   return (
     <OverlayTrigger
-        overlay={<ReactBootstrapTooltip id="tooltip">{tooltip}</ReactBootstrapTooltip>}
+      overlay={
+        <ReactBootstrapTooltip id="tooltip">{tooltip}</ReactBootstrapTooltip>
+      }
     >
       <div className="tooltip-icon">
         <FontAwesomeIcon icon={faQuestionCircle} size="1x" />

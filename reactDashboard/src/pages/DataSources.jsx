@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const DataSources = () => {
   return (
     <div className="data-sources">
-      <hr className="full-width-hr" />
+      <hr aria-hidden={true} className="full-width-hr" />
       <h1>Data sources and attributions</h1>
       <ul className="data-sources-list">
         <li>
@@ -45,7 +45,7 @@ const DataSources = () => {
           </a>
         </li>
       </ul>
-      <hr className="full-width-hr" />
+      <hr aria-hidden={true} className="full-width-hr" />
       <DataDefinitions />
     </div>
   );

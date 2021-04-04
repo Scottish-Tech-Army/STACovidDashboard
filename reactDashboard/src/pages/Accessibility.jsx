@@ -6,9 +6,9 @@ const Accessibility = () => {
   return (
     <div className="accessibility-page">
       <div className="accessibility-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h1>Accessibility</h1>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           We want everyone who visits the Covid-19 Dashboard to feel welcome,
           and able to find information whatever their circumstances. To do this
@@ -25,9 +25,9 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>Conformance Statement</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           We're working towards meeting the AA standard of the{" "}
           <a
@@ -43,9 +43,9 @@ const Accessibility = () => {
         </p>
       </div>
       <div className="accessibility-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>Browsers</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>We've tested the website using the following web browsers:</p>
         <ul>
           <li>Google Chrome</li>
@@ -62,9 +62,9 @@ const Accessibility = () => {
         </ul>
       </div>
       <div className="accessibility-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>Screen Readers</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           This website is compatible with modern screen readers and other
           assistive technologies.

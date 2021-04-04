@@ -9,11 +9,12 @@
 }
 
 /* color is default white for .headline-banner h2 */
-.headline-banner h2 {
+.headline-banner p {
   font-size: 1.5rem;
+  margin: 0 0 8px;
 }
 
-.darkmode .headline-banner h2 {
+.darkmode .headline-banner p {
   color: #f2f2f2;
 }
 
@@ -27,7 +28,7 @@
     height: auto;
     padding: 3%;
   }
-  .headline-banner h2 {
+  .headline-banner p {
     font-size: 1.2rem;
   }
 }
