@@ -41,12 +41,12 @@ jobs:
           npm install
           npm test -- --watchAll=false
           npm run build
-          ls
           zip -qq -r lambda.zip build
-          ls
                    
       - name: Copy artifact
-        run: aws s3 cp lambda.zip s3://$S3_BUILD_BUCKET/$S3_BUILD_KEY
+        run: |
+          cd lambdaFunctions/phsDailyDataProcessing
+          aws s3 cp lambda.zip s3://$S3_BUILD_BUCKET/$S3_BUILD_KEY
 
   deployToLive:
     needs: [build]
