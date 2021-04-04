@@ -32,6 +32,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Install zip
+        uses: montudor/action-zip@v0.1.1
+
       - name: Build and test artifacts
         run: |
           cd lambdaFunctions/phsDailyDataProcessing
@@ -39,13 +42,9 @@ jobs:
           npm test -- --watchAll=false
           npm run build
           ls
-          ls build
-          
-      - name: zip build folder
-        uses: montudor/action-zip@v0.1.1
-        with:
-          args: zip -qq -r lambda.zip build
-          
+          zip -qq -r lambda.zip build
+          ls
+                   
       - name: Copy artifact
         run: aws s3 cp lambda.zip s3://$S3_BUILD_BUCKET/$S3_BUILD_KEY
 
