@@ -6,10 +6,8 @@ on:
   # Triggers the workflow on pull request events
   pull_request:
     types: [ opened, synchronize, reopened, edited ]
-    paths-ignore:
-      - 'reactDashboard/**'
-      - 'functionalTest/**'
-      - 'lambdaFunctions/**'
+    paths:
+      - 'awsLambdaFunctions/**'
 
 jobs:
   build:
