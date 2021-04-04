@@ -23,4 +23,6 @@ jobs:
         run: |
           cd lambdaFunctions/phsDailyDataProcessing
           npm install
+          # Additional install of peer dependency already available on AWS lambda
+          npm install -D aws-sdk
           npm test -- --watchAll=false
