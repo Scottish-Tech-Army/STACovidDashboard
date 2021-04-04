@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import moment from "moment";
-import { getNhsCsvDataDateRange } from "../Utils/CsvUtils";
 import "./DataCharts.css";
 
 const useStyles = makeStyles({
@@ -81,41 +80,25 @@ const DateSlider = withStyles({
   },
 })(Slider);
 
-function sliderThumbComponent(props) {
-  return (
-    <span {...props}>
-      <span className="bar" />
-      <span className="bar" />
-      <span className="bar" />
-    </span>
-  );
-}
-
-function DateRangeSlider({
-  healthBoardDataset = null,
-  councilAreaDataset = null,
-  dateRange = { startDate: 0, endDate: 0 },
+export default function DateRangeSlider({
+  maxDateRange = { startDate: 0, endDate: 1 },
+  dateRange = { startDate: 0, endDate: 1 },
   setDateRange,
 }) {
   const classes = useStyles();
 
-  const [maxDateRange, setMaxDateRange] = useState({
-    startDate: 0,
-    endDate: 0,
-  });
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const parseDateRange = getNhsCsvDataDateRange(
-        healthBoardDataset,
-        councilAreaDataset
-      );
-      setMaxDateRange(parseDateRange);
-    }
-  }, [healthBoardDataset, councilAreaDataset]);
-
   function handleDateChange(event, value) {
     setDateRange({ startDate: value[0], endDate: value[1] });
+  }
+
+  function sliderThumbComponent(props) {
+    return (
+      <span {...props}>
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
+      </span>
+    );
   }
 
   return (
@@ -133,5 +116,3 @@ function DateRangeSlider({
     </div>
   );
 }
-
-export default DateRangeSlider;

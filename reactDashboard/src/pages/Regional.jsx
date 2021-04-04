@@ -34,14 +34,7 @@ export function getCanonicalUrl(baseUrl, regionCode) {
   );
 }
 
-const Regional = ({
-  councilAreaDataset,
-  healthBoardDataset,
-  currentTotalsHealthBoardDataset,
-  currentTotalsCouncilAreaDataset,
-  populationProportionMap,
-  darkmode,
-}) => {
+const Regional = ({ allData, darkmode }) => {
   const match = useRouteMatch();
   const location = useLocation();
   const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
@@ -109,8 +102,6 @@ const Regional = ({
         <Row className="region-page-top-row">
           <Col aria-hidden={true} className="geo-map-column" xs={12} lg={4}>
             <RegionGeoMap
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
               regionCode={regionCode}
               setRegionCode={setRegionCode}
               darkmode={darkmode}
@@ -118,22 +109,16 @@ const Regional = ({
           </Col>
           <Col className="region-tiles-column" xs={12} lg={8}>
             <hr aria-hidden={true} className="full-width-hr" />
-            <h2 className="visually-hidden">
-              Select region
-            </h2>
+            <h2 className="visually-hidden">Select region</h2>
             <RegionDropdown
               regionCode={regionCode}
               setRegionCode={setRegionCode}
             />
             <hr aria-hidden={true} className="full-width-hr" />
-            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(regionCode)}`}</h2>
-            <RegionSingleValueBar
-              regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-            />
+            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(
+              regionCode
+            )}`}</h2>
+            <RegionSingleValueBar regionCode={regionCode} allData={allData} />
           </Col>
         </Row>
         <Row>
@@ -143,14 +128,14 @@ const Regional = ({
         </Row>
         <Row className="data-charts-container">
           <Col xs={12}>
-          <h2 className="visually-hidden">
-            {`Time series statistics for ${getPlaceNameByFeatureCode(regionCode)}`}
-          </h2>
+            <h2 className="visually-hidden">
+              {`Time series statistics for ${getPlaceNameByFeatureCode(
+                regionCode
+              )}`}
+            </h2>
             <DataCharts
               regionCode={regionCode}
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              populationProportionMap={populationProportionMap}
+              allData={allData}
               darkmode={darkmode}
             />
           </Col>

@@ -1,82 +1,42 @@
 import {
   readCsvData,
-  createPlaceDateValuesMap,
-  fetchAndStore,
   getPlaceNameByFeatureCode,
   getPhoneticPlaceNameByFeatureCode,
-  parse7DayWindowCsvData,
   getRelativeReportedDate,
-  getNhsCsvDataDateRange,
-  calculatePopulationProportionMap,
-  getPopulationMap,
+  getAllData,
 } from "../Utils/CsvUtils";
-import { act } from "react-dom/test-utils";
 
 beforeEach(() => {
   fetch.resetMocks();
 });
 
-const inputCsvData = `
-
-Date,CA,NewPositive,TotalCases
-20200902,S12000005,0,204
-
-20200903,S12000006,0,314
-,S12000008,2,474
-unknown,S12000013,0,7
-20209999,S12000014,3,702
-20200905,,0,289
-
-
-20200902,unknown,3,240
-20200906,S12000011,2,415
-
-
-    `;
-
-const parsedCsvData = [
-  ["20200902", "S12000005", "0", "204"],
-  ["20200903", "S12000006", "0", "314"],
-  ["20200906", "S12000011", "2", "415"],
-];
-
 test("readCsvData", () => {
+  const inputCsvData = `
+
+    Date,CA,NewPositive,TotalCases
+    20200902,S12000005,0,204
+
+    20200903,S12000006,0,314
+    ,S12000008,2,474
+    unknown,S12000013,0,7
+    20209999,S12000014,3,702
+    20200905,,0,289
+
+
+    20200902,unknown,3,240
+    20200906,S12000011,2,415
+
+
+        `;
+
+  const parsedCsvData = [
+    ["20200902", "S12000005", "0", "204"],
+    ["20200903", "S12000006", "0", "314"],
+    ["20200906", "S12000011", "2", "415"],
+  ];
+
   global.suppressConsoleWarnLogs();
   expect(readCsvData(inputCsvData)).toStrictEqual(parsedCsvData);
-});
-
-test("fetchAndStore when fetch fails", async () => {
-  fetch.mockReject(new Error("fetch failed"));
-  global.suppressConsoleErrorLogs();
-  var processedResult = null;
-
-  await act(async () => {
-    await fetchAndStore(
-      "test query",
-      (val) => (processedResult = "something not null"),
-      readCsvData
-    );
-  });
-
-  expect(processedResult).toBeNull();
-  expect(fetch.mock.calls).toHaveLength(1);
-});
-
-test("fetchAndStore when fetch succeeds", async () => {
-  fetch.mockResponse(inputCsvData);
-  global.suppressConsoleWarnLogs();
-  var processedResult = null;
-
-  await act(async () => {
-    await fetchAndStore(
-      "test query",
-      (val) => (processedResult = val),
-      readCsvData
-    );
-  });
-
-  expect(processedResult).toStrictEqual(parsedCsvData);
-  expect(fetch.mock.calls).toHaveLength(1);
 });
 
 test("getPlaceNameByFeatureCode", async () => {
@@ -145,205 +105,6 @@ test("getPhoneticPlaceNameByFeatureCode", async () => {
   );
 });
 
-// Contains both health board and council area feature codes
-const dailyNHSCsvData = `
-20200306,S08000031,place 1,0,21,0.21,0,1,10,0,31,0,0,0,0,0.1
-20200306,S08000022,place 2,1,22,0.22,0,2,20,0,32,0,0,0,0,1.1
-20200306,S12000013,place 3,1,23,0.23,0,3,30,0,33,0,0,0,0,2.1
-20200306,S92000003,Scotland,1,23,0.23,0,3,30,0,33,0,0,0,0,3.1
-20200309,S08000031,place 1,0,24,0.24,0,4,40,0,34,0,0,0,0,4.1
-20200309,S08000022,place 2,300,25,0.25,0,5,50,0,35,0,0,0,0,5.1
-20200309,S12000013,place 3,-8,26,0.26,0,6,60,0,36,0,0,0,0,6.1
-20200309,S92000003,Scotland,-8,26,0.26,0,6,60,0,36,0,0,0,0,7.1
-20200308,S08000031,place 1,0,27,0.27,0,7,70,0,37,0,0,0,0,8.1
-20200308,S08000022,place 2,201,28,0.28,0,8,80,0,38,0,0,0,0,9.1
-20200308,S12000013,place 3,26,29,0.29,0,9,90,0,39,0,0,0,0,10.1
-20200308,S92000003,Scotland,26,29,0.29,0,9,90,0,39,0,0,0,0,11.1
-20200307,S08000031,place 1,0,0,0,0,0,0,0,0,0,0,0,0,0
-20200307,S08000022,place 2,-1,-21,-0.21,0,-1,-10,0,-31,0,0,0,0,12.1
-20200307,S12000013,place 3,-1,-22,-0.22,0,-2,-20,0,-32,0,0,0,0,13.1
-20200307,S92000003,Scotland,-1,-22,-0.22,0,-2,-20,0,-32,0,0,0,0,14.1
-`;
-
-const dailyHealthBoardCsvLabels =
-  "Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF";
-
-const dailyCouncilAreaCsvLabels =
-  "Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,TotalPillar1,TotalPillar2";
-
-const dailyHealthBoardCsvData = dailyHealthBoardCsvLabels + dailyNHSCsvData;
-const dailyCouncilAreaCsvData = dailyCouncilAreaCsvLabels + dailyNHSCsvData;
-
-describe("createPlaceDateValuesMap", () => {
-  const expectedPlaceDateValuesMap = {
-    dates: [
-      Date.parse("2020-03-06"),
-      Date.parse("2020-03-07"),
-      Date.parse("2020-03-08"),
-      Date.parse("2020-03-09"),
-    ],
-    placeDateValuesMap: new Map()
-      .set(
-        "S08000031",
-        new Map()
-          .set(Date.parse("2020-03-06"), {
-            cases: 0,
-            deaths: 1,
-            cumulativeDeaths: 10,
-            cumulativeCases: 21,
-            crudeRatePositive: 0.21,
-            positivePercentage: 0.1,
-          })
-          .set(Date.parse("2020-03-07"), {
-            cases: 0,
-            deaths: 0,
-            cumulativeDeaths: 0,
-            cumulativeCases: 0,
-            crudeRatePositive: 0,
-            positivePercentage: 0,
-          })
-          .set(Date.parse("2020-03-08"), {
-            cases: 0,
-            deaths: 7,
-            cumulativeDeaths: 70,
-            cumulativeCases: 27,
-            crudeRatePositive: 0.27,
-            positivePercentage: 8.1,
-          })
-          .set(Date.parse("2020-03-09"), {
-            cases: 0,
-            deaths: 4,
-            cumulativeDeaths: 40,
-            cumulativeCases: 24,
-            crudeRatePositive: 0.24,
-            positivePercentage: 4.1,
-          })
-      )
-      .set(
-        "S08000022",
-        new Map()
-          .set(Date.parse("2020-03-06"), {
-            cases: 1,
-            deaths: 2,
-            cumulativeDeaths: 20,
-            cumulativeCases: 22,
-            crudeRatePositive: 0.22,
-            positivePercentage: 1.1,
-          })
-          .set(Date.parse("2020-03-07"), {
-            cases: -1,
-            deaths: -1,
-            cumulativeDeaths: -10,
-            cumulativeCases: -21,
-            crudeRatePositive: -0.21,
-            positivePercentage: 12.1,
-          })
-          .set(Date.parse("2020-03-08"), {
-            cases: 201,
-            deaths: 8,
-            cumulativeDeaths: 80,
-            cumulativeCases: 28,
-            crudeRatePositive: 0.28,
-            positivePercentage: 9.1,
-          })
-          .set(Date.parse("2020-03-09"), {
-            cases: 300,
-            deaths: 5,
-            cumulativeDeaths: 50,
-            cumulativeCases: 25,
-            crudeRatePositive: 0.25,
-            positivePercentage: 5.1,
-          })
-      )
-      .set(
-        "S12000013",
-        new Map()
-          .set(Date.parse("2020-03-06"), {
-            cases: 1,
-            deaths: 3,
-            cumulativeDeaths: 30,
-            cumulativeCases: 23,
-            crudeRatePositive: 0.23,
-            positivePercentage: 2.1,
-          })
-          .set(Date.parse("2020-03-07"), {
-            cases: -1,
-            deaths: -2,
-            cumulativeDeaths: -20,
-            cumulativeCases: -22,
-            crudeRatePositive: -0.22,
-            positivePercentage: 13.1,
-          })
-          .set(Date.parse("2020-03-08"), {
-            cases: 26,
-            deaths: 9,
-            cumulativeDeaths: 90,
-            cumulativeCases: 29,
-            crudeRatePositive: 0.29,
-            positivePercentage: 10.1,
-          })
-          .set(Date.parse("2020-03-09"), {
-            cases: -8,
-            deaths: 6,
-            cumulativeDeaths: 60,
-            cumulativeCases: 26,
-            crudeRatePositive: 0.26,
-            positivePercentage: 6.1,
-          })
-      )
-      .set(
-        "S92000003",
-        new Map()
-          .set(Date.parse("2020-03-06"), {
-            cases: 1,
-            deaths: 3,
-            cumulativeDeaths: 30,
-            cumulativeCases: 23,
-            crudeRatePositive: 0.23,
-            positivePercentage: 3.1,
-          })
-          .set(Date.parse("2020-03-07"), {
-            cases: -1,
-            deaths: -2,
-            cumulativeDeaths: -20,
-            cumulativeCases: -22,
-            crudeRatePositive: -0.22,
-            positivePercentage: 14.1,
-          })
-          .set(Date.parse("2020-03-08"), {
-            cases: 26,
-            deaths: 9,
-            cumulativeDeaths: 90,
-            cumulativeCases: 29,
-            crudeRatePositive: 0.29,
-            positivePercentage: 11.1,
-          })
-          .set(Date.parse("2020-03-09"), {
-            cases: -8,
-            deaths: 6,
-            cumulativeDeaths: 60,
-            cumulativeCases: 26,
-            crudeRatePositive: 0.26,
-            positivePercentage: 7.1,
-          })
-      ),
-  };
-
-  it("health boards", () => {
-    const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
-    expect(createPlaceDateValuesMap(parsedDailyHealthBoardData)).toStrictEqual(
-      expectedPlaceDateValuesMap
-    );
-  });
-
-  it("council areas", () => {
-    const parsedDailyCouncilAreaData = readCsvData(dailyCouncilAreaCsvData);
-    expect(createPlaceDateValuesMap(parsedDailyCouncilAreaData)).toStrictEqual(
-      expectedPlaceDateValuesMap
-    );
-  });
-});
-
 test("getRelativeReportedDate", () => {
   // Set today to be 2020-06-22
   setMockDate("2020-06-22");
@@ -376,189 +137,272 @@ test("getRelativeReportedDate", () => {
   expect(getRelativeReportedDate(null)).toBeUndefined();
 });
 
-const dailyCasesCsvData = `
-  Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-  20200309,S08000020,unknown,-8,0,0,0,-2,0,0,28,7.58068009529998
-  20200308,S08000020,unknown,26,0,0,0,0,0,0,28,7.58068009529998
-  20200307,S08000020,unknown,-1,0,0,0,-1,0,0,28,7.58068009529998
-  20200306,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200305,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200304,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200303,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200302,S08000020,unknown,-6,0,0,0,-2,0,0,28,7.58068009529998
-  20200301,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200229,S08000020,unknown,1,0,0,0,1,0,0,28,7.58068009529998
-  20200308,S08000031,unknown,0,0,0,0,11,0,0,26,22.5088736905896
-  20200307,S08000031,unknown,400,0,0,0,10,0,0,26,22.5088736905896
-  20200306,S08000031,unknown,300,0,0,0,9,0,0,26,22.5088736905896
-  20200305,S08000031,unknown,200,0,0,0,8,0,0,26,22.5088736905896
-  20200304,S08000031,unknown,100,0,0,0,7,0,0,26,22.5088736905896
-  20200303,S08000031,unknown,50,0,0,0,6,0,0,26,22.5088736905896
-  20200226,S08000031,unknown,20,0,0,0,5,0,0,26,22.5088736905896
-  20200225,S08000031,unknown,0,0,0,0,4,0,0,26,22.5088736905896
-  20200224,S08000031,unknown,10,0,0,0,3,0,0,26,22.5088736905896
-  20200309,S08000022,unknown,300,0,0,0,10,0,0,21,14.1072148327287
-  20200308,S08000022,unknown,201,0,0,0,9,0,0,21,14.1072148327287
-  20200306,S08000022,unknown,1,0,0,0,8,0,0,21,14.1072148327287
-  20200307,S08000022,unknown,-1,0,0,0,7,0,0,21,14.1072148327287
-    `;
-
-describe("getNhsCsvDataDateRange", () => {
-  const parsedDailyHealthBoardData = readCsvData(dailyHealthBoardCsvData);
-  const parsedDailyCouncilAreaData = readCsvData(
-    dailyCouncilAreaCsvData +
-      `
-  20200408,S08000031,place 1,0,27,0.27,0,7,70,0,37,0
-  `
-  );
-
-  it("health board and council area", () => {
-    expect(
-      getNhsCsvDataDateRange(
-        parsedDailyHealthBoardData,
-        parsedDailyCouncilAreaData
-      )
-    ).toStrictEqual({
-      startDate: Date.parse("2020-03-06"),
-      endDate: Date.parse("2020-04-08"),
-    });
-  });
-
-  it("health board", () => {
-    expect(getNhsCsvDataDateRange(parsedDailyHealthBoardData)).toStrictEqual({
-      startDate: Date.parse("2020-03-06"),
-      endDate: Date.parse("2020-03-09"),
-    });
-  });
-});
-
-test("parse7DayWindowCsvData", () => {
-  // Grampian : 09/03 - 03/03 : 7 days of data
-  // Glasgow : 08/03 - 03/03 : 6 days of data
-  // Highland : 09/03 - 06/03 : 4 days of data
-  const expectedResult = new Map()
-    .set("S08000020", {
-      cases: 21,
-      deaths: 1,
-      name: "Grampian",
-      fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09"),
-    })
-    .set("S08000031", {
-      cases: 1050,
-      deaths: 51,
-      name: "Greater Glasgow & Clyde",
-      fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09"),
-    })
-    .set("S08000022", {
-      cases: 501,
-      deaths: 34,
-      name: "Highland",
-      fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09"),
-    })
-    .set("S92000003", {
-      cases: 1572,
-      deaths: 86,
-      name: "Scotland",
-      fromDate: Date.parse("2020-03-03"),
-      toDate: Date.parse("2020-03-09"),
-    });
-
-  expect(parse7DayWindowCsvData(readCsvData(dailyCasesCsvData))).toStrictEqual(
-    expectedResult
-  );
-});
-
-test("getPopulationMap", () => {
-  const nhsCsvData = `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,CumulativeNegative,CrudeRateNegative
-    20200302,S08000031,unknown,1,2,2,5,6,7,8,9
-    20200302,S08000022,unknown,11,12,6,15,16,17,18,19
-    20200302,S12000013,unknown,21,22,4.4,25,26,27,28,29
-    20200302,S92000003,Scotland,33,36,4.133333333333334,45,48,17,54,19
-    20200303,S08000031,unknown,31,32,32,35,36,37,38,39
-    20200303,S08000022,unknown,41,42,21,45,46,47,48,49
-    20200303,S12000013,unknown,51,52,10.4,55,56,57,58,59
-    20200303,S92000003,Scotland,123,126,21.133333333333333,135,138,47,144,49
-    20200304,S08000031,unknown,61,62,62,65,66,67,68,69
-    20200304,S08000022,unknown,71,72,36,75,76,77,78,79
-    20200304,S12000013,unknown,81,82,16.4,85,86,87,88,89
-    20200304,S92000003,Scotland,213,216,38.13333333333333,225,228,77,234,79
-    20200305,S08000031,unknown,91,92,92,95,96,97,98,99
-    20200305,S08000022,unknown,101,102,51,105,106,107,108,109
-    20200305,S12000013,unknown,111,112,22.4,115,116,117,118,119
-    20200305,S92000003,Scotland,303,306,55.13333333333333,315,318,107,324,109
-    20200306,S08000031,unknown,121,122,122,125,126,127,128,129
-    20200306,S08000022,unknown,131,132,66,135,136,137,138,139
-    20200306,S12000013,unknown,141,142,28.4,145,146,147,148,149
-    20200306,S92000003,Scotland,393,396,72.13333333333334,405,408,137,414,139
-    20200307,S08000031,unknown,151,152,152,155,156,157,158,159
-    20200307,S08000022,unknown,161,162,81,165,166,167,168,169
-    20200307,S12000013,unknown,171,172,34.4,175,176,177,178,179
-    20200307,S92000003,Scotland,483,486,89.13333333333333,495,498,167,504,169
-    20200308,S08000031,unknown,181,182,182,185,186,187,188,189
-    20200308,S08000022,unknown,191,192,96,195,196,197,198,199
-    20200308,S12000013,unknown,201,202,40.4,205,206,207,208,209
-    20200308,S92000003,Scotland,573,576,106.13333333333333,585,588,197,594,199
-    20200309,S08000031,unknown,211,212,212,215,216,217,218,219
-    20200309,S08000022,unknown,221,222,111,225,226,227,228,229
-    20200309,S12000013,unknown,231,232,46.4,235,236,237,238,239
-    20200309,S92000003,Scotland,663,888,111,675,678,227,684,229
-    `;
-
-  const healthBoardDataset = readCsvData(nhsCsvData);
-
-  const expectedResult = new Map()
-    .set("S08000031", 100000)
-    .set("S08000022", 200000)
-    .set("S12000013", 500000)
-    .set("S92000003", 800000);
-
-  expect(
-    getPopulationMap(createPlaceDateValuesMap(healthBoardDataset))
-  ).toStrictEqual(expectedResult);
-});
-
-describe("calculatePopulationProportionMap", () => {
-  it("empty populationMap", () => {
-    expect(calculatePopulationProportionMap(new Map())).toStrictEqual(
-      new Map()
-    );
-  });
-
-  it("without Scotland", () => {
-    const populationMap = new Map()
-      .set("S08000031", 100000)
-      .set("S08000022", 200000)
-      .set("S12000013", 500000);
-
-    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
-      new Map()
-    );
-  });
-
-  it("with Scotland", () => {
-    const populationMap = new Map()
-      .set("S08000031", 100000)
-      .set("S08000022", 200000)
-      .set("S12000013", 500000)
-      .set("S92000003", 800000);
-
-    const expectedResult = new Map()
-      .set("S08000031", 0.125)
-      .set("S08000022", 0.25)
-      .set("S12000013", 0.625)
-      .set("S92000003", 1);
-
-    expect(calculatePopulationProportionMap(populationMap)).toStrictEqual(
-      expectedResult
-    );
-  });
-});
-
 function setMockDate(date) {
   jest
     .spyOn(global.Date, "now")
     .mockImplementation(() => Date.parse(date).valueOf());
 }
+
+describe("getAllData", () => {
+  it("all data", () => {
+    expect(
+      getAllData(
+        currentTotalsHealthBoardsDataset,
+        currentTotalsCouncilAreasDataset,
+        dailyHealthBoardsDataset,
+        dailyCouncilAreasDataset
+      )
+    ).toStrictEqual(testAllData);
+  });
+});
+
+const TOTALS_DATE = Date.parse("2021-01-21");
+
+// prettier-ignore
+const testAllData = {
+  regions: {
+    S12000013: {
+      weeklyCases: 50,
+      weeklyDeaths: 0,
+      name: "Na h-Eileanan Siar",
+      dailyCases: { date: TOTALS_DATE, value: 4 },
+      dailyDeaths: { date: TOTALS_DATE, value: 0 },
+      cumulativeCases: { date: TOTALS_DATE, value: 167 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 1 },
+      fatalityCaseRatio: "0.6%",
+      population: 26720.215057246038,
+      populationProportion: 0.004890848815896522,
+      weeklySeries: { cases: [7, 44, 7], deaths: [0, 0, 0] },
+      dailySeries: {
+        percentPositiveTests: [0, 0.57, 1.74, 0.91, 0, 0, 4.88, 1.85, 1.75, 5.78, 12.93, 3.23, 14.08, 5.26, 1.72, 3.21],
+        dailyCases: [0, 1, 3, 1, 0, 0, 2, 1, 0, 9, 15, 2, 13, 4, 2, 5],
+        dailyDeaths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        totalCases: [107, 108, 111, 112, 112, 112, 114, 115, 115, 124, 139, 141, 154, 158, 160, 165],
+        totalDeaths: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      },
+    },
+    S12000049: {
+      weeklyCases: 1770,
+      weeklyDeaths: 28,
+      name: "Glasgow City",
+      dailyCases: { date: TOTALS_DATE, value: 282 },
+      dailyDeaths: { date: TOTALS_DATE, value: 8 },
+      cumulativeCases: { date: TOTALS_DATE, value: 31484 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 856 },
+      fatalityCaseRatio: "2.7%",
+      population: 633120.2892235187,
+      populationProportion: 0.1158858792953164,
+      weeklySeries: { cases: [2514, 1963, 513], deaths: [30, 35, 4] },
+      dailySeries: {
+        percentPositiveTests: [13.39, 12.39, 11.24, 10.66, 13.98, 17.5, 16.08, 10.59, 10.11, 11.37, 11.11, 12.53, 14.31, 15.72, 10.76, 11.37],
+        dailyCases: [360, 489, 414, 325, 337, 295, 294, 375, 331, 280, 253, 307, 222, 195, 271, 242],
+        dailyDeaths: [4, 2, 2, 6, 7, 3, 6, 4, 7, 9, 5, 2, 6, 2, 4, 0],
+        totalCases: [26752, 27241, 27655, 27980, 28317, 28612, 28906, 29281, 29612, 29892, 30145, 30452, 30674, 30869, 31140, 31382],
+        totalDeaths: [791, 793, 795, 801, 808, 811, 817, 821, 828, 837, 842, 844, 850, 852, 856, 856],
+      },
+    },
+    S08000024: {
+      weeklyCases: 1115,
+      weeklyDeaths: 25,
+      name: "Lothian",
+      dailyCases: { date: TOTALS_DATE, value: 182 },
+      dailyDeaths: { date: TOTALS_DATE, value: 10 },
+      cumulativeCases: { date: TOTALS_DATE, value: 23061 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 863 },
+      fatalityCaseRatio: "3.7%",
+      population: 907578.3978994014,
+      populationProportion: 0.16612249277147267,
+      weeklySeries: { cases: [1642, 1206, 340], deaths: [33, 39, 2] },
+      dailySeries: {
+        percentPositiveTests: [8.31, 9.08, 7.68, 10.63, 7.62, 8.77, 8.31, 5.63, 6.07, 10.02, 6.29, 6.02, 8.42, 9.47, 5.07, 5.91],
+        dailyCases: [254, 364, 295, 270, 147, 165, 147, 207, 224, 204, 160, 136, 134, 141, 174, 166],
+        dailyDeaths: [7, 6, 4, 4, 6, 3, 3, 8, 8, 4, 3, 6, 6, 4, 2, 0],
+        totalCases: [20086, 20450, 20745, 21015, 21162, 21327, 21474, 21681, 21905, 22109, 22269, 22405, 22539, 22680, 22854, 23020],
+        totalDeaths: [796, 802, 806, 810, 816, 819, 822, 830, 838, 842, 845, 851, 857, 861, 863, 863],
+      },
+    },
+    S08000025: {
+      weeklyCases: 8,
+      weeklyDeaths: 0,
+      name: "Orkney",
+      dailyCases: { date: TOTALS_DATE, value: 0 },
+      dailyDeaths: { date: TOTALS_DATE, value: 0 },
+      cumulativeCases: { date: TOTALS_DATE, value: 53 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 2 },
+      fatalityCaseRatio: "3.8%",
+      population: 22269.843270725658,
+      populationProportion: 0.004076255986618379,
+      weeklySeries: { cases: [5, 7, 1], deaths: [0, 0, 0] },
+      dailySeries: {
+        percentPositiveTests: [0,  1.32, 0, 3.85, 14.29, 0, 0, 0, 1.59, 0, 28.57, 6.9, 0, 12.12, 0.81, 0],
+        dailyCases: [0, 1, 0, 1, 3, 0, 0, 0, 0, 0, 1, 2, 0, 4, 1, 0],
+        dailyDeaths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        totalCases: [40, 41, 41, 42, 45, 45, 45, 45, 45, 45, 46, 48, 48, 52, 53, 53],
+        totalDeaths: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      },
+    },
+    S92000003: {
+      weeklyCases: 13311,
+      weeklyDeaths: 343,
+      name: "Scotland",
+      dailyCases: { date: TOTALS_DATE, value: 1636 },
+      dailyDeaths: { date: TOTALS_DATE, value: 89 },
+      cumulativeCases: { date: TOTALS_DATE, value: 168219 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 5557 },
+      fatalityCaseRatio: "3.3%",
+      population: 5463308.326030941,
+      populationProportion: 1,
+      weeklySeries: {
+        cases: [14979, 11343, 3119],
+        deaths: [298, 331, 55],
+      },
+      dailySeries: {
+        percentPositiveTests: [ 10.73, 9.13, 9.53, 10.32, 10.22, 12.64, 12.34, 8.19, 7.77, 8.47, 9.73, 9.33, 11.66, 12.88, 7.67, 6.84 ],
+        dailyCases: [ 2385, 3061, 2560, 2205, 1839, 1497, 1432, 2107, 1987, 1709, 1625, 1549, 1171, 1195, 1713, 1406 ],
+        dailyDeaths: [ 35, 37, 48, 44, 41, 35, 58, 47, 49, 49, 51, 48, 59, 28, 37, 18 ],
+        totalCases: [ 140655, 143716, 146276, 148481, 150320, 151817, 153249, 155356, 157343, 159052, 160677, 162226, 163397, 164592, 166305, 167711 ],
+        totalDeaths: [ 4906, 4943, 4991, 5035, 5076, 5111, 5169, 5216, 5265, 5314, 5365, 5413, 5472, 5500, 5537, 5555 ],
+      },
+    },
+  },
+  dates: [
+    Date.parse("2021-01-04"),
+    Date.parse("2021-01-05"),
+    Date.parse("2021-01-06"),
+    Date.parse("2021-01-07"),
+    Date.parse("2021-01-08"),
+    Date.parse("2021-01-09"),
+    Date.parse("2021-01-10"),
+    Date.parse("2021-01-11"),
+    Date.parse("2021-01-12"),
+    Date.parse("2021-01-13"),
+    Date.parse("2021-01-14"),
+    Date.parse("2021-01-15"),
+    Date.parse("2021-01-16"),
+    Date.parse("2021-01-17"),
+    Date.parse("2021-01-18"),
+    Date.parse("2021-01-19"),
+  ],
+  weekStartDates: [Date.parse("2021-01-04"), Date.parse("2021-01-11"), Date.parse("2021-01-18")],
+  startDate: Date.parse("2021-01-04"),
+  endDate: Date.parse("2021-01-19"),
+  currentWeekStartDate: Date.parse("2021-01-13"),
+};
+
+const currentTotalsCouncilAreasCsvData = `
+
+Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+20210121,S12000013,Na h-Eileanan Siar,4,167,0,0,1,0,0,0
+20210121,S12000049,Glasgow City,282,31484,0,8,856,0,0,0
+
+`;
+
+const currentTotalsHealthBoardsCsvData = `
+Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+20210121,S08000024,,NHS Lothian,182,23061,0,10,863,0,0,0
+20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
+20210121,S92000003,d,Scotland,1636,168219,0,89,5557,0,0,0
+`;
+// Date range 04-01 - 19-01
+const dailyCouncilAreasCsvData = `
+Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+20210103,S12000013,Na h-Eileanan Siar,0,107,400.45,0,0,1,0,0,0,0,0,0,0.00,0,0,0
+20210104,S12000013,Na h-Eileanan Siar,0,107,400.45,0,0,1,0,0,0,0,0,0,0.00,0,0,0
+20210105,S12000013,Na h-Eileanan Siar,1,108,404.19,0,0,1,0,0,0,0,0,0,0.57,0,0,0
+20210106,S12000013,Na h-Eileanan Siar,3,111,415.42,0,0,1,0,0,0,0,0,0,1.74,0,0,0
+20210107,S12000013,Na h-Eileanan Siar,1,112,419.16,0,0,1,0,0,0,0,0,0,0.91,0,0,0
+20210108,S12000013,Na h-Eileanan Siar,0,112,419.16,0,0,1,0,0,0,0,0,0,0.00,0,0,0
+20210109,S12000013,Na h-Eileanan Siar,0,112,419.16,0,0,1,0,0,0,0,0,0,0.00,0,0,0
+20210110,S12000013,Na h-Eileanan Siar,2,114,426.65,0,0,1,0,0,0,0,0,0,4.88,0,0,0
+20210111,S12000013,Na h-Eileanan Siar,1,115,430.39,0,0,1,0,0,0,0,0,0,1.85,0,0,0
+20210112,S12000013,Na h-Eileanan Siar,0,115,430.39,0,0,1,0,0,0,0,0,0,1.75,0,0,0
+20210113,S12000013,Na h-Eileanan Siar,9,124,464.07,0,0,1,0,0,0,0,0,0,5.78,0,0,0
+20210114,S12000013,Na h-Eileanan Siar,15,139,520.21,0,0,1,0,0,0,0,0,0,12.93,0,0,0
+20210115,S12000013,Na h-Eileanan Siar,2,141,527.69,0,0,1,0,0,0,0,0,0,3.23,0,0,0
+20210116,S12000013,Na h-Eileanan Siar,13,154,576.35,0,0,1,0,0,0,0,0,0,14.08,0,0,0
+20210117,S12000013,Na h-Eileanan Siar,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+20210118,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+20210103,S12000049,Glasgow City,327,26392,4168.56,0,6,787,0,0,0,0,0,0,13.88,0,0,0
+20210104,S12000049,Glasgow City,360,26752,4225.42,0,4,791,0,0,0,0,0,0,13.39,0,0,0
+20210105,S12000049,Glasgow City,489,27241,4302.66,0,2,793,0,0,0,0,0,0,12.39,0,0,0
+20210106,S12000049,Glasgow City,414,27655,4368.05,0,2,795,0,0,0,0,0,0,11.24,0,0,0
+20210107,S12000049,Glasgow City,325,27980,4419.38,0,6,801,0,0,0,0,0,0,10.66,0,0,0
+20210108,S12000049,Glasgow City,337,28317,4472.61,0,7,808,0,0,0,0,0,0,13.98,0,0,0
+20210109,S12000049,Glasgow City,295,28612,4519.21,0,3,811,0,0,0,0,0,0,17.50,0,0,0
+20210110,S12000049,Glasgow City,294,28906,4565.64,0,6,817,0,0,0,0,0,0,16.08,0,0,0
+20210111,S12000049,Glasgow City,375,29281,4624.87,0,4,821,0,0,0,0,0,0,10.59,0,0,0
+20210112,S12000049,Glasgow City,331,29612,4677.15,0,7,828,0,0,0,0,0,0,10.11,0,0,0
+20210113,S12000049,Glasgow City,280,29892,4721.38,0,9,837,0,0,0,0,0,0,11.37,0,0,0
+20210114,S12000049,Glasgow City,253,30145,4761.34,0,5,842,0,0,0,0,0,0,11.11,0,0,0
+20210115,S12000049,Glasgow City,307,30452,4809.83,0,2,844,0,0,0,0,0,0,12.53,0,0,0
+20210116,S12000049,Glasgow City,222,30674,4844.90,0,6,850,0,0,0,0,0,0,14.31,0,0,0
+20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0
+`;
+
+// Date range 04-01 - 20-01
+const dailyHealthBoardsCsvData = `
+Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+20210104,S08000024,NHS Lothian,254,20086,2213.14,0,7,796,0,0,0,0,0,0,8.31,0,0,0,0,0,0,0
+20210104,S08000025,NHS Orkney,0,40,179.61,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210104,S92000003,Scotland,2385,140655,2574.54,0,35,4906,0,0,0,0,0,0,10.73,0,0,0,0,0,0,0
+20210105,S08000024,NHS Lothian,364,20450,2253.24,0,6,802,0,0,0,0,0,0,9.08,0,0,0,0,0,0,0
+20210105,S08000025,NHS Orkney,1,41,184.10,0,0,2,0,0,0,0,0,0,1.32,0,0,0,0,0,0,0
+20210105,S92000003,Scotland,3061,143716,2630.57,0,37,4943,0,0,0,0,0,0,9.13,0,0,0,0,0,0,0
+20210106,S08000024,NHS Lothian,295,20745,2285.75,0,4,806,0,0,0,0,0,0,7.68,0,0,0,0,0,0,0
+20210106,S08000025,NHS Orkney,0,41,184.10,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210106,S92000003,Scotland,2560,146276,2677.43,0,48,4991,0,0,0,0,0,0,9.53,0,0,0,0,0,0,0
+20210107,S08000024,NHS Lothian,270,21015,2315.50,0,4,810,0,0,0,0,0,0,10.63,0,0,0,0,0,0,0
+20210107,S08000025,NHS Orkney,1,42,188.59,0,0,2,0,0,0,0,0,0,3.85,0,0,0,0,0,0,0
+20210107,S92000003,Scotland,2205,148481,2717.79,0,44,5035,0,0,0,0,0,0,10.32,0,0,0,0,0,0,0
+20210108,S08000024,NHS Lothian,147,21162,2331.70,0,6,816,0,0,0,0,0,0,7.62,0,0,0,0,0,0,0
+20210108,S08000025,NHS Orkney,3,45,202.07,0,0,2,0,0,0,0,0,0,14.29,0,0,0,0,0,0,0
+20210108,S92000003,Scotland,1839,150320,2751.45,0,41,5076,0,0,0,0,0,0,10.22,0,0,0,0,0,0,0
+20210109,S08000024,NHS Lothian,165,21327,2349.88,0,3,819,0,0,0,0,0,0,8.77,0,0,0,0,0,0,0
+20210109,S08000025,NHS Orkney,0,45,202.07,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210109,S92000003,Scotland,1497,151817,2778.85,0,35,5111,0,0,0,0,0,0,12.64,0,0,0,0,0,0,0
+20210110,S08000024,NHS Lothian,147,21474,2366.07,0,3,822,0,0,0,0,0,0,8.31,0,0,0,0,0,0,0
+20210110,S08000025,NHS Orkney,0,45,202.07,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210110,S92000003,Scotland,1432,153249,2805.06,0,58,5169,0,0,0,0,0,0,12.34,0,0,0,0,0,0,0
+20210111,S08000024,NHS Lothian,207,21681,2388.88,0,8,830,0,0,0,0,0,0,5.63,0,0,0,0,0,0,0
+20210111,S08000025,NHS Orkney,0,45,202.07,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210111,S92000003,Scotland,2107,155356,2843.63,0,47,5216,0,0,0,0,0,0,8.19,0,0,0,0,0,0,0
+20210112,S08000024,NHS Lothian,224,21905,2413.56,0,8,838,0,0,0,0,0,0,6.07,0,0,0,0,0,0,0
+20210112,S08000025,NHS Orkney,0,45,202.07,0,0,2,0,0,0,0,0,0,1.59,0,0,0,0,0,0,0
+20210112,S92000003,Scotland,1987,157343,2880.00,0,49,5265,0,0,0,0,0,0,7.77,0,0,0,0,0,0,0
+20210113,S08000024,NHS Lothian,204,22109,2436.04,0,4,842,0,0,0,0,0,0,10.02,0,0,0,0,0,0,0
+20210113,S08000025,NHS Orkney,0,45,202.07,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210113,S92000003,Scotland,1709,159052,2911.28,0,49,5314,0,0,0,0,0,0,8.47,0,0,0,0,0,0,0
+20210114,S08000024,NHS Lothian,160,22269,2453.67,0,3,845,0,0,0,0,0,0,6.29,0,0,0,0,0,0,0
+20210114,S08000025,NHS Orkney,1,46,206.56,0,0,2,0,0,0,0,0,0,28.57,0,0,0,0,0,0,0
+20210114,S92000003,Scotland,1625,160677,2941.02,0,51,5365,0,0,0,0,0,0,9.73,0,0,0,0,0,0,0
+20210115,S08000024,NHS Lothian,136,22405,2468.65,0,6,851,0,0,0,0,0,0,6.02,0,0,0,0,0,0,0
+20210115,S08000025,NHS Orkney,2,48,215.54,0,0,2,0,0,0,0,0,0,6.90,0,0,0,0,0,0,0
+20210115,S92000003,Scotland,1549,162226,2969.38,0,48,5413,0,0,0,0,0,0,9.33,0,0,0,0,0,0,0
+20210116,S08000024,NHS Lothian,134,22539,2483.42,0,6,857,0,0,0,0,0,0,8.42,0,0,0,0,0,0,0
+20210116,S08000025,NHS Orkney,0,48,215.54,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210116,S92000003,Scotland,1171,163397,2990.81,0,59,5472,0,0,0,0,0,0,11.66,0,0,0,0,0,0,0
+20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0
+20210120,S08000024,NHS Lothian,41,23061,2540.93,0,0,863,0,0,0,0,0,0,9.34,0,0,0,0,0,0,0
+20210120,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210120,S92000003,Scotland,504,168215,3079.00,0,2,5557,0,0,0,0,0,0,13.10,0,0,0,0,0,0,0
+`;
+
+const currentTotalsCouncilAreasDataset = readCsvData(
+  currentTotalsCouncilAreasCsvData
+);
+const currentTotalsHealthBoardsDataset = readCsvData(
+  currentTotalsHealthBoardsCsvData
+);
+const dailyCouncilAreasDataset = readCsvData(dailyCouncilAreasCsvData);
+const dailyHealthBoardsDataset = readCsvData(dailyHealthBoardsCsvData);

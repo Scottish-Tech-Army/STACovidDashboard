@@ -49,13 +49,7 @@ function toggleFullscreen(element, setter) {
   }
 }
 
-const Overview = ({
-  councilAreaDataset,
-  healthBoardDataset,
-  currentTotalsHealthBoardDataset,
-  populationProportionMap,
-  darkmode,
-}) => {
+const Overview = ({ allData, darkmode }) => {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
   const [valueType, setValueType] = useState(VALUETYPE_CASES);
   const [zoomGeoMap, setZoomGeoMap] = useState(false);
@@ -109,10 +103,10 @@ const Overview = ({
         </Row>
         <Row>
           <Col>
-            <h2 className="visually-hidden">Headline statistics for Scotland</h2>
-            <SingleValueBar
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-            />
+            <h2 className="visually-hidden">
+              Headline statistics for Scotland
+            </h2>
+            <SingleValueBar allData={allData} />
           </Col>
         </Row>
         <Row>
@@ -148,8 +142,7 @@ const Overview = ({
             <Row className="heatmaps-row">
               <Col className="geo-map-column" xs={12} lg={zoomGeoMap ? 12 : 4}>
                 <GeoHeatMap
-                  councilAreaDataset={councilAreaDataset}
-                  healthBoardDataset={healthBoardDataset}
+                  allData={allData}
                   areaType={areaType}
                   valueType={valueType}
                   toggleFullscreen={() =>
@@ -173,8 +166,7 @@ const Overview = ({
                   <>
                     <h2 className="visually-hidden">Region statistics</h2>
                     <Heatmap
-                      councilAreaDataset={councilAreaDataset}
-                      healthBoardDataset={healthBoardDataset}
+                      allData={allData}
                       areaType={areaType}
                       valueType={valueType}
                     />
@@ -194,11 +186,7 @@ const Overview = ({
             <h2 className="visually-hidden">
               Time series statistics for Scotland
             </h2>
-            <DataCharts
-              healthBoardDataset={healthBoardDataset}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode}
-            />
+            <DataCharts allData={allData} darkmode={darkmode} />
           </Col>
         </Row>
         <Row>

@@ -7,18 +7,7 @@ import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
-import { parse7DayWindowCsvData } from "../Utils/CsvUtils";
 import FullscreenControl from "./FullscreenControl";
-import healthBoardBoundaries from "./geoJSONHealthBoards.json";
-import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
-import moment from "moment";
-import {
-  setScotlandDefaultBounds,
-  featureCodeForFeature,
-  MAP_TILES_URL,
-  DARK_MAP_TILES_URL,
-} from "./GeoUtils";
-
 /*
   geoJSONHealthBoards data from
   https://www.spatialdata.gov.scot/geonetwork/srv/eng/catalog.search;#/metadata/f12c3826-4b4b-40e6-bf4f-77b9ed01dc14
@@ -28,6 +17,15 @@ import {
   Both were converted to WGS84 and simplified to 0.5% of original detail and converted to GEOJson using mapshaper.org
   Additionally, the non Scotland features of the council areas data were removed.
 */
+import healthBoardBoundaries from "./geoJSONHealthBoards.json";
+import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
+import moment from "moment";
+import {
+  setScotlandDefaultBounds,
+  featureCodeForFeature,
+  MAP_TILES_URL,
+  DARK_MAP_TILES_URL,
+} from "./GeoUtils";
 
 const deathsHeatLevels = [0, 1, 2, 5, 10, 20, 50, 100];
 const casesHeatLevels = [0, 1, 5, 10, 20, 50, 100, 250];
@@ -53,9 +51,8 @@ const heatcolours = [
  dependences of the useEffect blocks should clarify what gets triggered when.
 */
 
-const GeoHeatMap = ({
-  councilAreaDataset,
-  healthBoardDataset,
+export default function GeoHeatMap({
+  allData = null,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
@@ -63,9 +60,7 @@ const GeoHeatMap = ({
   setAreaType,
   setValueType,
   darkmode,
-}) => {
-  const [healthBoard7DayDataset, setHealthBoard7DayDataset] = useState(null);
-  const [councilArea7DayDataset, setCouncilArea7DayDataset] = useState(null);
+}) {
   const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
     null
   );
@@ -75,11 +70,9 @@ const GeoHeatMap = ({
 
   const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
   const [currentHeatLevels, _setCurrentHeatLevels] = useState(null);
-  const [current7DayDataset, _setCurrent7DayDataset] = useState(null);
 
   const mapRef = useRef();
   const legendRef = useRef(null);
-  const current7DayDatasetRef = useRef(null);
   const currentHeatLevelsRef = useRef(null);
   const currentValueTypeRef = useRef(valueType);
 
@@ -89,25 +82,6 @@ const GeoHeatMap = ({
     _setCurrentHeatLevels(value);
   }
 
-  // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
-  function setCurrent7DayDataset(value) {
-    current7DayDatasetRef.current = value;
-    _setCurrent7DayDataset(value);
-  }
-
-  // Parse datasets
-  useEffect(() => {
-    if (null !== councilAreaDataset && undefined !== councilAreaDataset) {
-      setCouncilArea7DayDataset(parse7DayWindowCsvData(councilAreaDataset));
-    }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    if (null !== healthBoardDataset && undefined !== healthBoardDataset) {
-      setHealthBoard7DayDataset(parse7DayWindowCsvData(healthBoardDataset));
-    }
-  }, [healthBoardDataset]);
-
   // Set current heatlevels
   useEffect(() => {
     currentValueTypeRef.current = valueType;
@@ -116,15 +90,6 @@ const GeoHeatMap = ({
     );
   }, [valueType]);
 
-  // Set current dataset
-  useEffect(() => {
-    setCurrent7DayDataset(
-      AREATYPE_COUNCIL_AREAS === areaType
-        ? councilArea7DayDataset
-        : healthBoard7DayDataset
-    );
-  }, [areaType, healthBoard7DayDataset, councilArea7DayDataset]);
-
   // Setup map boundaries layer
   useEffect(() => {
     const INVISIBLE_LAYER_STYLE = {
@@ -132,68 +97,70 @@ const GeoHeatMap = ({
       fillOpacity: 0,
     };
 
-    const handleRegionPopup = (e) => {
-      if (current7DayDatasetRef.current === null) {
-        return;
-      }
-      const map = mapRef.current.leafletElement;
-      const layer = e.target;
-      const featureCode = featureCodeForFeature(layer.feature);
-      const regionData = current7DayDatasetRef.current.get(featureCode);
-      var content =
-        "<p class='region-popup'>" +
-        regionData.name +
-        "<br />Not available</p>";
+    if (allData !== null) {
+      const handleRegionPopup = (e) => {
+        if (allData === null) {
+          return;
+        }
+        const map = mapRef.current.leafletElement;
+        const layer = e.target;
+        const featureCode = featureCodeForFeature(layer.feature);
+        const regionData = allData.regions[featureCode];
+        var content =
+          "<p class='region-popup'>" +
+          regionData.name +
+          "<br />Not available</p>";
 
-      function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function (txt) {
-          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-      }
+        function toTitleCase(str) {
+          return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+        }
 
-      const count =
-        currentValueTypeRef.current === VALUETYPE_DEATHS
-          ? regionData.deaths
-          : regionData.cases;
+        const count =
+          currentValueTypeRef.current === VALUETYPE_DEATHS
+            ? regionData.weeklyDeaths
+            : regionData.weeklyCases;
 
-      if (regionData) {
-        content =
-          "<div class='region-popup'><div>" +
-          regionData.name.toUpperCase() +
-          "</div><div class='map-date-range'>" +
-          moment(regionData.fromDate).format("DD MMM") +
-          " - " +
-          moment(regionData.toDate).format("DD MMM") +
-          "</div> <div class='map-cases-count'>" +
-          toTitleCase(currentValueTypeRef.current) +
-          ": " +
-          count +
-          "</div></div>";
-      }
+        if (regionData) {
+          content =
+            "<div class='region-popup'><div>" +
+            regionData.name.toUpperCase() +
+            "</div><div class='map-date-range'>" +
+            moment(allData.currentWeekStartDate).format("DD MMM") +
+            " - " +
+            moment(allData.endDate).format("DD MMM") +
+            "</div> <div class='map-cases-count'>" +
+            toTitleCase(currentValueTypeRef.current) +
+            ": " +
+            count +
+            "</div></div>";
+        }
 
-      L.popup({ closeButton: false })
-        .setLatLng(e.latlng)
-        .setContent(content)
-        .openOn(map);
-    };
+        L.popup({ closeButton: false })
+          .setLatLng(e.latlng)
+          .setContent(content)
+          .openOn(map);
+      };
 
-    const regionLayerOptions = {
-      style: INVISIBLE_LAYER_STYLE,
-      onEachFeature: (feature, layer) => {
-        layer.on({
-          mouseover: handleRegionPopup,
-          click: handleRegionPopup,
-        });
-      },
-    };
+      const regionLayerOptions = {
+        style: INVISIBLE_LAYER_STYLE,
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: handleRegionPopup,
+            click: handleRegionPopup,
+          });
+        },
+      };
 
-    setCouncilAreaBoundariesLayer(
-      L.geoJSON(councilAreaBoundaries, regionLayerOptions)
-    );
-    setHealthBoardBoundariesLayer(
-      L.geoJSON(healthBoardBoundaries, regionLayerOptions)
-    );
-  }, []);
+      setCouncilAreaBoundariesLayer(
+        L.geoJSON(councilAreaBoundaries, regionLayerOptions)
+      );
+      setHealthBoardBoundariesLayer(
+        L.geoJSON(healthBoardBoundaries, regionLayerOptions)
+      );
+    }
+  }, [allData]);
 
   // Fit bounds and restrict the panning
   useEffect(() => {
@@ -247,11 +214,13 @@ const GeoHeatMap = ({
     const DARK_BORDER_COLOUR = "white";
 
     function getRegionStyle(featureCode) {
-      const regionData = current7DayDataset.get(featureCode);
+      const regionData = allData.regions[featureCode];
       var count = 0;
       if (regionData) {
         count =
-          VALUETYPE_DEATHS === valueType ? regionData.deaths : regionData.cases;
+          VALUETYPE_DEATHS === valueType
+            ? regionData.weeklyDeaths
+            : regionData.weeklyCases;
       }
 
       return {
@@ -267,18 +236,12 @@ const GeoHeatMap = ({
       mapRef.current.leafletElement.closePopup();
     }
 
-    if (currentBoundariesLayer && current7DayDataset) {
+    if (currentBoundariesLayer && allData) {
       currentBoundariesLayer.setStyle((feature) =>
         getRegionStyle(featureCodeForFeature(feature))
       );
     }
-  }, [
-    valueType,
-    currentBoundariesLayer,
-    currentHeatLevels,
-    current7DayDataset,
-    darkmode,
-  ]);
+  }, [valueType, currentBoundariesLayer, currentHeatLevels, allData, darkmode]);
 
   // Create legend
   useEffect(() => {
@@ -350,6 +313,4 @@ const GeoHeatMap = ({
       </LeafletMap>
     </div>
   );
-};
-
-export default GeoHeatMap;
+}

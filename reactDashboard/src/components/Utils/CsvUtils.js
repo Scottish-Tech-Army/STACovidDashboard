@@ -1,23 +1,6 @@
 import moment from "moment";
 import { differenceInDays, format } from "date-fns";
 
-export function getNhsCsvDataDateRange(csvDataHB, csvDataCA = null) {
-  let dates = [...createDateSet(csvDataHB)];
-
-  if (csvDataCA != null) {
-    dates = [...dates, ...createDateSet(csvDataCA)];
-  }
-  dates.sort();
-  if (dates.length === 0) {
-    return { startDate: 0, endDate: 0 };
-  }
-
-  return {
-    startDate: dates[0],
-    endDate: dates.pop(),
-  };
-}
-
 export function readCsvData(csvData) {
   var allTextLines = csvData
     .toString()
@@ -56,8 +39,8 @@ function isValidCsvRow(cells) {
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
 //
 // Returns a sorted set of all dates and a map of places->dates->values
-export function createPlaceDateValuesMap(lines) {
-  const placeDateValuesMap = new Map();
+function createPlaceDateValuesMap(lines) {
+  const placeDateValuesMap = {};
   const dateSet = new Set();
 
   lines.forEach(
@@ -83,10 +66,10 @@ export function createPlaceDateValuesMap(lines) {
       i
     ) => {
       const date = moment.utc(dateString).valueOf();
-      if (!placeDateValuesMap.has(place)) {
-        placeDateValuesMap.set(place, new Map());
+      if (!placeDateValuesMap[place]) {
+        placeDateValuesMap[place] = new Map();
       }
-      var dateValuesMap = placeDateValuesMap.get(place);
+      var dateValuesMap = placeDateValuesMap[place];
       dateValuesMap.set(date, {
         cases: Number(dailyCases),
         deaths: Number(dailyDeaths),
@@ -111,72 +94,45 @@ export function createPlaceDateValuesMap(lines) {
 // https://www.opendata.nhs.scot/dataset/covid-19-in-scotland/resource/427f9a25-db22-4014-a3bc-893b68243055
 //
 
-function createDateSet(lines) {
-  const result = new Set();
-  lines.forEach(([dateString]) => {
-    result.add(moment.utc(dateString).valueOf());
-  });
-
-  return result;
-}
-
 const queryUrl = process.env.PUBLIC_URL + "/data/";
 
-// Retrieve a cached csv response, do some processing on it, then store the processed result
-export async function fetchAndStore(datasetName, setDataset, processCsvData) {
-  fetch(queryUrl + datasetName, {
-    method: "GET",
-  })
-    .then((res) => res.text())
-    .then((csvData) => {
-      setDataset(processCsvData(csvData));
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
 // Return summary stats per region for the last 7 days
-export function parse7DayWindowCsvData(csvData) {
-  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
+function getCurrentWeekTotals({ dates, placeDateValuesMap }) {
   const endDate = dates[dates.length - 1];
   const startDate = moment.utc(endDate).subtract(6, "days").valueOf();
-  const filteredDates = dates.filter((date) => date >= startDate);
+  const currentWeekDates = dates.filter((date) => date >= startDate);
 
   var scotlandTotalCases = 0;
   var scotlandTotalDeaths = 0;
 
-  const regions = new Map();
-  placeDateValuesMap.forEach((dateValuesMap, featureCode) => {
+  const regions = {};
+  Object.keys(placeDateValuesMap).forEach((featureCode) => {
+    const dateValuesMap = placeDateValuesMap[featureCode];
     var regionTotalCases = 0;
     var regionTotalDeaths = 0;
-    filteredDates.forEach((date) => {
+    currentWeekDates.forEach((date) => {
       const values = dateValuesMap.get(date);
       if (values !== undefined) {
         regionTotalCases += values.cases;
         regionTotalDeaths += values.deaths;
       }
     });
-    regions.set(featureCode, {
-      cases: regionTotalCases,
-      deaths: regionTotalDeaths,
-      fromDate: filteredDates[0],
+    regions[featureCode] = {
+      weeklyCases: regionTotalCases,
+      weeklyDeaths: regionTotalDeaths,
       name: getPlaceNameByFeatureCode(featureCode),
-      toDate: endDate,
-    });
+    };
     scotlandTotalCases += regionTotalCases;
     scotlandTotalDeaths += regionTotalDeaths;
   });
 
-  regions.set(FEATURE_CODE_SCOTLAND, {
-    cases: scotlandTotalCases,
-    deaths: scotlandTotalDeaths,
-    fromDate: filteredDates[0],
+  regions[FEATURE_CODE_SCOTLAND] = {
+    weeklyCases: scotlandTotalCases,
+    weeklyDeaths: scotlandTotalDeaths,
     name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
-    toDate: endDate,
-  });
+  };
 
-  return regions;
+  return { currentWeekStartDate: currentWeekDates[0], regions: regions };
 }
 
 // Return date in words relative to today
@@ -197,38 +153,30 @@ export function getRelativeReportedDate(date) {
   return "reported on " + format(date, "dd MMMM, yyyy");
 }
 
-export function getPopulationMap(placeDateValuesResult) {
-  const { dates, placeDateValuesMap } = placeDateValuesResult;
-
-  const populationMap = new Map();
-  const finalDate = dates[dates.length - 1];
-
-  const places = [...placeDateValuesMap.keys()];
-  places.forEach((place) => {
-    const dateValuesMap = placeDateValuesMap.get(place);
-    const { cumulativeCases, crudeRatePositive } = dateValuesMap.get(finalDate);
+function getPopulationMap({ placeDateValuesMap }, finalDate) {
+  const populationMap = {};
+  Object.keys(placeDateValuesMap).forEach((place) => {
+    const { cumulativeCases, crudeRatePositive } = placeDateValuesMap[
+      place
+    ].get(finalDate);
     if (crudeRatePositive === 0) {
-      populationMap.set(place, 0);
+      populationMap[place] = 0;
     } else {
       const population = 100000 * (cumulativeCases / crudeRatePositive);
-      populationMap.set(place, population);
+      populationMap[place] = population;
     }
   });
 
   return populationMap;
 }
 
-// Exported for tests
-export function calculatePopulationProportionMap(populationMap) {
-  const result = new Map();
-
-  const scotlandPopulation = populationMap.get(FEATURE_CODE_SCOTLAND);
+function calculatePopulationProportionMap(populationMap) {
+  const result = {};
+  const scotlandPopulation = populationMap[FEATURE_CODE_SCOTLAND];
   if (scotlandPopulation !== undefined) {
-    const places = [...populationMap.keys()];
-    places.forEach((place) => {
-      const population = populationMap.get(place);
-      result.set(place, population / scotlandPopulation);
-    });
+    Object.keys(populationMap).forEach(
+      (place) => (result[place] = populationMap[place] / scotlandPopulation)
+    );
   }
   return result;
 }
@@ -314,4 +262,292 @@ export function getPhoneticPlaceNameByFeatureCode(featureCode) {
     return "Nahelen an sheer";
   }
   return getPlaceNameByFeatureCode(featureCode);
+}
+
+function getPlaceTotalsStats(
+  dateString,
+  dailyCases,
+  cumulativeCases,
+  dailyDeaths,
+  cumulativeDeaths
+) {
+  const date = moment.utc(dateString).valueOf();
+  const fatalityCaseRatio =
+    cumulativeCases !== undefined && cumulativeDeaths !== undefined
+      ? ((cumulativeDeaths * 100) / cumulativeCases).toFixed(1) + "%"
+      : undefined;
+  return {
+    dailyCases: { date: date, value: Number(dailyCases) },
+    dailyDeaths: { date: date, value: Number(dailyDeaths) },
+    cumulativeCases: { date: date, value: Number(cumulativeCases) },
+    cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
+    fatalityCaseRatio: fatalityCaseRatio,
+  };
+}
+
+function parseNhsHBTotalsCsvData(lines) {
+  const placeStatsMap = {};
+
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        v1,
+        v4,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      placeStatsMap[place] = getPlaceTotalsStats(
+        dateString,
+        dailyCases,
+        cumulativeCases,
+        dailyDeaths,
+        cumulativeDeaths
+      );
+    }
+  );
+  return placeStatsMap;
+}
+
+function parseNhsCATotalsCsvData(lines) {
+  const placeStatsMap = {};
+
+  lines.forEach(
+    (
+      [
+        dateString,
+        place,
+        v1,
+        dailyCases,
+        cumulativeCases,
+        v2,
+        dailyDeaths,
+        cumulativeDeaths,
+      ],
+      i
+    ) => {
+      placeStatsMap[place] = getPlaceTotalsStats(
+        dateString,
+        dailyCases,
+        cumulativeCases,
+        dailyDeaths,
+        cumulativeDeaths
+      );
+    }
+  );
+  return placeStatsMap;
+}
+
+function aggregateWeeks(dates, placeDateValuesMap) {
+  const startDate = dates[0];
+  const endDate = dates[dates.length - 1];
+  const millisInWeek = 7 * 24 * 3600 * 1000;
+
+  const weekStartDates = [];
+  let currentDate = startDate;
+  while (currentDate < endDate) {
+    weekStartDates.push(currentDate);
+    currentDate = currentDate + millisInWeek;
+  }
+  const weeklyPlaceDateValuesMap = new Map();
+  Object.keys(placeDateValuesMap).forEach((place) => {
+    const dateValueMap = placeDateValuesMap[place];
+    const weeklyDateValueMap = new Map();
+    weeklyPlaceDateValuesMap.set(place, weeklyDateValueMap);
+
+    weekStartDates.forEach((weekStart) => {
+      const weekEnd = weekStart + millisInWeek;
+
+      let total = {
+        cases: 0,
+        deaths: 0,
+        cumulativeCases: 0,
+        cumulativeDeaths: 0,
+      };
+      weeklyDateValueMap.set(weekStart, total);
+      dates.forEach((date) => {
+        if (date >= weekStart && date < weekEnd) {
+          const current = dateValueMap.get(date);
+          total.cases += current.cases;
+          total.deaths += current.deaths;
+          total.cumulativeCases = current.cumulativeCases;
+          total.cumulativeDeaths = current.cumulativeDeaths;
+        }
+      });
+    });
+  });
+  return { weekStartDates, weeklyPlaceDateValuesMap };
+}
+
+function getWeeklySeriesData({ dates, placeDateValuesMap }) {
+  const { weekStartDates, weeklyPlaceDateValuesMap } = aggregateWeeks(
+    dates,
+    placeDateValuesMap
+  );
+  var regions = {};
+  weeklyPlaceDateValuesMap.forEach((dateValuesMap, featureCode) => {
+    const allCases = [];
+    const allDeaths = [];
+    weekStartDates.forEach((date) => {
+      const { cases, deaths } = dateValuesMap.get(date);
+      allCases.push(cases);
+      allDeaths.push(deaths);
+    });
+    regions[featureCode] = { cases: allCases, deaths: allDeaths };
+  });
+
+  return {
+    weekStartDates: weekStartDates,
+    regionWeeklySeries: regions,
+  };
+}
+
+function getDailySeriesData({ dates, placeDateValuesMap }) {
+  const result = {};
+
+  Object.keys(placeDateValuesMap).forEach((place) => {
+    const dateValuesMap = placeDateValuesMap[place];
+
+    const percentPositiveTests = [];
+    const dailyCases = [];
+    const dailyDeaths = [];
+    const totalCases = [];
+    const totalDeaths = [];
+
+    dates.forEach((date, i) => {
+      const {
+        cases,
+        deaths,
+        cumulativeCases,
+        cumulativeDeaths,
+        positivePercentage,
+      } = dateValuesMap.get(date);
+
+      percentPositiveTests.push(positivePercentage);
+      dailyCases.push(cases);
+      dailyDeaths.push(deaths);
+      totalCases.push(cumulativeCases);
+      totalDeaths.push(cumulativeDeaths);
+    });
+
+    result[place] = {
+      percentPositiveTests,
+      dailyCases,
+      dailyDeaths,
+      totalCases,
+      totalDeaths,
+    };
+  });
+
+  return result;
+}
+
+function mergePlaceDateValuesMap(healthBoardMap, councilAreaMap) {
+  const commonDates = healthBoardMap.dates.filter((date) =>
+    councilAreaMap.dates.includes(date)
+  );
+  const commonPlaceDateValuesMap = {
+    ...councilAreaMap.placeDateValuesMap,
+    ...healthBoardMap.placeDateValuesMap,
+  };
+  Object.keys(commonPlaceDateValuesMap).forEach((region) => {
+    const dateValuesMap = commonPlaceDateValuesMap[region];
+    [...dateValuesMap.keys()].forEach((date) => {
+      if (!commonDates.includes(date)) {
+        dateValuesMap.delete(date);
+      }
+    });
+  });
+  return { dates: commonDates, placeDateValuesMap: commonPlaceDateValuesMap };
+}
+
+export function generateAllData() {
+  return Promise.allSettled([
+    loadCsvData("currentTotalsHealthBoards.csv"),
+    loadCsvData("currentTotalsCouncilAreas.csv"),
+    loadCsvData("dailyHealthBoards.csv"),
+    loadCsvData("dailyCouncilAreas.csv"),
+  ])
+    .then((results) => {
+      return Promise.resolve(
+        getAllData(...results.map((result) => result.value))
+      );
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function loadCsvData(filename) {
+  return fetch(queryUrl + filename, { method: "GET" })
+    .then((res) => res.text())
+    .then((csvData) => Promise.resolve(readCsvData(csvData)));
+}
+
+export function getAllData(
+  currentTotalsHealthBoardDataset = null,
+  currentTotalsCouncilAreaDataset = null,
+  healthBoardDataset = null,
+  councilAreaDataset = null
+) {
+  if (
+    currentTotalsHealthBoardDataset === null ||
+    currentTotalsCouncilAreaDataset === null ||
+    councilAreaDataset === null ||
+    healthBoardDataset === null
+  ) {
+    return null;
+  }
+
+  const placeDateValuesMap = mergePlaceDateValuesMap(
+    createPlaceDateValuesMap(healthBoardDataset),
+    createPlaceDateValuesMap(councilAreaDataset)
+  );
+  const startDate = placeDateValuesMap.dates[0];
+  const endDate = placeDateValuesMap.dates[placeDateValuesMap.dates.length - 1];
+
+  const populationMap = getPopulationMap(placeDateValuesMap, endDate);
+  const populationProportionMap = calculatePopulationProportionMap(
+    populationMap
+  );
+
+  let { currentWeekStartDate, regions } = getCurrentWeekTotals(
+    placeDateValuesMap
+  );
+
+  const regionTotals = {
+    ...parseNhsCATotalsCsvData(currentTotalsCouncilAreaDataset),
+    ...parseNhsHBTotalsCsvData(currentTotalsHealthBoardDataset),
+  };
+
+  const { weekStartDates, regionWeeklySeries } = getWeeklySeriesData(
+    placeDateValuesMap
+  );
+  const regionDailySeries = getDailySeriesData(placeDateValuesMap);
+
+  Object.keys(regions).forEach((region, i) => {
+    const regionData = regions[region];
+    Object.assign(regionData, regionTotals[region]);
+    regionData.population = populationMap[region];
+    regionData.populationProportion = populationProportionMap[region];
+    regionData.weeklySeries = regionWeeklySeries[region];
+    regionData.dailySeries = regionDailySeries[region];
+  });
+
+  const result = {
+    regions: regions,
+    dates: placeDateValuesMap.dates,
+    weekStartDates: weekStartDates,
+    startDate: startDate,
+    endDate: endDate,
+    currentWeekStartDate: currentWeekStartDate,
+  };
+  // console.log(result);
+  return result;
 }

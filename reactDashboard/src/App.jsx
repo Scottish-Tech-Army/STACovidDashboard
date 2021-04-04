@@ -15,13 +15,7 @@ import {
 } from "./pages/PageConsts";
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
-import {
-  readCsvData,
-  fetchAndStore,
-  calculatePopulationProportionMap,
-  getPopulationMap,
-  createPlaceDateValuesMap,
-} from "./components/Utils/CsvUtils";
+import { generateAllData } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 import {
@@ -31,11 +25,9 @@ import {
   Redirect,
   useLocation,
 } from "react-router-dom";
-import useDarkMode from 'use-dark-mode';
+import useDarkMode from "use-dark-mode";
 
-const tagManagerArgs = {
-  gtmId: "GTM-5LKHW33",
-};
+const tagManagerArgs = { gtmId: "GTM-5LKHW33" };
 
 TagManager.initialize(tagManagerArgs);
 
@@ -61,88 +53,29 @@ const StopAudio = () => {
 };
 
 const App = () => {
-  const [healthBoardDataset, setHealthBoardDataset] = useState(null);
-  const [councilAreaDataset, setCouncilAreaDataset] = useState(null);
-  const [
-    currentTotalsHealthBoardDataset,
-    setCurrentTotalsHealthBoardDataset,
-  ] = useState(null);
-  const [
-    currentTotalsCouncilAreaDataset,
-    setCurrentTotalsCouncilAreaDataset,
-  ] = useState(null);
-  const [populationMap, setPopulationMap] = useState(new Map());
-  const [populationProportionMap, setPopulationProportionMap] = useState(
-    new Map()
-  );
-  const darkmode = useDarkMode(false, {classNameDark: "darkmode"});
+  const [allData, setAllData] = useState(null);
+  const darkmode = useDarkMode(false, { classNameDark: "darkmode" });
 
-  // Load and parse datasets
   useEffect(() => {
-    if (null === councilAreaDataset) {
-      fetchAndStore(
-        "dailyCouncilAreas.csv",
-        setCouncilAreaDataset,
-        readCsvData
-      );
+    if (null === allData) {
+      // fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
+      //   method: "GET",
+      // })
+      //   .then((res) => res.json())
+      //   .then((jsonData) => {
+      //     setAllData(jsonData);
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+      // Temporarily create allData from csv - intend to do in lambda soon
+      generateAllData()
+        .then(setAllData)
+        .catch((error) => {
+          console.error(error);
+        });
     }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    if (null === healthBoardDataset) {
-      fetchAndStore(
-        "dailyHealthBoards.csv",
-        setHealthBoardDataset,
-        readCsvData
-      );
-    }
-  }, [healthBoardDataset]);
-
-  useEffect(() => {
-    if (null === currentTotalsCouncilAreaDataset) {
-      fetchAndStore(
-        "currentTotalsCouncilAreas.csv",
-        setCurrentTotalsCouncilAreaDataset,
-        readCsvData
-      );
-    }
-  }, [currentTotalsCouncilAreaDataset]);
-
-  useEffect(() => {
-    if (null === currentTotalsHealthBoardDataset) {
-      fetchAndStore(
-        "currentTotalsHealthBoards.csv",
-        setCurrentTotalsHealthBoardDataset,
-        readCsvData
-      );
-    }
-  }, [currentTotalsHealthBoardDataset]);
-
-  useEffect(() => {
-    if (healthBoardDataset != null) {
-      const datasetPopulationMap = getPopulationMap(
-        createPlaceDateValuesMap(healthBoardDataset)
-      );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
-      );
-    }
-  }, [healthBoardDataset]);
-
-  useEffect(() => {
-    if (councilAreaDataset != null) {
-      const datasetPopulationMap = getPopulationMap(
-        createPlaceDateValuesMap(councilAreaDataset)
-      );
-      setPopulationMap(
-        (existingMap) => new Map([...existingMap, ...datasetPopulationMap])
-      );
-    }
-  }, [councilAreaDataset]);
-
-  useEffect(() => {
-    setPopulationProportionMap(calculatePopulationProportionMap(populationMap));
-  }, [populationMap]);
+  }, [allData]);
 
   return (
     <div className="App">
@@ -155,23 +88,10 @@ const App = () => {
         </header>
         <Switch>
           <Route exact path={URL_OVERVIEW}>
-            <Overview
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode.value}
-            />
+            <Overview allData={allData} darkmode={darkmode.value} />
           </Route>
           <Route path={URL_REGIONAL}>
-            <Regional
-              councilAreaDataset={councilAreaDataset}
-              healthBoardDataset={healthBoardDataset}
-              currentTotalsHealthBoardDataset={currentTotalsHealthBoardDataset}
-              currentTotalsCouncilAreaDataset={currentTotalsCouncilAreaDataset}
-              populationProportionMap={populationProportionMap}
-              darkmode={darkmode.value}
-            />
+            <Regional allData={allData} darkmode={darkmode.value} />
           </Route>
           <Route path={URL_ACCESSIBILITY}>
             <Accessibility />

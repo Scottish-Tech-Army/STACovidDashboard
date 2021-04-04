@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Heatmap.css";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import {
@@ -6,156 +6,25 @@ import {
   VALUETYPE_DEATHS,
 } from "../HeatmapDataSelector/HeatmapConsts";
 import {
-  createPlaceDateValuesMap,
-  getPlaceNameByFeatureCode,
   FEATURE_CODE_SCOTLAND,
+  FEATURE_CODE_COUNCIL_AREAS,
+  FEATURE_CODE_HEALTH_BOARDS,
 } from "../Utils/CsvUtils";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
 
-function aggregateWeeks(dates, placeDateValuesMap) {
-  const startDate = dates[0];
-  const endDate = dates[dates.length - 1];
-  const millisInWeek = 7 * 24 * 3600 * 1000;
+const SIX_DAYS_IN_MILLIS = 6 * 24 * 3600 * 1000;
 
-  const weeklyDates = [];
-  let currentDate = startDate;
-  while (currentDate < endDate) {
-    weeklyDates.push(currentDate);
-    currentDate = currentDate + millisInWeek;
-  }
-  const weeklyPlaceDateValuesMap = new Map();
-  placeDateValuesMap.forEach((dateValueMap, place) => {
-    const weeklyDateValueMap = new Map();
-    weeklyPlaceDateValuesMap.set(place, weeklyDateValueMap);
-
-    weeklyDates.forEach((weekStart) => {
-      const weekEnd = weekStart + millisInWeek;
-
-      let total = {
-        cases: 0,
-        deaths: 0,
-        cumulativeCases: 0,
-        cumulativeDeaths: 0,
-      };
-      weeklyDateValueMap.set(weekStart, total);
-      dates.forEach((date) => {
-        if (date >= weekStart && date < weekEnd) {
-          const current = dateValueMap.get(date);
-          total.cases += current.cases;
-          total.deaths += current.deaths;
-          total.cumulativeCases = current.cumulativeCases;
-          total.cumulativeDeaths = current.cumulativeDeaths;
-        }
-      });
-    });
-  });
-  return { weeklyDates, weeklyPlaceDateValuesMap };
-}
-
-// Exported for tests
-export function parseCsvData(csvData) {
-  const { dates, placeDateValuesMap } = createPlaceDateValuesMap(csvData);
-
-  const { weeklyDates, weeklyPlaceDateValuesMap } = aggregateWeeks(
-    dates,
-    placeDateValuesMap
-  );
-
-  var regions = [];
-  var scotland = null;
-  weeklyPlaceDateValuesMap.forEach((dateValuesMap, featureCode) => {
-    const allCases = [];
-    const allDeaths = [];
-    var totalCases = 0;
-    var totalDeaths = 0;
-    weeklyDates.forEach((date) => {
-      const {
-        cases,
-        deaths,
-        cumulativeCases,
-        cumulativeDeaths,
-      } = dateValuesMap.get(date);
-      allCases.push(cases);
-      allDeaths.push(deaths);
-      // Only using the last of each of the cumulative values
-      totalCases = cumulativeCases;
-      totalDeaths = cumulativeDeaths;
-    });
-    const region = {
-      featureCode: featureCode,
-      name: getPlaceNameByFeatureCode(featureCode),
-      totalDeaths: totalDeaths,
-      totalCases: totalCases,
-      cases: allCases,
-      deaths: allDeaths,
-    };
-    if (featureCode === FEATURE_CODE_SCOTLAND) {
-      scotland = region;
-    } else {
-      regions.push(region);
-    }
-  });
-  regions = regions.sort((a, b) => (a.name < b.name ? -1 : 1));
-
-  if (scotland == null) {
-    scotland = getScotlandRegion(regions);
-  }
-  return {
-    startDate: dates[0],
-    endDate: dates[dates.length - 1],
-    dates: weeklyDates,
-    scotland: scotland,
-    regions: regions,
-  };
-}
-
-// Exported for tests
-export function getScotlandRegion(regions) {
-  var result = regions.find(
-    ({ featureCode }) => featureCode === FEATURE_CODE_SCOTLAND
-  );
-  if (result !== undefined) {
-    return result;
-  }
-  // Calculate Scotland region
-  const weekCount = regions[0] ? regions[0].cases.length : 0;
-
-  result = {
-    featureCode: FEATURE_CODE_SCOTLAND,
-    name: getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND),
-    totalDeaths: 0,
-    totalCases: 0,
-    cases: Array(weekCount).fill(0),
-    deaths: Array(weekCount).fill(0),
-  };
-
-  regions.forEach(({ totalDeaths, totalCases, cases, deaths }) => {
-    result.totalDeaths += totalDeaths;
-    result.totalCases += totalCases;
-    for (let i = 0; i < weekCount; i++) {
-      result.cases[i] += cases[i];
-      result.deaths[i] += deaths[i];
-    }
-  });
-  return result;
-}
-
-const DAY_IN_MS = 24 * 3600 * 1000;
-
-export function getDateRangeString(dates, startDateIndex, weekCount) {
+export function createHeatbarLines(
+  elements,
+  createHeatbarLine,
+  region,
+  weekStartDates
+) {
   function formatDate(date) {
     return format(date, "dd MMM");
   }
 
-  return (
-    formatDate(dates[startDateIndex]) +
-    " - " +
-    formatDate(dates[startDateIndex] + (weekCount * 7 - 1) * DAY_IN_MS)
-  );
-}
-
-export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
   const result = [];
   var startDateIndex = 0;
   while (startDateIndex < elements.length) {
@@ -170,13 +39,19 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
         break;
       }
     }
+    const dateString =
+      formatDate(weekStartDates[startDateIndex]) +
+      " - " +
+      formatDate(
+        weekStartDates[startDateIndex + weekCount - 1] + SIX_DAYS_IN_MILLIS
+      );
 
     result.push(
       createHeatbarLine(
         startElement,
         startDateIndex,
         weekCount,
-        region + "\n" + getDateRangeString(dates, startDateIndex, weekCount)
+        region + "\n" + dateString
       )
     );
     startDateIndex += weekCount;
@@ -185,23 +60,15 @@ export function createHeatbarLines(elements, createHeatbarLine, region, dates) {
   return result;
 }
 
-function Heatmap({
-  councilAreaDataset,
-  healthBoardDataset,
+export default function Heatmap({
+  allData = null,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
 }) {
   // Remember to update the css classes if level count changes
   const heatLevels = [0, 5, 10, 20, 50, 100, 500, 1000];
 
-  const [parsedHealthBoardDataset, setParsedHealthBoardDataset] = useState(
-    null
-  );
-  const [parsedCouncilAreaDataset, setParsedCouncilAreaDataset] = useState(
-    null
-  );
-
-  function createHeatbar(elements, region, dates) {
+  function createHeatbar(elements, region, weekStartDates) {
     const width = 20;
     const height = 15;
     const viewBox = "0 0 " + width + " " + height;
@@ -227,7 +94,12 @@ function Heatmap({
 
     return (
       <svg className="heatbar" viewBox={viewBox} preserveAspectRatio="none">
-        {createHeatbarLines(elements, createHeatbarLine, region, dates)}
+        {createHeatbarLines(
+          elements,
+          createHeatbarLine,
+          region,
+          weekStartDates
+        )}
       </svg>
     );
   }
@@ -243,10 +115,15 @@ function Heatmap({
   }
 
   function createRegionTableline(
-    { featureCode, name, totalDeaths, totalCases, cases, deaths },
+    featureCode,
+    name,
+    totalCases,
+    totalDeaths,
+    { cases, deaths },
     index,
-    dates
+    weekStartDates
   ) {
+
     const counts = VALUETYPE_DEATHS === valueType ? deaths : cases;
     const total = VALUETYPE_DEATHS === valueType ? totalDeaths : totalCases;
     return (
@@ -260,63 +137,60 @@ function Heatmap({
         <td>{total}</td>
         <td aria-hidden={true} className="heatbarCell">
           <div className="heatbarLine">
-            {createHeatbar(counts.map(getHeatLevel), name, dates)}
+            {createHeatbar(counts.map(getHeatLevel), name, weekStartDates)}
           </div>
         </td>
       </tr>
     );
   }
 
-  // Parse datasets
-  useEffect(() => {
-    if (null !== councilAreaDataset && null === parsedCouncilAreaDataset) {
-      setParsedCouncilAreaDataset(parseCsvData(councilAreaDataset));
-    }
-    if (null !== healthBoardDataset && null === parsedHealthBoardDataset) {
-      setParsedHealthBoardDataset(parseCsvData(healthBoardDataset));
-    }
-  }, [
-    healthBoardDataset,
-    councilAreaDataset,
-    parsedHealthBoardDataset,
-    parsedCouncilAreaDataset,
-  ]);
-
-  function getDataSet() {
-    if (AREATYPE_COUNCIL_AREAS === areaType) {
-      return parsedCouncilAreaDataset;
-    } else {
-      // AREATYPE_HEALTH_BOARDS == areaType
-      return parsedHealthBoardDataset;
-    }
-  }
-
   function dateRangeText() {
     function formatDate(date) {
       return format(date, "dd MMM yyyy");
     }
-
-    const dataset = getDataSet();
-    if (!dataset.startDate || !dataset.endDate) {
+    if (!allData) {
       return "Data not available";
     }
 
-    return formatDate(dataset.startDate) + " - " + formatDate(dataset.endDate);
+    if (!allData.startDate || !allData.endDate) {
+      return "Data not available";
+    }
+
+    return formatDate(allData.startDate) + " - " + formatDate(allData.endDate);
   }
 
   function renderTableBody() {
-    const dataset = getDataSet();
-    if (dataset === null) {
+    if (allData === null) {
       return [];
     }
-    if (dataset.regions.length === 0) {
+    if (!allData.regions || allData.regions.length === 0) {
       return [];
     }
-    const result = dataset.regions.map((region, i) =>
-      createRegionTableline(region, i + 1, dataset.dates)
-    );
 
-    result.unshift(createRegionTableline(dataset.scotland, 0, dataset.dates));
+    const regionFeatureCodes =
+      AREATYPE_COUNCIL_AREAS === areaType
+        ? FEATURE_CODE_COUNCIL_AREAS
+        : FEATURE_CODE_HEALTH_BOARDS;
+    const featureCodes = [FEATURE_CODE_SCOTLAND, ...regionFeatureCodes];
+
+    const result = featureCodes
+      .map((region, i) => {
+        const regionData = allData.regions[region];
+        return (
+          regionData ?
+          createRegionTableline(
+            region,
+            regionData.name,
+            regionData.cumulativeCases.value,
+            regionData.cumulativeDeaths.value,
+            regionData.weeklySeries,
+            i + 1,
+            allData.weekStartDates
+        ) : null
+        );
+      })
+      .filter(Boolean);
+
     return result;
   }
 
@@ -350,7 +224,7 @@ function Heatmap({
       </div>
     );
   }
-  if (getDataSet() === null) {
+  if (allData === null) {
     return <LoadingComponent />;
   }
 
@@ -373,5 +247,3 @@ function Heatmap({
     </div>
   );
 }
-
-export default Heatmap;

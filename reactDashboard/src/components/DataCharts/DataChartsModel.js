@@ -1,13 +1,23 @@
-import moment from "moment";
+import Chart from "chart.js";
+import "./DataCharts.css";
+import "../../common.css";
 import {
+  PERCENTAGE_TESTS,
+  DAILY_CASES,
+  DAILY_DEATHS,
+  TOTAL_CASES,
+  TOTAL_DEATHS,
+  REGION_DATASET_COLOUR,
+  AVERAGE_DATASET_COLOUR,
   ALL_DATES,
   LAST_WEEK,
   LAST_TWO_WEEKS,
   LAST_MONTH,
   LAST_THREE_MONTHS,
-  REGION_DATASET_COLOUR,
-  AVERAGE_DATASET_COLOUR,
 } from "../DataCharts/DataChartsConsts";
+import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
+import "../../chartjs-plugin-annotation/index.js";
+import moment from "moment";
 
 const keyDates = [
   { date: Date.parse("2020-03-24"), name: "LOCKDOWN" },
@@ -85,7 +95,7 @@ export function datasetConfiguration(
 }
 
 function getSeriesYMax(dataset) {
-  return Math.max(...dataset.data.map((data) => data.y), 0);
+  return Math.max(...dataset.data, 0);
 }
 
 export function getChartYMax(datasets) {
@@ -105,12 +115,18 @@ export const getMaxTicks = (yMax) => {
   return yMax;
 };
 
-export function commonChartConfiguration(datasets, darkmode, dateRange = null) {
+export function commonChartConfiguration(
+  dates,
+  datasets,
+  darkmode,
+  dateRange = null
+) {
   const maxTicks = getMaxTicks(getChartYMax(datasets));
 
   let result = {
     type: "line",
     data: {
+      labels: dates,
       datasets: datasets,
     },
     options: {
@@ -237,4 +253,121 @@ export function calculateDateRange(maxDateRange, timePeriod) {
   }
 
   return { startDate: startDate, endDate: endDate };
+}
+
+function getAverageSeriesData(
+  allData,
+  chartType,
+  seriesDataName,
+  populationProportion
+) {
+  const scotlandData =
+    allData.regions[FEATURE_CODE_SCOTLAND].dailySeries[seriesDataName];
+  if (chartType === PERCENTAGE_TESTS) {
+    return scotlandData;
+  }
+  return scotlandData.map((y) => y * populationProportion);
+}
+
+const AVERAGE_DATASET_FILL_COLOUR = (darkmode) =>
+  darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
+
+function getAverageSeriesLabel(chartType) {
+  return chartType === PERCENTAGE_TESTS
+    ? "Scotland average"
+    : "Scotland average (adjusted for population)";
+}
+
+function getChartDatasets(allData, chartType, regionCode, darkmode) {
+  let datasetLabel = datasetInfo[chartType].label;
+  let seriesDataName = datasetInfo[chartType].seriesName;
+
+  const datasets = [];
+  const regionSeriesData =
+    allData.regions[regionCode].dailySeries[seriesDataName];
+  if (regionSeriesData !== undefined) {
+    datasets.push(
+      datasetConfiguration(
+        datasetLabel,
+        regionSeriesData,
+        REGION_DATASET_COLOUR
+      )
+    );
+    if (regionCode !== FEATURE_CODE_SCOTLAND) {
+      const averageSeriesData = getAverageSeriesData(
+        allData,
+        chartType,
+        seriesDataName,
+        allData.regions[regionCode].populationProportion
+      );
+      if (averageSeriesData) {
+        datasets.push(
+          datasetConfiguration(
+            getAverageSeriesLabel(chartType),
+            averageSeriesData,
+            AVERAGE_DATASET_COLOUR,
+            AVERAGE_DATASET_FILL_COLOUR(darkmode)
+          )
+        );
+      }
+    }
+  }
+  return datasets;
+}
+
+const datasetInfo = {
+  [DAILY_CASES]: { label:  "Daily Cases", seriesName: "dailyCases" },
+  [DAILY_DEATHS]: { label: "Daily Deaths", seriesName: "dailyDeaths" },
+  [TOTAL_CASES]: { label: "Total Cases", seriesName: "totalCases" },
+  [TOTAL_DEATHS]: { label: "Total Deaths", seriesName: "totalDeaths" },
+  [PERCENTAGE_TESTS]: {
+    label: "% of Tests Positive",
+    seriesName: "percentPositiveTests",
+  },
+};
+
+export function getDataSeries(allData, chartType, regionCode) {
+  return (
+    allData &&
+    allData.regions[regionCode].dailySeries[datasetInfo[chartType].seriesName]
+  );
+}
+
+export function getSonificationSeriesTitle(chartType) {
+  return chartType === PERCENTAGE_TESTS
+    ? "Percentage tests positive"
+    : datasetInfo[chartType].label;
+}
+
+export function createChart(
+  chartContainer,
+  allData,
+  chartType,
+  regionCode,
+  darkmode,
+  dateRange
+) {
+  const datasets = getChartDatasets(allData, chartType, regionCode, darkmode);
+  const chartConfiguration = commonChartConfiguration(
+    allData.dates,
+    datasets,
+    darkmode,
+    dateRange
+  );
+
+  if (chartType === PERCENTAGE_TESTS) {
+    chartConfiguration.options.scales.yAxes[0].ticks.callback = (
+      value,
+      index,
+      values
+    ) => {
+      return Math.round(value) + "%";
+    };
+    chartConfiguration.options.annotation.annotations.push(
+      getWhoThresholdLine()
+    );
+  }
+
+  const chartContext = chartContainer.getContext("2d");
+  return new Chart(chartContext, chartConfiguration);
 }
