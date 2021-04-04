@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - 'reactDashboard/**'
       - 'functionalTest/**'
+      - 'lambdaFunctions/**'
 
 jobs:
   build:
