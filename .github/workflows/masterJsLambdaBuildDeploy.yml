@@ -41,7 +41,7 @@ jobs:
           npm install
           npm test -- --watchAll=false
           npm run build
-          zip -qq -r lambda.zip build
+          zip -qq -r lambda.zip build/index.js
                    
       - name: Copy artifact
         run: |
