@@ -24,11 +24,9 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.876.0",
     "dayjs": "^1.10.4",
     "node-fetch": "^2.6.1"
-  },
-  "peerDependencies": {
-    "aws-sdk": "^2.876.0"
   },
   "eslintConfig": {
     "parser": "babel-eslint",
