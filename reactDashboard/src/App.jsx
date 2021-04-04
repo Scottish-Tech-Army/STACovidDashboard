@@ -82,8 +82,8 @@ const App = () => {
       <Router basename={process.env.PUBLIC_URL}>
         <ScrollToTop />
         <StopAudio />
-
         <header>
+          <h1 className="visually-hidden">Scottish COVID-19 Statistics</h1>
           <DashboardNavbar darkmode={darkmode} />
         </header>
         <Switch>

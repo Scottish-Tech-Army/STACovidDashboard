@@ -126,18 +126,18 @@ function AboutUs() {
   return (
     <div className="about-us">
       <div className="about-us-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h1>About us</h1>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           This dashboard has been developed by members of the Scottish Tech Army
           to improve awareness of the impacts of Covid-19.
         </p>
       </div>
       <div className="about-us-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>The Scottish Tech Army</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           Founded by Edinburgh based entrepreneurs, Alistair Forbes and Peter
           Jaco, the Scottish Tech Army Limited is a not for profit company that
@@ -151,9 +151,9 @@ function AboutUs() {
         </p>
       </div>
       <div className="about-us-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>Meet the team</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           The Covid-19 dashboard for Scotland was created by the following STA
           volunteers:{" "}
@@ -173,9 +173,9 @@ function AboutUs() {
         </Container>
       </div>
       <div className="about-us-details">
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <h2>Thanks to</h2>
-        <hr className="full-width-hr" />
+        <hr aria-hidden={true} className="full-width-hr" />
         <p>
           The work the team has undertaken to produce this dashboard would not
           be possible without the kind donations from some of our partner

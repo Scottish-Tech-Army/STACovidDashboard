@@ -16,19 +16,6 @@
   box-shadow: none;
 }
 
-.chart-title h2 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  text-align: left;
-  padding-top: 20px;
-  margin: 0 0 10px 5px;
-  color: #133a53;
-}
-
-.darkmode .chart-title h2 {
-  color: #f2f2f2;
-}
-
 .chart-title {
   display: flex;
   flex-direction: row;
@@ -83,19 +70,19 @@
   box-shadow: 5px 5px 5px #aaaaaa;
 }
 
-.sonification-play-button h5 {
+.sonification-play-button span {
   font-size: 0.75rem;
   color: #6c6c6c;
   margin-bottom: 0;
 }
 
-.darkmode .sonification-play-button h5 {
+.darkmode .sonification-play-button span {
   color: #f2f2f2;
 }
 
 /* to meet accessibility requirements */
 .darkmode .sonification-play-button:hover,
-.darkmode .sonification-play-button h5:hover {
+.darkmode .sonification-play-button span:hover {
   box-shadow: none;
   background-color: #133a53;
 }

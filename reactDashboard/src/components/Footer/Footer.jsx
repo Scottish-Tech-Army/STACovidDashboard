@@ -52,7 +52,7 @@ const Footer = ({ darkmode }) => {
       <Container fluid className="font-small">
         <Row>
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="p-1 footer-main">
@@ -100,7 +100,7 @@ const Footer = ({ darkmode }) => {
         </Row>
         <Row className="d-sm-flex">
           <Col>
-            <hr className="full-width-hr" />
+            <hr aria-hidden={true} className="full-width-hr" />
           </Col>
         </Row>
         <Row className="footer-base">

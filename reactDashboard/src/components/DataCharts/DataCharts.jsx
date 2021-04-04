@@ -68,6 +68,10 @@ export default function DataCharts({
 
   const isDataReady = allData !== null;
 
+  function getScreenModeClassName() {
+    return isDataReady ? "chart-container" : "chart-container hidden-chart";
+  }
+
   const maxDateRange = allData
     ? { startDate: allData.startDate, endDate: allData.endDate }
     : { startDate: 0, endDate: 1 };
@@ -76,20 +80,11 @@ export default function DataCharts({
     <Container className="chart-border">
       <Row className="chart-dropdown-container">
         <Col className="chart-title">
-          <h2>Select Chart:</h2>
           <ChartDropdown chartType={chartType} setChartType={setChartType} />
         </Col>
       </Row>
       <Row className="chart-dropdown-container">
         <QuickSelectDateRange
-          setDateRange={setDateRange}
-          maxDateRange={maxDateRange}
-        />
-      </Row>
-      <Row className="d-flex justify-content-center">
-        <DateRangeSlider
-          id="date-range-slider-position"
-          dateRange={dateRange}
           setDateRange={setDateRange}
           maxDateRange={maxDateRange}
         />
@@ -100,11 +95,15 @@ export default function DataCharts({
           dateRange={dateRange}
           darkmode={darkmode}
         />
-        <div
-          className={
-            isDataReady ? "chart-container" : "chart-container hidden-chart"
-          }
-        >
+      </Row>
+      <Row aria-hidden={true} className="d-flex justify-content-center">
+        <DateRangeSlider
+          id="date-range-slider-position"
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          maxDateRange={maxDateRange}
+        />
+        <div className={getScreenModeClassName()}>
           <canvas ref={chartContainer} />
         </div>
         {isDataReady ? <></> : <LoadingComponent />}
