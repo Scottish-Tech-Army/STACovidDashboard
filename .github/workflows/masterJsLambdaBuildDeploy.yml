@@ -7,10 +7,8 @@ on:
   # Triggers the workflow on push event (which should include PR merges) for the master branch
   push:
     branches: [master]
-    paths-ignore:
-      - "awsLambdaFunctions/**"
-      - "reactDashboard/**"
-      - "functionalTest/**"
+    paths:
+      - "lambdaFunctions/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -40,6 +38,8 @@ jobs:
           npm install
           npm test -- --watchAll=false
           npm run build
+          ls
+          ls build
           
       - name: zip build folder
         uses: montudor/action-zip@v0.1.1
