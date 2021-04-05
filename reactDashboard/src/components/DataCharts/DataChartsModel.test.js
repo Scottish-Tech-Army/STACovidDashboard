@@ -1,4 +1,4 @@
-import {  unmountComponentAtNode } from "react-dom";
+import { unmountComponentAtNode } from "react-dom";
 import {
   commonChartConfiguration,
   calculateDateRange,
@@ -32,6 +32,15 @@ afterEach(() => {
 const TEST_MAX_DATA_1 = [363, 101, 257, 771, 799, 297, 118];
 const TEST_MAX_DATA_2 = [4056, 256, 235, 367, 2478, 163, 842];
 
+const MAX_DATE_RANGE = {
+  startDate: Date.parse("2020-01-01"),
+  endDate: Date.parse("2020-01-07"),
+};
+const SMALL_MAX_DATE_RANGE = {
+  startDate: Date.parse("2020-01-01"),
+  endDate: Date.parse("2020-01-04"),
+};
+
 describe("commonChartConfiguration", () => {
   const mockData = [
     datasetConfiguration("testLabel", TEST_MAX_DATA_1, "#767676"),
@@ -48,31 +57,95 @@ describe("commonChartConfiguration", () => {
   ];
 
   it("with date range", () => {
-    const result = commonChartConfiguration(testDates, mockData, false, {
-      startDate: 0,
-      endDate: 1,
-    });
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData,
+      false,
+      {
+        startDate: 0,
+        endDate: 1,
+      }
+    );
     const expectedResult = { max: 1, min: 0, fontColor: "#767676" };
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
 
   it("without date range", () => {
-    const result = commonChartConfiguration(testDates, mockData, false);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData,
+      false
+    );
     const expectedResult = { fontColor: "#767676" };
     expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
   });
 
   it("annotations with dataset", () => {
-    const result = commonChartConfiguration(testDates, mockData, false);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData,
+      false
+    );
     expect(result.options.annotation).not.toBeUndefined();
   });
 
   it("annotations without dataset", () => {
-    const result = commonChartConfiguration(testDates, [], false);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      [],
+      false
+    );
     expect(result.options.annotation).toBeUndefined();
   });
+
+  it("key date annotations", () => {
+    const result = commonChartConfiguration(
+      mockData,
+      MAX_DATE_RANGE,
+      mockData,
+      false
+    );
+    const annotations = result.options.annotation.annotations;
+    expect(annotations[0].value).toStrictEqual(Date.parse("2020-03-24"));
+    expect(annotations[0].label.yAdjust).toStrictEqual(0);
+    expect(annotations[0].label.content).toStrictEqual("LOCKDOWN");
+
+    expect(annotations[1].value).toStrictEqual(Date.parse("2020-05-29"));
+    expect(annotations[1].label.yAdjust).toStrictEqual(20);
+    expect(annotations[1].label.content).toStrictEqual("PHASE 1");
+  });
+
+  it("uncertain date annotations", () => {
+    const result = commonChartConfiguration(
+      mockData,
+      MAX_DATE_RANGE,
+      mockData,
+      false,
+      {
+        startDate: Date.parse("2020-01-01"),
+        endDate: Date.parse("2020-01-07"),
+      }
+    );
+    const annotations = result.options.annotation.annotations;
+
+    // Assuming the box annotation is the last annotation in the array
+    const annotation = annotations[annotations.length - 1];
+
+    expect(annotation.xMin).toStrictEqual(Date.parse("2020-01-04"));
+    expect(annotation.xMax).toStrictEqual(Date.parse("2020-01-07"));
+  });
+
   it("darkmode true", () => {
-    const result = commonChartConfiguration(testDates, mockData, true);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData,
+      true
+    );
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
       "#121212"
     );
@@ -91,7 +164,12 @@ describe("commonChartConfiguration", () => {
     ).toStrictEqual("#c1def1");
   });
   it("darkmode false", () => {
-    const result = commonChartConfiguration(testDates, mockData, false);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData,
+      false
+    );
     expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
       "#cccccc"
     );
@@ -111,12 +189,20 @@ describe("commonChartConfiguration", () => {
   });
 
   it("receive maxTicks less than 20", () => {
-    const result = commonChartConfiguration(testDates, smallMockData);
+    const result = commonChartConfiguration(
+      testDates,
+      SMALL_MAX_DATE_RANGE,
+      smallMockData
+    );
     expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(1);
   });
 
   it("receive maxTicks more than 20", () => {
-    const result = commonChartConfiguration(testDates, mockData);
+    const result = commonChartConfiguration(
+      testDates,
+      MAX_DATE_RANGE,
+      mockData
+    );
     expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(
       20
     );
