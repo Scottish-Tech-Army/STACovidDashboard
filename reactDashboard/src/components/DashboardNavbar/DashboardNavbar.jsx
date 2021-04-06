@@ -26,6 +26,7 @@ const DashboardNavbar = ({ darkmode }) => {
   }
 
   const darkmodeIcon = (className) => {
+    console.log(darkmode.value, "darkmode value")
     return (
       <FontAwesomeIcon
         icon={darkmode.value ? faSun : faMoon}

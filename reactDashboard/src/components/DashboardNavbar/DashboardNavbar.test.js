@@ -122,4 +122,23 @@ describe("darkmode button", () => {
     darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(storedDarkmode).toStrictEqual(false);
   });
+
+  it("darkmode button initial value dark", () => {
+    darkmode.value = true
+    storedDarkmode = true
+
+    act(() => {
+      render(
+        <MemoryRouter initialEntries={["/"]}>
+          <DashboardNavbar darkmode={darkmode} />
+        </MemoryRouter>,
+        container
+      );
+    });
+    
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(false);
+    darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(storedDarkmode).toStrictEqual(true);
+  });
 });
