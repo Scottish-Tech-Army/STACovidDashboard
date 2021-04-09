@@ -19,6 +19,8 @@ import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import "../../chartjs-plugin-annotation/index.js";
 import moment from "moment";
 
+const ONE_DAY_IN_MS = 24 * 3600 * 1000;
+
 const keyDates = [
   { date: Date.parse("2020-03-24"), name: "LOCKDOWN" },
   { date: Date.parse("2020-05-29"), name: "PHASE 1" },
@@ -75,6 +77,18 @@ export function getWhoThresholdLine() {
   };
 }
 
+function getBox(dates) {
+  return {
+    type: "box",
+    display: true,
+    drawTime: "beforeDatasetsDraw",
+    xScaleID: "x-axis-0",
+    xMin: dates.startDate,
+    xMax: dates.endDate,
+    backgroundColor: "#287db220",
+  };
+}
+
 export function datasetConfiguration(
   datasetLabel,
   seriesData,
@@ -117,6 +131,7 @@ export const getMaxTicks = (yMax) => {
 
 export function commonChartConfiguration(
   dates,
+  maxDateRange,
   datasets,
   darkmode,
   dateRange = null
@@ -211,6 +226,29 @@ export function commonChartConfiguration(
   if (datasets.length > 0) {
     result.options.annotation = {
       annotations: keyDates.map((date, i) => getDateLine(date, darkmode, i)),
+    };
+  }
+
+  if (datasets.length > 0) {
+    const boxDatesOneDay = {
+      startDate: maxDateRange.endDate - ONE_DAY_IN_MS,
+      endDate: maxDateRange.endDate,
+    };
+    const boxDatesTwoDays = {
+      startDate: maxDateRange.endDate - ONE_DAY_IN_MS * 2,
+      endDate: maxDateRange.endDate,
+    };
+    const boxDatesThreeDays = {
+      startDate: maxDateRange.endDate - ONE_DAY_IN_MS * 3,
+      endDate: maxDateRange.endDate,
+    };
+    result.options.annotation = {
+      annotations: [
+        ...keyDates.map((date, i) => getDateLine(date, darkmode, i)),
+        getBox(boxDatesOneDay),
+        getBox(boxDatesTwoDays),
+        getBox(boxDatesThreeDays),
+      ],
     };
   }
 
@@ -316,7 +354,7 @@ function getChartDatasets(allData, chartType, regionCode, darkmode) {
 }
 
 const datasetInfo = {
-  [DAILY_CASES]: { label:  "Daily Cases", seriesName: "dailyCases" },
+  [DAILY_CASES]: { label: "Daily Cases", seriesName: "dailyCases" },
   [DAILY_DEATHS]: { label: "Daily Deaths", seriesName: "dailyDeaths" },
   [TOTAL_CASES]: { label: "Total Cases", seriesName: "totalCases" },
   [TOTAL_DEATHS]: { label: "Total Deaths", seriesName: "totalDeaths" },
@@ -350,6 +388,7 @@ export function createChart(
   const datasets = getChartDatasets(allData, chartType, regionCode, darkmode);
   const chartConfiguration = commonChartConfiguration(
     allData.dates,
+    { startDate: allData.startDate, endDate: allData.endDate },
     datasets,
     darkmode,
     dateRange
