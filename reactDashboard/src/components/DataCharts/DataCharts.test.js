@@ -26,6 +26,7 @@ test("dataCharts renders default data input dataset is null", async () => {
   });
 
   expect(container.querySelector(".hidden-chart")).not.toBeNull();
+  expect(container.querySelector(".loading-component")).not.toBeNull();
 });
 
 test("dataCharts renders dynamic fetched data", async () => {
