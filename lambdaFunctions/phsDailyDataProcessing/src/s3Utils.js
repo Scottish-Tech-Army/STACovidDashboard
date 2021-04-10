@@ -80,8 +80,7 @@ const ADDITIONAL_DATASETS = [
   },
 ];
 
-// const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
-const BUCKET_NAME = "sta-dashboard-livetest";
+const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
 const JSON_KEY_NAME = OBJECT_FOLDER + "phsData.json";
 

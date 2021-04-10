@@ -43,8 +43,7 @@ jest.mock("aws-sdk", () => {
   };
 });
 
-// const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
-const BUCKET_NAME = "sta-dashboard-livetest";
+const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
 beforeEach(() => {
   jest.clearAllMocks();
