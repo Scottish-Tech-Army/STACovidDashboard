@@ -15,7 +15,6 @@ import {
 } from "./pages/PageConsts";
 import Footer from "./components/Footer/Footer";
 import TagManager from "react-gtm-module";
-import { generateAllData } from "./components/Utils/CsvUtils";
 import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 import {
@@ -58,19 +57,13 @@ const App = () => {
 
   useEffect(() => {
     if (null === allData) {
-      // fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
-      //   method: "GET",
-      // })
-      //   .then((res) => res.json())
-      //   .then((jsonData) => {
-      //     setAllData(jsonData);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-      // Temporarily create allData from csv - intend to do in lambda soon
-      generateAllData()
-        .then(setAllData)
+      fetch(process.env.PUBLIC_URL + "/data/phsData.json", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((jsonData) => {
+          setAllData(jsonData);
+        })
         .catch((error) => {
           console.error(error);
         });
