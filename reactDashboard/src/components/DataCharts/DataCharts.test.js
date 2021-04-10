@@ -2,6 +2,9 @@ import React from "react";
 import DataCharts from "./DataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { createChart } from "./DataChartsModel";
+
+jest.mock("./DataChartsModel");
 
 var container = null;
 beforeEach(() => {
@@ -9,6 +12,7 @@ beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
   fetch.resetMocks();
+  createChart.mockReturnValue(null);
 });
 
 afterEach(() => {

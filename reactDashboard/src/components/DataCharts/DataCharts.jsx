@@ -11,7 +11,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { stopAudio } from "../Utils/Sonification";
-import "../../chartjs-plugin-annotation/index.js";
 import {
   createChart,
   getDataSeries,
