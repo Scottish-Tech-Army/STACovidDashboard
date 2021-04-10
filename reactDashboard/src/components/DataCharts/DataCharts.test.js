@@ -25,8 +25,7 @@ test("dataCharts renders default data input dataset is null", async () => {
     render(<DataCharts />, container);
   });
 
-  const canvas = container.querySelector(".chart-container canvas");
-  expect(canvas).not.toBeNull();
+  expect(container.querySelector(".hidden-chart")).not.toBeNull();
 });
 
 test("dataCharts renders dynamic fetched data", async () => {
