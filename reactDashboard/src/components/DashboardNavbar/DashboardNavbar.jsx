@@ -26,7 +26,6 @@ const DashboardNavbar = ({ darkmode }) => {
   }
 
   const darkmodeIcon = (className) => {
-    console.log(darkmode.value, "darkmode value")
     return (
       <FontAwesomeIcon
         icon={darkmode.value ? faSun : faMoon}
@@ -52,7 +51,9 @@ const DashboardNavbar = ({ darkmode }) => {
       />
       <Navbar.Collapse id="basic-navbar-nav">
         <Navbar.Brand className="heading-container">
-          <h1 aria-hidden={true} className="heading">Scottish COVID-19 Statistics</h1>
+          <h1 aria-hidden={true} className="heading">
+            Scottish COVID-19 Statistics
+          </h1>
         </Navbar.Brand>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Statistics")}
