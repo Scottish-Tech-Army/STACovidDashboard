@@ -1,5 +1,4 @@
 import { readCsvData, createJsonData } from "./dataProcessingUtils";
-import { getPlaceNameByFeatureCode, getAllFeatureCodes } from "./featureCodes";
 
 jest.mock("./featureCodes", () => {
   return {
