@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
-import moment from "moment";
 import "./DataCharts.css";
+import { format } from "date-fns";
 
 const useStyles = makeStyles({
   root: {
@@ -20,8 +20,8 @@ export function getMarks({ startDate, endDate }) {
     return [];
   }
   return [
-    { value: startDate, label: moment.utc(startDate).format("DD MMM, YYYY") },
-    { value: endDate, label: moment.utc(endDate).format("DD MMM, YYYY") },
+    { value: startDate, label: format(startDate, "dd MMM, yyyy") },
+    { value: endDate, label: format(endDate, "dd MMM, yyyy") },
   ];
 }
 

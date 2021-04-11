@@ -5,7 +5,6 @@ import RegionSingleValueBar from "./RegionSingleValueBar";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
-import moment from "moment";
 import MockDate from "mockdate";
 
 const DATE_TODAY = "2020-10-17";
@@ -184,7 +183,7 @@ function checkSingleValue(
   expect(value.textContent).toBe(expectedValue);
 }
 
-const testDate = moment.utc(DATE_TODAY).valueOf();
+const testDate =  Date.parse(DATE_TODAY);
 
 const testAllData = {
   regions: {
