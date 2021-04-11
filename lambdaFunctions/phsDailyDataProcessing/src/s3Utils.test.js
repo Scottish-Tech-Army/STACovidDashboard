@@ -45,6 +45,16 @@ jest.mock("aws-sdk", () => {
 
 const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
+beforeAll(() => {
+  console.log = jest.fn();
+  console.warn = jest.fn();
+  console.error = jest.fn();
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
 beforeEach(() => {
   jest.clearAllMocks();
 });

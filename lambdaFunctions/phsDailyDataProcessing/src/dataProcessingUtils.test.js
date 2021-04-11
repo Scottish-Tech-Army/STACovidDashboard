@@ -1,18 +1,31 @@
-import {
-  readCsvData,
-  getPlaceNameByFeatureCode,
-  createJsonData,
-} from "./dataProcessingUtils";
+import { readCsvData, createJsonData } from "./dataProcessingUtils";
+import { getPlaceNameByFeatureCode, getAllFeatureCodes } from "./featureCodes";
+
+jest.mock("./featureCodes", () => {
+  return {
+    ...jest.requireActual("./featureCodes"),
+    getAllFeatureCodes: jest
+      .fn()
+      .mockReturnValue([
+        "S92000003",
+        "S12000013",
+        "S12000049",
+        "S08000024",
+        "S08000025",
+      ]),
+  };
+});
 
 beforeAll(() => {
   console.warn = jest.fn();
+  console.error = jest.fn();
 });
 
 afterAll(() => {
-  console.warn = jest.restoreAllMocks();
+  jest.restoreAllMocks();
 });
 
-test("readCsvData", () => {
+describe("readCsvData", () => {
   const inputCsvData = `
 
     Date,CA,NewPositive,TotalCases
@@ -34,40 +47,32 @@ test("readCsvData", () => {
   const parsedCsvData = [
     ["20200902", "S12000005", "0", "204"],
     ["20200903", "S12000006", "0", "314"],
+    ["", "S12000008", "2", "474"],
+    ["unknown", "S12000013", "0", "7"],
+    ["20209999", "S12000014", "3", "702"],
+    ["20200905", "", "0", "289"],
+    ["20200902", "unknown", "3", "240"],
     ["20200906", "S12000011", "2", "415"],
   ];
 
-  expect(readCsvData(inputCsvData)).toStrictEqual(parsedCsvData);
-});
+  it("success", () => {
+    expect(
+      readCsvData(inputCsvData, ["ca", "Date", "Newpositive"])
+    ).toStrictEqual({
+      columnIndices: {
+        Date: 0,
+        ca: 1,
+        Newpositive: 2,
+      },
+      lines: parsedCsvData,
+    });
+  });
 
-test("getPlaceNameByFeatureCode", async () => {
-  // Health board
-  expect(getPlaceNameByFeatureCode("S08000031")).toStrictEqual(
-    "Greater Glasgow & Clyde"
-  );
-  expect(getPlaceNameByFeatureCode("S08000017")).toStrictEqual(
-    "Dumfries & Galloway"
-  );
-  // Council area
-  expect(getPlaceNameByFeatureCode("S12000040")).toStrictEqual("West Lothian");
-  expect(getPlaceNameByFeatureCode("S12000013")).toStrictEqual(
-    "Na h-Eileanan Siar"
-  );
-  // Country
-  expect(getPlaceNameByFeatureCode("S92000003")).toStrictEqual("Scotland");
-  expect(() => getPlaceNameByFeatureCode("S12345678")).toThrow(
-    "Unknown feature code: S12345678"
-  );
-  expect(() => getPlaceNameByFeatureCode("unknown")).toThrow(
-    "Unknown feature code: unknown"
-  );
-  expect(() => getPlaceNameByFeatureCode("")).toThrow("Unknown feature code: ");
-  expect(() => getPlaceNameByFeatureCode(null)).toThrow(
-    "Unknown feature code: null"
-  );
-  expect(() => getPlaceNameByFeatureCode(undefined)).toThrow(
-    "Unknown feature code: undefined"
-  );
+  it("missing column", () => {
+    expect(() => readCsvData(inputCsvData, ["unknown column"])).toThrow(
+      "Required column missing: unknown column"
+    );
+  });
 });
 
 describe("createJsonData", () => {
@@ -184,8 +189,8 @@ const testAllData = {
       },
     },
     S92000003: {
-      weeklyCases: 13311,
-      weeklyDeaths: 343,
+      weeklyCases: 10368,
+      weeklyDeaths: 290,
       name: "Scotland",
       dailyCases: { date: TOTALS_DATE, value: 1636 },
       dailyDeaths: { date: TOTALS_DATE, value: 89 },
@@ -231,6 +236,514 @@ const testAllData = {
   currentWeekStartDate: Date.parse("2021-01-13"),
 };
 
+describe("createJsonData handle bad data", () => {
+  it("all data", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  it("daily CA columns out of order", () => {
+    expect(
+      createJsonData(
+        `CAName,Date,CA,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+          Na h-Eileanan Siar,20210117,S12000013,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+          Na h-Eileanan Siar,20210118,S12000013,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+          Na h-Eileanan Siar,20210119,S12000013,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+          Glasgow City,20210117,S12000049,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+          Glasgow City,20210118,S12000049,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+          Glasgow City,20210119,S12000049,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  it("daily HB columns out of order", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `DailyPositive,CumulativePositive,Date,HB,HBName,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        141,22680,20210117,S08000024,NHS Lothian,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        4,52,20210117,S08000025,NHS Orkney,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        1195,164592,20210117,S92000003,Scotland,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        174,22854,20210118,S08000024,NHS Lothian,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+        1,53,20210118,S08000025,NHS Orkney,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        1713,166305,20210118,S92000003,Scotland,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        166,23020,20210119,S08000024,NHS Lothian,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        0,53,20210119,S08000025,NHS Orkney,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        1406,167711,20210119,S92000003,Scotland,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  it("total CA columns out of order", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        `Date,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative,CA,CAName
+       20210121,4,167,0,0,1,0,0,0,S12000013,Na h-Eileanan Siar
+       20210121,282,31484,0,8,856,0,0,0,S12000049,Glasgow City`,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  it("total HB columns out of order", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `HB,Date,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+        S08000024,20210121,,NHS Lothian,182,23061,0,10,863,0,0,0
+        S08000025,20210121,,NHS Orkney,0,53,0,0,2,0,0,0
+        S92000003,20210121,d,Scotland,1636,168219,0,89,5557,0,0,0`
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  // Failure cases
+
+  it("daily CA region missing", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+            20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+            20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+            20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB region missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total CA region missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+         20210121,S12000013,Na h-Eileanan Siar,4,167,0,0,1,0,0,0`,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+  it("total HB region missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+          20210121,S08000024,,NHS Lothian,182,23061,0,10,863,0,0,0
+          20210121,S92000003,d,Scotland,1636,168219,0,89,5557,0,0,0`
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB scotland missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+            20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+            20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+            20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+            20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+            20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+            20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total HB scotland missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+          20210121,S08000024,,NHS Lothian,182,23061,0,10,863,0,0,0
+          20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0`
+      )
+    ).toBeNull();
+  });
+
+  it("daily CA missing column", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+          20210117,S12000013,Na h-Eileanan Siar,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+          20210118,S12000013,Na h-Eileanan Siar,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+          20210119,S12000013,Na h-Eileanan Siar,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+          20210117,S12000049,Glasgow City,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+          20210118,S12000049,Glasgow City,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+          20210119,S12000049,Glasgow City,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB missing column", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000024,NHS Lothian,141,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        20210117,S08000025,NHS Orkney,4,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000024,NHS Lothian,174,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+        20210118,S08000025,NHS Orkney,1,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,S92000003,Scotland,1713,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000024,NHS Lothian,166,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total CA missing column", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        `CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+       S12000013,Na h-Eileanan Siar,4,167,0,0,1,0,0,0
+       S12000049,Glasgow City,282,31484,0,8,856,0,0,0`,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total HB missing column", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `Date,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+        20210121,,NHS Lothian,182,23061,0,10,863,0,0,0
+        20210121,,NHS Orkney,0,53,0,0,2,0,0,0
+        20210121,d,Scotland,1636,168219,0,89,5557,0,0,0`
+      )
+    ).toBeNull();
+  });
+
+  it("daily CA missing date", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+          20210117,S12000013,Na h-Eileanan Siar,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+                  ,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+          20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+          20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+          20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+          20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB missing date", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+                ,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total CA missing date", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+       20210121,S12000013,Na h-Eileanan Siar,4,167,0,0,1,0,0,0
+               ,S12000049,Glasgow City,282,31484,0,8,856,0,0,0`,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total HB missing date", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+        20210121,S08000024,,NHS Lothian,182,23061,0,10,863,0,0,0
+                ,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
+        20210121,S92000003,d,Scotland,1636,168219,0,89,5557,0,0,0`
+      )
+    ).toBeNull();
+  });
+
+  it("daily CA missing region code cell", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+          20210117,S12000013,Na h-Eileanan Siar,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+          20210118,         ,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+          20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+          20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+          20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+          20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB missing region code cell", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+        20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,         ,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily CA missing value cell", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+          20210117,S12000013,Na h-Eileanan Siar, ,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+          20210118,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+          20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+          20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+          20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+          20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("daily HB missing  value cell", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000024,NHS Lothian,141,     ,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+        20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total CA missing value cell", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+       20210121,S12000013,Na h-Eileanan Siar, ,167,0,0,1,0,0,0
+       20210121,S12000049,Glasgow City,282,31484,0,8,856,0,0,0`,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toBeNull();
+  });
+
+  it("total HB missing value cell", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+        20210121,S08000024,,NHS Lothian,182,23061,0,10,863,0,0,0
+        20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
+        20210121,S92000003,d,Scotland,1636,    ,0,89,5557,0,0,0`
+      )
+    ).toBeNull();
+  });
+});
+
+// prettier-ignore
+const shortAllData = {
+  regions: {
+    S12000013: {
+      weeklyCases: 11,
+      weeklyDeaths: 0,
+      name: "Na h-Eileanan Siar",
+      dailyCases: { date: TOTALS_DATE, value: 4 },
+      dailyDeaths: { date: TOTALS_DATE, value: 0 },
+      cumulativeCases: { date: TOTALS_DATE, value: 167 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 1 },
+      fatalityCaseRatio: "0.6%",
+      population: 26720.215057246038,
+      populationProportion: 0.004890848815896522,
+      weeklySeries: { cases: [11], deaths: [0] },
+      dailySeries: {
+        percentPositiveTests: [5.26, 1.72, 3.21],
+        dailyCases: [ 4, 2, 5],
+        dailyDeaths: [0, 0, 0],
+        totalCases: [158, 160, 165],
+        totalDeaths: [ 1, 1, 1],
+      },
+    },
+    S12000049: {
+      weeklyCases: 708,
+      weeklyDeaths: 6,
+      name: "Glasgow City",
+      dailyCases: { date: TOTALS_DATE, value: 282 },
+      dailyDeaths: { date: TOTALS_DATE, value: 8 },
+      cumulativeCases: { date: TOTALS_DATE, value: 31484 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 856 },
+      fatalityCaseRatio: "2.7%",
+      population: 633120.2892235187,
+      populationProportion: 0.1158858792953164,
+      weeklySeries: { cases: [708], deaths: [6] },
+      dailySeries: {
+        percentPositiveTests: [ 15.72, 10.76, 11.37],
+        dailyCases: [ 195, 271, 242],
+        dailyDeaths: [ 2, 4, 0],
+        totalCases: [ 30869, 31140, 31382],
+        totalDeaths: [ 852, 856, 856],
+      },
+    },
+    S08000024: {
+      weeklyCases: 481,
+      weeklyDeaths: 6,
+      name: "Lothian",
+      dailyCases: { date: TOTALS_DATE, value: 182 },
+      dailyDeaths: { date: TOTALS_DATE, value: 10 },
+      cumulativeCases: { date: TOTALS_DATE, value: 23061 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 863 },
+      fatalityCaseRatio: "3.7%",
+      population: 907578.3978994014,
+      populationProportion: 0.16612249277147267,
+      weeklySeries: { cases: [481], deaths: [6] },
+      dailySeries: {
+        percentPositiveTests: [ 9.47, 5.07, 5.91],
+        dailyCases: [ 141, 174, 166],
+        dailyDeaths: [ 4, 2, 0],
+        totalCases: [ 22680, 22854, 23020],
+        totalDeaths: [ 861, 863, 863],
+      },
+    },
+    S08000025: {
+      weeklyCases: 5,
+      weeklyDeaths: 0,
+      name: "Orkney",
+      dailyCases: { date: TOTALS_DATE, value: 0 },
+      dailyDeaths: { date: TOTALS_DATE, value: 0 },
+      cumulativeCases: { date: TOTALS_DATE, value: 53 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 2 },
+      fatalityCaseRatio: "3.8%",
+      population: 22269.843270725658,
+      populationProportion: 0.004076255986618379,
+      weeklySeries: { cases: [5], deaths: [0] },
+      dailySeries: {
+        percentPositiveTests: [ 12.12, 0.81, 0],
+        dailyCases: [ 4, 1, 0],
+        dailyDeaths: [ 0, 0, 0],
+        totalCases: [ 52, 53, 53],
+        totalDeaths: [ 2, 2, 2],
+      },
+    },
+    S92000003: {
+      weeklyCases: 4314,
+      weeklyDeaths: 83,
+      name: "Scotland",
+      dailyCases: { date: TOTALS_DATE, value: 1636 },
+      dailyDeaths: { date: TOTALS_DATE, value: 89 },
+      cumulativeCases: { date: TOTALS_DATE, value: 168219 },
+      cumulativeDeaths: { date: TOTALS_DATE, value: 5557 },
+      fatalityCaseRatio: "3.3%",
+      population: 5463308.326030941,
+      populationProportion: 1,
+      weeklySeries: { cases: [4314], deaths: [83] },
+      dailySeries: {
+        percentPositiveTests: [  12.88, 7.67, 6.84 ],
+        dailyCases: [ 1195, 1713, 1406 ],
+        dailyDeaths: [ 28, 37, 18 ],
+        totalCases: [  164592, 166305, 167711 ],
+        totalDeaths: [ 5500, 5537, 5555 ],
+      },
+    },
+  },
+  dates: [
+    Date.parse("2021-01-17"),
+    Date.parse("2021-01-18"),
+    Date.parse("2021-01-19"),
+  ],
+  weekStartDates: [Date.parse("2021-01-17")],
+  startDate: Date.parse("2021-01-17"),
+  endDate: Date.parse("2021-01-19"),
+  currentWeekStartDate: Date.parse("2021-01-17"),
+};
+
 const currentTotalsCouncilAreasCsvData = `
 
 Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
@@ -245,6 +758,7 @@ Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeat
 20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
 20210121,S92000003,d,Scotland,1636,168219,0,89,5557,0,0,0
 `;
+
 // Date range 04-01 - 19-01
 const dailyCouncilAreasCsvData = `
 Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
@@ -338,4 +852,29 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
 20210120,S08000024,NHS Lothian,41,23061,2540.93,0,0,863,0,0,0,0,0,0,9.34,0,0,0,0,0,0,0
 20210120,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
 20210120,S92000003,Scotland,504,168215,3079.00,0,2,5557,0,0,0,0,0,0,13.10,0,0,0,0,0,0,0
+`;
+
+// Date range 17-01 - 19-01
+const shortDailyCouncilAreasCsvData = `
+Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+20210117,S12000013,Na h-Eileanan Siar,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+20210118,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0
+`;
+
+// Date range 17-01 - 19-01
+const shortDailyHealthBoardsCsvData = `
+Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0
 `;
