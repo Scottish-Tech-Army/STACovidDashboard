@@ -568,7 +568,7 @@ describe("createJsonData handle bad data", () => {
     expect(
       createJsonData(
         `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
-          20210117,S12000013,Na h-Eileanan Siar, ,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
+          20210117,S12000013,Na h-Eileanan Siar,something,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
           20210118,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
           20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
           20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0

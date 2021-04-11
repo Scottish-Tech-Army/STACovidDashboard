@@ -52,7 +52,7 @@ function getFeatureCodeValue(featureCode) {
 
 function getValue(value) {
   const result = Number(value);
-  if (result == NaN || value == "") {
+  if (Number.isNaN(result) || value == "") {
     throw new Error(`Invalid cell value: '${value}'`);
   }
   return result;
