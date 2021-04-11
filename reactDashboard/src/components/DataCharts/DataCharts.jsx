@@ -11,11 +11,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { stopAudio } from "../Utils/Sonification";
-import {
-  createChart,
-  getDataSeries,
-  getSonificationSeriesTitle,
-} from "./DataChartsModel";
+import { createChart } from "./DataChartsModel";
 import { DAILY_CASES } from "./DataChartsConsts";
 
 export default function DataCharts({
@@ -25,8 +21,6 @@ export default function DataCharts({
 }) {
   const chartContainer = useRef();
   const chartInstance = useRef(null);
-  const [audio, setAudio] = useState(null);
-  const [seriesTitle, setSeriesTitle] = useState("No data");
   const [chartType, setChartType] = useState(DAILY_CASES);
   const [dateRange, setDateRange] = useState({
     startDate: 0,
@@ -58,18 +52,10 @@ export default function DataCharts({
         darkmode,
         dateRange
       );
-
-      // set sonification
-      setAudio(getDataSeries(allData, chartType, regionCode));
-      setSeriesTitle(getSonificationSeriesTitle(chartType));
     }
   }, [chartType, regionCode, dateRange, darkmode, allData]);
 
   const isDataReady = allData !== null;
-
-  function getScreenModeClassName() {
-    return isDataReady ? "chart-container" : "chart-container hidden-chart";
-  }
 
   const maxDateRange = allData
     ? { startDate: allData.startDate, endDate: allData.endDate }
@@ -88,8 +74,8 @@ export default function DataCharts({
           maxDateRange={maxDateRange}
         />
         <SonificationPlayButton
-          seriesData={audio}
-          seriesTitle={seriesTitle}
+          allData={allData}
+          chartType={chartType}
           regionCode={regionCode}
           dateRange={dateRange}
           darkmode={darkmode}
@@ -102,7 +88,9 @@ export default function DataCharts({
           setDateRange={setDateRange}
           maxDateRange={maxDateRange}
         />
-        <div className={getScreenModeClassName()}>
+        <div
+          className={"chart-container" + (isDataReady ? "" : " hidden-chart")}
+        >
           <canvas ref={chartContainer} />
         </div>
         {isDataReady ? <></> : <LoadingComponent />}

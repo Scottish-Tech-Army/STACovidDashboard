@@ -28,8 +28,8 @@ import {
 } from "../DataCharts/DataChartsConsts";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import Annotation from "chartjs-plugin-annotation";
-import moment from "moment";
 import "chartjs-adapter-date-fns";
+import { sub, getTime } from "date-fns";
 
 Chart.register(
   LineElement,
@@ -73,7 +73,13 @@ function getDateLine({ date, name }, darkmode, index) {
       xPadding: 10,
       yPadding: 3,
       position: "start",
-      enabled: true,
+      enabled: (context, options) => {
+        console.log(context);
+        return (
+          context.chart.scales.x.min <= date &&
+          context.chart.scales.x.max >= date
+        );
+      },
       yAdjust: index * 20,
       content: name,
     },
@@ -134,14 +140,22 @@ export function datasetConfiguration(
 }
 
 function getSeriesYMax(dataset) {
-  return Math.max(...dataset.data, 0);
+  return Math.max(...dataset, 0);
 }
 
-export function getChartYMax(datasets) {
+export function getChartYMax(datasets, dates, dateRange) {
   if (datasets === null || datasets === undefined || datasets.length === 0) {
     return 0;
   }
-  return Math.max(...datasets.map((dataset) => getSeriesYMax(dataset)));
+  const dataDateRanges = datasets.map((dataset) =>
+    !dateRange
+      ? dataset.data
+      : dataset.data.filter(
+          (_, i) =>
+            dates[i] >= dateRange.startDate && dates[i] <= dateRange.endDate
+        )
+  );
+  return Math.max(...dataDateRanges.map((dataset) => getSeriesYMax(dataset)));
 }
 
 export const getMaxTicks = (yMax) => {
@@ -151,7 +165,7 @@ export const getMaxTicks = (yMax) => {
   if (yMax >= 20) {
     return 20;
   }
-  return yMax;
+  return yMax + 1;
 };
 
 export function commonChartConfiguration(
@@ -161,7 +175,7 @@ export function commonChartConfiguration(
   darkmode,
   dateRange = null
 ) {
-  const maxTicks = getMaxTicks(getChartYMax(datasets));
+  const maxTicks = getMaxTicks(getChartYMax(datasets, dates, dateRange));
 
   let result = {
     type: "line",
@@ -248,16 +262,16 @@ export function calculateDateRange(maxDateRange, timePeriod) {
     case ALL_DATES:
       return maxDateRange;
     case LAST_WEEK:
-      startDate = moment(endDate).subtract(1, "weeks").valueOf();
+      startDate = getTime(sub(endDate, { weeks: 1 }));
       break;
     case LAST_TWO_WEEKS:
-      startDate = moment(endDate).subtract(2, "weeks").valueOf();
+      startDate = getTime(sub(endDate, { weeks: 2 }));
       break;
     case LAST_MONTH:
-      startDate = moment(endDate).subtract(1, "months").valueOf();
+      startDate = getTime(sub(endDate, { months: 1 }));
       break;
     case LAST_THREE_MONTHS:
-      startDate = moment(endDate).subtract(3, "months").valueOf();
+      startDate = getTime(sub(endDate, { months: 3 }));
       break;
     default:
       throw new Error("timePeriod invalid: " + timePeriod);
@@ -341,10 +355,20 @@ const datasetInfo = {
   },
 };
 
-export function getDataSeries(allData, chartType, regionCode) {
-  return (
-    allData &&
-    allData.regions[regionCode].dailySeries[datasetInfo[chartType].seriesName]
+export function getDataSeriesRange(allData, chartType, regionCode, dateRange) {
+  if (!allData || !chartType || !regionCode) {
+    return null;
+  }
+
+  const seriesData =
+    allData.regions[regionCode].dailySeries[datasetInfo[chartType].seriesName];
+  if (dateRange === null) {
+    return seriesData;
+  }
+
+  const dates = allData.dates;
+  return seriesData.filter(
+    (_, i) => dates[i] >= dateRange.startDate && dates[i] <= dateRange.endDate
   );
 }
 

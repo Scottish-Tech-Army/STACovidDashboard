@@ -163,7 +163,7 @@ describe("commonChartConfiguration", () => {
       Date.parse("2020-01-04"),
       smallMockData
     );
-    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(1);
+    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(2);
   });
 
   it("receive maxTicks more than 20", () => {
@@ -280,8 +280,8 @@ describe("getMaxTicks", () => {
     expect(getMaxTicks(null)).toStrictEqual(1);
     expect(getMaxTicks()).toStrictEqual(1);
     expect(getMaxTicks(0)).toStrictEqual(1);
-    expect(getMaxTicks(1)).toStrictEqual(1);
-    expect(getMaxTicks(5)).toStrictEqual(5);
+    expect(getMaxTicks(1)).toStrictEqual(2);
+    expect(getMaxTicks(5)).toStrictEqual(6);
     expect(getMaxTicks(20)).toStrictEqual(20);
     expect(getMaxTicks(1000000)).toStrictEqual(20);
   });

@@ -2,7 +2,7 @@ import React from "react";
 import DataCharts from "./DataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { createChart } from "./DataChartsModel";
+import { createChart, getSonificationSeriesTitle } from "./DataChartsModel";
 
 jest.mock("./DataChartsModel");
 
@@ -13,6 +13,7 @@ beforeEach(() => {
   document.body.appendChild(container);
   fetch.resetMocks();
   createChart.mockReturnValue(null);
+  getSonificationSeriesTitle.mockImplementation((chartType) => chartType);
 });
 
 afterEach(() => {
@@ -54,6 +55,8 @@ const testAllData = {
     Date.parse("2020-03-08"),
     Date.parse("2020-03-09"),
   ],
+  startDate: Date.parse("2020-03-02"),
+  endDate: Date.parse("2020-03-09"),
   regions: {
     S08000031: {
       dailySeries: {

@@ -6,8 +6,8 @@ import "../../common.css";
 import {
   FEATURE_CODE_SCOTLAND,
   getPlaceNameByFeatureCode,
-  getPhoneticPlaceNameByFeatureCode,
 } from "../Utils/CsvUtils";
+import { DAILY_CASES } from "../DataCharts/DataChartsConsts";
 import {
   playAudio,
   isAudioPlaying,
@@ -17,11 +17,12 @@ import {
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Tooltip as ReactBootstrapTooltip } from "react-bootstrap";
 import "../ToolTips/ToolTip.css";
+import { getSonificationSeriesTitle } from "./DataChartsModel";
 
 const SonificationPlayButton = ({
-  seriesData = null,
-  seriesTitle = "No data",
-  regionCode = null,
+  allData = null,
+  chartType = DAILY_CASES,
+  regionCode = FEATURE_CODE_SCOTLAND,
   dateRange = null,
   darkmode,
 }) => {
@@ -36,28 +37,13 @@ const SonificationPlayButton = ({
     };
   }, []);
 
-  function getFeatureCode() {
-    return regionCode === null ? FEATURE_CODE_SCOTLAND : regionCode;
-  }
-
-  function handleAudio() {
-    if (seriesData !== null && seriesData.length > 0) {
-      playAudio(
-        seriesTitle,
-        seriesData,
-        dateRange,
-        getPhoneticPlaceNameByFeatureCode(getFeatureCode())
-      );
-    }
-  }
-
   function createTitle() {
     return audioPlaying
       ? "Stop listening"
       : "Listen to audio representation of " +
-          seriesTitle.toLowerCase() +
+          getSonificationSeriesTitle(chartType).toLowerCase() +
           " for " +
-          getPlaceNameByFeatureCode(getFeatureCode());
+          getPlaceNameByFeatureCode(regionCode);
   }
 
   return (
@@ -71,7 +57,7 @@ const SonificationPlayButton = ({
       <button
         type="button"
         className="sonification-play-button"
-        onClick={handleAudio}
+        onClick={() => playAudio(allData, chartType, regionCode, dateRange)}
         aria-label={createTitle()}
       >
         <FontAwesomeIcon
