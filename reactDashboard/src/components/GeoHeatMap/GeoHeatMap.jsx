@@ -300,6 +300,7 @@ export default function GeoHeatMap({
         dragging={!L.Browser.mobile}
         tap={!L.Browser.mobile}
         zoomControl={false}
+        scrollWheelZoom={false}
       >
         <TileLayer
           url={darkmode ? DARK_MAP_TILES_URL : MAP_TILES_URL}
