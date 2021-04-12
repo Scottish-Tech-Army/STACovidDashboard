@@ -674,7 +674,7 @@ describe("storeJsonProcessedData", () => {
       Body: Buffer.from('{"test":"data"}'),
       Bucket: BUCKET_NAME,
       ContentLength: 15,
-      ContentType: "text/plain",
+      ContentType: "application/json",
       Key: "data/phsData.json",
     });
   });

@@ -233,7 +233,7 @@ export function storeJsonProcessedData(jsonData) {
       Bucket: BUCKET_NAME,
       Key: JSON_KEY_NAME,
       Body: textBuffer,
-      ContentType: "text/plain",
+      ContentType: "application/json",
       ContentLength: textBuffer.length,
     })
     .promise()
