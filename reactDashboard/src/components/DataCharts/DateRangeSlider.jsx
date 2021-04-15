@@ -25,6 +25,8 @@ export function getMarks({ startDate, endDate }) {
   ];
 }
 
+const ONE_DAY_IN_MS = 24 * 3600 * 1000;
+
 const DateSlider = withStyles({
   root: {
     color: "#c1def1",
@@ -88,7 +90,9 @@ export default function DateRangeSlider({
   const classes = useStyles();
 
   function handleDateChange(event, value) {
-    setDateRange({ startDate: value[0], endDate: value[1] });
+    if (value[0] != value[1]) {
+      setDateRange({ startDate: value[0], endDate: value[1] });
+    }
   }
 
   function sliderThumbComponent(props) {
@@ -105,6 +109,7 @@ export default function DateRangeSlider({
     <div className={classes.root}>
       <DateSlider
         id="date-range-slider-position"
+        step={ONE_DAY_IN_MS}
         ThumbComponent={sliderThumbComponent}
         get-aria-label="date range slider"
         value={[dateRange.startDate, dateRange.endDate]}

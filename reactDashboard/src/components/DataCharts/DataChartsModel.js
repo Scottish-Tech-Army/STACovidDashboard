@@ -74,7 +74,6 @@ function getDateLine({ date, name }, darkmode, index) {
       yPadding: 3,
       position: "start",
       enabled: (context, options) => {
-        console.log(context);
         return (
           context.chart.scales.x.min <= date &&
           context.chart.scales.x.max >= date
@@ -129,7 +128,7 @@ export function datasetConfiguration(
   return {
     label: datasetLabel,
     data: seriesData,
-    backgroundColor: fillColour !== null ? fillColour : undefined,
+    backgroundColor: fillColour !== null ? fillColour : colour,
     borderColor: colour,
     fill: fillColour !== null,
     pointRadius: 0,
@@ -288,10 +287,15 @@ function getAverageSeriesData(
   allData,
   chartType,
   seriesDataName,
-  populationProportion
+  populationProportion,
+  dataDateRange
 ) {
-  const scotlandData =
-    allData.regions[FEATURE_CODE_SCOTLAND].dailySeries[seriesDataName];
+  const scotlandData = getDataSeriesRange(
+    allData,
+    chartType,
+    FEATURE_CODE_SCOTLAND,
+    dataDateRange
+  );
   if (chartType === PERCENTAGE_TESTS) {
     return scotlandData;
   }
@@ -307,13 +311,20 @@ function getAverageSeriesLabel(chartType) {
     : "Scotland average (adjusted for population)";
 }
 
-function getChartDatasets(allData, chartType, regionCode, darkmode) {
+function getChartDatasets(allData, chartType, regionCode, darkmode, dateRange) {
   let datasetLabel = datasetInfo[chartType].label;
   let seriesDataName = datasetInfo[chartType].seriesName;
-
+  const dataDateRange = {
+    startDate: dateRange.startDate - 2 * ONE_DAY_IN_MS,
+    endDate: dateRange.endDate + 2 * ONE_DAY_IN_MS
+  };
   const datasets = [];
-  const regionSeriesData =
-    allData.regions[regionCode].dailySeries[seriesDataName];
+  const regionSeriesData = getDataSeriesRange(
+    allData,
+    chartType,
+    regionCode,
+    dataDateRange
+  );
   if (regionSeriesData !== undefined) {
     datasets.push(
       datasetConfiguration(
@@ -327,7 +338,8 @@ function getChartDatasets(allData, chartType, regionCode, darkmode) {
         allData,
         chartType,
         seriesDataName,
-        allData.regions[regionCode].populationProportion
+        allData.regions[regionCode].populationProportion,
+        dataDateRange
       );
       if (averageSeriesData) {
         datasets.push(
@@ -372,6 +384,20 @@ export function getDataSeriesRange(allData, chartType, regionCode, dateRange) {
   );
 }
 
+export function getDataDateRange(allData, dateRange) {
+  if (!allData) {
+    return null;
+  }
+
+  if (dateRange === null) {
+    return allData.dates;
+  }
+
+  return allData.dates.filter(
+    (date, i) => date >= dateRange.startDate && date <= dateRange.endDate
+  );
+}
+
 export function getSonificationSeriesTitle(chartType) {
   return chartType === PERCENTAGE_TESTS
     ? "Percentage tests positive"
@@ -386,9 +412,19 @@ export function createChart(
   darkmode,
   dateRange
 ) {
-  const datasets = getChartDatasets(allData, chartType, regionCode, darkmode);
+  const datasets = getChartDatasets(
+    allData,
+    chartType,
+    regionCode,
+    darkmode,
+    dateRange
+  );
+  const dataDateRange = {
+    startDate: dateRange.startDate - 2 * ONE_DAY_IN_MS,
+    endDate: dateRange.endDate + 2 * ONE_DAY_IN_MS
+  };
   const chartConfiguration = commonChartConfiguration(
-    allData.dates,
+    getDataDateRange(allData,dataDateRange ),
     allData.endDate,
     datasets,
     darkmode,
