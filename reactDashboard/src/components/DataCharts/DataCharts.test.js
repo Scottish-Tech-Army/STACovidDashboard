@@ -2,7 +2,14 @@ import React from "react";
 import DataCharts from "./DataCharts";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { createChart, getSonificationSeriesTitle } from "./DataChartsModel";
+import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
+import { DAILY_CASES, TOTAL_CASES } from "./DataChartsConsts";
+import {
+  createChart,
+  getDataSeries,
+  getSonificationSeriesTitle,
+} from "./DataChartsModel";
+import { create } from "react-test-renderer";
 
 jest.mock("./DataChartsModel");
 
@@ -12,6 +19,7 @@ beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
   fetch.resetMocks();
+  createChart.mockClear();
   createChart.mockReturnValue(null);
   getSonificationSeriesTitle.mockImplementation((chartType) => chartType);
 });
@@ -30,8 +38,8 @@ test("dataCharts renders default data input dataset is null", async () => {
     render(<DataCharts />, container);
   });
 
-  const canvas = container.querySelector(".chart-container canvas");
-  expect(canvas).not.toBeNull();
+  expect(container.querySelector(".hidden-chart")).not.toBeNull();
+  expect(container.querySelector(".loading-component")).not.toBeNull();
 });
 
 test("dataCharts renders dynamic fetched data", async () => {
@@ -41,7 +49,92 @@ test("dataCharts renders dynamic fetched data", async () => {
 
   const canvas = container.querySelector(".chart-container canvas");
   expect(canvas).not.toBeNull();
+  expect(container.querySelector(".hidden-chart")).toBeNull();
+  expect(container.querySelector(".loading-component")).toBeNull();
   // TODO need to figure out how to test chart.js content
+  expect(createChart).toHaveBeenCalledTimes(2);
+  expect(createChart).toHaveBeenNthCalledWith(
+    2,
+    canvas,
+    testAllData,
+    DAILY_CASES,
+    FEATURE_CODE_SCOTLAND,
+    undefined,
+    { startDate: Date.parse("2020-03-02"), endDate: Date.parse("2020-03-09") }
+  );
+});
+
+test("dataCharts renders changes of selected region", async () => {
+  await act(async () => {
+    render(
+      <DataCharts allData={testAllData} regionCode={"S12000033"} />,
+      container
+    );
+  });
+
+  const canvas = container.querySelector(".chart-container canvas");
+
+  expect(createChart).toHaveBeenCalledTimes(2);
+  expect(createChart).toHaveBeenNthCalledWith(
+    2,
+    canvas,
+    testAllData,
+    DAILY_CASES,
+    "S12000033",
+    undefined,
+    { startDate: Date.parse("2020-03-02"), endDate: Date.parse("2020-03-09") }
+  );
+});
+
+test("dataCharts renders with dark mode value selected", async () => {
+  await act(async () => {
+    render(<DataCharts allData={testAllData} darkmode={true} />, container);
+  });
+
+  const canvas = container.querySelector(".chart-container canvas");
+
+  expect(createChart).toHaveBeenCalledTimes(2);
+  expect(createChart).toHaveBeenNthCalledWith(
+    2,
+    canvas,
+    testAllData,
+    DAILY_CASES,
+    FEATURE_CODE_SCOTLAND,
+    true,
+    { startDate: Date.parse("2020-03-02"), endDate: Date.parse("2020-03-09") }
+  );
+});
+
+test("dataCharts renders with TOTAL_CASES selected", async () => {
+  const dropdownMenuItems = () => container.querySelectorAll(".chart-menu a");
+  const dropdownMenuItem = (text) =>
+    Array.from(dropdownMenuItems()).find((el) => el.textContent === text);
+  const selectedItem = () => container.querySelector(".selected-chart");
+
+  await act(async () => {
+    render(<DataCharts allData={testAllData} />, container);
+  });
+
+  async function click(button) {
+    await act(async () => {
+      button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      render(<DataCharts allData={testAllData} />, container);
+    });
+  }
+  await click(selectedItem());
+  await click(dropdownMenuItem("Total Cases"));
+  expect(selectedItem().textContent).toBe("Total Cases");
+
+  const canvas = container.querySelector(".chart-container canvas");
+
+  expect(createChart).toHaveBeenLastCalledWith(
+    canvas,
+    testAllData,
+    TOTAL_CASES,
+    FEATURE_CODE_SCOTLAND,
+    undefined,
+    { startDate: Date.parse("2020-03-02"), endDate: Date.parse("2020-03-09") }
+  );
 });
 
 const testAllData = {

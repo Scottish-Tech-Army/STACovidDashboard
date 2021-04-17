@@ -90,7 +90,7 @@ export default function DateRangeSlider({
   const classes = useStyles();
 
   function handleDateChange(event, value) {
-    if (value[0] != value[1]) {
+    if (value[0] !== value[1]) {
       setDateRange({ startDate: value[0], endDate: value[1] });
     }
   }

@@ -45,6 +45,16 @@ jest.mock("aws-sdk", () => {
 
 const BUCKET_NAME = "dashboard.aws.scottishtecharmy.org";
 
+beforeAll(() => {
+  console.log = jest.fn();
+  console.warn = jest.fn();
+  console.error = jest.fn();
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -674,7 +684,7 @@ describe("storeJsonProcessedData", () => {
       Body: Buffer.from('{"test":"data"}'),
       Bucket: BUCKET_NAME,
       ContentLength: 15,
-      ContentType: "text/json",
+      ContentType: "application/json",
       Key: "data/phsData.json",
     });
   });
