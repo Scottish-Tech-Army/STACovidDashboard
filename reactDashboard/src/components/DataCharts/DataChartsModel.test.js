@@ -32,14 +32,7 @@ afterEach(() => {
 const TEST_MAX_DATA_1 = [363, 101, 257, 771, 799, 297, 118];
 const TEST_MAX_DATA_2 = [4056, 256, 235, 367, 2478, 163, 842];
 
-const MAX_DATE_RANGE = {
-  startDate: Date.parse("2020-01-01"),
-  endDate: Date.parse("2020-01-07"),
-};
-const SMALL_MAX_DATE_RANGE = {
-  startDate: Date.parse("2020-01-01"),
-  endDate: Date.parse("2020-01-04"),
-};
+const END_DATE = Date.parse("2020-01-07");
 
 describe("commonChartConfiguration", () => {
   const mockData = [
@@ -59,70 +52,62 @@ describe("commonChartConfiguration", () => {
   it("with date range", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false,
-      {
-        startDate: 0,
-        endDate: 1,
-      }
+      { startDate: 0, endDate: 1 }
     );
-    const expectedResult = { max: 1, min: 0, fontColor: "#767676" };
-    expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
+    expect(result.options.scales.x.min).toStrictEqual(0);
+    expect(result.options.scales.x.max).toStrictEqual(1);
   });
 
   it("without date range", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false
     );
-    const expectedResult = { fontColor: "#767676" };
-    expect(result.options.scales.xAxes[0].ticks).toStrictEqual(expectedResult);
+    expect(result.options.scales.x.min).toBeUndefined();
+    expect(result.options.scales.x.max).toBeUndefined();
   });
 
   it("annotations with dataset", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false
     );
-    expect(result.options.annotation).not.toBeUndefined();
+    expect(result.options.plugins.annotation).toBeDefined();
   });
 
   it("annotations without dataset", () => {
-    const result = commonChartConfiguration(
-      testDates,
-      MAX_DATE_RANGE,
-      [],
-      false
-    );
-    expect(result.options.annotation).toBeUndefined();
+    const result = commonChartConfiguration(testDates, END_DATE, [], false);
+    expect(result.options.plugins.annotation).toBeUndefined();
   });
 
   it("key date annotations", () => {
     const result = commonChartConfiguration(
       mockData,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false
     );
-    const annotations = result.options.annotation.annotations;
-    expect(annotations[0].value).toStrictEqual(Date.parse("2020-03-24"));
-    expect(annotations[0].label.yAdjust).toStrictEqual(0);
-    expect(annotations[0].label.content).toStrictEqual("LOCKDOWN");
+    const annotations = result.options.plugins.annotation.annotations;
+    expect(annotations.line0.value).toStrictEqual(Date.parse("2020-03-24"));
+    expect(annotations.line0.label.yAdjust).toStrictEqual(0);
+    expect(annotations.line0.label.content).toStrictEqual("LOCKDOWN");
 
-    expect(annotations[1].value).toStrictEqual(Date.parse("2020-05-29"));
-    expect(annotations[1].label.yAdjust).toStrictEqual(20);
-    expect(annotations[1].label.content).toStrictEqual("PHASE 1");
+    expect(annotations.line1.value).toStrictEqual(Date.parse("2020-05-29"));
+    expect(annotations.line1.label.yAdjust).toStrictEqual(20);
+    expect(annotations.line1.label.content).toStrictEqual("PHASE 1");
   });
 
   it("uncertain date annotations", () => {
     const result = commonChartConfiguration(
       mockData,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false,
       {
@@ -130,82 +115,64 @@ describe("commonChartConfiguration", () => {
         endDate: Date.parse("2020-01-07"),
       }
     );
-    const annotations = result.options.annotation.annotations;
-
-    // Assuming the box annotation is the last annotation in the array
-    const annotation = annotations[annotations.length - 1];
-
-    expect(annotation.xMin).toStrictEqual(Date.parse("2020-01-04"));
-    expect(annotation.xMax).toStrictEqual(Date.parse("2020-01-07"));
+    const annotations = result.options.plugins.annotation.annotations;
+    expect(annotations.endBox3.xMin).toStrictEqual(Date.parse("2020-01-04"));
+    expect(annotations.endBox3.xMax).toStrictEqual(Date.parse("2020-01-07"));
   });
 
   it("darkmode true", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       true
     );
-    expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
-      "#121212"
-    );
-    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual(
-      "#f2f2f2"
-    );
-    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual(
-      "#f2f2f2"
-    );
-    expect(result.options.legend.labels.fontColor).toStrictEqual("#f2f2f2");
-    expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "#f2f2f2"
-    );
+    expect(result.options.scales.y.grid.color).toStrictEqual("#121212");
+    expect(result.options.scales.x.ticks.color).toStrictEqual("#f2f2f2");
+    expect(result.options.scales.y.ticks.color).toStrictEqual("#f2f2f2");
+    expect(result.options.plugins.legend.labels.color).toStrictEqual("#f2f2f2");
     expect(
-      result.options.annotation.annotations[0].label.backgroundColor
+      result.options.plugins.annotation.annotations.line1.borderColor
+    ).toStrictEqual("#f2f2f2");
+    expect(
+      result.options.plugins.annotation.annotations.line1.label.backgroundColor
     ).toStrictEqual("#c1def1");
   });
   it("darkmode false", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData,
       false
     );
-    expect(result.options.scales.yAxes[0].gridLines.color).toStrictEqual(
-      "#cccccc"
-    );
-    expect(result.options.scales.xAxes[0].ticks.fontColor).toStrictEqual(
-      "#767676"
-    );
-    expect(result.options.scales.yAxes[0].ticks.fontColor).toStrictEqual(
-      "#767676"
-    );
-    expect(result.options.legend.labels.fontColor).toStrictEqual("#767676");
-    expect(result.options.annotation.annotations[0].borderColor).toStrictEqual(
-      "rgba(0,0,0,0.25)"
-    );
+    expect(result.options.scales.y.grid.color).toStrictEqual("#cccccc");
+    expect(result.options.scales.x.ticks.color).toStrictEqual("#767676");
+    expect(result.options.scales.y.ticks.color).toStrictEqual("#767676");
+    expect(result.options.plugins.legend.labels.color).toStrictEqual("#767676");
     expect(
-      result.options.annotation.annotations[0].label.backgroundColor
+      result.options.plugins.annotation.annotations.line1.borderColor
+    ).toStrictEqual("rgba(0,0,0,0.25)");
+    expect(
+      result.options.plugins.annotation.annotations.line1.label.backgroundColor
     ).toStrictEqual("#007EB9");
   });
 
   it("receive maxTicks less than 20", () => {
     const result = commonChartConfiguration(
       testDates,
-      SMALL_MAX_DATE_RANGE,
+      Date.parse("2020-01-04"),
       smallMockData
     );
-    expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(1);
+    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(2);
   });
 
   it("receive maxTicks more than 20", () => {
     const result = commonChartConfiguration(
       testDates,
-      MAX_DATE_RANGE,
+      END_DATE,
       mockData
     );
-    expect(result.options.scales.yAxes[0].ticks.maxTicksLimit).toStrictEqual(
-      20
-    );
+    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(20);
   });
 });
 
@@ -313,8 +280,8 @@ describe("getMaxTicks", () => {
     expect(getMaxTicks(null)).toStrictEqual(1);
     expect(getMaxTicks()).toStrictEqual(1);
     expect(getMaxTicks(0)).toStrictEqual(1);
-    expect(getMaxTicks(1)).toStrictEqual(1);
-    expect(getMaxTicks(5)).toStrictEqual(5);
+    expect(getMaxTicks(1)).toStrictEqual(2);
+    expect(getMaxTicks(5)).toStrictEqual(6);
     expect(getMaxTicks(20)).toStrictEqual(20);
     expect(getMaxTicks(1000000)).toStrictEqual(20);
   });

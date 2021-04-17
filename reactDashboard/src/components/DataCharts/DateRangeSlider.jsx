@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
-import moment from "moment";
 import "./DataCharts.css";
+import { format } from "date-fns";
 
 const useStyles = makeStyles({
   root: {
@@ -20,10 +20,12 @@ export function getMarks({ startDate, endDate }) {
     return [];
   }
   return [
-    { value: startDate, label: moment.utc(startDate).format("DD MMM, YYYY") },
-    { value: endDate, label: moment.utc(endDate).format("DD MMM, YYYY") },
+    { value: startDate, label: format(startDate, "dd MMM, yyyy") },
+    { value: endDate, label: format(endDate, "dd MMM, yyyy") },
   ];
 }
+
+const ONE_DAY_IN_MS = 24 * 3600 * 1000;
 
 const DateSlider = withStyles({
   root: {
@@ -88,7 +90,9 @@ export default function DateRangeSlider({
   const classes = useStyles();
 
   function handleDateChange(event, value) {
-    setDateRange({ startDate: value[0], endDate: value[1] });
+    if (value[0] !== value[1]) {
+      setDateRange({ startDate: value[0], endDate: value[1] });
+    }
   }
 
   function sliderThumbComponent(props) {
@@ -105,6 +109,7 @@ export default function DateRangeSlider({
     <div className={classes.root}>
       <DateSlider
         id="date-range-slider-position"
+        step={ONE_DAY_IN_MS}
         ThumbComponent={sliderThumbComponent}
         get-aria-label="date range slider"
         value={[dateRange.startDate, dateRange.endDate]}

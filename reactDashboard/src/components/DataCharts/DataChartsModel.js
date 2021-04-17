@@ -1,4 +1,15 @@
-import Chart from "chart.js";
+import {
+  Chart,
+  LineElement,
+  PointElement,
+  LineController,
+  CategoryScale,
+  LinearScale,
+  TimeSeriesScale,
+  Filler,
+  Legend,
+  Tooltip,
+} from "chart.js";
 import "./DataCharts.css";
 import "../../common.css";
 import {
@@ -16,8 +27,22 @@ import {
   LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
-import "../../chartjs-plugin-annotation/index.js";
-import moment from "moment";
+import Annotation from "chartjs-plugin-annotation";
+import "chartjs-adapter-date-fns";
+import { sub, getTime } from "date-fns";
+
+Chart.register(
+  LineElement,
+  PointElement,
+  LineController,
+  CategoryScale,
+  LinearScale,
+  TimeSeriesScale,
+  Filler,
+  Legend,
+  Tooltip,
+  Annotation
+);
 
 const ONE_DAY_IN_MS = 24 * 3600 * 1000;
 
@@ -37,19 +62,23 @@ function getDateLine({ date, name }, darkmode, index) {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "vertical",
-    scaleID: "x-axis-0",
+    scaleID: "x",
     borderColor: darkmode ? "#f2f2f2" : "rgba(0,0,0,0.25)",
     borderWidth: 2,
     value: date,
     label: {
       backgroundColor: darkmode ? "#c1def1" : "#007EB9",
-      fontColor: darkmode ? "#121212" : "#ffffff",
-      fontStyle: "bold",
+      color: darkmode ? "#121212" : "#ffffff",
       cornerRadius: 2,
       xPadding: 10,
       yPadding: 3,
-      position: "top-fitted",
-      enabled: true,
+      position: "start",
+      enabled: (context, options) => {
+        return (
+          context.chart.scales.x.min <= date &&
+          context.chart.scales.x.max >= date
+        );
+      },
       yAdjust: index * 20,
       content: name,
     },
@@ -61,13 +90,13 @@ export function getWhoThresholdLine() {
     type: "line",
     drawTime: "afterDatasetsDraw",
     mode: "horizontal",
-    scaleID: "y-axis-0",
+    scaleID: "y",
     borderColor: "rgba(255,0,0,0.8)",
     borderWidth: 2,
     value: 5,
     label: {
       backgroundColor: "white",
-      fontColor: "black",
+      color: "black",
       xPadding: 0,
       yPadding: 0,
       position: "top",
@@ -77,15 +106,16 @@ export function getWhoThresholdLine() {
   };
 }
 
-function getBox(dates) {
+function getBox(startDate, endDate) {
   return {
     type: "box",
     display: true,
     drawTime: "beforeDatasetsDraw",
-    xScaleID: "x-axis-0",
-    xMin: dates.startDate,
-    xMax: dates.endDate,
+    xScaleID: "x",
+    xMin: startDate,
+    xMax: endDate,
     backgroundColor: "#287db220",
+    borderColor: "#287db220",
   };
 }
 
@@ -98,7 +128,7 @@ export function datasetConfiguration(
   return {
     label: datasetLabel,
     data: seriesData,
-    backgroundColor: fillColour !== null ? fillColour : undefined,
+    backgroundColor: fillColour !== null ? fillColour : colour,
     borderColor: colour,
     fill: fillColour !== null,
     pointRadius: 0,
@@ -109,14 +139,22 @@ export function datasetConfiguration(
 }
 
 function getSeriesYMax(dataset) {
-  return Math.max(...dataset.data, 0);
+  return Math.max(...dataset, 0);
 }
 
-export function getChartYMax(datasets) {
+export function getChartYMax(datasets, dates, dateRange) {
   if (datasets === null || datasets === undefined || datasets.length === 0) {
     return 0;
   }
-  return Math.max(...datasets.map((dataset) => getSeriesYMax(dataset)));
+  const dataDateRanges = datasets.map((dataset) =>
+    !dateRange
+      ? dataset.data
+      : dataset.data.filter(
+          (_, i) =>
+            dates[i] >= dateRange.startDate && dates[i] <= dateRange.endDate
+        )
+  );
+  return Math.max(...dataDateRanges.map((dataset) => getSeriesYMax(dataset)));
 }
 
 export const getMaxTicks = (yMax) => {
@@ -126,97 +164,68 @@ export const getMaxTicks = (yMax) => {
   if (yMax >= 20) {
     return 20;
   }
-  return yMax;
+  return yMax + 1;
 };
 
 export function commonChartConfiguration(
   dates,
-  maxDateRange,
+  endDate,
   datasets,
   darkmode,
   dateRange = null
 ) {
-  const maxTicks = getMaxTicks(getChartYMax(datasets));
+  const maxTicks = getMaxTicks(getChartYMax(datasets, dates, dateRange));
 
   let result = {
     type: "line",
-    data: {
-      labels: dates,
-      datasets: datasets,
-    },
+    data: { labels: dates, datasets: datasets },
     options: {
-      animation: {
-        duration: 0,
-      },
-      hover: {
-        animationDuration: 0,
-        mode: "index",
-        intersect: false,
-      },
-      responsiveAnimationDuration: 0,
-      responsive: true,
+      animation: false,
+      interaction: { mode: "index", intersect: false },
       maintainAspectRatio: false,
       scales: {
-        yAxes: [
-          {
-            id: "y-axis-0",
-            gridLines: {
-              color: darkmode ? "#121212" : "#cccccc",
-            },
-            ticks: {
-              beginAtZero: true,
-              fontColor: darkmode ? "#f2f2f2" : "#767676",
-              maxTicksLimit: maxTicks,
-              callback: function (value, index, values) {
-                return Math.round(value);
-              },
-            },
+        y: {
+          grid: { color: darkmode ? "#121212" : "#cccccc" },
+          beginAtZero: true,
+          ticks: {
+            color: darkmode ? "#f2f2f2" : "#767676",
+            maxTicksLimit: maxTicks,
+            callback: (value) => Math.round(value),
           },
-        ],
-        xAxes: [
-          {
-            type: "time",
-            distribution: "series",
-            time: {
-              tooltipFormat: "D MMM YYYY",
-            },
-            gridLines: {
-              display: false,
-            },
-            ticks: {
-              fontColor: darkmode ? "#f2f2f2" : "#767676",
-            },
+        },
+        x: {
+          type: "timeseries",
+          time: { tooltipFormat: "d MMM yyyy", unit: "day" },
+          grid: { display: false },
+          ticks: {
+            color: darkmode ? "#f2f2f2" : "#767676",
+            source: "labels",
           },
-        ],
-      },
-      legend: {
-        onClick: (e) => e.stopPropagation(),
-        position: "bottom",
-        labels: {
-          boxWidth: 20,
-          fontSize: 14,
-          fontColor: darkmode ? "#f2f2f2" : "#767676",
         },
       },
-      tooltips: {
-        callbacks: {
-          labelColor: function (tooltipItem, chart) {
-            return {
+      plugins: {
+        legend: {
+          onClick: () => {},
+          position: "bottom",
+          labels: {
+            boxWidth: 20,
+            font: { size: 14 },
+            color: darkmode ? "#f2f2f2" : "#767676",
+          },
+        },
+        tooltip: {
+          callbacks: {
+            labelColor: ({ datasetIndex }) => ({
               borderColor: "#000000",
               backgroundColor:
-                tooltipItem.datasetIndex === 0
+                datasetIndex === 0
                   ? REGION_DATASET_COLOUR
                   : AVERAGE_DATASET_COLOUR,
-            };
-          },
-          label: (tooltipItem, data) => {
-            return (
-              data.datasets[tooltipItem.datasetIndex].label +
+            }),
+            label: ({ dataset, raw }) =>
+              dataset.label +
               ": " +
-              (Number.isInteger(tooltipItem.yLabel)
-                ? tooltipItem.yLabel
-                : tooltipItem.yLabel.toFixed(1))
-            );
+              (Number.isInteger(raw) ? raw : raw.toFixed(1)),
           },
         },
       },
@@ -224,40 +233,21 @@ export function commonChartConfiguration(
   };
 
   if (datasets.length > 0) {
-    result.options.annotation = {
-      annotations: keyDates.map((date, i) => getDateLine(date, darkmode, i)),
-    };
-  }
+    const annotations = {};
+    keyDates.forEach((date, i) => {
+      annotations[`line${i}`] = getDateLine(date, darkmode, i);
+    });
 
-  if (datasets.length > 0) {
-    const boxDatesOneDay = {
-      startDate: maxDateRange.endDate - ONE_DAY_IN_MS,
-      endDate: maxDateRange.endDate,
-    };
-    const boxDatesTwoDays = {
-      startDate: maxDateRange.endDate - ONE_DAY_IN_MS * 2,
-      endDate: maxDateRange.endDate,
-    };
-    const boxDatesThreeDays = {
-      startDate: maxDateRange.endDate - ONE_DAY_IN_MS * 3,
-      endDate: maxDateRange.endDate,
-    };
-    result.options.annotation = {
-      annotations: [
-        ...keyDates.map((date, i) => getDateLine(date, darkmode, i)),
-        getBox(boxDatesOneDay),
-        getBox(boxDatesTwoDays),
-        getBox(boxDatesThreeDays),
-      ],
-    };
+    annotations.endBox1 = getBox(endDate - ONE_DAY_IN_MS, endDate);
+    annotations.endBox2 = getBox(endDate - ONE_DAY_IN_MS * 2, endDate);
+    annotations.endBox3 = getBox(endDate - ONE_DAY_IN_MS * 3, endDate);
+
+    result.options.plugins.annotation = { annotations: annotations };
   }
 
   if (dateRange != null) {
-    result.options.scales.xAxes[0].ticks = {
-      ...result.options.scales.xAxes[0].ticks,
-      min: dateRange.startDate,
-      max: dateRange.endDate,
-    };
+    result.options.scales.x.min = dateRange.startDate;
+    result.options.scales.x.max = dateRange.endDate;
   }
 
   return result;
@@ -271,16 +261,16 @@ export function calculateDateRange(maxDateRange, timePeriod) {
     case ALL_DATES:
       return maxDateRange;
     case LAST_WEEK:
-      startDate = moment(endDate).subtract(1, "weeks").valueOf();
+      startDate = getTime(sub(endDate, { weeks: 1 }));
       break;
     case LAST_TWO_WEEKS:
-      startDate = moment(endDate).subtract(2, "weeks").valueOf();
+      startDate = getTime(sub(endDate, { weeks: 2 }));
       break;
     case LAST_MONTH:
-      startDate = moment(endDate).subtract(1, "months").valueOf();
+      startDate = getTime(sub(endDate, { months: 1 }));
       break;
     case LAST_THREE_MONTHS:
-      startDate = moment(endDate).subtract(3, "months").valueOf();
+      startDate = getTime(sub(endDate, { months: 3 }));
       break;
     default:
       throw new Error("timePeriod invalid: " + timePeriod);
@@ -297,10 +287,15 @@ function getAverageSeriesData(
   allData,
   chartType,
   seriesDataName,
-  populationProportion
+  populationProportion,
+  dataDateRange
 ) {
-  const scotlandData =
-    allData.regions[FEATURE_CODE_SCOTLAND].dailySeries[seriesDataName];
+  const scotlandData = getDataSeriesRange(
+    allData,
+    chartType,
+    FEATURE_CODE_SCOTLAND,
+    dataDateRange
+  );
   if (chartType === PERCENTAGE_TESTS) {
     return scotlandData;
   }
@@ -316,13 +311,20 @@ function getAverageSeriesLabel(chartType) {
     : "Scotland average (adjusted for population)";
 }
 
-function getChartDatasets(allData, chartType, regionCode, darkmode) {
+function getChartDatasets(allData, chartType, regionCode, darkmode, dateRange) {
   let datasetLabel = datasetInfo[chartType].label;
   let seriesDataName = datasetInfo[chartType].seriesName;
-
+  const dataDateRange = {
+    startDate: dateRange.startDate - 2 * ONE_DAY_IN_MS,
+    endDate: dateRange.endDate + 2 * ONE_DAY_IN_MS
+  };
   const datasets = [];
-  const regionSeriesData =
-    allData.regions[regionCode].dailySeries[seriesDataName];
+  const regionSeriesData = getDataSeriesRange(
+    allData,
+    chartType,
+    regionCode,
+    dataDateRange
+  );
   if (regionSeriesData !== undefined) {
     datasets.push(
       datasetConfiguration(
@@ -336,7 +338,8 @@ function getChartDatasets(allData, chartType, regionCode, darkmode) {
         allData,
         chartType,
         seriesDataName,
-        allData.regions[regionCode].populationProportion
+        allData.regions[regionCode].populationProportion,
+        dataDateRange
       );
       if (averageSeriesData) {
         datasets.push(
@@ -364,10 +367,34 @@ const datasetInfo = {
   },
 };
 
-export function getDataSeries(allData, chartType, regionCode) {
-  return (
-    allData &&
-    allData.regions[regionCode].dailySeries[datasetInfo[chartType].seriesName]
+export function getDataSeriesRange(allData, chartType, regionCode, dateRange) {
+  if (!allData || !chartType || !regionCode) {
+    return null;
+  }
+
+  const seriesData =
+    allData.regions[regionCode].dailySeries[datasetInfo[chartType].seriesName];
+  if (dateRange === null) {
+    return seriesData;
+  }
+
+  const dates = allData.dates;
+  return seriesData.filter(
+    (_, i) => dates[i] >= dateRange.startDate && dates[i] <= dateRange.endDate
+  );
+}
+
+export function getDataDateRange(allData, dateRange) {
+  if (!allData) {
+    return null;
+  }
+
+  if (dateRange === null) {
+    return allData.dates;
+  }
+
+  return allData.dates.filter(
+    (date, i) => date >= dateRange.startDate && date <= dateRange.endDate
   );
 }
 
@@ -385,26 +412,34 @@ export function createChart(
   darkmode,
   dateRange
 ) {
-  const datasets = getChartDatasets(allData, chartType, regionCode, darkmode);
+  const datasets = getChartDatasets(
+    allData,
+    chartType,
+    regionCode,
+    darkmode,
+    dateRange
+  );
+  const dataDateRange = {
+    startDate: dateRange.startDate - 2 * ONE_DAY_IN_MS,
+    endDate: dateRange.endDate + 2 * ONE_DAY_IN_MS
+  };
   const chartConfiguration = commonChartConfiguration(
-    allData.dates,
-    { startDate: allData.startDate, endDate: allData.endDate },
+    getDataDateRange(allData,dataDateRange ),
+    allData.endDate,
     datasets,
     darkmode,
     dateRange
   );
 
   if (chartType === PERCENTAGE_TESTS) {
-    chartConfiguration.options.scales.yAxes[0].ticks.callback = (
+    chartConfiguration.options.scales.y.ticks.callback = (
       value,
       index,
       values
     ) => {
       return Math.round(value) + "%";
     };
-    chartConfiguration.options.annotation.annotations.push(
-      getWhoThresholdLine()
-    );
+    chartConfiguration.options.plugins.annotation.annotations.whoLine = getWhoThresholdLine();
   }
 
   const chartContext = chartContainer.getContext("2d");

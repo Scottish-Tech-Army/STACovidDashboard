@@ -1,5 +1,10 @@
 import { AudioContext } from "standardized-audio-context";
-import moment from "moment";
+import { format } from "date-fns";
+import {
+  getDataSeriesRange,
+  getSonificationSeriesTitle,
+} from "../DataCharts/DataChartsModel";
+import { getPhoneticPlaceNameByFeatureCode } from "../Utils/CsvUtils";
 
 const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
@@ -97,11 +102,9 @@ function playDataIntroduction(
     const startDate =
       dateRange == null
         ? "28th February"
-        : moment.utc(dateRange.startDate).format("Do MMMM");
+        : format(dateRange.startDate, "do MMMM");
     const endDate =
-      dateRange == null
-        ? "Yesterday"
-        : moment.utc(dateRange.endDate).format("Do MMMM");
+      dateRange == null ? "Yesterday" : format(dateRange.endDate, "do MMMM");
 
     return new Promise((resolve, reject) => {
       waitForSpeech(seriesTitle + " for " + place + ". Minimum value 0. ")
@@ -175,46 +178,35 @@ export function calculateMaxDataValue(seriesData = null) {
 /**
  * Play sonification of supplied dataset if audio is not currently playing.
  * If audio is already playing, stop the currently playing audio and return.
- *
- * @param {string} seriesTitle - Name of dataset to sonify (eg 'daily cases').
- * @param {object} dateRange - startDate and endDate for intro speech.
- * @param {number[]} seriesData - Dataset to sonify.
- * @param {string} [place = "Scotland"] - region name for dataset. If undefined, defaults to 'Scotland'.
  */
 export function playAudio(
-  seriesTitle,
-  seriesData,
-  dateRange,
-  place = "Scotland"
+  allData = null,
+  chartType = null,
+  regionCode = null,
+  dateRange = null
 ) {
   if (sonificationPlaying) {
     stopAudio();
     return;
   }
+  if (!allData || !chartType || !regionCode) {
+    return;
+  }
 
   setPlaying(true);
-  const maxDataValue = calculateMaxDataValue(seriesData.map(({ t, y }) => y));
-  const truncatedSeriesData =
-    dateRange === null
-      ? seriesData
-      : seriesData.filter(
-          ({ t, y }) => t >= dateRange.startDate && t <= dateRange.endDate
-        );
+  const truncatedSeriesData = getDataSeriesRange(allData, chartType, regionCode, dateRange);
+  const maxDataValue = calculateMaxDataValue(truncatedSeriesData);
 
   const audioCtx = new AudioContext();
   playDataIntroduction(
     audioCtx,
-    seriesTitle,
+    getSonificationSeriesTitle(chartType),
     maxDataValue,
     dateRange,
-    place
+    getPhoneticPlaceNameByFeatureCode(regionCode)
   ).then(() => {
     if (sonificationPlaying) {
-      playDataTones(
-        audioCtx,
-        truncatedSeriesData.map(({ t, y }) => y),
-        maxDataValue
-      );
+      playDataTones(audioCtx, truncatedSeriesData, maxDataValue);
     }
   });
 }

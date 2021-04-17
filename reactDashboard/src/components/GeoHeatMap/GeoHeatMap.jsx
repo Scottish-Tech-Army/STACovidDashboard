@@ -19,7 +19,7 @@ import FullscreenControl from "./FullscreenControl";
 */
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
-import moment from "moment";
+import { format } from "date-fns";
 import {
   setScotlandDefaultBounds,
   featureCodeForFeature,
@@ -127,9 +127,9 @@ export default function GeoHeatMap({
             "<div class='region-popup'><div>" +
             regionData.name.toUpperCase() +
             "</div><div class='map-date-range'>" +
-            moment(allData.currentWeekStartDate).format("DD MMM") +
+            format(allData.currentWeekStartDate, "dd MMM") +
             " - " +
-            moment(allData.endDate).format("DD MMM") +
+            format(allData.endDate, "dd MMM") +
             "</div> <div class='map-cases-count'>" +
             toTitleCase(currentValueTypeRef.current) +
             ": " +

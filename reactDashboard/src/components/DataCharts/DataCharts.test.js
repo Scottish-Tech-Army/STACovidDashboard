@@ -4,7 +4,6 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import { DAILY_CASES, TOTAL_CASES } from "./DataChartsConsts";
-
 import {
   createChart,
   getDataSeries,
@@ -20,8 +19,9 @@ beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
   fetch.resetMocks();
-  createChart.mockImplementation(() => null);
   createChart.mockClear();
+  createChart.mockReturnValue(null);
+  getSonificationSeriesTitle.mockImplementation((chartType) => chartType);
 });
 
 afterEach(() => {
