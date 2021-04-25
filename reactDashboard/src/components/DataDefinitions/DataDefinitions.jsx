@@ -4,7 +4,6 @@ import Accordion from "react-bootstrap/Accordion";
 import AccordionContext from "react-bootstrap/AccordionContext";
 import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
 import Card from "react-bootstrap/Card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import {
   URL_OVERVIEW,
@@ -12,6 +11,7 @@ import {
   URL_DATA_SOURCES,
 } from "../../pages/PageConsts";
 import { Switch, Route } from "react-router-dom";
+import SvgIcon from "../Utils/SvgIcon";
 
 function ContextAwareToggle({ children, callback }) {
   const currentEventKey = useContext(AccordionContext);
@@ -26,10 +26,10 @@ function ContextAwareToggle({ children, callback }) {
   return (
     <Card.Header className="accordion-header" onClick={decoratedOnClick}>
       <h2>Understanding the data</h2>
-      <FontAwesomeIcon
-        icon={isCurrentEventKey ? faAngleUp : faAngleDown}
+      <SvgIcon
+        faIcon={isCurrentEventKey ? faAngleUp : faAngleDown}
         className="data-accordion-toggle"
-        size="3x"
+        size="3"
       />
     </Card.Header>
   );

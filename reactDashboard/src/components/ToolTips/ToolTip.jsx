@@ -1,9 +1,9 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ToolTip.css";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Tooltip as ReactBootstrapTooltip } from "react-bootstrap";
+import SvgIcon from "../Utils/SvgIcon";
 
 function ToolTip({ id, tooltip }) {
   return (
@@ -13,7 +13,7 @@ function ToolTip({ id, tooltip }) {
       }
     >
       <div className="tooltip-icon">
-        <FontAwesomeIcon icon={faQuestionCircle} size="1x" />
+        <SvgIcon faIcon={faQuestionCircle} />
       </div>
     </OverlayTrigger>
   );
