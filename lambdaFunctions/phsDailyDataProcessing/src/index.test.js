@@ -1,6 +1,5 @@
 import {
   downloadAndStoreMainCsvData,
-  downloadAndStoreAdditionalCsvData,
   jsonDataExists,
   getRemainingCsvData,
   storeJsonProcessedData,
@@ -28,7 +27,6 @@ describe("handler", () => {
     });
 
     expect(downloadAndStoreMainCsvData).toHaveBeenCalledTimes(1);
-    expect(downloadAndStoreAdditionalCsvData).toHaveBeenCalledTimes(1);
     expect(jsonDataExists).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).not.toHaveBeenCalled();
     expect(createJsonData).not.toHaveBeenCalled();
@@ -52,7 +50,6 @@ describe("handler", () => {
     });
 
     expect(downloadAndStoreMainCsvData).toHaveBeenCalledTimes(1);
-    expect(downloadAndStoreAdditionalCsvData).toHaveBeenCalledTimes(1);
     expect(jsonDataExists).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledWith([null, null, null, null]);
@@ -89,7 +86,6 @@ describe("handler", () => {
     });
 
     expect(downloadAndStoreMainCsvData).toHaveBeenCalledTimes(1);
-    expect(downloadAndStoreAdditionalCsvData).toHaveBeenCalledTimes(1);
     expect(jsonDataExists).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledWith([
@@ -131,7 +127,6 @@ describe("handler", () => {
     });
 
     expect(downloadAndStoreMainCsvData).toHaveBeenCalledTimes(1);
-    expect(downloadAndStoreAdditionalCsvData).toHaveBeenCalledTimes(1);
     expect(jsonDataExists).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledWith([
@@ -173,7 +168,6 @@ describe("handler", () => {
     });
 
     expect(downloadAndStoreMainCsvData).toHaveBeenCalledTimes(1);
-    expect(downloadAndStoreAdditionalCsvData).toHaveBeenCalledTimes(1);
     expect(jsonDataExists).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledTimes(1);
     expect(getRemainingCsvData).toHaveBeenCalledWith([
