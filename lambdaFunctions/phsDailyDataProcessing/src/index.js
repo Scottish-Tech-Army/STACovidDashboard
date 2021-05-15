@@ -1,6 +1,5 @@
 import {
   downloadAndStoreMainCsvData,
-  downloadAndStoreAdditionalCsvData,
   jsonDataExists,
   getRemainingCsvData,
   storeJsonProcessedData,
@@ -20,8 +19,6 @@ exports.handler = async (event) => {
       result = "JSON data updated";
     }
   }
-
-  await downloadAndStoreAdditionalCsvData();
 
   return { statusCode: 200, body: result };
 };
