@@ -10,13 +10,13 @@ import {
   URL_OVERVIEW,
   URL_REGIONAL,
 } from "../../pages/PageConsts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLinkedinIn,
   faTwitter,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import { NavLink } from "react-router-dom";
+import SvgIcon from "../Utils/SvgIcon";
 
 const Footer = ({ darkmode }) => {
   function sitemapEntry(pageUrl, text) {
@@ -31,7 +31,7 @@ const Footer = ({ darkmode }) => {
 
   const SOCIAL_LOGO = "black";
   const DARK_SOCIAL_LOGO = "#9cd7ff";
-
+  
   function sitemapExternalLink(href, content) {
     return (
       <div className="entry link">
@@ -135,9 +135,9 @@ const Footer = ({ darkmode }) => {
             <div>Connect with us:</div>
             {sitemapExternalLink(
               "https://www.linkedin.com/company/scottish-tech-army-limited",
-              <FontAwesomeIcon
-                icon={faLinkedinIn}
-                size="2x"
+              <SvgIcon
+                faIcon={faLinkedinIn}
+                size="2"
                 color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army LinkedIn account"
@@ -145,9 +145,9 @@ const Footer = ({ darkmode }) => {
             )}
             {sitemapExternalLink(
               "https://twitter.com/ScotTechArmy",
-              <FontAwesomeIcon
-                icon={faTwitter}
-                size="2x"
+              <SvgIcon
+                faIcon={faTwitter}
+                size="2"
                 color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army Twitter account"
@@ -155,9 +155,9 @@ const Footer = ({ darkmode }) => {
             )}
             {sitemapExternalLink(
               "https://www.instagram.com/scottecharmy",
-              <FontAwesomeIcon
-                icon={faInstagram}
-                size="2x"
+              <SvgIcon
+                faIcon={faInstagram}
+                size="2"
                 color={darkmode ? DARK_SOCIAL_LOGO : SOCIAL_LOGO}
                 className="third-party-logo"
                 title="Link to Scottish Tech Army Instagram account"

@@ -5,8 +5,8 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { URL_OVERVIEW, URL_REGIONAL } from "../../pages/PageConsts";
 import { NavLink, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import SvgIcon from "../Utils/SvgIcon";
 
 const DashboardNavbar = ({ darkmode }) => {
   const [expanded, setExpanded] = useState(false);
@@ -27,11 +27,12 @@ const DashboardNavbar = ({ darkmode }) => {
 
   const darkmodeIcon = (className) => {
     return (
-      <FontAwesomeIcon
-        icon={darkmode.value ? faSun : faMoon}
-        className={className}
-        onClick={() => darkmode.toggle()}
-      />
+      <div onClick={() => darkmode.toggle()}>
+        <SvgIcon
+          faIcon={darkmode.value ? faSun : faMoon}
+          className={className}
+        />
+      </div>
     );
   };
 

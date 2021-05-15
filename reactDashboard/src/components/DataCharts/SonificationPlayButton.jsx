@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeUp, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 import "./DataCharts.css";
 import "../../common.css";
@@ -18,6 +17,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { Tooltip as ReactBootstrapTooltip } from "react-bootstrap";
 import "../ToolTips/ToolTip.css";
 import { getSonificationSeriesTitle } from "./DataChartsModel";
+import SvgIcon from "../Utils/SvgIcon";
 
 const SonificationPlayButton = ({
   allData = null,
@@ -60,9 +60,9 @@ const SonificationPlayButton = ({
         onClick={() => playAudio(allData, chartType, regionCode, dateRange)}
         aria-label={createTitle()}
       >
-        <FontAwesomeIcon
-          icon={audioPlaying ? faVolumeMute : faVolumeUp}
-          size="2x"
+        <SvgIcon
+          faIcon={audioPlaying ? faVolumeMute : faVolumeUp}
+          size="2"
           color={darkmode ? "#f2f2f2" : "#6c6c6c"}
         />
         <span>{audioPlaying ? "Stop" : "Listen"}</span>
