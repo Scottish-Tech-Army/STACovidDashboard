@@ -247,6 +247,76 @@ describe("createJsonData handle bad data", () => {
     ).toStrictEqual(shortAllData);
   });
 
+  it("daily CA row missing", () => {
+    expect(
+      createJsonData(
+        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
+        20210118,S12000013,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
+        20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
+        20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
+        20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
+        20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
+        shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual({
+      ...shortAllData,
+      regions: {
+        ...shortAllData.regions,
+        S12000013: {
+          ...shortAllData.regions.S12000013,
+          weeklyCases: 7,
+          weeklySeries: { cases: [7], deaths: [0] },
+          dailySeries: {
+            percentPositiveTests: [0, 1.72, 3.21],
+            dailyCases: [0, 2, 5],
+            dailyDeaths: [0, 0, 0],
+            totalCases: [0, 160, 165],
+            totalDeaths: [0, 1, 1],
+          },
+        },
+      },
+    });
+  });
+
+  it("daily HB row missing", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+        20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+        20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+        20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+        20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual({
+      ...shortAllData,
+      regions: {
+        ...shortAllData.regions,
+        S08000024: {
+          ...shortAllData.regions.S08000024,
+          weeklyCases: 307,
+          weeklyDeaths: 4,
+          weeklySeries: { cases: [307], deaths: [4] },
+          dailySeries: {
+            percentPositiveTests: [9.47, 0, 5.91],
+            dailyCases: [141, 0, 166],
+            dailyDeaths: [4, 0, 0],
+            totalCases: [22680, 0, 23020],
+            totalDeaths: [861, 0, 863],
+          },
+        },
+      },
+    });
+  });
+
   it("daily CA columns out of order", () => {
     expect(
       createJsonData(
