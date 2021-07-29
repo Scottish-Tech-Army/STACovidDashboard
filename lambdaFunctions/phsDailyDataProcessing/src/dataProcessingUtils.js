@@ -96,7 +96,7 @@ function createPlaceDateValuesMap(csvData, forCouncilAreas) {
     });
     dateSet.add(date);
   });
-
+  
   const dates = [...dateSet].sort();
   return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
@@ -256,10 +256,12 @@ function aggregateWeeks(dates, placeDateValuesMap) {
       dates.forEach((date) => {
         if (date >= weekStart && date < weekEnd) {
           const current = dateValueMap.get(date);
-          total.cases += current.cases;
-          total.deaths += current.deaths;
-          total.cumulativeCases = current.cumulativeCases;
-          total.cumulativeDeaths = current.cumulativeDeaths;
+          if (current !== undefined) {
+            total.cases += current.cases;
+            total.deaths += current.deaths;
+            total.cumulativeCases = current.cumulativeCases;
+            total.cumulativeDeaths = current.cumulativeDeaths;
+          }
         }
       });
     });
@@ -343,6 +345,21 @@ function mergePlaceDateValuesMap(healthBoardMap, councilAreaMap) {
     [...dateValuesMap.keys()].forEach((date) => {
       if (!commonDates.includes(date)) {
         dateValuesMap.delete(date);
+      }
+    });
+  });
+  Object.keys(commonPlaceDateValuesMap).forEach((region) => {
+    const dateValuesMap = commonPlaceDateValuesMap[region];
+    commonDates.forEach((date) => {
+      if (!dateValuesMap.has(date)) {
+        dateValuesMap.set(date, {
+          cases: 0,
+          deaths: 0,
+          cumulativeCases: 0,
+          cumulativeDeaths: 0,
+          crudeRatePositive: 0,
+          positivePercentage: 0,
+        });
       }
     });
   });
