@@ -11,7 +11,7 @@ import GeoHeatMap from "../components/GeoHeatMap/GeoHeatMap";
 import DataCharts from "../components/DataCharts/DataCharts";
 import Facts from "../components/Facts/Facts";
 import DataDefinitions from "../components/DataDefinitions/DataDefinitions";
-import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import RouteMapRules from "../components/HeadlineBanner/HeadlineBanner";
 import {
   AREATYPE_HEALTH_BOARDS,
   VALUETYPE_CASES,
