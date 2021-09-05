@@ -9,9 +9,6 @@ class DashboardPage extends Page {
   get headingTitle() {
     return $(".navbar").$(".heading");
   }
-  get headlineBanner() {
-    return $(".headline-banner");
-  }
   get dailyCases() {
     return $("#dailyCases");
   }
