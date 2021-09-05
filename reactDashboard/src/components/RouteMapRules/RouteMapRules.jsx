@@ -14,7 +14,6 @@ const HeadlineBanner = () => {
       <Row>
         <Col
           xs="12"
-          className="headline-banner"
           style={{ backgroundColor: "#133a53", padding: "1rem" }}
         ></Col>
       </Row>
