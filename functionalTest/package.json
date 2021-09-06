@@ -20,7 +20,7 @@
     "@wdio/mocha-framework": "^6.11.0",
     "@wdio/spec-reporter": "^6.11.0",
     "@wdio/sync": "^6.11.0",
-    "chromedriver": "^93.0.0",
+    "chromedriver": "^92.0.0",
     "wdio-chromedriver-service": "^6.0.4"
   },
   "dependencies": {
