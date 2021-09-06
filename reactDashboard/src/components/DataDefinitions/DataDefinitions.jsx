@@ -116,7 +116,7 @@ function DataDefinitions() {
               to re-testing in some instances to ensure that an initially
               detected positive result is a true positive.{" "}
               <span>
-                <a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview">
+                <a href="https://public.tableau.com/app/profile/phs.covid.19/viz/COVID-19DailyDashboard_15960160643010/Overview">
                   <cite className="source-attribution">Source PHS</cite>
                 </a>
               </span>
@@ -139,7 +139,7 @@ function DataDefinitions() {
               areas. This may affect trend comparisons for the numbers of cases
               tested by Local Authority.{" "}
               <span>
-                <a href="https://public.tableau.com/profile/phs.covid.19#!/vizhome/COVID-19DailyDashboard_15960160643010/Overview">
+                <a href="https://public.tableau.com/app/profile/phs.covid.19/viz/COVID-19DailyDashboard_15960160643010/Overview">
                   <cite className="source-attribution">Source PHS</cite>
                 </a>
               </span>
