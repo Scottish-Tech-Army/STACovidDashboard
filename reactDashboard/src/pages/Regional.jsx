@@ -16,7 +16,7 @@ import {
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
-import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import RouteMapRules from "../components/HeadlineBanner/HeadlineBanner";
 
 // Exported for unit tests
 export function getRegionCodeFromUrl(location) {
