@@ -244,12 +244,11 @@ describe("heatmap selection", () => {
       const calculatedDayWidth =
         Number(await strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
         for (let i=0; i<expectedValues.length; i++) {
-          const element = expectedValues[i];
           expect(Number(await strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
           calculatedDayWidth * expectedValues[i].w,
           4
         );
-      };
+      }
     }
   }
 });
