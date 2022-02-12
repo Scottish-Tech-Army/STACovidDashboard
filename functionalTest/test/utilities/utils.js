@@ -1,11 +1,11 @@
 import dashboard from "../pageobjects/dashboardPage";
 import moment from "moment";
 
-export function checkChartTimespanSelection() {
+export async function checkChartTimespanSelection() {
   const DATE_FORMAT = "DD MMM, YYYY";
 
-  const fromDate = moment(dashboard.fromDate.getText(), DATE_FORMAT);
-  const toDate = moment(dashboard.toDate.getText(), DATE_FORMAT);
+  const fromDate = moment(await dashboard.fromDate.getText(), DATE_FORMAT);
+  const toDate = moment(await dashboard.toDate.getText(), DATE_FORMAT);
   const totalDays = toDate.diff(fromDate, "days") + 1;
 
   const TIMESPAN_ALL = "select-all";
@@ -32,10 +32,10 @@ export function checkChartTimespanSelection() {
     return inputStr.substring(start, end).trim();
   }
 
-  function checkSliderValue(timeSpan) {
-    dashboard.selectTimeSpan(timeSpan).click();
+  async function checkSliderValue(timeSpan) {
+    await elementClick(await dashboard.selectTimeSpan(timeSpan));
 
-    const style = dashboard.sliderTrack.getAttribute("style");
+    const style = await dashboard.sliderTrack.getAttribute("style");
     const actualLeftButtonPercentage = retrieveLeftWidth(style);
     const expectedLeftButtonPercentage = calculateLeftButtonPercentage(
       timeSpan
@@ -45,9 +45,14 @@ export function checkChartTimespanSelection() {
     ).toBeLessThan(1);
   }
 
-  checkSliderValue(TIMESPAN_ALL);
-  checkSliderValue(TIMESPAN_THREE_MONTHS);
-  checkSliderValue(TIMESPAN_ONE_MONTH);
-  checkSliderValue(TIMESPAN_TWO_WEEKS);
-  checkSliderValue(TIMESPAN_ONE_WEEK);
+  await checkSliderValue(TIMESPAN_ALL);
+  await checkSliderValue(TIMESPAN_THREE_MONTHS);
+  await checkSliderValue(TIMESPAN_ONE_MONTH);
+  await checkSliderValue(TIMESPAN_TWO_WEEKS);
+  await checkSliderValue(TIMESPAN_ONE_WEEK);
+}
+
+// Standard element click fails in places - this works
+export function elementClick(element) {
+  return browser.execute((btn) => btn.click(), element);
 }

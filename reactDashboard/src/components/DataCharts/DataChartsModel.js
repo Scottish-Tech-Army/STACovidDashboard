@@ -13,7 +13,6 @@ import {
 import "./DataCharts.css";
 import "../../common.css";
 import {
-  PERCENTAGE_TESTS,
   DAILY_CASES,
   DAILY_DEATHS,
   TOTAL_CASES,
@@ -81,27 +80,6 @@ function getDateLine({ date, name }, darkmode, index) {
       },
       yAdjust: index * 20,
       content: name,
-    },
-  };
-}
-
-export function getWhoThresholdLine() {
-  return {
-    type: "line",
-    drawTime: "afterDatasetsDraw",
-    mode: "horizontal",
-    scaleID: "y",
-    borderColor: "rgba(255,0,0,0.8)",
-    borderWidth: 2,
-    value: 5,
-    label: {
-      backgroundColor: "white",
-      color: "black",
-      xPadding: 0,
-      yPadding: 0,
-      position: "top",
-      enabled: true,
-      content: "WHO recommended threshold",
     },
   };
 }
@@ -286,7 +264,6 @@ export function calculateDateRange(maxDateRange, timePeriod) {
 function getAverageSeriesData(
   allData,
   chartType,
-  seriesDataName,
   populationProportion,
   dataDateRange
 ) {
@@ -296,24 +273,15 @@ function getAverageSeriesData(
     FEATURE_CODE_SCOTLAND,
     dataDateRange
   );
-  if (chartType === PERCENTAGE_TESTS) {
-    return scotlandData;
-  }
   return scotlandData.map((y) => y * populationProportion);
 }
 
 const AVERAGE_DATASET_FILL_COLOUR = (darkmode) =>
   darkmode ? "rgb(118, 118, 118, 0.50)" : "rgb(118, 118, 118, 0.25)";
 
-function getAverageSeriesLabel(chartType) {
-  return chartType === PERCENTAGE_TESTS
-    ? "Scotland average"
-    : "Scotland average (adjusted for population)";
-}
 
 function getChartDatasets(allData, chartType, regionCode, darkmode, dateRange) {
   let datasetLabel = datasetInfo[chartType].label;
-  let seriesDataName = datasetInfo[chartType].seriesName;
   const dataDateRange = {
     startDate: dateRange.startDate - 2 * ONE_DAY_IN_MS,
     endDate: dateRange.endDate + 2 * ONE_DAY_IN_MS
@@ -337,14 +305,13 @@ function getChartDatasets(allData, chartType, regionCode, darkmode, dateRange) {
       const averageSeriesData = getAverageSeriesData(
         allData,
         chartType,
-        seriesDataName,
         allData.regions[regionCode].populationProportion,
         dataDateRange
       );
       if (averageSeriesData) {
         datasets.push(
           datasetConfiguration(
-            getAverageSeriesLabel(chartType),
+            "Scotland average (adjusted for population)",
             averageSeriesData,
             AVERAGE_DATASET_COLOUR,
             AVERAGE_DATASET_FILL_COLOUR(darkmode)
@@ -361,10 +328,6 @@ const datasetInfo = {
   [DAILY_DEATHS]: { label: "Daily Deaths", seriesName: "dailyDeaths" },
   [TOTAL_CASES]: { label: "Total Cases", seriesName: "totalCases" },
   [TOTAL_DEATHS]: { label: "Total Deaths", seriesName: "totalDeaths" },
-  [PERCENTAGE_TESTS]: {
-    label: "% of Tests Positive",
-    seriesName: "percentPositiveTests",
-  },
 };
 
 export function getDataSeriesRange(allData, chartType, regionCode, dateRange) {
@@ -399,9 +362,7 @@ export function getDataDateRange(allData, dateRange) {
 }
 
 export function getSonificationSeriesTitle(chartType) {
-  return chartType === PERCENTAGE_TESTS
-    ? "Percentage tests positive"
-    : datasetInfo[chartType].label;
+  return datasetInfo[chartType].label;
 }
 
 export function createChart(
@@ -430,17 +391,6 @@ export function createChart(
     darkmode,
     dateRange
   );
-
-  if (chartType === PERCENTAGE_TESTS) {
-    chartConfiguration.options.scales.y.ticks.callback = (
-      value,
-      index,
-      values
-    ) => {
-      return Math.round(value) + "%";
-    };
-    chartConfiguration.options.plugins.annotation.annotations.whoLine = getWhoThresholdLine();
-  }
 
   const chartContext = chartContainer.getContext("2d");
   return new Chart(chartContext, chartConfiguration);

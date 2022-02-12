@@ -8,7 +8,9 @@ import {
   getAllFeatureCodes,
 } from "./featureCodes";
 
+// eslint-disable-next-line jest/require-hook
 dayjs.extend(utc);
+// eslint-disable-next-line jest/require-hook
 dayjs.extend(customParseFormat);
 
 export function readCsvData(csvData, expectedColumnNames) {
@@ -59,18 +61,16 @@ function getValue(value) {
 }
 
 // Returns a sorted set of all dates and a map of places->dates->values
-// Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF,PositivePillar1,PositivePillar2
-// Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,PositivePillar1,PositivePillar2
+// Date,HB,HBName,DailyPositive,CumulativePositive,DailyPositivePCROnly,CumulativePositivePCROnly,DailyPositiveLFDOnly,CumulativePositiveLFDOnly,DailyPositivePCRAndLFD,CumulativePositivePCRAndLFD,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,PositiveTests,PositiveTestsLFDOnly,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF,PositivePillar1,PositivePillar2
+// Date,CA,CAName,DailyPositive,CumulativePositive,DailyPositivePCROnly,CumulativePositivePCROnly,DailyPositiveLFDOnly,CumulativePositiveLFDOnly,DailyPositivePCRAndLFD,CumulativePositivePCRAndLFD,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,PositiveTests,PositiveTestsLFDOnly,PositivePillar1,PositivePillar2
 function createPlaceDateValuesMap(csvData, forCouncilAreas) {
   const { columnIndices, lines } = readCsvData(csvData, [
     "Date",
     forCouncilAreas ? "CA" : "HB",
     "DailyPositive",
     "CumulativePositive",
-    "CrudeRatePositive",
     "DailyDeaths",
     "CumulativeDeaths",
-    "PositivePercentage",
   ]);
 
   columnIndices.featureCode = columnIndices[forCouncilAreas ? "CA" : "HB"];
@@ -91,8 +91,6 @@ function createPlaceDateValuesMap(csvData, forCouncilAreas) {
       deaths: getValue(line[columnIndices.DailyDeaths]),
       cumulativeCases: getValue(line[columnIndices.CumulativePositive]),
       cumulativeDeaths: getValue(line[columnIndices.CumulativeDeaths]),
-      crudeRatePositive: getValue(line[columnIndices.CrudeRatePositive]),
-      positivePercentage: getValue(line[columnIndices.PositivePercentage]),
     });
     dateSet.add(date);
   });
@@ -101,14 +99,15 @@ function createPlaceDateValuesMap(csvData, forCouncilAreas) {
   return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
 
-// Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-// Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
+// Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalPCROnly,NewPCROnly,TotalLFDOnly,NewLFDOnly,TotalLFDAndPCR,NewLFDAndPCR
+// Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalPCROnly,NewPCROnly,TotalLFDOnly,NewLFDOnly,TotalPCRAndLFD,NewPCRAndLFD
 function parseNhsTotalsCsvData(csvData, forCouncilAreas) {
   const { columnIndices, lines } = readCsvData(csvData, [
     "Date",
     forCouncilAreas ? "CA" : "HB",
     "NewPositive",
     "TotalCases",
+    "CrudeRatePositive",
     "NewDeaths",
     "TotalDeaths",
   ]);
@@ -122,6 +121,7 @@ function parseNhsTotalsCsvData(csvData, forCouncilAreas) {
     const featureCode = getFeatureCodeValue(line[columnIndices.featureCode]);
     const cumulativeCases = getValue(line[columnIndices.TotalCases]);
     const cumulativeDeaths = getValue(line[columnIndices.TotalDeaths]);
+    const crudeRatePositive = getValue(line[columnIndices.CrudeRatePositive]);
 
     const fatalityCaseRatio =
       cumulativeCases !== undefined && cumulativeDeaths !== undefined
@@ -138,7 +138,8 @@ function parseNhsTotalsCsvData(csvData, forCouncilAreas) {
       },
       cumulativeCases: { date: date, value: cumulativeCases },
       cumulativeDeaths: { date: date, value: cumulativeDeaths },
-      fatalityCaseRatio: fatalityCaseRatio,
+      fatalityCaseRatio,
+      crudeRatePositive,
     };
   });
   return placeStatsMap;
@@ -177,16 +178,16 @@ function getCurrentWeekTotals({ dates, placeDateValuesMap }) {
   return { currentWeekStartDate: currentWeekDates[0], regions: regions };
 }
 
-function getPopulationMap({ placeDateValuesMap }, finalDate) {
+function getPopulationMap(placeValuesMap) {
   const populationMap = {};
-  Object.keys(placeDateValuesMap).forEach((place) => {
-    const { cumulativeCases, crudeRatePositive } = placeDateValuesMap[
+  Object.keys(placeValuesMap).forEach((place) => {
+    const { cumulativeCases, crudeRatePositive } = placeValuesMap[
       place
-    ].get(finalDate);
+    ];
     if (crudeRatePositive === 0) {
       populationMap[place] = 0;
     } else {
-      const population = 100000 * (cumulativeCases / crudeRatePositive);
+      const population = 100000 * (cumulativeCases.value / crudeRatePositive);
       populationMap[place] = population;
     }
   });
@@ -203,27 +204,6 @@ function calculatePopulationProportionMap(populationMap) {
     );
   }
   return result;
-}
-
-function getPlaceTotalsStats(
-  dateString,
-  dailyCases,
-  cumulativeCases,
-  dailyDeaths,
-  cumulativeDeaths
-) {
-  const date = dayjs.utc(dateString, "YYYYMMDD").valueOf();
-  const fatalityCaseRatio =
-    cumulativeCases !== undefined && cumulativeDeaths !== undefined
-      ? ((cumulativeDeaths * 100) / cumulativeCases).toFixed(1) + "%"
-      : undefined;
-  return {
-    dailyCases: { date: date, value: Number(dailyCases) },
-    dailyDeaths: { date: date, value: Number(dailyDeaths) },
-    cumulativeCases: { date: date, value: Number(cumulativeCases) },
-    cumulativeDeaths: { date: date, value: Number(cumulativeDeaths) },
-    fatalityCaseRatio: fatalityCaseRatio,
-  };
 }
 
 function aggregateWeeks(dates, placeDateValuesMap) {
@@ -298,7 +278,6 @@ function getDailySeriesData({ dates, placeDateValuesMap }) {
   Object.keys(placeDateValuesMap).forEach((place) => {
     const dateValuesMap = placeDateValuesMap[place];
 
-    const percentPositiveTests = [];
     const dailyCases = [];
     const dailyDeaths = [];
     const totalCases = [];
@@ -310,10 +289,8 @@ function getDailySeriesData({ dates, placeDateValuesMap }) {
         deaths,
         cumulativeCases,
         cumulativeDeaths,
-        positivePercentage,
       } = dateValuesMap.get(date);
 
-      percentPositiveTests.push(positivePercentage);
       dailyCases.push(cases);
       dailyDeaths.push(deaths);
       totalCases.push(cumulativeCases);
@@ -321,7 +298,6 @@ function getDailySeriesData({ dates, placeDateValuesMap }) {
     });
 
     result[place] = {
-      percentPositiveTests,
       dailyCases,
       dailyDeaths,
       totalCases,
@@ -357,8 +333,6 @@ function mergePlaceDateValuesMap(healthBoardMap, councilAreaMap) {
           deaths: 0,
           cumulativeCases: 0,
           cumulativeDeaths: 0,
-          crudeRatePositive: 0,
-          positivePercentage: 0,
         });
       }
     });
@@ -398,11 +372,6 @@ export function createJsonData(
     const endDate =
       placeDateValuesMap.dates[placeDateValuesMap.dates.length - 1];
 
-    const populationMap = getPopulationMap(placeDateValuesMap, endDate);
-    const populationProportionMap = calculatePopulationProportionMap(
-      populationMap
-    );
-
     let { currentWeekStartDate, regions } = getCurrentWeekTotals(
       placeDateValuesMap
     );
@@ -418,6 +387,11 @@ export function createJsonData(
         throw new Error("Total case data is missing a region: " + featureCode);
       }
     });
+
+    const populationMap = getPopulationMap(regionTotals);
+    const populationProportionMap = calculatePopulationProportionMap(
+      populationMap
+    );
 
     const { weekStartDates, regionWeeklySeries } = getWeeklySeriesData(
       placeDateValuesMap

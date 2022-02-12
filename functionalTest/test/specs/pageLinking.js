@@ -1,5 +1,6 @@
 import dashboard from "../pageobjects/dashboardPage";
 import regionalInsights from "../pageobjects/regionalPage";
+import { elementClick } from "../utilities/utils";
 
 const OVERVIEW_PAGE_TEXT = "DEATH/CASE RATIO";
 const ABOUTUS_PAGE_TEXT = "Meet the team";
@@ -8,188 +9,188 @@ const DATASOURCES_PAGE_TEXT = "Data sources and attributions";
 
 // React routing doesn't work well with S3 static websites using subdirectories as base urls
 // This workaround avoid setup errors when starting with the regional page
-function openRegionalPage() {
-  dashboard.open();
-  dashboard.navbarLinkRegionalInsights.click();
+async function openRegionalPage() {
+  await dashboard.open();
+  await dashboard.navbarLinkRegionalInsights.click();
 }
 
 describe("page linking sitemap", () => {
-  it("summary dashboard -> about us", () => {
-    dashboard.open();
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+  it("summary dashboard -> about us", async () => {
+    await dashboard.open();
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    dashboard.sitemapLinkAboutUs.click();
+    await elementClick(await dashboard.sitemapLinkAboutUs);
 
-    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
+    await expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/about");
   });
 
-  it("summary dashboard -> accessibility", () => {
-    dashboard.open();
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+  it("summary dashboard -> accessibility", async () => {
+    await dashboard.open();
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    dashboard.sitemapLinkAccessibility.click();
+    await elementClick(await dashboard.sitemapLinkAccessibility);
 
-    expect(dashboard.root).toHaveTextContaining(ACCESSIBILITY_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/accessibility");
+    await expect(dashboard.root).toHaveTextContaining(ACCESSIBILITY_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/accessibility");
   });
 
-  it("summary dashboard -> data sources", () => {
-    dashboard.open();
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+  it("summary dashboard -> data sources", async () => {
+    await dashboard.open();
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    dashboard.sitemapLinkDataSources.click();
+    await elementClick(await dashboard.sitemapLinkDataSources);
 
-    expect(dashboard.root).toHaveTextContaining(DATASOURCES_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/data");
+    await expect(dashboard.root).toHaveTextContaining(DATASOURCES_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/data");
   });
 
-  it("summary dashboard -> regional default", () => {
-    dashboard.open();
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+  it("summary dashboard -> regional default", async () => {
+    await dashboard.open();
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    dashboard.sitemapLinkRegionalInsights.click();
+    await elementClick(await dashboard.sitemapLinkRegionalInsights);
 
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
   });
 
-  it("regional default -> summary dashboard", () => {
-    openRegionalPage();
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+  it("regional default -> summary dashboard", async () => {
+    await openRegionalPage();
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    dashboard.sitemapLinkSummaryStatistics.click();
+    await elementClick(await dashboard.sitemapLinkSummaryStatistics);
 
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/");
   });
 });
 
 describe("page linking region choice", () => {
-  function selectRegionFromDropdown(regionLabel, expectedUrl) {
-    regionalInsights.selectedRegionButton.click();
-    regionalInsights.regionDropdownMenuItem(regionLabel).click();
+  async function selectRegionFromDropdown(regionLabel, expectedUrl) {
+    await regionalInsights.selectedRegionButton.click();
+    await elementClick(await regionalInsights.regionDropdownMenuItem(regionLabel));
 
-    expect(regionalInsights.selectedRegionButton).toHaveText(regionLabel);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + expectedUrl);
+    await expect(regionalInsights.selectedRegionButton).toHaveText(regionLabel);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + expectedUrl);
   }
 
-  it("regional default -> regional council area", () => {
-    openRegionalPage();
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+  it("regional default -> regional council area", async () => {
+    await openRegionalPage();
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    selectRegionFromDropdown("Glasgow City", "/regional/S12000049");
+    await selectRegionFromDropdown("Glasgow City", "/regional/S12000049");
   });
 
-  it("regional council area -> regional health board", () => {
-    openRegionalPage();
-    selectRegionFromDropdown("Glasgow City", "/regional/S12000049");
-    selectRegionFromDropdown("Lothian", "/regional/S08000024");
+  it("regional council area -> regional health board", async () => {
+    await openRegionalPage();
+    await selectRegionFromDropdown("Glasgow City", "/regional/S12000049");
+    await selectRegionFromDropdown("Lothian", "/regional/S08000024");
   });
 
-  it("regional health board -> regional default", () => {
-    openRegionalPage();
-    selectRegionFromDropdown("Lothian", "/regional/S08000024");
-    selectRegionFromDropdown("Scotland", "/regional");
+  it("regional health board -> regional default", async () => {
+    await openRegionalPage();
+    await selectRegionFromDropdown("Lothian", "/regional/S08000024");
+    await selectRegionFromDropdown("Scotland", "/regional");
   });
 });
 
 describe("page linking navbar", () => {
-  it("summary dashboard -> regional default", () => {
-    dashboard.open();
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+  it("summary dashboard -> regional default", async () => {
+    await dashboard.open();
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    dashboard.navbarLinkRegionalInsights.click();
+    await elementClick(await dashboard.navbarLinkRegionalInsights);
 
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
   });
 
-  it("regional default -> summary dashboard", () => {
-    openRegionalPage();
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+  it("regional default -> summary dashboard", async () => {
+    await openRegionalPage();
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    dashboard.navbarLinkSummaryStatistics.click();
+    await elementClick(await dashboard.navbarLinkSummaryStatistics);
 
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/");
   });
 
-  it("regional default (click logo) -> summary dashboard", () => {
-    openRegionalPage();
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+  it("regional default (click logo) -> summary dashboard", async () => {
+    await openRegionalPage();
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    dashboard.navbarLinkLogo.click();
+    await elementClick(await dashboard.navbarLinkLogo);
 
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/");
   });
 });
 
 describe("page routing history following links", () => {
-  it("history handling", () => {
+  it("history handling", async () => {
     // Create a history
-    dashboard.open();
-    dashboard.sitemapLinkAboutUs.click();
-    dashboard.sitemapLinkRegionalInsights.click();
-    regionalInsights.selectedRegionButton.click();
-    regionalInsights.regionDropdownMenuItem("Lothian").click();
-    regionalInsights.selectedRegionButton.click();
-    regionalInsights.regionDropdownMenuItem("Glasgow City").click();
-    dashboard.sitemapLinkSummaryStatistics.click();
+    await dashboard.open();
+    await elementClick(await dashboard.sitemapLinkAboutUs);
+    await elementClick(await dashboard.sitemapLinkRegionalInsights);
+    await elementClick(await regionalInsights.selectedRegionButton);
+    await elementClick(await regionalInsights.regionDropdownMenuItem("Lothian"));
+    await elementClick(await regionalInsights.selectedRegionButton);
+    await elementClick(await regionalInsights.regionDropdownMenuItem("Glasgow City"));
+    await elementClick(await dashboard.sitemapLinkSummaryStatistics);
 
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    browser.back();
-    expect(browser.getUrl()).toBe(
+    await browser.back();
+    await expect(await browser.getUrl()).toBe(
       browser.config.baseUrl + "/regional/S12000049"
     );
-    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
 
-    browser.back();
-    expect(browser.getUrl()).toBe(
+    await browser.back();
+    await expect(await browser.getUrl()).toBe(
       browser.config.baseUrl + "/regional/S08000024"
     );
-    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
 
-    browser.back();
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
-    expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
+    await browser.back();
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/regional");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Scotland");
 
-    browser.forward();
-    expect(browser.getUrl()).toBe(
+    await browser.forward();
+    await expect(await browser.getUrl()).toBe(
       browser.config.baseUrl + "/regional/S08000024"
     );
-    expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Lothian");
 
-    browser.forward();
-    expect(browser.getUrl()).toBe(
+    await browser.forward();
+    await expect(await browser.getUrl()).toBe(
       browser.config.baseUrl + "/regional/S12000049"
     );
-    expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
+    await expect(regionalInsights.selectedRegionButton).toHaveText("Glasgow City");
 
-    browser.forward();
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await browser.forward();
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
   });
 
-  it("no more forward", () => {
+  it("no more forward", async () => {
     // Create a history
-    dashboard.open();
-    dashboard.sitemapLinkAboutUs.click();
+    await dashboard.open();
+    await elementClick(await dashboard.sitemapLinkAboutUs);
 
-    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
+    await expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
 
-    browser.back();
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/");
-    expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
+    await browser.back();
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/");
+    await expect(dashboard.root).toHaveTextContaining(OVERVIEW_PAGE_TEXT);
 
-    browser.forward();
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
-    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
+    await browser.forward();
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/about");
+    await expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
 
-    browser.forward();
-    expect(browser.getUrl()).toBe(browser.config.baseUrl + "/about");
-    expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
+    await browser.forward();
+    await expect(await browser.getUrl()).toBe(browser.config.baseUrl + "/about");
+    await expect(dashboard.root).toHaveTextContaining(ABOUTUS_PAGE_TEXT);
   });
 });

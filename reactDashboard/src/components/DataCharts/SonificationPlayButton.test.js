@@ -140,7 +140,6 @@ test("minimum input play/stop behaviour", async () => {
   });
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
-  expect(deletePlayStateChangeListener).toHaveBeenCalledTimes(0);
   expect(playButton().getAttribute("aria-label")).toBe(
     "Listen to audio representation of daily cases for Scotland"
   );
@@ -227,7 +226,6 @@ const testAllData = {
         dailyDeaths: [5, 35, 65, 95, 125, 155, 185, 215],
         totalCases: [2, 32, 62, 92, 122, 152, 182, 212],
         totalDeaths: [6, 36, 66, 96, 126, 156, 186, 216],
-        percentPositiveTests: [0.1, 3.1, 6.1, 9.1, 12.1, 15.1, 18.1, 21.1],
       },
     },
     S08000022: {
@@ -236,7 +234,6 @@ const testAllData = {
         dailyDeaths: [15, 45, 75, 105, 135, 165, 195, 225],
         totalCases: [12, 42, 72, 102, 132, 162, 192, 222],
         totalDeaths: [16, 46, 76, 106, 136, 166, 196, 226],
-        percentPositiveTests: [1.1, 4.1, 7.1, 10.1, 13.1, 16.1, 19.1, 22.1],
       },
     },
     S12000013: {
@@ -245,7 +242,6 @@ const testAllData = {
         dailyDeaths: [25, 55, 85, 115, 145, 175, 205, 235],
         totalCases: [22, 52, 82, 112, 142, 172, 202, 232],
         totalDeaths: [10000, 1, 2, 3, 4, 51, 99999, 299936],
-        percentPositiveTests: [2.1, 5.1, 8.1, 11.1, 14.1, 17.1, 20.1, 23.1],
       },
     },
     S92000003: {
@@ -254,7 +250,6 @@ const testAllData = {
         dailyDeaths: [45, 135, 225, 315, 405, 495, 585, 675],
         totalCases: [36, 126, 216, 306, 396, 486, 576, 888],
         totalDeaths: [48, 138, 228, 318, 408, 498, 588, 678],
-        percentPositiveTests: [3.3, 12.3, 21.3, 30.3, 39.3, 48.3, 57.3, 66.3],
       },
     },
   },
