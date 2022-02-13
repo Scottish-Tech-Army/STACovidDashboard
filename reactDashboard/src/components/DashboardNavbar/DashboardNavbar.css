@@ -88,6 +88,8 @@
   margin: 0 15px;
   background-color: white;
   padding-bottom: 0;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* different styling for darkmode theme - rounded corners and gray background on header and footer */

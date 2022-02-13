@@ -34,19 +34,19 @@ class DashboardPage extends Page {
     return this.heatmapHeaderRow.$("th:nth-child(1)");
   }
   get selectHealthBoardsButton() {
-    return $(".heatmap-selector #healthBoards");
+    return $(".heatmap-selector #healthBoards + label");
   }
   get selectCouncilAreasButton() {
-    return $(".heatmap-selector #councilAreas");
+    return $(".heatmap-selector #councilAreas + label");
   }
   get heatmapValueTypeTitle() {
     return this.heatmapHeaderRow.$("th:nth-child(2)");
   }
   get selectCasesButton() {
-    return $(".heatmap-selector #cases");
+    return $(".heatmap-selector #cases + label");
   }
   get selectDeathsButton() {
-    return $(".heatmap-selector #deaths");
+    return $(".heatmap-selector #deaths + label");
   }
   get heatmapBoundariesValues() {
     return $$(".heatmap tbody tr.area td:nth-child(1)");

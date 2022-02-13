@@ -107,13 +107,4 @@ exports.config = {
   before: function (capabilities, specs) {
     require("@babel/register");
   },
-  beforeTest: function (test, context) {
-    // Clear logs
-    browser.getLogs("browser");
-  },
-  afterTest: function (test, context, { error }) {
-    if (error) {
-      console.log("Browser console log", browser.getLogs("browser"));
-    }
-  },
 };

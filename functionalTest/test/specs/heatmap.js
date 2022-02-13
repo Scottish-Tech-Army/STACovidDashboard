@@ -4,37 +4,37 @@ import dashboard from "../pageobjects/dashboardPage";
 // subheading (date range) will be updated with new data coming in
 
 describe("heatmap selection", () => {
-  it("default view", () => {
-    dashboard.open();
+  it("default view", async () => {
+    await dashboard.open();
 
-    checkHeatmapHealthBoardsBoundaries();
-    checkHeatmapHealthBoardsCasesValues();
-    checkHeatmapHealthBoardsCasesHeatbar();
-    expect(dashboard.heatmapHeatbarValues).toHaveLength(15);
+    await checkHeatmapHealthBoardsBoundaries();
+    await checkHeatmapHealthBoardsCasesValues();
+    await checkHeatmapHealthBoardsCasesHeatbar();
+    await expect(await dashboard.heatmapHeatbarValues).toHaveLength(15);
   });
 
-  it("council areas cases", () => {
-    dashboard.open();
-    dashboard.selectDeathsButton.click();
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+  it("council areas cases", async () => {
+    await dashboard.open();
+    await dashboard.selectDeathsButton.click();
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
 
-    dashboard.selectCouncilAreasButton.click();
-    dashboard.selectCasesButton.click();
+    await dashboard.selectCouncilAreasButton.click();
+    await dashboard.selectCasesButton.click();
 
-    checkHeatmapCouncilAreasBoundaries();
+    await checkHeatmapCouncilAreasBoundaries();
 
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
-    const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
-    expect(heatmapValueTypeValues).toHaveLength(33);
-    checkValueWithin(
-      Number(heatmapValueTypeValues[0].getText()),
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
+    const heatmapValueTypeValues = await dashboard.heatmapValueTypeValues;
+    await expect(heatmapValueTypeValues).toHaveLength(33);
+    await checkValueWithin(
+      Number(await heatmapValueTypeValues[0].getText()),
       20000,
       200000
     );
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 10000);
-    checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 500, 10000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[1].getText()), 1000, 10000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[32].getText()), 500, 10000);
 
-    checkScotlandCasesHeatbar();
+    await checkScotlandCasesHeatbar();
 
     // City of Edinburgh heatbar
     const expectedValues1 = [
@@ -45,7 +45,7 @@ describe("heatmap selection", () => {
       { l: 4, w: 1 },
     ];
 
-    checkHeatbarValues(5, expectedValues1);
+    await checkHeatbarValues(5, expectedValues1);
 
     // Scottish Borders
     const expectedValues2 = [
@@ -56,43 +56,43 @@ describe("heatmap selection", () => {
       { l: 2, w: 1 },
     ];
 
-    checkHeatbarValues(26, expectedValues2);
+    await checkHeatbarValues(26, expectedValues2);
   });
 
-  it("health boards cases", () => {
-    dashboard.open();
-    dashboard.selectCouncilAreasButton.click();
-    dashboard.selectDeathsButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+  it("health boards cases", async () => {
+    await dashboard.open();
+    await dashboard.selectCouncilAreasButton.click();
+    await dashboard.selectDeathsButton.click();
+    await expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
 
-    dashboard.selectHealthBoardsButton.click();
-    dashboard.selectCasesButton.click();
+    await dashboard.selectHealthBoardsButton.click();
+    await dashboard.selectCasesButton.click();
 
-    checkHeatmapHealthBoardsBoundaries();
-    checkHeatmapHealthBoardsCasesValues();
-    checkHeatmapHealthBoardsCasesHeatbar();
-    expect(dashboard.heatmapHeatbarValues).toHaveLength(15);
+    await checkHeatmapHealthBoardsBoundaries();
+    await checkHeatmapHealthBoardsCasesValues();
+    await checkHeatmapHealthBoardsCasesHeatbar();
+    await expect(await dashboard.heatmapHeatbarValues).toHaveLength(15);
   });
 
-  it("health boards deaths", () => {
-    dashboard.open();
-    dashboard.selectCouncilAreasButton.click();
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+  it("health boards deaths", async () => {
+    await dashboard.open();
+    await dashboard.selectCouncilAreasButton.click();
+    await expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
 
-    dashboard.selectHealthBoardsButton.click();
-    dashboard.selectDeathsButton.click();
+    await dashboard.selectHealthBoardsButton.click();
+    await dashboard.selectDeathsButton.click();
 
-    checkHeatmapHealthBoardsBoundaries();
+    await checkHeatmapHealthBoardsBoundaries();
 
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
-    expect(heatmapValueTypeValues).toHaveLength(15);
-    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 2000, 10000);
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 1000);
-    checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 0, 50);
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+    const heatmapValueTypeValues = await dashboard.heatmapValueTypeValues;
+    await expect(heatmapValueTypeValues).toHaveLength(15);
+    await checkValueWithin(Number(await heatmapValueTypeValues[0].getText()), 2000, 10000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[1].getText()), 50, 1000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[14].getText()), 0, 50);
 
-    checkScotlandDeathsHeatbar();
+    await checkScotlandDeathsHeatbar();
 
     // Greater Glasgow & Clyde heatbar
     const expectedValues2 = [
@@ -103,30 +103,30 @@ describe("heatmap selection", () => {
       { l: 4, w: 6 },
     ];
 
-    checkHeatbarValues(7, expectedValues2);
+    await checkHeatbarValues(7, expectedValues2);
 
     // Shetland heatbar
     const expectedValues3 = [{ l: 0 }];
 
-    checkHeatbarValues(12, expectedValues3);
+    await checkHeatbarValues(12, expectedValues3);
   });
 
-  it("council areas deaths", () => {
-    dashboard.open();
+  it("council areas deaths", async () => {
+    await dashboard.open();
 
-    dashboard.selectCouncilAreasButton.click();
-    dashboard.selectDeathsButton.click();
+    await dashboard.selectCouncilAreasButton.click();
+    await dashboard.selectDeathsButton.click();
 
-    checkHeatmapCouncilAreasBoundaries();
+    await checkHeatmapCouncilAreasBoundaries();
 
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
-    const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
-    expect(heatmapValueTypeValues).toHaveLength(33);
-    checkValueWithin(Number(heatmapValueTypeValues[0].getText()), 2000, 10000);
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 50, 500);
-    checkValueWithin(Number(heatmapValueTypeValues[32].getText()), 50, 500);
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL DEATHS");
+    const heatmapValueTypeValues = await dashboard.heatmapValueTypeValues;
+    await expect(heatmapValueTypeValues).toHaveLength(33);
+    await checkValueWithin(Number(await heatmapValueTypeValues[0].getText()), 2000, 10000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[1].getText()), 50, 500);
+    await checkValueWithin(Number(await heatmapValueTypeValues[32].getText()), 50, 500);
 
-    checkScotlandDeathsHeatbar();
+    await checkScotlandDeathsHeatbar();
 
     // City of Edinburgh heatbar
     const expectedValues1 = [
@@ -137,7 +137,7 @@ describe("heatmap selection", () => {
       { l: 0, w: 1 },
     ];
 
-    checkHeatbarValues(5, expectedValues1);
+    await checkHeatbarValues(5, expectedValues1);
 
     // Perth & Kinross
     const expectedValues2 = [
@@ -148,42 +148,42 @@ describe("heatmap selection", () => {
       { l: 1, w: 2 },
     ];
 
-    checkHeatbarValues(24, expectedValues2);
+    await checkHeatbarValues(24, expectedValues2);
   });
 
-  function checkHeatmapHealthBoardsBoundaries() {
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
-    const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
-    expect(heatmapBoundariesValues).toHaveLength(15);
-    expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
-    expect(heatmapBoundariesValues[1]).toHaveText("Ayrshire & Arran");
-    expect(heatmapBoundariesValues[14]).toHaveText("Western Isles");
+  async function checkHeatmapHealthBoardsBoundaries() {
+    await expect(dashboard.heatmapBoundariesTitle).toHaveText("HEALTH BOARDS");
+    const heatmapBoundariesValues = await dashboard.heatmapBoundariesValues;
+    await expect(heatmapBoundariesValues).toHaveLength(15);
+    await expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
+    await expect(heatmapBoundariesValues[1]).toHaveText("Ayrshire & Arran");
+    await expect(heatmapBoundariesValues[14]).toHaveText("Western Isles");
   }
 
-  function checkHeatmapCouncilAreasBoundaries() {
-    expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
-    const heatmapBoundariesValues = dashboard.heatmapBoundariesValues;
-    expect(heatmapBoundariesValues).toHaveLength(33);
-    expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
-    expect(heatmapBoundariesValues[1]).toHaveText("Aberdeen City");
-    expect(heatmapBoundariesValues[32]).toHaveText("West Lothian");
+  async function checkHeatmapCouncilAreasBoundaries() {
+    await expect(dashboard.heatmapBoundariesTitle).toHaveText("COUNCIL AREAS");
+    const heatmapBoundariesValues = await dashboard.heatmapBoundariesValues;
+    await expect(heatmapBoundariesValues).toHaveLength(33);
+    await expect(heatmapBoundariesValues[0]).toHaveText("Scotland");
+    await expect(heatmapBoundariesValues[1]).toHaveText("Aberdeen City");
+    await expect(heatmapBoundariesValues[32]).toHaveText("West Lothian");
   }
 
-  function checkHeatmapHealthBoardsCasesValues() {
-    expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
-    const heatmapValueTypeValues = dashboard.heatmapValueTypeValues;
-    expect(heatmapValueTypeValues).toHaveLength(15);
-    checkValueWithin(
-      Number(heatmapValueTypeValues[0].getText()),
+  async function checkHeatmapHealthBoardsCasesValues() {
+    await expect(dashboard.heatmapValueTypeTitle).toHaveText("TOTAL CASES");
+    const heatmapValueTypeValues = await dashboard.heatmapValueTypeValues;
+    await expect(heatmapValueTypeValues).toHaveLength(15);
+    await checkValueWithin(
+      Number(await heatmapValueTypeValues[0].getText()),
       30000,
       200000
     );
-    checkValueWithin(Number(heatmapValueTypeValues[1].getText()), 1000, 20000);
-    checkValueWithin(Number(heatmapValueTypeValues[14].getText()), 50, 1000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[1].getText()), 1000, 20000);
+    await checkValueWithin(Number(await heatmapValueTypeValues[14].getText()), 50, 1000);
   }
 
-  function checkHeatmapHealthBoardsCasesHeatbar() {
-    checkScotlandCasesHeatbar();
+  async function checkHeatmapHealthBoardsCasesHeatbar() {
+    await checkScotlandCasesHeatbar();
 
     // Greater Glasgow & Clyde heatbar
     const expectedValues2 = [
@@ -194,7 +194,7 @@ describe("heatmap selection", () => {
       { l: 6, w: 6 },
     ];
 
-    checkHeatbarValues(7, expectedValues2);
+    await checkHeatbarValues(7, expectedValues2);
 
     // Western Isles heatbar
     const expectedValues3 = [
@@ -205,10 +205,10 @@ describe("heatmap selection", () => {
       { l: 0, w: 2 },
     ];
 
-    checkHeatbarValues(14, expectedValues3);
+    await checkHeatbarValues(14, expectedValues3);
   }
 
-  function checkScotlandCasesHeatbar() {
+  async function checkScotlandCasesHeatbar() {
     const expectedValues = [
       { l: 2, w: 1 },
       { l: 5, w: 2 },
@@ -217,7 +217,7 @@ describe("heatmap selection", () => {
       { l: 6, w: 1 },
     ];
 
-    checkHeatbarValues(0, expectedValues);
+    await checkHeatbarValues(0, expectedValues);
   }
 
   function checkScotlandDeathsHeatbar() {
@@ -229,31 +229,31 @@ describe("heatmap selection", () => {
       { l: 4, w: 1 },
     ];
 
-    checkHeatbarValues(0, expectedValues);
+    return checkHeatbarValues(0, expectedValues);
   }
 
-  function checkHeatbarValues(rowIndex, expectedValues) {
-    const strokes = dashboard.heatbarLines(rowIndex);
-    expectedValues.forEach((element, i) => {
+  async function checkHeatbarValues(rowIndex, expectedValues) {
+    const strokes = await dashboard.heatbarLines(rowIndex);
+    await expectedValues.forEach((element, i) => {
       expect(strokes[i]).toHaveElementClass("l-" + element.l);
     });
 
     if (expectedValues.length === 1) {
-      expect(strokes).toHaveLength(1);
+      await expect(strokes).toHaveLength(1);
     } else {
       const calculatedDayWidth =
-        Number(strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
-      expectedValues.forEach((element, i) => {
-        expect(Number(strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
+        Number(await strokes[0].getAttribute("stroke-width")) / expectedValues[0].w;
+        for (let i=0; i<expectedValues.length; i++) {
+          expect(Number(await strokes[i].getAttribute("stroke-width"))).toBeCloseTo(
           calculatedDayWidth * expectedValues[i].w,
           4
         );
-      });
+      }
     }
   }
 });
 
-function checkValueWithin(value, lower, upper) {
-  expect(value).toBeGreaterThanOrEqual(lower);
-  expect(value).toBeLessThanOrEqual(upper);
+async function checkValueWithin(value, lower, upper) {
+  await expect(value).toBeGreaterThanOrEqual(lower);
+  await expect(value).toBeLessThanOrEqual(upper);
 }

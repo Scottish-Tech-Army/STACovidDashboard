@@ -1,4 +1,3 @@
-export const PERCENTAGE_TESTS = "percentTests";
 export const TOTAL_CASES = "totalCases";
 export const TOTAL_DEATHS = "totalDeaths";
 export const DAILY_CASES = "dailyCases";

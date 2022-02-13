@@ -79,8 +79,8 @@ function checkStoredValues(expectedAreaType) {
   expect(storedAreaType).toBe(expectedAreaType);
 }
 
-const healthBoardsButton = () => container.querySelector("#healthBoards");
-const councilAreasButton = () => container.querySelector("#councilAreas");
+const healthBoardsButton = () => container.querySelector("#healthBoards + label");
+const councilAreasButton = () => container.querySelector("#councilAreas + label");
 
 function click(button) {
   act(() => {

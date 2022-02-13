@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./DataDefinitions.css";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionContext from "react-bootstrap/AccordionContext";
-import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
+import { useAccordionButton } from "react-bootstrap/AccordionButton";
 import Card from "react-bootstrap/Card";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -14,14 +14,14 @@ import { Switch, Route } from "react-router-dom";
 import SvgIcon from "../Utils/SvgIcon";
 
 function ContextAwareToggle({ children, callback }) {
-  const currentEventKey = useContext(AccordionContext);
+  const  { activeEventKey } = useContext(AccordionContext);
 
-  const decoratedOnClick = useAccordionToggle(
+  const decoratedOnClick = useAccordionButton(
     "0",
     () => callback && callback("0")
   );
 
-  const isCurrentEventKey = currentEventKey === "0";
+  const isCurrentEventKey = activeEventKey === "0";
 
   return (
     <Card.Header className="accordion-header" onClick={decoratedOnClick}>

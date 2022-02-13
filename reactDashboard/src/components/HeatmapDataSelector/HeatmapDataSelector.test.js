@@ -42,10 +42,10 @@ function checkStoredValues(expectedAreaType, expectedValueType) {
   expect(storedValueType).toBe(expectedValueType);
 }
 
-const healthBoardsButton = () => container.querySelector("#healthBoards");
-const councilAreasButton = () => container.querySelector("#councilAreas");
-const deathsButton = () => container.querySelector("#deaths");
-const casesButton = () => container.querySelector("#cases");
+const healthBoardsButton = () => container.querySelector("#healthBoards + label");
+const councilAreasButton = () => container.querySelector("#councilAreas + label");
+const deathsButton = () => container.querySelector("#deaths + label");
+const casesButton = () => container.querySelector("#cases + label");
 
 function click(button) {
   act(() => {

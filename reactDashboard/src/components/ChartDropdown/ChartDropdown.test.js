@@ -8,7 +8,6 @@ import {
   TOTAL_CASES,
   DAILY_DEATHS,
   TOTAL_DEATHS,
-  PERCENTAGE_TESTS,
 } from "../DataCharts/DataChartsConsts";
 
 var storedChartType = DAILY_CASES;
@@ -108,19 +107,6 @@ describe("chartType input property", () => {
     });
     expect(selectedItem().textContent).toBe("Total Deaths");
   });
-
-  it("percentTests", () => {
-    act(() => {
-      render(
-        <ChartDropdown
-          chartType={PERCENTAGE_TESTS}
-          setChartType={setChartType}
-        />,
-        container
-      );
-      expect(selectedItem().textContent).toBe("% Tests Positive");
-    });
-  });
 });
 
 describe("available choices", () => {
@@ -151,7 +137,6 @@ describe("available choices", () => {
       "Total Cases",
       "Daily Deaths",
       "Total Deaths",
-      "% Tests Positive",
     ]);
   });
 });
@@ -178,10 +163,6 @@ test("choose chartTypes", async () => {
   await click(dropdownMenuItem("Total Deaths"));
   expect(storedChartType).toBe(TOTAL_DEATHS);
   expect(selectedItem().textContent).toBe("Total Deaths");
-
-  await click(dropdownMenuItem("% Tests Positive"));
-  expect(storedChartType).toBe(PERCENTAGE_TESTS);
-  expect(selectedItem().textContent).toBe("% Tests Positive");
 
   await click(dropdownMenuItem("Daily Cases"));
   expect(storedChartType).toBe(DAILY_CASES);
