@@ -247,6 +247,31 @@ describe("createJsonData handle bad data", () => {
     ).toStrictEqual(shortAllData);
   });
 
+  it("HB daily contains additional region", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `
+Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+20210117,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+20210118,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0
+20210119,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+`,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
   it("daily CA row missing", () => {
     expect(
       createJsonData(
@@ -590,43 +615,6 @@ describe("createJsonData handle bad data", () => {
         20210121,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
                 ,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
         20210121,S92000003,d,Scotland,1406,167711,0,89,5557,0,0,0`
-      )
-    ).toBeNull();
-  });
-
-  it("daily CA missing region code cell", () => {
-    expect(
-      createJsonData(
-        `Date,CA,CAName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2
-          20210117,S12000013,Na h-Eileanan Siar,4,158,591.32,0,0,1,0,0,0,0,0,0,5.26,0,0,0
-          20210118,         ,Na h-Eileanan Siar,2,160,598.80,0,0,1,0,0,0,0,0,0,1.72,0,0,0
-          20210119,S12000013,Na h-Eileanan Siar,5,165,617.51,0,0,1,0,0,0,0,0,0,3.21,0,0,0
-          20210117,S12000049,Glasgow City,195,30869,4875.69,0,2,852,0,0,0,0,0,0,15.72,0,0,0
-          20210118,S12000049,Glasgow City,271,31140,4918.50,0,4,856,0,0,0,0,0,0,10.76,0,0,0
-          20210119,S12000049,Glasgow City,242,31382,4956.72,0,0,856,0,0,0,0,0,0,11.37,0,0,0`,
-        shortDailyHealthBoardsCsvData,
-        currentTotalsCouncilAreasCsvData,
-        currentTotalsHealthBoardsCsvData
-      )
-    ).toBeNull();
-  });
-
-  it("daily HB missing region code cell", () => {
-    expect(
-      createJsonData(
-        shortDailyCouncilAreasCsvData,
-        `Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
-        20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
-        20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
-        20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
-        20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
-        20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
-        20210118,         ,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
-        20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
-        20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
-        20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0`,
-        currentTotalsCouncilAreasCsvData,
-        currentTotalsHealthBoardsCsvData
       )
     ).toBeNull();
   });

@@ -80,21 +80,22 @@ function createPlaceDateValuesMap(csvData, forCouncilAreas) {
 
   lines.forEach((line, i) => {
     const date = getDateValue(line[columnIndices.Date]);
-    const featureCode = getFeatureCodeValue(line[columnIndices.featureCode]);
-
-    if (!placeDateValuesMap[featureCode]) {
-      placeDateValuesMap[featureCode] = new Map();
+    const featureCode = line[columnIndices.featureCode];
+    if (FEATURE_CODE_MAP[featureCode]) {
+      if (!placeDateValuesMap[featureCode]) {
+        placeDateValuesMap[featureCode] = new Map();
+      }
+      var dateValuesMap = placeDateValuesMap[featureCode];
+      dateValuesMap.set(date, {
+        cases: getValue(line[columnIndices.DailyPositive]),
+        deaths: getValue(line[columnIndices.DailyDeaths]),
+        cumulativeCases: getValue(line[columnIndices.CumulativePositive]),
+        cumulativeDeaths: getValue(line[columnIndices.CumulativeDeaths]),
+      });
+      dateSet.add(date);
     }
-    var dateValuesMap = placeDateValuesMap[featureCode];
-    dateValuesMap.set(date, {
-      cases: getValue(line[columnIndices.DailyPositive]),
-      deaths: getValue(line[columnIndices.DailyDeaths]),
-      cumulativeCases: getValue(line[columnIndices.CumulativePositive]),
-      cumulativeDeaths: getValue(line[columnIndices.CumulativeDeaths]),
-    });
-    dateSet.add(date);
   });
-  
+
   const dates = [...dateSet].sort();
   return { dates: dates, placeDateValuesMap: placeDateValuesMap };
 }
@@ -181,9 +182,7 @@ function getCurrentWeekTotals({ dates, placeDateValuesMap }) {
 function getPopulationMap(placeValuesMap) {
   const populationMap = {};
   Object.keys(placeValuesMap).forEach((place) => {
-    const { cumulativeCases, crudeRatePositive } = placeValuesMap[
-      place
-    ];
+    const { cumulativeCases, crudeRatePositive } = placeValuesMap[place];
     if (crudeRatePositive === 0) {
       populationMap[place] = 0;
     } else {
@@ -284,12 +283,8 @@ function getDailySeriesData({ dates, placeDateValuesMap }) {
     const totalDeaths = [];
 
     dates.forEach((date, i) => {
-      const {
-        cases,
-        deaths,
-        cumulativeCases,
-        cumulativeDeaths,
-      } = dateValuesMap.get(date);
+      const { cases, deaths, cumulativeCases, cumulativeDeaths } =
+        dateValuesMap.get(date);
 
       dailyCases.push(cases);
       dailyDeaths.push(deaths);
@@ -372,9 +367,8 @@ export function createJsonData(
     const endDate =
       placeDateValuesMap.dates[placeDateValuesMap.dates.length - 1];
 
-    let { currentWeekStartDate, regions } = getCurrentWeekTotals(
-      placeDateValuesMap
-    );
+    let { currentWeekStartDate, regions } =
+      getCurrentWeekTotals(placeDateValuesMap);
 
     const regionTotals = {
       ...parseNhsTotalsCsvData(currentTotalsCouncilAreaCsvData, true),
@@ -389,13 +383,11 @@ export function createJsonData(
     });
 
     const populationMap = getPopulationMap(regionTotals);
-    const populationProportionMap = calculatePopulationProportionMap(
-      populationMap
-    );
+    const populationProportionMap =
+      calculatePopulationProportionMap(populationMap);
 
-    const { weekStartDates, regionWeeklySeries } = getWeeklySeriesData(
-      placeDateValuesMap
-    );
+    const { weekStartDates, regionWeeklySeries } =
+      getWeeklySeriesData(placeDateValuesMap);
     const regionDailySeries = getDailySeriesData(placeDateValuesMap);
 
     Object.keys(regions).forEach((region, i) => {
