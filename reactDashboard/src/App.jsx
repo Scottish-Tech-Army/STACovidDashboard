@@ -28,6 +28,7 @@ import useDarkMode from "use-dark-mode";
 
 const tagManagerArgs = { gtmId: "GTM-5LKHW33" };
 
+// eslint-disable-next-line jest/require-hook
 TagManager.initialize(tagManagerArgs);
 
 const ScrollToTop = () => {

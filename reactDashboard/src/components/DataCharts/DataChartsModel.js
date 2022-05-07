@@ -30,6 +30,7 @@ import Annotation from "chartjs-plugin-annotation";
 import "chartjs-adapter-date-fns";
 import { sub, getTime } from "date-fns";
 
+// eslint-disable-next-line jest/require-hook
 Chart.register(
   LineElement,
   PointElement,

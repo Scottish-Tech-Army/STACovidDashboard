@@ -89,6 +89,7 @@ function webspeechAvailable() {
 }
 
 // On Firefox this occasionally fails the first time, so call it now
+// eslint-disable-next-line jest/require-hook
 webspeechAvailable();
 
 function playDataIntroduction(

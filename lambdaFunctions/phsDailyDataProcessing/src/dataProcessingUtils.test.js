@@ -15,11 +15,13 @@ jest.mock("./featureCodes", () => {
   };
 });
 
+// eslint-disable-next-line jest/require-top-level-describe
 beforeAll(() => {
   console.warn = jest.fn();
   console.error = jest.fn();
 });
 
+// eslint-disable-next-line jest/require-top-level-describe
 afterAll(() => {
   jest.restoreAllMocks();
 });
@@ -241,6 +243,31 @@ describe("createJsonData handle bad data", () => {
       createJsonData(
         shortDailyCouncilAreasCsvData,
         shortDailyHealthBoardsCsvData,
+        currentTotalsCouncilAreasCsvData,
+        currentTotalsHealthBoardsCsvData
+      )
+    ).toStrictEqual(shortAllData);
+  });
+
+  it("daily HB contains additional region", () => {
+    expect(
+      createJsonData(
+        shortDailyCouncilAreasCsvData,
+        `
+Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayPositive,DailyDeaths,CumulativeDeaths,CrudeRateDeaths,DailyNegative,CumulativeNegative,CrudeRateNegative,TotalTests,PositiveTests,PositivePercentage,PositivePercentage7Day,TotalPillar1,TotalPillar2,HospitalAdmissions,HospitalAdmissionsQF,ICUAdmissions,ICUAdmissionsQF
+20210117,S08000024,NHS Lothian,141,22680,2498.95,0,4,861,0,0,0,0,0,0,9.47,0,0,0,0,0,0,0
+20210117,S08000025,NHS Orkney,4,52,233.50,0,0,2,0,0,0,0,0,0,12.12,0,0,0,0,0,0,0
+20210117,S92000003,Scotland,1195,164592,3012.68,0,28,5500,0,0,0,0,0,0,12.88,0,0,0,0,0,0,0
+20210117,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+20210118,S08000024,NHS Lothian,174,22854,2518.13,0,2,863,0,0,0,0,0,0,5.07,0,0,0,0,0,0,0
+20210118,S08000025,NHS Orkney,1,53,237.99,0,0,2,0,0,0,0,0,0,0.81,0,0,0,0,0,0,0
+20210118,S92000003,Scotland,1713,166305,3044.04,0,37,5537,0,0,0,0,0,0,7.67,0,0,0,0,0,0,0
+20210118,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+20210119,S08000024,NHS Lothian,166,23020,2536.42,0,0,863,0,0,0,0,0,0,5.91,0,0,0,0,0,0,0
+20210119,S08000025,NHS Orkney,0,53,237.99,0,0,2,0,0,0,0,0,0,0.00,0,0,0,0,0,0,0
+20210119,S92000003,Scotland,1406,167711,3069.77,0,18,5555,0,0,0,0,0,0,6.84,0,0,0,0,0,0,0
+20210119,,Golden Jubilee National Hospital,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+`,
         currentTotalsCouncilAreasCsvData,
         currentTotalsHealthBoardsCsvData
       )
