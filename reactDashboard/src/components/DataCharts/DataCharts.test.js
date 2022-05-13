@@ -1,6 +1,5 @@
 import React from "react";
 import DataCharts from "./DataCharts";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import { DAILY_CASES, TOTAL_CASES } from "./DataChartsConsts";
@@ -10,14 +9,17 @@ import {
   getSonificationSeriesTitle,
 } from "./DataChartsModel";
 import { create } from "react-test-renderer";
+import { createRoot } from "react-dom/client";
 
 jest.mock("./DataChartsModel");
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
   fetch.resetMocks();
   createChart.mockClear();
   createChart.mockReturnValue(null);
@@ -26,7 +28,7 @@ beforeEach(() => {
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -35,7 +37,7 @@ test("dataCharts renders default data input dataset is null", async () => {
   global.suppressConsoleErrorLogs();
 
   await act(async () => {
-    render(<DataCharts />, container);
+    root.render(<DataCharts />);
   });
 
   expect(container.querySelector(".hidden-chart")).not.toBeNull();
@@ -44,7 +46,7 @@ test("dataCharts renders default data input dataset is null", async () => {
 
 test("dataCharts renders dynamic fetched data", async () => {
   await act(async () => {
-    render(<DataCharts allData={testAllData} />, container);
+    root.render(<DataCharts allData={testAllData} />);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -66,10 +68,7 @@ test("dataCharts renders dynamic fetched data", async () => {
 
 test("dataCharts renders changes of selected region", async () => {
   await act(async () => {
-    render(
-      <DataCharts allData={testAllData} regionCode={"S12000033"} />,
-      container
-    );
+    root.render(<DataCharts allData={testAllData} regionCode={"S12000033"} />);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -88,7 +87,7 @@ test("dataCharts renders changes of selected region", async () => {
 
 test("dataCharts renders with dark mode value selected", async () => {
   await act(async () => {
-    render(<DataCharts allData={testAllData} darkmode={true} />, container);
+    root.render(<DataCharts allData={testAllData} darkmode={true} />);
   });
 
   const canvas = container.querySelector(".chart-container canvas");
@@ -112,13 +111,13 @@ test("dataCharts renders with TOTAL_CASES selected", async () => {
   const selectedItem = () => container.querySelector(".selected-chart");
 
   await act(async () => {
-    render(<DataCharts allData={testAllData} />, container);
+    root.render(<DataCharts allData={testAllData} />);
   });
 
   async function click(button) {
     await act(async () => {
       button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-      render(<DataCharts allData={testAllData} />, container);
+      root.render(<DataCharts allData={testAllData} />);
     });
   }
   await click(selectedItem());

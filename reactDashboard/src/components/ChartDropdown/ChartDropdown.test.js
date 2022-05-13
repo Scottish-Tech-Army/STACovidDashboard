@@ -1,8 +1,8 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkDropdownMenuItems"] }] */
 import React from "react";
 import ChartDropdown from "./ChartDropdown";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { createRoot } from "react-dom/client";
 import {
   DAILY_CASES,
   TOTAL_CASES,
@@ -14,15 +14,17 @@ var storedChartType = DAILY_CASES;
 const setChartType = (value) => (storedChartType = value);
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -35,9 +37,8 @@ const dropdownMenuItem = (text) =>
 async function click(button) {
   await act(async () => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
-      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />,
-      container
+    root.render(
+      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />
     );
   });
 }
@@ -47,32 +48,33 @@ describe("chartType input property", () => {
     global.suppressConsoleErrorLogs();
 
     expect(() => {
-      render(
-        <ChartDropdown chartType={null} setChartType={setChartType} />,
-        container
-      );
+      act(() => {
+        root.render(
+          <ChartDropdown chartType={null} setChartType={setChartType} />
+        );
+      });
     }).toThrow("Unrecognised chartType: null");
 
     expect(() => {
-      render(
-        <ChartDropdown chartType="unknown" setChartType={setChartType} />,
-        container
-      );
+      act(() => {
+        root.render(
+          <ChartDropdown chartType="unknown" setChartType={setChartType} />
+        );
+      });
     }).toThrow("Unrecognised chartType: unknown");
   });
 
   it("undefined", () => {
     act(() => {
-      render(<ChartDropdown setChartType={setChartType} />, container);
+      root.render(<ChartDropdown setChartType={setChartType} />);
     });
     expect(selectedItem().textContent).toBe("Daily Cases");
   });
 
   it("daily cases", () => {
     act(() => {
-      render(
-        <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />,
-        container
+      root.render(
+        <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />
       );
     });
     expect(selectedItem().textContent).toBe("Daily Cases");
@@ -80,9 +82,8 @@ describe("chartType input property", () => {
 
   it("totalCases", () => {
     act(() => {
-      render(
-        <ChartDropdown chartType={TOTAL_CASES} setChartType={setChartType} />,
-        container
+      root.render(
+        <ChartDropdown chartType={TOTAL_CASES} setChartType={setChartType} />
       );
     });
     expect(selectedItem().textContent).toBe("Total Cases");
@@ -90,9 +91,8 @@ describe("chartType input property", () => {
 
   it("dailyDeaths", () => {
     act(() => {
-      render(
-        <ChartDropdown chartType={DAILY_DEATHS} setChartType={setChartType} />,
-        container
+      root.render(
+        <ChartDropdown chartType={DAILY_DEATHS} setChartType={setChartType} />
       );
     });
     expect(selectedItem().textContent).toBe("Daily Deaths");
@@ -100,9 +100,8 @@ describe("chartType input property", () => {
 
   it("totalDeaths", () => {
     act(() => {
-      render(
-        <ChartDropdown chartType={TOTAL_DEATHS} setChartType={setChartType} />,
-        container
+      root.render(
+        <ChartDropdown chartType={TOTAL_DEATHS} setChartType={setChartType} />
       );
     });
     expect(selectedItem().textContent).toBe("Total Deaths");
@@ -118,19 +117,18 @@ describe("available choices", () => {
     });
   }
 
-  it("normal", () => {
+  it("normal", async () => {
     act(() => {
-      render(
+      root.render(
         <ChartDropdown
           chartType={storedChartType}
           setChartType={setChartType}
-        />,
-        container
+        />
       );
     });
 
     // Make the menu appear
-    click(selectedItem());
+    await click(selectedItem());
 
     checkDropdownMenuItems([
       "Daily Cases",
@@ -143,9 +141,8 @@ describe("available choices", () => {
 
 test("choose chartTypes", async () => {
   await act(async () => {
-    render(
-      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />,
-      container
+    root.render(
+      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />
     );
   });
 

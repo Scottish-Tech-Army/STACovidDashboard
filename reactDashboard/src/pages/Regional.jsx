@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -15,12 +15,11 @@ import {
   getPlaceNameByFeatureCode,
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
-import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 
 // Exported for unit tests
-export function getRegionCodeFromUrl(location) {
-  const initialRegionCode = location.pathname.split("/").pop();
+export function getRegionCodeFromUrl(initialRegionCode = FEATURE_CODE_SCOTLAND) {
   if (FEATURE_CODE_MAP[initialRegionCode] !== undefined) {
     return initialRegionCode;
   }
@@ -35,13 +34,13 @@ export function getCanonicalUrl(baseUrl, regionCode) {
 }
 
 const Regional = ({ allData, darkmode }) => {
-  const match = useRouteMatch();
   const location = useLocation();
-  const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
-  const history = useHistory();
+  const urlParams = useParams();
+  const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(urlParams.regionCode));
+  const navigate = useNavigate();
 
   const currentRegionCode = useRef(regionCode);
-  const currentLocation = useRef(match.url);
+  const currentLocation = useRef(urlParams.regionCode || FEATURE_CODE_SCOTLAND);
 
   // These two effects handle the browser url and the region code selection in sync.
   // Either location or regionCode may be changed by user action, so the currentRegionCode
@@ -58,16 +57,16 @@ const Regional = ({ allData, darkmode }) => {
       const newUrl = getCanonicalUrl(match.url, regionCode);
       if (currentLocation.current !== newUrl) {
         currentLocation.current = newUrl;
-        history.push(newUrl);
+        navigate(newUrl);
       }
     }
-  }, [regionCode, history, match]);
+  }, [regionCode, navigate, urlParams]);
 
   useEffect(() => {
     function setCanonicalLocation(newRegionCode) {
       currentLocation.current = getCanonicalUrl(match.url, newRegionCode);
       if (location.pathname !== currentLocation.current) {
-        history.push(currentLocation.current);
+        navigate(currentLocation.current);
       }
     }
 
@@ -77,7 +76,7 @@ const Regional = ({ allData, darkmode }) => {
       setRegionCode(currentRegionCode.current);
       setCanonicalLocation(currentRegionCode.current);
     }
-  }, [location, history, match]);
+  }, [location, navigate, match]);
 
   // Stop audio on chart, region or location change
   useEffect(() => {

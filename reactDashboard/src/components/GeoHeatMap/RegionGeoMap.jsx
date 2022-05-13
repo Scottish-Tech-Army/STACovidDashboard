@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
-import "leaflet/dist/leaflet.css";
+// import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
@@ -24,7 +24,7 @@ import {
 */
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
-import Control from "react-leaflet-control";
+// import Control from "react-leaflet-control";
 import RegionTypeSelector from "./RegionTypeSelector";
 import {
   setScotlandDefaultBounds,
@@ -32,18 +32,17 @@ import {
   MAP_TILES_URL,
   DARK_MAP_TILES_URL,
 } from "./GeoUtils";
+import { createControlComponent } from "@react-leaflet/core";
 
 export default function RegionGeoMap({
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode = null,
   darkmode,
 }) {
-  const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
-    null
-  );
-  const [healthBoardBoundariesLayer, setHealthBoardBoundariesLayer] = useState(
-    null
-  );
+  const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] =
+    useState(null);
+  const [healthBoardBoundariesLayer, setHealthBoardBoundariesLayer] =
+    useState(null);
 
   const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
@@ -170,7 +169,7 @@ export default function RegionGeoMap({
 
   return (
     <div className="geo-map">
-      <LeafletMap
+      <MapContainer
         ref={mapRef}
         id="regionmap"
         maxZoom={10}
@@ -185,10 +184,31 @@ export default function RegionGeoMap({
           attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         />
         <ZoomControl position="topright" />
-        <Control position="topleft">
-          <RegionTypeSelector areaType={areaType} setAreaType={setAreaType} />
-        </Control>
-      </LeafletMap>
+        <RegionTypeControl
+          position="topleft"
+          areaType={areaType}
+          setAreaType={setAreaType}
+        />
+      </MapContainer>
+    </div>
+  );
+}
+
+const POSITION_CLASSES = {
+  bottomleft: "leaflet-bottom leaflet-left",
+  bottomright: "leaflet-bottom leaflet-right",
+  topleft: "leaflet-top leaflet-left",
+  topright: "leaflet-top leaflet-right",
+};
+
+function RegionTypeControl({ position, areaType, setAreaType }) {
+  const positionClass =
+    (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topright;
+  return (
+    <div className={positionClass}>
+      <div className="leaflet-control leaflet-bar">
+        <RegionTypeSelector areaType={areaType} setAreaType={setAreaType} />
+      </div>
     </div>
   );
 }

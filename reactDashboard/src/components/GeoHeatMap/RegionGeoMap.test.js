@@ -1,25 +1,27 @@
 import React from "react";
 import RegionGeoMap from "./RegionGeoMap";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
 
 test("default render", async () => {
   act(() => {
-    render(<RegionGeoMap />, container);
+    root.render(<RegionGeoMap />);
   });
   expect(map()).not.toBeNull();
 });

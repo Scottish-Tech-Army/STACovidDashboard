@@ -1,19 +1,21 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import DateRangeSlider, { getMarks } from "./DateRangeSlider";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
   fetch.resetMocks();
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -89,9 +91,8 @@ describe("getMarks", () => {
 
     it("check values", async () => {
       await act(async () => {
-        render(
-          <DateRangeSlider maxDateRange={maxDateRange} dateRange={dateRange} />,
-          container
+        root.render(
+          <DateRangeSlider maxDateRange={maxDateRange} dateRange={dateRange} />
         );
       });
       expect(minimumDateValue()).toStrictEqual(

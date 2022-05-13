@@ -2,30 +2,32 @@
 
 import React from "react";
 import RegionDropdown from "./RegionDropdown";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import {
   FEATURE_CODE_MAP,
   FEATURE_CODE_SCOTLAND,
   FEATURE_CODE_HEALTH_BOARDS_MAP,
 } from "../Utils/CsvUtils";
+import { createRoot } from "react-dom/client";
 
 var showCouncilAreas = true;
 var storedRegionCode = FEATURE_CODE_SCOTLAND;
 const setRegionCode = (value) => (storedRegionCode = value);
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
   showCouncilAreas = true;
   storedRegionCode = FEATURE_CODE_SCOTLAND;
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -40,13 +42,12 @@ const FEATURE_CODE_CA_ABERDEEN_CITY = "S12000033";
 function click(button) {
   act(() => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
+    root.render(
       <RegionDropdown
         regionCode={storedRegionCode}
         setRegionCode={setRegionCode}
         showCouncilAreas={showCouncilAreas}
-      />,
-      container
+      />
     );
   });
 }
@@ -55,38 +56,43 @@ test("null/undefined input throws error", async () => {
   global.suppressConsoleErrorLogs();
 
   expect(() => {
-    render(
-      <RegionDropdown regionCode={null} setRegionCode={setRegionCode} />,
-      container
-    );
+    act(() => {
+      root.render(
+        <RegionDropdown regionCode={null} setRegionCode={setRegionCode} />
+      );
+    });
   }).toThrow("Unrecognised regionCode: null");
 
   expect(() => {
-    render(<RegionDropdown regionCode={storedRegionCode} />, container);
+    act(() => {
+      root.render(<RegionDropdown regionCode={storedRegionCode} />);
+    });
   }).toThrow("Unrecognised setRegionCode: undefined");
 
   expect(() => {
-    render(
-      <RegionDropdown regionCode="unknown" setRegionCode={setRegionCode} />,
-      container
-    );
+    act(() => {
+      root.render(
+        <RegionDropdown regionCode="unknown" setRegionCode={setRegionCode} />
+      );
+    });
   }).toThrow("Unrecognised regionCode: unknown");
 
   expect(() => {
-    render(
-      <RegionDropdown
-        regionCode={FEATURE_CODE_CA_ABERDEEN_CITY}
-        setRegionCode={setRegionCode}
-        showCouncilAreas={false}
-      />,
-      container
-    );
+    act(() => {
+      root.render(
+        <RegionDropdown
+          regionCode={FEATURE_CODE_CA_ABERDEEN_CITY}
+          setRegionCode={setRegionCode}
+          showCouncilAreas={false}
+        />
+      );
+    });
   }).toThrow("Unrecognised regionCode: " + FEATURE_CODE_CA_ABERDEEN_CITY);
 });
 
 test("default render", () => {
   act(() => {
-    render(<RegionDropdown setRegionCode={setRegionCode} />, container);
+    root.render(<RegionDropdown setRegionCode={setRegionCode} />);
   });
 
   expect(selectedItem().textContent).toBe("Scotland");
@@ -94,13 +100,12 @@ test("default render", () => {
 
 test("supplied regionCode render", () => {
   act(() => {
-    render(
+    root.render(
       <RegionDropdown
         regionCode="S12000036"
         setRegionCode={setRegionCode}
         showCouncilAreas={true}
-      />,
-      container
+      />
     );
   });
 
@@ -109,12 +114,11 @@ test("supplied regionCode render", () => {
 
 test("select dropdown items", () => {
   act(() => {
-    render(
+    root.render(
       <RegionDropdown
         regionCode={storedRegionCode}
         setRegionCode={setRegionCode}
-      />,
-      container
+      />
     );
   });
 
@@ -152,13 +156,12 @@ test("select dropdown items, no council areas", () => {
   showCouncilAreas = false;
 
   act(() => {
-    render(
+    root.render(
       <RegionDropdown
         regionCode={storedRegionCode}
         setRegionCode={setRegionCode}
         showCouncilAreas={showCouncilAreas}
-      />,
-      container
+      />
     );
   });
 

@@ -10,11 +10,11 @@ import {
   URL_REGIONAL,
   URL_DATA_SOURCES,
 } from "../../pages/PageConsts";
-import { Switch, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import SvgIcon from "../Utils/SvgIcon";
 
 function ContextAwareToggle({ children, callback }) {
-  const  { activeEventKey } = useContext(AccordionContext);
+  const { activeEventKey } = useContext(AccordionContext);
 
   const decoratedOnClick = useAccordionButton(
     "0",
@@ -51,41 +51,59 @@ function DataDefinitions() {
 
   function specimenDateDefinition() {
     return (
-      <Switch>
-        <Route exact path={URL_OVERVIEW}>
-          The specimen date is the date the sample was collected from the
-          patient. The specimen date is used in the map, heatmap table and chart
-          components within the STA Summary Dashboard Page to show the number of
-          % positive samples for each day and number of test samples taken for
-          each day. This is the date most suited for surveillance to show trends
-          of COVID-19 over a period of time.
-        </Route>
-        <Route path={URL_REGIONAL}>
-          The specimen date is the date the sample was collected from the
-          patient. The specimen date is used in the chart component within the
-          STA Regional Insights Dashboard Page to show the number of test
-          samples taken for each day, and is also used for the weekly headline
-          figures i.e. totals over the last 7 days. This is the date most suited
-          for surveillance to show trends of COVID-19 over a period of time.
-        </Route>
-        <Route exact path={URL_DATA_SOURCES}>
-          The specimen date is the date the sample was collected from the
-          patient. The specimen date is used in the following components:-{" "}
-          <ul>
-            <li>
-              <b>STA Summary Page</b>: (a) the map; (b) the heatmap table; and
-              (c) the chart component.
-            </li>
-            <li>
-              <b>Regional Insights Page</b>: (a) the chart component to show the
-              % positive samples for each day and number of test samples taken
-              for each day; and (b) the weekly headline figures i.e. totals over
-              the last 7 days. This is the date most suited for surveillance to
-              show trends of COVID-19 over a period of time.
-            </li>
-          </ul>
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          
+          path={URL_OVERVIEW}
+          element={
+            <>
+              The specimen date is the date the sample was collected from the
+              patient. The specimen date is used in the map, heatmap table and
+              chart components within the STA Summary Dashboard Page to show the
+              number of % positive samples for each day and number of test
+              samples taken for each day. This is the date most suited for
+              surveillance to show trends of COVID-19 over a period of time.
+            </>
+          }
+        />
+        <Route
+          path={URL_REGIONAL}
+          element={
+            <>
+              The specimen date is the date the sample was collected from the
+              patient. The specimen date is used in the chart component within
+              the STA Regional Insights Dashboard Page to show the number of
+              test samples taken for each day, and is also used for the weekly
+              headline figures i.e. totals over the last 7 days. This is the
+              date most suited for surveillance to show trends of COVID-19 over
+              a period of time.
+            </>
+          }
+        />
+        <Route
+          exact
+          path={URL_DATA_SOURCES}
+          element={
+            <>
+              The specimen date is the date the sample was collected from the
+              patient. The specimen date is used in the following components:-{" "}
+              <ul>
+                <li>
+                  <b>STA Summary Page</b>: (a) the map; (b) the heatmap table;
+                  and (c) the chart component.
+                </li>
+                <li>
+                  <b>Regional Insights Page</b>: (a) the chart component to show
+                  the % positive samples for each day and number of test samples
+                  taken for each day; and (b) the weekly headline figures i.e.
+                  totals over the last 7 days. This is the date most suited for
+                  surveillance to show trends of COVID-19 over a period of time.
+                </li>
+              </ul>
+            </>
+          }
+        />
+      </Routes>
     );
   }
 

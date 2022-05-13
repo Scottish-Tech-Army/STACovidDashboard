@@ -1,26 +1,27 @@
 import React from "react";
 import Heatmap, { createHeatbarLines } from "./Heatmap";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  fetch.resetMocks();
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
 
 test("heatmap renders no data when fetch fails, shows loadingComponent", async () => {
   await act(async () => {
-    render(<Heatmap />, container);
+    root.render(<Heatmap />);
   });
 
   expect(loadingComponent()).not.toBeNull();
@@ -30,13 +31,12 @@ test("heatmap renders no data when fetch fails, shows loadingComponent", async (
 describe("heatmap renders dynamic fetched data", () => {
   it("council areas; deaths", async () => {
     await act(async () => {
-      render(
+      root.render(
         <Heatmap
           allData={testAllData}
           valueType="deaths"
           areaType="council-areas"
-        />,
-        container
+        />
       );
     });
 
@@ -62,13 +62,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
   it("health boards; deaths", async () => {
     await act(async () => {
-      render(
+      root.render(
         <Heatmap
           allData={testAllData}
           valueType="deaths"
           areaType="health-boards"
-        />,
-        container
+        />
       );
     });
 
@@ -93,13 +92,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
   it("health boards; cases", async () => {
     await act(async () => {
-      render(
+      root.render(
         <Heatmap
           allData={testAllData}
           valueType="cases"
           areaType="health-boards"
-        />,
-        container
+        />
       );
     });
 
@@ -120,13 +118,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
   it("council areas; cases", async () => {
     await act(async () => {
-      render(
+      root.render(
         <Heatmap
           allData={testAllData}
           valueType="cases"
           areaType="council-areas"
-        />,
-        container
+        />
       );
     });
 
@@ -147,13 +144,12 @@ describe("heatmap renders dynamic fetched data", () => {
 
   it("missing region data", async () => {
     await act(async () => {
-      render(
+      root.render(
         <Heatmap
           allData={{ regions: {} }}
           valueType="deaths"
           areaType="council-areas"
-        />,
-        container
+        />
       );
     });
 

@@ -2,23 +2,25 @@
 
 import React from "react";
 import RegionTypeSelector from "./RegionTypeSelector";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { AREATYPE_HEALTH_BOARDS } from "../HeatmapDataSelector/HeatmapConsts";
+import { createRoot } from "react-dom/client";
 
 var storedAreaType = AREATYPE_HEALTH_BOARDS;
 const setAreaType = (value) => (storedAreaType = value);
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -27,36 +29,38 @@ test("null/undefined input throws error", async () => {
   global.suppressConsoleErrorLogs();
 
   expect(() => {
-    render(
-      <RegionTypeSelector areaType={null} setAreaType={setAreaType} />,
-      container
-    );
+    act(() => {
+      root.render(
+        <RegionTypeSelector areaType={null} setAreaType={setAreaType} />
+      );
+    });
   }).toThrow("Unrecognised areaType: null");
 
   expect(() => {
-    render(<RegionTypeSelector setAreaType={setAreaType} />, container);
+    act(() => {
+      root.render(<RegionTypeSelector setAreaType={setAreaType} />);
+    });
   }).toThrow("Unrecognised areaType: undefined");
 
   expect(() => {
-    render(<RegionTypeSelector areaType="health-boards" />, container);
+    act(() => {
+      root.render(<RegionTypeSelector areaType="health-boards" />);
+    });
   }).toThrow("Unrecognised setAreaType: undefined");
 
   expect(() => {
-    render(
-      <RegionTypeSelector areaType="unknown" setAreaType={setAreaType} />,
-      container
-    );
+    act(() => {
+      root.render(
+        <RegionTypeSelector areaType="unknown" setAreaType={setAreaType} />
+      );
+    });
   }).toThrow("Unrecognised areaType: unknown");
 });
 
 test("default render", async () => {
   act(() => {
-    render(
-      <RegionTypeSelector
-        areaType={storedAreaType}
-        setAreaType={setAreaType}
-      />,
-      container
+    root.render(
+      <RegionTypeSelector areaType={storedAreaType} setAreaType={setAreaType} />
     );
   });
 
@@ -79,18 +83,16 @@ function checkStoredValues(expectedAreaType) {
   expect(storedAreaType).toBe(expectedAreaType);
 }
 
-const healthBoardsButton = () => container.querySelector("#healthBoards + label");
-const councilAreasButton = () => container.querySelector("#councilAreas + label");
+const healthBoardsButton = () =>
+  container.querySelector("#healthBoards + label");
+const councilAreasButton = () =>
+  container.querySelector("#councilAreas + label");
 
 function click(button) {
   act(() => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
-      <RegionTypeSelector
-        areaType={storedAreaType}
-        setAreaType={setAreaType}
-      />,
-      container
+    root.render(
+      <RegionTypeSelector areaType={storedAreaType} setAreaType={setAreaType} />
     );
   });
 }

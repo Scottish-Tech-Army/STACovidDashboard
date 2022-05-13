@@ -2,40 +2,41 @@
 
 import React from "react";
 import RegionSingleValueBar from "./RegionSingleValueBar";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import MockDate from "mockdate";
+import { createRoot } from "react-dom/client";
 
 const DATE_TODAY = "2020-10-17";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
   fetch.resetMocks();
   MockDate.set(DATE_TODAY);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  MockDate.reset();
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
+  MockDate.reset();
   jest.resetAllMocks();
 });
 
 describe("single value bar rendering", () => {
   it("scotland available", () => {
     act(() => {
-      render(
+      root.render(
         <RegionSingleValueBar
           allData={testAllData}
           regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
+        />
       );
     });
 
@@ -44,12 +45,8 @@ describe("single value bar rendering", () => {
 
   it("region available", () => {
     act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={testAllData}
-          regionCode="S08000017"
-        />,
-        container
+      root.render(
+        <RegionSingleValueBar allData={testAllData} regionCode="S08000017" />
       );
     });
 
@@ -63,34 +60,26 @@ describe("single value bar rendering", () => {
 
   it("scotland unavailable", () => {
     act(() => {
-      render(
+      root.render(
         <RegionSingleValueBar
           allData={{ regions: {} }}
           regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
+        />
       );
     });
 
     expectValuesUnavailable();
 
     act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={{}}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
+      root.render(
+        <RegionSingleValueBar allData={{}} regionCode={FEATURE_CODE_SCOTLAND} />
       );
     });
 
     expectValuesUnavailable();
 
     act(() => {
-      render(
-        <RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />,
-        container
-      );
+      root.render(<RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />);
     });
 
     expectValuesUnavailable();
@@ -98,12 +87,11 @@ describe("single value bar rendering", () => {
 
   it("region unavailable", () => {
     act(() => {
-      render(
+      root.render(
         <RegionSingleValueBar
           allData={{ regions: {} }}
           regionCode="S08000017"
-        />,
-        container
+        />
       );
     });
 
@@ -114,7 +102,7 @@ describe("single value bar rendering", () => {
 describe("regionCode", () => {
   it("missing should default to Scotland", () => {
     act(() => {
-      render(<RegionSingleValueBar allData={testAllData} />, container);
+      root.render(<RegionSingleValueBar allData={testAllData} />);
     });
 
     expectNormalScotlandValues();
@@ -122,9 +110,8 @@ describe("regionCode", () => {
 
   it("null should default to Scotland", () => {
     act(() => {
-      render(
-        <RegionSingleValueBar allData={testAllData} regionCode={null} />,
-        container
+      root.render(
+        <RegionSingleValueBar allData={testAllData} regionCode={null} />
       );
     });
 
@@ -135,10 +122,11 @@ describe("regionCode", () => {
     global.suppressConsoleErrorLogs();
 
     expect(() => {
-      render(
-        <RegionSingleValueBar allData={testAllData} regionCode="unknown" />,
-        container
-      );
+      act(() => {
+        root.render(
+          <RegionSingleValueBar allData={testAllData} regionCode="unknown" />
+        );
+      });
     }).toThrow("Unrecognised regionCode: unknown");
   });
 });
@@ -183,7 +171,7 @@ function checkSingleValue(
   expect(value.textContent).toBe(expectedValue);
 }
 
-const testDate =  Date.parse(DATE_TODAY);
+const testDate = Date.parse(DATE_TODAY);
 
 const testAllData = {
   regions: {

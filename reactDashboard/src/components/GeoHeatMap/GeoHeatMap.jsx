@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -292,7 +292,7 @@ export default function GeoHeatMap({
 
   return (
     <div aria-hidden={true} className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
-      <LeafletMap
+      <MapContainer
         ref={mapRef}
         id="map"
         maxZoom={10}
@@ -311,7 +311,7 @@ export default function GeoHeatMap({
           toggleFullscreen={toggleFullscreen}
           fullscreenEnabled={fullscreenEnabled}
         />
-      </LeafletMap>
+      </MapContainer>
     </div>
   );
 }

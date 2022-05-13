@@ -1,5 +1,4 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import {
   playAudio,
@@ -10,13 +9,7 @@ import {
 import SonificationPlayButton from "./SonificationPlayButton";
 import { DAILY_CASES, TOTAL_DEATHS } from "../DataCharts/DataChartsConsts";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
+import { createRoot } from "react-dom/client";
 
 jest.mock("../Utils/Sonification", () => {
   var storedIsAudioPlaying = false;
@@ -41,9 +34,18 @@ jest.mock("../Utils/Sonification", () => {
   };
 });
 
+var container = null;
+var root = null;
+beforeEach(() => {
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
+  root = createRoot(container);
+});
+
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
   jest.clearAllMocks();
@@ -62,14 +64,13 @@ function click() {
 
 test("default play/stop behaviour", async () => {
   await act(async () => {
-    render(
+    root.render(
       <SonificationPlayButton
         allData={testAllData}
         chartType={TOTAL_DEATHS}
         regionCode="S12000013"
         dateRange={dateRange}
-      />,
-      container
+      />
     );
   });
 
@@ -84,14 +85,13 @@ test("default play/stop behaviour", async () => {
   // Click play
   await act(async () => {
     click();
-    render(
+    root.render(
       <SonificationPlayButton
         allData={testAllData}
         chartType={TOTAL_DEATHS}
         regionCode="S12000013"
         dateRange={dateRange}
-      />,
-      container
+      />
     );
   });
 
@@ -109,14 +109,13 @@ test("default play/stop behaviour", async () => {
   // Click stop
   await act(async () => {
     click();
-    render(
+    root.render(
       <SonificationPlayButton
         allData={testAllData}
         chartType={TOTAL_DEATHS}
         regionCode="S12000013"
         dateRange={dateRange}
-      />,
-      container
+      />
     );
   });
 
@@ -136,7 +135,7 @@ test("default play/stop behaviour", async () => {
 
 test("minimum input play/stop behaviour", async () => {
   await act(async () => {
-    render(<SonificationPlayButton allData={testAllData} />, container);
+    root.render(<SonificationPlayButton allData={testAllData} />);
   });
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
@@ -149,7 +148,7 @@ test("minimum input play/stop behaviour", async () => {
   // Click play
   await act(async () => {
     click();
-    render(<SonificationPlayButton allData={testAllData} />, container);
+    root.render(<SonificationPlayButton allData={testAllData} />);
   });
 
   expect(playAudio).toHaveBeenCalledTimes(1);
@@ -166,7 +165,7 @@ test("minimum input play/stop behaviour", async () => {
   // Click stop
   await act(async () => {
     click();
-    render(<SonificationPlayButton allData={testAllData} />, container);
+    root.render(<SonificationPlayButton allData={testAllData} />);
   });
 
   expect(playAudio).toHaveBeenCalledTimes(2);
@@ -185,13 +184,13 @@ test("minimum input play/stop behaviour", async () => {
 
 test("empty input play behaviour", async () => {
   await act(async () => {
-    render(<SonificationPlayButton />, container);
+    root.render(<SonificationPlayButton />);
   });
 
   // Click play
   await act(async () => {
     click();
-    render(<SonificationPlayButton />, container);
+    root.render(<SonificationPlayButton />);
   });
 
   expect(playAudio).toHaveBeenCalledTimes(1);

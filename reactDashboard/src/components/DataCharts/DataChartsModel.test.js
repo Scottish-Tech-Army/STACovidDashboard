@@ -1,4 +1,3 @@
-import { unmountComponentAtNode } from "react-dom";
 import {
   commonChartConfiguration,
   calculateDateRange,
@@ -13,18 +12,20 @@ import {
   LAST_MONTH,
   LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  fetch.resetMocks();
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -167,11 +168,7 @@ describe("commonChartConfiguration", () => {
   });
 
   it("receive maxTicks more than 20", () => {
-    const result = commonChartConfiguration(
-      testDates,
-      END_DATE,
-      mockData
-    );
+    const result = commonChartConfiguration(testDates, END_DATE, mockData);
     expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(20);
   });
 });

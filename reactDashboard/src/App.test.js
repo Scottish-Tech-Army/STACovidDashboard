@@ -1,19 +1,20 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import App from "./App";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  fetch.resetMocks();
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -25,12 +26,10 @@ test("default render", async () => {
   const app = () => container.querySelector(".App");
 
   await act(async () => {
-    render(<App />, container);
+    root.render(<App />);
   });
   expect(app().getAttribute("class")).not.toContain("darkmode");
-
 });
-
 
 const TOTALS_DATE = Date.parse("2021-01-21");
 

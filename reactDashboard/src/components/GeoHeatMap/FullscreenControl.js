@@ -1,9 +1,9 @@
 import { Control, DomUtil, DomEvent } from "leaflet";
-import { withLeaflet } from "react-leaflet";
-import { Component } from "react";
 import { faSearchPlus, faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 import "./FullscreenControl.css";
+import { createControlComponent } from "@react-leaflet/core";
 
+// eslint-disable-next-line jest/require-hook
 var Zoom = Control.extend({
   options: {
     position: "topright",
@@ -51,7 +51,7 @@ var Zoom = Control.extend({
   },
 
   onRemove: function (map) {
-      // Do nothing
+    // Do nothing
   },
 
   setFullscreenIcon: function (fullscreenEnabled) {
@@ -66,40 +66,8 @@ var Zoom = Control.extend({
   },
 });
 
-class FullscreenControl extends Component {
-  constructor(props) {
-    super(props);
-    this.leafletElement = this.createLeafletElement(this.props);
-  }
+const FullscreenControl = createControlComponent(
+  (props) => new Zoom(props)
+);
 
-  createLeafletElement(_props) {
-    return new Zoom(_props);
-  }
-
-  updateLeafletElement(fromProps, toProps): void {
-    if (toProps.position !== fromProps.position) {
-      this.leafletElement.setPosition(toProps.position);
-    }
-    if (toProps.fullscreenEnabled !== fromProps.fullscreenEnabled) {
-      this.leafletElement.setFullscreenIcon(toProps.fullscreenEnabled);
-    }
-  }
-
-  componentDidMount() {
-    this.leafletElement.addTo(this.props.leaflet.map);
-  }
-
-  componentDidUpdate(prevProps) {
-    this.updateLeafletElement(prevProps, this.props);
-  }
-
-  componentWillUnmount() {
-    this.leafletElement.remove();
-  }
-
-  render() {
-    return null;
-  }
-}
-
-export default withLeaflet(FullscreenControl);
+export default FullscreenControl;

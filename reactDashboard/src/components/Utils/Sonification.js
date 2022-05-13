@@ -10,6 +10,7 @@ const A4_FREQUENCY = 220;
 // C4 to G#6 inclusive
 const NO_OF_TONES = 33;
 
+// eslint-disable-next-line jest/require-hook
 var sonificationPlaying = false;
 var sonificationToneOscillator = null;
 const playStateChangeListeners = [];

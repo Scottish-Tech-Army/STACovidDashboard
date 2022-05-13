@@ -36,3 +36,5 @@ global.suppressConsoleWarnLogs = () =>
   jest.spyOn(console, "warn").mockImplementation(() => {
     // Do nothing
   });
+
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;

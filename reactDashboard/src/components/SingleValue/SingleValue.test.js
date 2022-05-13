@@ -2,43 +2,55 @@
 
 import React from "react";
 import SingleValue from "./SingleValue";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot } from "react-dom/client";
+import { act } from "react-dom/test-utils";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  fetch.resetMocks();
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
 
 test("singleValue renders correctly", () => {
-  render(<SingleValue value="Test count" subtitle={null} />, container);
+  act(() => {
+    root.render(<SingleValue value="Test count" subtitle={null} />);
+  });
   checkSingleValue("Test count", "");
 });
 
 test("singleValue renders error message when missing props", async () => {
-  render(<SingleValue value="Test count" />, container);
+  act(() => {
+    root.render(<SingleValue value="Test count" />);
+  });
   checkSingleValue("Test count", "");
 
-  render(<SingleValue subtitle="test date reported" />, container);
+  act(() => {
+    root.render(<SingleValue subtitle="test date reported" />);
+  });
   checkSingleValue("Missing value", "test date reported");
 
-  render(<SingleValue />, container);
+  act(() => {
+    root.render(<SingleValue />);
+  });
   checkSingleValue("Missing value", "");
 });
 
 const subtitle = () => container.querySelector(".subtitle");
 const value = () => container.querySelector(".single-value-number");
 
-function checkSingleValue(expectedValue, expectedSubtitle=null) {
-  expect(subtitle().textContent).toBe(expectedSubtitle === null ? "" : expectedSubtitle);
+function checkSingleValue(expectedValue, expectedSubtitle = null) {
+  expect(subtitle().textContent).toBe(
+    expectedSubtitle === null ? "" : expectedSubtitle
+  );
   expect(value().textContent).toBe(expectedValue);
 }

@@ -1,20 +1,21 @@
 import React from "react";
 import DashboardNavbar from "./DashboardNavbar";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
+import { createRoot } from "react-dom/client";
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
-  fetch.resetMocks();
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -31,70 +32,66 @@ describe("nav links content and highlighting", () => {
 
   it("summary page", async () => {
     await act(async () => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
 
     expect(overviewNavlink().getAttribute("href")).toStrictEqual("/");
-    expect(overviewNavlink().getAttribute("class")).toContain("selected");
+    expect(overviewNavlink().getAttribute("class")).toContain("active");
 
     expect(regionalNavlink().getAttribute("href")).toStrictEqual("/regional");
-    expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
+    expect(regionalNavlink().getAttribute("class")).not.toContain("active");
   });
 
   it("regional default page", async () => {
     await act(async () => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/regional"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
 
     expect(overviewNavlink().getAttribute("href")).toStrictEqual("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
 
     expect(regionalNavlink().getAttribute("href")).toStrictEqual("/regional");
-    expect(regionalNavlink().getAttribute("class")).toContain("selected");
+    expect(regionalNavlink().getAttribute("class")).toContain("active");
   });
 
   it("regional area page", async () => {
     await act(async () => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/regional/S08000026"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
 
     expect(overviewNavlink().getAttribute("href")).toStrictEqual("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
 
     expect(regionalNavlink().getAttribute("href")).toStrictEqual("/regional");
-    expect(regionalNavlink().getAttribute("class")).toContain("selected");
+    expect(regionalNavlink().getAttribute("class")).toContain("active");
   });
 
   it("about page", async () => {
     await act(async () => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/about"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
 
     expect(overviewNavlink().getAttribute("href")).toStrictEqual("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
 
     expect(regionalNavlink().getAttribute("href")).toStrictEqual("/regional");
-    expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
+    expect(regionalNavlink().getAttribute("class")).not.toContain("active");
   });
 });
 
@@ -108,11 +105,10 @@ describe("darkmode button", () => {
 
   it("darkmode button", () => {
     act(() => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
     expect(storedDarkmode).toStrictEqual(false);
@@ -124,18 +120,17 @@ describe("darkmode button", () => {
   });
 
   it("darkmode button initial value dark", () => {
-    darkmode.value = true
-    storedDarkmode = true
+    darkmode.value = true;
+    storedDarkmode = true;
 
     act(() => {
-      render(
+      root.render(
         <MemoryRouter initialEntries={["/"]}>
           <DashboardNavbar darkmode={darkmode} />
-        </MemoryRouter>,
-        container
+        </MemoryRouter>
       );
     });
-    
+
     darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(storedDarkmode).toStrictEqual(false);
     darkmodeButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));

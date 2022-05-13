@@ -2,23 +2,25 @@
 
 import React from "react";
 import QuickSelectDateRange from "./QuickSelectDateRange";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { ALL_DATES } from "./DataChartsConsts";
+import { createRoot } from "react-dom/client";
 
 var storedDateRange = ALL_DATES;
 const setDateRange = (value) => (storedDateRange = value);
 
 var container = null;
+var root = null;
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+  root = createRoot(container);
 });
 
 afterEach(() => {
   // cleanup on exiting
-  unmountComponentAtNode(container);
+  root.unmount(container);
   container.remove();
   container = null;
 });
@@ -54,12 +56,11 @@ describe("selectDateRange", () => {
 
   it("happy path dates", () => {
     act(() => {
-      render(
+      root.render(
         <QuickSelectDateRange
           setDateRange={setDateRange}
           maxDateRange={TEST_DATE_RANGE}
-        />,
-        container
+        />
       );
     });
 
@@ -93,12 +94,11 @@ describe("selectDateRange", () => {
 
   it("preloaded dates", () => {
     act(() => {
-      render(
+      root.render(
         <QuickSelectDateRange
           setDateRange={setDateRange}
           maxDateRange={EMPTY_DATE_RANGE}
-        />,
-        container
+        />
       );
     });
 
@@ -112,7 +112,9 @@ describe("selectDateRange", () => {
   it("missing dates", () => {
     global.suppressConsoleErrorLogs();
     expect(() => {
-      render(<QuickSelectDateRange setDateRange={setDateRange} />, container);
+      act(() => {
+        root.render(<QuickSelectDateRange setDateRange={setDateRange} />);
+      });
     }).toThrow("missing maxDateRange");
   });
 });
