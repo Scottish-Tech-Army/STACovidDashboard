@@ -383,8 +383,8 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyCouncilAreasCsvData,
         shortDailyHealthBoardsCsvData,
         `Date,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative,CA,CAName
-       20210121,5,165,617.51,0,1,0,0,0,S12000013,Na h-Eileanan Siar
-       20210121,242,31382,4956.72,8,856,0,0,0,S12000049,Glasgow City`,
+       2021-01-21,5,165,617.51,0,1,0,0,0,S12000013,Na h-Eileanan Siar
+       2021-01-21,242,31382,4956.72,8,856,0,0,0,S12000049,Glasgow City`,
         currentTotalsHealthBoardsCsvData
       )
     ).toStrictEqual(shortAllData);
@@ -397,9 +397,9 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `HB,Date,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-        S08000024,20210121,,NHS Lothian,166,23020,2536.42,10,863,0,0,0
-        S08000025,20210121,,NHS Orkney,0,53,237.99,0,2,0,0,0
-        S92000003,20210121,d,Scotland,1406,167711,3069.77,89,5557,0,0,0`
+        S08000024,2021-01-21,,NHS Lothian,166,23020,2536.42,10,863,0,0,0
+        S08000025,2021-01-21,,NHS Orkney,0,53,237.99,0,2,0,0,0
+        S92000003,2021-01-21,d,Scotland,1406,167711,3069.77,89,5557,0,0,0`
       )
     ).toStrictEqual(shortAllData);
   });
@@ -443,7 +443,7 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyCouncilAreasCsvData,
         shortDailyHealthBoardsCsvData,
         `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-         20210121,S12000013,Na h-Eileanan Siar,5,165,0,0,1,0,0,0`,
+         2021-01-21,S12000013,Na h-Eileanan Siar,5,165,0,0,1,0,0,0`,
         currentTotalsHealthBoardsCsvData
       )
     ).toBeNull();
@@ -455,8 +455,8 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-          20210121,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
-          20210121,S92000003,d,Scotland,1406,167711,0,89,5557,0,0,0`
+          2021-01-21,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
+          2021-01-21,S92000003,d,Scotland,1406,167711,0,89,5557,0,0,0`
       )
     ).toBeNull();
   });
@@ -485,8 +485,8 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-          20210121,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
-          20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0`
+          2021-01-21,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
+          2021-01-21,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0`
       )
     ).toBeNull();
   });
@@ -548,9 +548,9 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `Date,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-        20210121,,NHS Lothian,166,23020,0,10,863,0,0,0
-        20210121,,NHS Orkney,0,53,0,0,2,0,0,0
-        20210121,d,Scotland,1406,167711,0,89,5557,0,0,0`
+        2021-01-21,,NHS Lothian,166,23020,0,10,863,0,0,0
+        2021-01-21,,NHS Orkney,0,53,0,0,2,0,0,0
+        2021-01-21,d,Scotland,1406,167711,0,89,5557,0,0,0`
       )
     ).toBeNull();
   });
@@ -598,7 +598,7 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyCouncilAreasCsvData,
         shortDailyHealthBoardsCsvData,
         `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-       20210121,S12000013,Na h-Eileanan Siar,5,165,0,0,1,0,0,0
+       2021-01-21,S12000013,Na h-Eileanan Siar,5,165,0,0,1,0,0,0
                ,S12000049,Glasgow City,242,31382,0,8,856,0,0,0`,
         currentTotalsHealthBoardsCsvData
       )
@@ -612,9 +612,9 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-        20210121,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
+        2021-01-21,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
                 ,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
-        20210121,S92000003,d,Scotland,1406,167711,0,89,5557,0,0,0`
+        2021-01-21,S92000003,d,Scotland,1406,167711,0,89,5557,0,0,0`
       )
     ).toBeNull();
   });
@@ -662,8 +662,8 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyCouncilAreasCsvData,
         shortDailyHealthBoardsCsvData,
         `Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-       20210121,S12000013,Na h-Eileanan Siar, ,165,0,0,1,0,0,0
-       20210121,S12000049,Glasgow City,242,31382,0,8,856,0,0,0`,
+       2021-01-21,S12000013,Na h-Eileanan Siar, ,165,0,0,1,0,0,0
+       2021-01-21,S12000049,Glasgow City,242,31382,0,8,856,0,0,0`,
         currentTotalsHealthBoardsCsvData
       )
     ).toBeNull();
@@ -676,9 +676,9 @@ Date,HB,HBName,DailyPositive,CumulativePositive,CrudeRatePositive,CrudeRate7DayP
         shortDailyHealthBoardsCsvData,
         currentTotalsCouncilAreasCsvData,
         `Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-        20210121,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
-        20210121,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
-        20210121,S92000003,d,Scotland,1636,    ,0,89,5557,0,0,0`
+        2021-01-21,S08000024,,NHS Lothian,166,23020,0,10,863,0,0,0
+        2021-01-21,S08000025,,NHS Orkney,0,53,0,0,2,0,0,0
+        2021-01-21,S92000003,d,Scotland,1636,    ,0,89,5557,0,0,0`
       )
     ).toBeNull();
   });
@@ -802,16 +802,16 @@ const shortAllData = {
 const currentTotalsCouncilAreasCsvData = `
 
 Date,CA,CAName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-20210121,S12000013,Na h-Eileanan Siar,5,165,617.51,0,1,0,0,0
-20210121,S12000049,Glasgow City,242,31382,4956.72,8,856,0,0,0
+2021-01-21,S12000013,Na h-Eileanan Siar,5,165,617.51,0,1,0,0,0
+2021-01-21,S12000049,Glasgow City,242,31382,4956.72,8,856,0,0,0
 
 `;
 
 const currentTotalsHealthBoardsCsvData = `
 Date,HB,HBQF,HBName,NewPositive,TotalCases,CrudeRatePositive,NewDeaths,TotalDeaths,CrudeRateDeaths,TotalNegative,CrudeRateNegative
-20210121,S08000024,,NHS Lothian,166,23020,2536.42,10,863,0,0,0
-20210121,S08000025,,NHS Orkney,0,53,237.99,0,2,0,0,0
-20210121,S92000003,d,Scotland,1406,167711,3069.77,89,5557,0,0,0
+2021-01-21,S08000024,,NHS Lothian,166,23020,2536.42,10,863,0,0,0
+2021-01-21,S08000025,,NHS Orkney,0,53,237.99,0,2,0,0,0
+2021-01-21,S92000003,d,Scotland,1406,167711,3069.77,89,5557,0,0,0
 `;
 
 // Date range 04-01 - 19-01

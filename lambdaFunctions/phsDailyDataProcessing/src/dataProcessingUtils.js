@@ -38,7 +38,10 @@ export function readCsvData(csvData, expectedColumnNames) {
 }
 
 function getDateValue(value) {
-  const date = dayjs.utc(value, "YYYYMMDD", true);
+  let date = dayjs.utc(value, "YYYYMMDD", true);
+  if (!date.isValid()) {
+    date = dayjs.utc(value, "YYYY-MM-DD", true);
+  }
   if (!date.isValid()) {
     throw new Error("Invalid date value: " + value);
   }
