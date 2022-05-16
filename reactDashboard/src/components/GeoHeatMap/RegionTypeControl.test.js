@@ -1,11 +1,13 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValues"] }] */
 
 import React from "react";
-import RegionTypeSelector from "./RegionTypeSelector";
+import { RegionTypeControl } from "./RegionTypeControl";
 import { act } from "react-dom/test-utils";
 import { AREATYPE_HEALTH_BOARDS } from "../HeatmapDataSelector/HeatmapConsts";
 import { createRoot } from "react-dom/client";
+import { MapContainer } from "react-leaflet";
 
+// eslint-disable-next-line jest/require-hook
 var storedAreaType = AREATYPE_HEALTH_BOARDS;
 const setAreaType = (value) => (storedAreaType = value);
 
@@ -25,42 +27,15 @@ afterEach(() => {
   container = null;
 });
 
-test("null/undefined input throws error", async () => {
-  global.suppressConsoleErrorLogs();
-
-  expect(() => {
-    act(() => {
-      root.render(
-        <RegionTypeSelector areaType={null} setAreaType={setAreaType} />
-      );
-    });
-  }).toThrow("Unrecognised areaType: null");
-
-  expect(() => {
-    act(() => {
-      root.render(<RegionTypeSelector setAreaType={setAreaType} />);
-    });
-  }).toThrow("Unrecognised areaType: undefined");
-
-  expect(() => {
-    act(() => {
-      root.render(<RegionTypeSelector areaType="health-boards" />);
-    });
-  }).toThrow("Unrecognised setAreaType: undefined");
-
-  expect(() => {
-    act(() => {
-      root.render(
-        <RegionTypeSelector areaType="unknown" setAreaType={setAreaType} />
-      );
-    });
-  }).toThrow("Unrecognised areaType: unknown");
-});
-
 test("default render", async () => {
   act(() => {
     root.render(
-      <RegionTypeSelector areaType={storedAreaType} setAreaType={setAreaType} />
+      <MapContainer>
+        <RegionTypeControl
+          areaType={storedAreaType}
+          setAreaType={setAreaType}
+        />
+      </MapContainer>
     );
   });
 
@@ -92,7 +67,12 @@ function click(button) {
   act(() => {
     button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     root.render(
-      <RegionTypeSelector areaType={storedAreaType} setAreaType={setAreaType} />
+      <MapContainer>
+        <RegionTypeControl
+          areaType={storedAreaType}
+          setAreaType={setAreaType}
+        />
+      </MapContainer>
     );
   });
 }

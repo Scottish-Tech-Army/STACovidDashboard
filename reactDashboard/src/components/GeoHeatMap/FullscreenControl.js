@@ -3,6 +3,9 @@ import { faSearchPlus, faSearchMinus } from "@fortawesome/free-solid-svg-icons";
 import "./FullscreenControl.css";
 import { createControlComponent } from "@react-leaflet/core";
 
+// TODO the changes to react leaflet v4 means the icon no longer changes as fullscreen mode is enabled/disabled
+// needs some investigation
+
 // eslint-disable-next-line jest/require-hook
 var Zoom = Control.extend({
   options: {

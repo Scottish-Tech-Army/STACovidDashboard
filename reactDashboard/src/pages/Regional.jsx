@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../App.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -17,9 +16,12 @@ import {
 import { stopAudio } from "../components/Utils/Sonification";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import { URL_REGIONAL } from "./PageConsts";
 
 // Exported for unit tests
-export function getRegionCodeFromUrl(initialRegionCode = FEATURE_CODE_SCOTLAND) {
+export function getRegionCodeFromUrl(
+  initialRegionCode = FEATURE_CODE_SCOTLAND
+) {
   if (FEATURE_CODE_MAP[initialRegionCode] !== undefined) {
     return initialRegionCode;
   }
@@ -27,20 +29,25 @@ export function getRegionCodeFromUrl(initialRegionCode = FEATURE_CODE_SCOTLAND) 
 }
 
 // Exported for unit tests
-export function getCanonicalUrl(baseUrl, regionCode) {
+export function getCanonicalUrl(regionCode) {
   return (
-    baseUrl + (regionCode === FEATURE_CODE_SCOTLAND ? "" : "/" + regionCode)
+    URL_REGIONAL +
+    (regionCode === FEATURE_CODE_SCOTLAND ? "" : "/" + regionCode)
   );
 }
 
 const Regional = ({ allData, darkmode }) => {
   const location = useLocation();
   const urlParams = useParams();
-  const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(urlParams.regionCode));
+  const [regionCode, setRegionCode] = useState(
+    getRegionCodeFromUrl(urlParams.regionCode)
+  );
   const navigate = useNavigate();
 
   const currentRegionCode = useRef(regionCode);
-  const currentLocation = useRef(urlParams.regionCode || FEATURE_CODE_SCOTLAND);
+  const currentLocation = useRef(
+    getCanonicalUrl(urlParams.regionCode || FEATURE_CODE_SCOTLAND)
+  );
 
   // These two effects handle the browser url and the region code selection in sync.
   // Either location or regionCode may be changed by user action, so the currentRegionCode
@@ -54,7 +61,7 @@ const Regional = ({ allData, darkmode }) => {
     if (currentRegionCode.current !== regionCode) {
       currentRegionCode.current = regionCode;
       // Region code has changed: update URL
-      const newUrl = getCanonicalUrl(match.url, regionCode);
+      const newUrl = getCanonicalUrl(regionCode);
       if (currentLocation.current !== newUrl) {
         currentLocation.current = newUrl;
         navigate(newUrl);
@@ -64,7 +71,7 @@ const Regional = ({ allData, darkmode }) => {
 
   useEffect(() => {
     function setCanonicalLocation(newRegionCode) {
-      currentLocation.current = getCanonicalUrl(match.url, newRegionCode);
+      currentLocation.current = getCanonicalUrl(newRegionCode);
       if (location.pathname !== currentLocation.current) {
         navigate(currentLocation.current);
       }
@@ -76,12 +83,14 @@ const Regional = ({ allData, darkmode }) => {
       setRegionCode(currentRegionCode.current);
       setCanonicalLocation(currentRegionCode.current);
     }
-  }, [location, navigate, match]);
+  }, [location, navigate]);
 
   // Stop audio on chart, region or location change
   useEffect(() => {
     stopAudio();
   }, [regionCode, location]);
+
+  const placeName = getPlaceNameByFeatureCode(regionCode);
 
   return (
     <>
@@ -114,9 +123,7 @@ const Regional = ({ allData, darkmode }) => {
               setRegionCode={setRegionCode}
             />
             <hr aria-hidden={true} className="full-width-hr" />
-            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(
-              regionCode
-            )}`}</h2>
+            <h2 className="visually-hidden">{`Headline statistics for ${placeName}`}</h2>
             <RegionSingleValueBar regionCode={regionCode} allData={allData} />
           </Col>
         </Row>
@@ -128,9 +135,7 @@ const Regional = ({ allData, darkmode }) => {
         <Row className="data-charts-container">
           <Col xs={12}>
             <h2 className="visually-hidden">
-              {`Time series statistics for ${getPlaceNameByFeatureCode(
-                regionCode
-              )}`}
+              {`Time series statistics for ${placeName}`}
             </h2>
             <DataCharts
               regionCode={regionCode}

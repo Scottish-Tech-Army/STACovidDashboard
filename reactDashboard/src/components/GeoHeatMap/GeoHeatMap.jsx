@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./GeoHeatMap.css";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
+import {
+  GeoJSON,
+  MapContainer,
+  Popup,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet";
+import { createControlComponent } from "@react-leaflet/core";
 import {
   AREATYPE_COUNCIL_AREAS,
   VALUETYPE_DEATHS,
@@ -21,16 +28,18 @@ import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
 import { format } from "date-fns";
 import {
-  setScotlandDefaultBounds,
   featureCodeForFeature,
   MAP_TILES_URL,
   DARK_MAP_TILES_URL,
+  SCOTLAND_BOUNDS,
+  SCOTLAND_MAX_BOUNDS,
+  ATTRIBUTION,
 } from "./GeoUtils";
 
-const deathsHeatLevels = [0, 1, 2, 5, 10, 20, 50, 100];
-const casesHeatLevels = [0, 1, 5, 10, 20, 50, 100, 250];
+const HEAT_LEVELS_DEATHS = [0, 1, 2, 5, 10, 20, 50, 100];
+const HEAT_LEVELS_CASES = [0, 1, 5, 10, 20, 50, 100, 250];
 
-const heatcolours = [
+const HEAT_COLOURS = [
   "#e0e0e0",
   "#ffffb2",
   "#fed976",
@@ -41,260 +50,34 @@ const heatcolours = [
   "#020202",
 ];
 
-/*
- Getting Leaflet and React to play nice when the underlying datasets are changing (there are 3 datasets and 2 region
- boundary types) was challenging. Straightforward react-leaflet wasn't enough. The code below uses react-leaflet
- components for the static parts of the map, and drops to pure Leaflet for dynamic components - the legend, the geoJSON
- layers and their associated styles and popups.
-
- There is a cascade of useEffect blocks to handle user selection of dataset, and lazy loading of those datasets. The
- dependences of the useEffect blocks should clarify what gets triggered when.
-*/
-
 export default function GeoHeatMap({
   allData = null,
   valueType = VALUETYPE_DEATHS,
   areaType = AREATYPE_COUNCIL_AREAS,
   toggleFullscreen,
   fullscreenEnabled = false,
-  setAreaType,
-  setValueType,
   darkmode,
 }) {
-  const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
-    null
-  );
-  const [healthBoardBoundariesLayer, setHealthBoardBoundariesLayer] = useState(
-    null
-  );
-
-  const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
-  const [currentHeatLevels, _setCurrentHeatLevels] = useState(null);
-
   const mapRef = useRef();
-  const legendRef = useRef(null);
-  const currentHeatLevelsRef = useRef(null);
-  const currentValueTypeRef = useRef(valueType);
+  const [popupRegion, setPopupRegion] = useState();
 
-  // Need both state (to trigger useEffect) and ref (to be called from event handlers created in those useEffects)
-  function setCurrentHeatLevels(value) {
-    currentHeatLevelsRef.current = value;
-    _setCurrentHeatLevels(value);
-  }
-
-  // Set current heatlevels
   useEffect(() => {
-    currentValueTypeRef.current = valueType;
-    setCurrentHeatLevels(
-      VALUETYPE_DEATHS === valueType ? deathsHeatLevels : casesHeatLevels
-    );
-  }, [valueType]);
-
-  // Setup map boundaries layer
-  useEffect(() => {
-    const INVISIBLE_LAYER_STYLE = {
-      opacity: 0,
-      fillOpacity: 0,
-    };
-
-    if (allData !== null) {
-      const handleRegionPopup = (e) => {
-        if (allData === null) {
-          return;
-        }
-        const map = mapRef.current.leafletElement;
-        const layer = e.target;
-        const featureCode = featureCodeForFeature(layer.feature);
-        const regionData = allData.regions[featureCode];
-        var content =
-          "<p class='region-popup'>" +
-          regionData.name +
-          "<br />Not available</p>";
-
-        function toTitleCase(str) {
-          return str.replace(/\w\S*/g, function (txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-          });
-        }
-
-        const count =
-          currentValueTypeRef.current === VALUETYPE_DEATHS
-            ? regionData.weeklyDeaths
-            : regionData.weeklyCases;
-
-        if (regionData) {
-          content =
-            "<div class='region-popup'><div>" +
-            regionData.name.toUpperCase() +
-            "</div><div class='map-date-range'>" +
-            format(allData.currentWeekStartDate, "dd MMM") +
-            " - " +
-            format(allData.endDate, "dd MMM") +
-            "</div> <div class='map-cases-count'>" +
-            toTitleCase(currentValueTypeRef.current) +
-            ": " +
-            count +
-            "</div></div>";
-        }
-
-        L.popup({ closeButton: false })
-          .setLatLng(e.latlng)
-          .setContent(content)
-          .openOn(map);
-      };
-
-      const regionLayerOptions = {
-        style: INVISIBLE_LAYER_STYLE,
-        onEachFeature: (feature, layer) => {
-          layer.on({
-            mouseover: handleRegionPopup,
-            click: handleRegionPopup,
-          });
-        },
-      };
-
-      setCouncilAreaBoundariesLayer(
-        L.geoJSON(councilAreaBoundaries, regionLayerOptions)
-      );
-      setHealthBoardBoundariesLayer(
-        L.geoJSON(healthBoardBoundaries, regionLayerOptions)
-      );
+    if (mapRef.current) {
+      mapRef.current.closePopup();
     }
-  }, [allData]);
-
-  // Fit bounds and restrict the panning
-  useEffect(() => {
-    if (mapRef.current && mapRef.current.leafletElement) {
-      setScotlandDefaultBounds(mapRef.current.leafletElement);
-    }
-  }, []);
-
-  // Update active map boundaries layer
-  useEffect(() => {
-    if (mapRef.current && mapRef.current.leafletElement) {
-      const map = mapRef.current.leafletElement;
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        if (healthBoardBoundariesLayer) {
-          healthBoardBoundariesLayer.removeFrom(map);
-        }
-        if (councilAreaBoundariesLayer) {
-          councilAreaBoundariesLayer.addTo(map);
-        }
-        setCurrentBoundariesLayer(councilAreaBoundariesLayer);
-      } else {
-        if (councilAreaBoundariesLayer) {
-          councilAreaBoundariesLayer.removeFrom(map);
-        }
-        if (healthBoardBoundariesLayer) {
-          healthBoardBoundariesLayer.addTo(map);
-        }
-        setCurrentBoundariesLayer(healthBoardBoundariesLayer);
-      }
-    }
-  }, [areaType, councilAreaBoundariesLayer, healthBoardBoundariesLayer]);
-
-  // Update counts to use to style map boundaries layer
-  useEffect(() => {
-    function getHeatLevel(count) {
-      const heatLevels = currentHeatLevels;
-      var i;
-      for (i = heatLevels.length - 1; i >= 0; i--) {
-        if (heatLevels[i] <= count) {
-          return i;
-        }
-      }
-      return 0;
-    }
-
-    function getRegionColour(count) {
-      return heatcolours[getHeatLevel(count)];
-    }
-
-    const BORDER_COLOUR = "black";
-    const DARK_BORDER_COLOUR = "white";
-
-    function getRegionStyle(featureCode) {
-      const regionData = allData.regions[featureCode];
-      var count = 0;
-      if (regionData) {
-        count =
-          VALUETYPE_DEATHS === valueType
-            ? regionData.weeklyDeaths
-            : regionData.weeklyCases;
-      }
-
-      return {
-        color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
-        fillColor: getRegionColour(count),
-        opacity: 0.5,
-        fillOpacity: 0.5,
-        weight: 1,
-      };
-    }
-
-    if (mapRef.current && mapRef.current.leafletElement) {
-      mapRef.current.leafletElement.closePopup();
-    }
-
-    if (currentBoundariesLayer && allData) {
-      currentBoundariesLayer.setStyle((feature) =>
-        getRegionStyle(featureCodeForFeature(feature))
-      );
-    }
-  }, [valueType, currentBoundariesLayer, currentHeatLevels, allData, darkmode]);
-
-  // Create legend
-  useEffect(() => {
-    function getRangeText(grades, i) {
-      const start = grades[i];
-      if (grades.length <= i + 1) {
-        // Last range
-        return start + "+";
-      }
-      const end = grades[i + 1] - 1;
-      if (end === start) {
-        // Single value range
-        return start;
-      }
-      return start + "&ndash;" + end;
-    }
-
-    if (mapRef.current && mapRef.current.leafletElement) {
-      const map = mapRef.current.leafletElement;
-      if (!legendRef.current) {
-        legendRef.current = L.control({ position: "topleft" });
-
-        legendRef.current.onAdd = function (map) {
-          const div = L.DomUtil.create("div", "info legend");
-          const grades = currentHeatLevelsRef.current;
-          div.innerHTML +=
-            "<div class='legend-title'>REGION " +
-            currentValueTypeRef.current.toUpperCase() +
-            "<br/>(last 7 days)</div>";
-          // loop through our density intervals and generate a label with a colored square for each interval
-          for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-              '<div class="legend-line"><i style="background:' +
-              heatcolours[i] +
-              '"></i> ' +
-              getRangeText(grades, i) +
-              "</div>";
-          }
-
-          return div;
-        };
-      } else {
-        legendRef.current.remove();
-      }
-      legendRef.current.addTo(map);
-    }
-  }, [currentHeatLevels]);
+    setPopupRegion(undefined);
+  }, [valueType, areaType, darkmode]);
 
   return (
-    <div aria-hidden={true} className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}>
+    <div
+      aria-hidden={true}
+      className={fullscreenEnabled ? "full-screen-geo-map" : "geo-map"}
+    >
       <MapContainer
         ref={mapRef}
         id="map"
+        bounds={SCOTLAND_BOUNDS}
+        maxBounds={SCOTLAND_MAX_BOUNDS}
         maxZoom={10}
         minZoom={6}
         dragging={!L.Browser.mobile}
@@ -303,15 +86,165 @@ export default function GeoHeatMap({
         scrollWheelZoom={false}
       >
         <TileLayer
+          key={darkmode}
           url={darkmode ? DARK_MAP_TILES_URL : MAP_TILES_URL}
-          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          attribution={ATTRIBUTION}
         />
+        {allData ? (
+          <RegionBoundaryLayer
+            key={areaType}
+            allData={allData}
+            valueType={valueType}
+            regionBoundaries={
+              AREATYPE_COUNCIL_AREAS === areaType
+                ? councilAreaBoundaries
+                : healthBoardBoundaries
+            }
+            darkmode={darkmode}
+            setPopupRegion={setPopupRegion}
+          />
+        ) : null}
+        <Legend key={valueType} position="topleft" valueType={valueType} />
         <ZoomControl position="topright" />
         <FullscreenControl
           toggleFullscreen={toggleFullscreen}
           fullscreenEnabled={fullscreenEnabled}
         />
+        {popupRegion && (
+          <ActiveRegionPopup
+            {...popupRegion}
+            valueType={valueType}
+            allData={allData}
+          />
+        )}
       </MapContainer>
     </div>
   );
 }
+
+function RegionBoundaryLayer({
+  allData = null,
+  valueType = VALUETYPE_DEATHS,
+  regionBoundaries,
+  darkmode,
+  setPopupRegion,
+}) {
+  const handleRegionPopup = ({ target, latlng }) => {
+    if (allData === null) {
+      return;
+    }
+    const featureCode = featureCodeForFeature(target.feature);
+    setPopupRegion({ featureCode, latlng });
+  };
+
+  function getHeatLevel(count) {
+    const heatLevels =
+      VALUETYPE_DEATHS === valueType ? HEAT_LEVELS_DEATHS : HEAT_LEVELS_CASES;
+
+    var i;
+    for (i = heatLevels.length - 1; i >= 0; i--) {
+      if (heatLevels[i] <= count) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  const BORDER_COLOUR = "black";
+  const DARK_BORDER_COLOUR = "white";
+
+  function getRegionStyle(featureCode) {
+    const regionData = allData.regions[featureCode];
+    var count = 0;
+    if (regionData) {
+      count =
+        VALUETYPE_DEATHS === valueType
+          ? regionData.weeklyDeaths
+          : regionData.weeklyCases;
+    }
+
+    return {
+      color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
+      fillColor: HEAT_COLOURS[getHeatLevel(count)],
+      opacity: 0.5,
+      fillOpacity: 0.5,
+      weight: 1,
+    };
+  }
+
+  return (
+    <GeoJSON
+      data={regionBoundaries}
+      style={(feature) => getRegionStyle(featureCodeForFeature(feature))}
+      onEachFeature={(_feature, layer) => {
+        layer.on({
+          mouseover: handleRegionPopup,
+          click: handleRegionPopup,
+        });
+      }}
+    />
+  );
+}
+
+function createLegend({ valueType, ...props }) {
+  function getRangeText(grades, i) {
+    const start = grades[i];
+    if (grades.length <= i + 1) {
+      // Last range
+      return start + "+";
+    }
+    const end = grades[i + 1] - 1;
+    if (end === start) {
+      // Single value range
+      return start;
+    }
+    return start + "&ndash;" + end;
+  }
+
+  const legend = L.control(props);
+
+  legend.onAdd = function () {
+    const div = L.DomUtil.create("div", "info legend");
+    div.innerHTML += `<div class='legend-title'>REGION ${valueType.toUpperCase()}<br/>(last 7 days)</div>`;
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    const grades =
+      VALUETYPE_DEATHS === valueType ? HEAT_LEVELS_DEATHS : HEAT_LEVELS_CASES;
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML += `<div class="legend-line"><i style="background:${
+        HEAT_COLOURS[i]
+      }"></i> ${getRangeText(grades, i)}</div>`;
+    }
+
+    return div;
+  };
+
+  return legend;
+}
+
+const Legend = createControlComponent(createLegend);
+
+const ActiveRegionPopup = ({ featureCode, valueType, latlng, allData }) => {
+  const regionData = allData.regions[featureCode];
+  const count =
+    valueType === VALUETYPE_DEATHS
+      ? regionData.weeklyDeaths
+      : regionData.weeklyCases;
+
+  return (
+    <Popup closeButton={false} position={latlng}>
+      <div class="region-popup">
+        <div>{regionData.name.toUpperCase()}</div>
+        <div class="map-date-range">
+          {`${format(allData.currentWeekStartDate, "dd MMM")} - ${format(
+            allData.endDate,
+            "dd MMM"
+          )}`}
+        </div>
+        <div class="map-cases-count">
+          {`${valueType === VALUETYPE_DEATHS ? "Deaths" : "Cases"}: ${count}`}
+        </div>
+      </div>
+    </Popup>
+  );
+};
