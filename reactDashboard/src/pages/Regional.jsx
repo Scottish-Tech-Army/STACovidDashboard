@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
@@ -43,7 +43,7 @@ const Regional = ({ allData, darkmode }) => {
   const regionCode = getCheckedRegionCode(urlParams.regionCode);
 
   // Change URL if regionCode changes
-  const setRegionCode = (regionCode) => navigate(getCanonicalUrl(regionCode));
+  const setRegionCode = (newRegionCode) => navigate(getCanonicalUrl(newRegionCode));
 
   // Redirect if on unrecognised URL
   useEffect(() => {

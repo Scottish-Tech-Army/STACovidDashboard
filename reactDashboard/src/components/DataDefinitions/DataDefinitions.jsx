@@ -11,7 +11,6 @@ import SvgIcon from "../Utils/SvgIcon";
 
 function ContextAwareToggle({ children, callback }) {
   const { activeEventKey } = useContext(AccordionContext);
-  const location = useLocation();
 
   const decoratedOnClick = useAccordionButton(
     "0",
@@ -33,6 +32,8 @@ function ContextAwareToggle({ children, callback }) {
 }
 
 function DataDefinitions() {
+  const location = useLocation();
+
   function createLink(url, text) {
     return (
       <a
