@@ -19,13 +19,12 @@ import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
 import { URL_REGIONAL } from "./PageConsts";
 
 // Exported for unit tests
-export function getRegionCodeFromUrl(
+export function getCheckedRegionCode(
   initialRegionCode = FEATURE_CODE_SCOTLAND
 ) {
-  if (FEATURE_CODE_MAP[initialRegionCode] !== undefined) {
-    return initialRegionCode;
-  }
-  return FEATURE_CODE_SCOTLAND;
+  return FEATURE_CODE_MAP.hasOwnProperty(initialRegionCode)
+    ? initialRegionCode
+    : FEATURE_CODE_SCOTLAND;
 }
 
 // Exported for unit tests
@@ -39,51 +38,20 @@ export function getCanonicalUrl(regionCode) {
 const Regional = ({ allData, darkmode }) => {
   const location = useLocation();
   const urlParams = useParams();
-  const [regionCode, setRegionCode] = useState(
-    getRegionCodeFromUrl(urlParams.regionCode)
-  );
   const navigate = useNavigate();
 
-  const currentRegionCode = useRef(regionCode);
-  const currentLocation = useRef(
-    getCanonicalUrl(urlParams.regionCode || FEATURE_CODE_SCOTLAND)
-  );
+  const regionCode = getCheckedRegionCode(urlParams.regionCode);
 
-  // These two effects handle the browser url and the region code selection in sync.
-  // Either location or regionCode may be changed by user action, so the currentRegionCode
-  // and currentLocation refs are used to distinguish a change by user action, or internally
-  // here to keep the location and regionCode in sync.
-  //
-  // It is complicated by handling the canonicalisation of URLs
-  // eg .../regional/unknown is redirected to .../regional
+  // Change URL if regionCode changes
+  const setRegionCode = (regionCode) => navigate(getCanonicalUrl(regionCode));
 
+  // Redirect if on unrecognised URL
   useEffect(() => {
-    if (currentRegionCode.current !== regionCode) {
-      currentRegionCode.current = regionCode;
-      // Region code has changed: update URL
-      const newUrl = getCanonicalUrl(regionCode);
-      if (currentLocation.current !== newUrl) {
-        currentLocation.current = newUrl;
-        navigate(newUrl);
-      }
+    const newUrl = getCanonicalUrl(regionCode);
+    if (location.pathname !== newUrl) {
+      navigate(newUrl);
     }
   }, [regionCode, navigate, urlParams]);
-
-  useEffect(() => {
-    function setCanonicalLocation(newRegionCode) {
-      currentLocation.current = getCanonicalUrl(newRegionCode);
-      if (location.pathname !== currentLocation.current) {
-        navigate(currentLocation.current);
-      }
-    }
-
-    if (currentLocation.current !== location.pathname) {
-      // URL has changed: update regionCode
-      currentRegionCode.current = getRegionCodeFromUrl(location);
-      setRegionCode(currentRegionCode.current);
-      setCanonicalLocation(currentRegionCode.current);
-    }
-  }, [location, navigate]);
 
   // Stop audio on chart, region or location change
   useEffect(() => {

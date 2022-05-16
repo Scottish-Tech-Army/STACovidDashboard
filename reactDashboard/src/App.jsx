@@ -96,7 +96,7 @@ const App = () => {
           <Route path={URL_ACCESSIBILITY} element={<Accessibility />} />
           <Route path={URL_DATA_SOURCES} element={<DataSources />} />
           <Route path={URL_ABOUT_US} element={<AboutUs />} />
-          <Route path="*">{() => <Navigate to={URL_OVERVIEW} />}</Route>
+          <Route path="*" element={<Navigate to="/" />}/>
         </Routes>
         <Footer />
       </Router>

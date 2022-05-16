@@ -1,16 +1,16 @@
-import { getRegionCodeFromUrl, getCanonicalUrl } from "./Regional";
+import { getCheckedRegionCode, getCanonicalUrl } from "./Regional";
 import { FEATURE_CODE_SCOTLAND } from "../components/Utils/CsvUtils";
 
-test("getRegionCodeFromUrl", () => {
-  expect(getRegionCodeFromUrl()).toStrictEqual(FEATURE_CODE_SCOTLAND);
+test("getCheckedRegionCode", () => {
+  expect(getCheckedRegionCode()).toStrictEqual(FEATURE_CODE_SCOTLAND);
 
-  expect(getRegionCodeFromUrl("unknown")).toStrictEqual(FEATURE_CODE_SCOTLAND);
+  expect(getCheckedRegionCode("unknown")).toStrictEqual(FEATURE_CODE_SCOTLAND);
 
-  expect(getRegionCodeFromUrl("")).toStrictEqual(FEATURE_CODE_SCOTLAND);
+  expect(getCheckedRegionCode("")).toStrictEqual(FEATURE_CODE_SCOTLAND);
 
-  expect(getRegionCodeFromUrl("S08000016")).toBe("S08000016");
+  expect(getCheckedRegionCode("S08000016")).toBe("S08000016");
 
-  expect(getRegionCodeFromUrl("S12000033")).toBe("S12000033");
+  expect(getCheckedRegionCode("S12000033")).toBe("S12000033");
 });
 
 test("getCanonicalUrl", () => {

@@ -35,7 +35,7 @@ import {
 
 export default function RegionGeoMap({
   regionCode = FEATURE_CODE_SCOTLAND,
-  setRegionCode = null,
+  setRegionCode,
   darkmode,
 }) {
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
@@ -112,8 +112,8 @@ function RegionBoundaryLayer({
 
   const selectRegion = ({ target }) => {
     const featureCode = featureCodeForFeature(target.feature);
-    setRegionCode((existing) =>
-      featureCode === existing ? FEATURE_CODE_SCOTLAND : featureCode
+    setRegionCode(
+      featureCode === regionCode ? FEATURE_CODE_SCOTLAND : featureCode
     );
   };
 
