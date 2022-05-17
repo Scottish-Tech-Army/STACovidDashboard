@@ -12,23 +12,6 @@ import {
   LAST_MONTH,
   LAST_THREE_MONTHS,
 } from "../DataCharts/DataChartsConsts";
-import { createRoot } from "react-dom/client";
-
-var container = null;
-var root = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  root = createRoot(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  root.unmount(container);
-  container.remove();
-  container = null;
-});
 
 const TEST_MAX_DATA_1 = [363, 101, 257, 771, 799, 297, 118];
 const TEST_MAX_DATA_2 = [4056, 256, 235, 367, 2478, 163, 842];
@@ -58,8 +41,8 @@ describe("commonChartConfiguration", () => {
       false,
       { startDate: 0, endDate: 1 }
     );
-    expect(result.options.scales.x.min).toStrictEqual(0);
-    expect(result.options.scales.x.max).toStrictEqual(1);
+    expect(result.options.scales.x.min).toBe(0);
+    expect(result.options.scales.x.max).toBe(1);
   });
 
   it("without date range", () => {
@@ -97,12 +80,12 @@ describe("commonChartConfiguration", () => {
     );
     const annotations = result.options.plugins.annotation.annotations;
     expect(annotations.line0.value).toStrictEqual(Date.parse("2020-03-24"));
-    expect(annotations.line0.label.yAdjust).toStrictEqual(0);
-    expect(annotations.line0.label.content).toStrictEqual("LOCKDOWN");
+    expect(annotations.line0.label.yAdjust).toBe(0);
+    expect(annotations.line0.label.content).toBe("LOCKDOWN");
 
     expect(annotations.line1.value).toStrictEqual(Date.parse("2020-05-29"));
-    expect(annotations.line1.label.yAdjust).toStrictEqual(20);
-    expect(annotations.line1.label.content).toStrictEqual("PHASE 1");
+    expect(annotations.line1.label.yAdjust).toBe(20);
+    expect(annotations.line1.label.content).toBe("PHASE 1");
   });
 
   it("uncertain date annotations", () => {
@@ -128,16 +111,16 @@ describe("commonChartConfiguration", () => {
       mockData,
       true
     );
-    expect(result.options.scales.y.grid.color).toStrictEqual("#121212");
-    expect(result.options.scales.x.ticks.color).toStrictEqual("#f2f2f2");
-    expect(result.options.scales.y.ticks.color).toStrictEqual("#f2f2f2");
-    expect(result.options.plugins.legend.labels.color).toStrictEqual("#f2f2f2");
+    expect(result.options.scales.y.grid.color).toBe("#121212");
+    expect(result.options.scales.x.ticks.color).toBe("#f2f2f2");
+    expect(result.options.scales.y.ticks.color).toBe("#f2f2f2");
+    expect(result.options.plugins.legend.labels.color).toBe("#f2f2f2");
     expect(
       result.options.plugins.annotation.annotations.line1.borderColor
-    ).toStrictEqual("#f2f2f2");
+    ).toBe("#f2f2f2");
     expect(
       result.options.plugins.annotation.annotations.line1.label.backgroundColor
-    ).toStrictEqual("#c1def1");
+    ).toBe("#c1def1");
   });
   it("darkmode false", () => {
     const result = commonChartConfiguration(
@@ -146,16 +129,16 @@ describe("commonChartConfiguration", () => {
       mockData,
       false
     );
-    expect(result.options.scales.y.grid.color).toStrictEqual("#cccccc");
-    expect(result.options.scales.x.ticks.color).toStrictEqual("#767676");
-    expect(result.options.scales.y.ticks.color).toStrictEqual("#767676");
-    expect(result.options.plugins.legend.labels.color).toStrictEqual("#767676");
+    expect(result.options.scales.y.grid.color).toBe("#cccccc");
+    expect(result.options.scales.x.ticks.color).toBe("#767676");
+    expect(result.options.scales.y.ticks.color).toBe("#767676");
+    expect(result.options.plugins.legend.labels.color).toBe("#767676");
     expect(
       result.options.plugins.annotation.annotations.line1.borderColor
-    ).toStrictEqual("rgba(0,0,0,0.25)");
+    ).toBe("rgba(0,0,0,0.25)");
     expect(
       result.options.plugins.annotation.annotations.line1.label.backgroundColor
-    ).toStrictEqual("#007EB9");
+    ).toBe("#007EB9");
   });
 
   it("receive maxTicks less than 20", () => {
@@ -164,12 +147,12 @@ describe("commonChartConfiguration", () => {
       Date.parse("2020-01-04"),
       smallMockData
     );
-    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(2);
+    expect(result.options.scales.y.ticks.maxTicksLimit).toBe(2);
   });
 
   it("receive maxTicks more than 20", () => {
     const result = commonChartConfiguration(testDates, END_DATE, mockData);
-    expect(result.options.scales.y.ticks.maxTicksLimit).toStrictEqual(20);
+    expect(result.options.scales.y.ticks.maxTicksLimit).toBe(20);
   });
 });
 
@@ -251,35 +234,35 @@ describe("getChartYMax", () => {
   ];
 
   it("datasets empty", () => {
-    expect(getChartYMax([])).toStrictEqual(0);
+    expect(getChartYMax([])).toBe(0);
   });
 
   it("datasets null", () => {
-    expect(getChartYMax(null)).toStrictEqual(0);
+    expect(getChartYMax(null)).toBe(0);
   });
 
   it("datasets undefined", () => {
-    expect(getChartYMax(undefined)).toStrictEqual(0);
+    expect(getChartYMax(undefined)).toBe(0);
   });
 
   it("normal datasets", () => {
-    expect(getChartYMax(TEST_SINGLE_DATASET)).toStrictEqual(799);
-    expect(getChartYMax(TEST_DOUBLE_DATASET)).toStrictEqual(4056);
+    expect(getChartYMax(TEST_SINGLE_DATASET)).toBe(799);
+    expect(getChartYMax(TEST_DOUBLE_DATASET)).toBe(4056);
   });
 
   it("dataset without data points", () => {
-    expect(getChartYMax(TEST_EMPTY_DATASET)).toStrictEqual(0);
+    expect(getChartYMax(TEST_EMPTY_DATASET)).toBe(0);
   });
 });
 
 describe("getMaxTicks", () => {
   it("return expected results", () => {
-    expect(getMaxTicks(null)).toStrictEqual(1);
-    expect(getMaxTicks()).toStrictEqual(1);
-    expect(getMaxTicks(0)).toStrictEqual(1);
-    expect(getMaxTicks(1)).toStrictEqual(2);
-    expect(getMaxTicks(5)).toStrictEqual(6);
-    expect(getMaxTicks(20)).toStrictEqual(20);
-    expect(getMaxTicks(1000000)).toStrictEqual(20);
+    expect(getMaxTicks(null)).toBe(1);
+    expect(getMaxTicks()).toBe(1);
+    expect(getMaxTicks(0)).toBe(1);
+    expect(getMaxTicks(1)).toBe(2);
+    expect(getMaxTicks(5)).toBe(6);
+    expect(getMaxTicks(20)).toBe(20);
+    expect(getMaxTicks(1000000)).toBe(20);
   });
 });

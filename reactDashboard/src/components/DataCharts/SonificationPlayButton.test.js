@@ -1,5 +1,4 @@
 import React from "react";
-import { act } from "react-dom/test-utils";
 import {
   playAudio,
   isAudioPlaying,
@@ -9,7 +8,7 @@ import {
 import SonificationPlayButton from "./SonificationPlayButton";
 import { DAILY_CASES, TOTAL_DEATHS } from "../DataCharts/DataChartsConsts";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
-import { createRoot } from "react-dom/client";
+import { renderWithUser } from "../../ReactTestUtils";
 
 jest.mock("../Utils/Sonification", () => {
   var storedIsAudioPlaying = false;
@@ -34,45 +33,22 @@ jest.mock("../Utils/Sonification", () => {
   };
 });
 
-var container = null;
-var root = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  root = createRoot(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  root.unmount(container);
-  container.remove();
-  container = null;
-  jest.clearAllMocks();
-});
-
 const dateRange = {
   startDate: Date.parse("2020-03-03"),
   endDate: Date.parse("2020-03-07"),
 };
 
-const playButton = () => container.querySelector(".sonification-play-button");
-
-function click() {
-  playButton().dispatchEvent(new MouseEvent("click", { bubbles: true }));
-}
+const playButton = () => document.querySelector(".sonification-play-button");
 
 test("default play/stop behaviour", async () => {
-  await act(async () => {
-    root.render(
-      <SonificationPlayButton
-        allData={testAllData}
-        chartType={TOTAL_DEATHS}
-        regionCode="S12000013"
-        dateRange={dateRange}
-      />
-    );
-  });
+  const { user } = renderWithUser(
+    <SonificationPlayButton
+      allData={testAllData}
+      chartType={TOTAL_DEATHS}
+      regionCode="S12000013"
+      dateRange={dateRange}
+    />
+  );
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
   expect(deletePlayStateChangeListener).toHaveBeenCalledTimes(0);
@@ -83,17 +59,7 @@ test("default play/stop behaviour", async () => {
   expect(isAudioPlaying).toHaveBeenCalledTimes(0);
 
   // Click play
-  await act(async () => {
-    click();
-    root.render(
-      <SonificationPlayButton
-        allData={testAllData}
-        chartType={TOTAL_DEATHS}
-        regionCode="S12000013"
-        dateRange={dateRange}
-      />
-    );
-  });
+  await user.click(playButton());
 
   expect(playAudio).toHaveBeenCalledTimes(1);
   expect(playAudio).toHaveBeenLastCalledWith(
@@ -107,17 +73,7 @@ test("default play/stop behaviour", async () => {
   expect(playButton().getAttribute("aria-label")).toBe("Stop listening");
 
   // Click stop
-  await act(async () => {
-    click();
-    root.render(
-      <SonificationPlayButton
-        allData={testAllData}
-        chartType={TOTAL_DEATHS}
-        regionCode="S12000013"
-        dateRange={dateRange}
-      />
-    );
-  });
+  await user.click(playButton());
 
   expect(playAudio).toHaveBeenCalledTimes(2);
   expect(playAudio).toHaveBeenLastCalledWith(
@@ -134,9 +90,9 @@ test("default play/stop behaviour", async () => {
 });
 
 test("minimum input play/stop behaviour", async () => {
-  await act(async () => {
-    root.render(<SonificationPlayButton allData={testAllData} />);
-  });
+  const { user } = renderWithUser(
+    <SonificationPlayButton allData={testAllData} />
+  );
 
   expect(addPlayStateChangeListener).toHaveBeenCalledTimes(1);
   expect(playButton().getAttribute("aria-label")).toBe(
@@ -146,10 +102,7 @@ test("minimum input play/stop behaviour", async () => {
   expect(isAudioPlaying).toHaveBeenCalledTimes(0);
 
   // Click play
-  await act(async () => {
-    click();
-    root.render(<SonificationPlayButton allData={testAllData} />);
-  });
+  await user.click(playButton());
 
   expect(playAudio).toHaveBeenCalledTimes(1);
   expect(playAudio).toHaveBeenLastCalledWith(
@@ -163,10 +116,7 @@ test("minimum input play/stop behaviour", async () => {
   expect(playButton().getAttribute("aria-label")).toBe("Stop listening");
 
   // Click stop
-  await act(async () => {
-    click();
-    root.render(<SonificationPlayButton allData={testAllData} />);
-  });
+  await user.click(playButton());
 
   expect(playAudio).toHaveBeenCalledTimes(2);
   expect(playAudio).toHaveBeenLastCalledWith(
@@ -183,15 +133,10 @@ test("minimum input play/stop behaviour", async () => {
 });
 
 test("empty input play behaviour", async () => {
-  await act(async () => {
-    root.render(<SonificationPlayButton />);
-  });
+  const { user } = renderWithUser(<SonificationPlayButton />);
 
   // Click play
-  await act(async () => {
-    click();
-    root.render(<SonificationPlayButton />);
-  });
+  await user.click(playButton());
 
   expect(playAudio).toHaveBeenCalledTimes(1);
   expect(playAudio).toHaveBeenLastCalledWith(

@@ -13,14 +13,13 @@ import "../../common.css";
 const RegionDropdown = ({
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode,
-  showCouncilAreas = true,
 }) => {
   function isValidRegionCode() {
     return (
       regionCode !== null &&
       (FEATURE_CODE_SCOTLAND === regionCode ||
         FEATURE_CODE_HEALTH_BOARDS.includes(regionCode) ||
-        (showCouncilAreas && FEATURE_CODE_COUNCIL_AREAS.includes(regionCode)))
+        FEATURE_CODE_COUNCIL_AREAS.includes(regionCode))
     );
   }
 
@@ -56,19 +55,13 @@ const RegionDropdown = ({
               {getPlaceNameByFeatureCode(featureCode)}
             </Dropdown.Item>
           ))}
-          {showCouncilAreas ? (
-            <>
-              <Dropdown.Divider />
-              <Dropdown.Header>Council Areas</Dropdown.Header>
-              {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
-                <Dropdown.Item key={featureCode} eventKey={featureCode}>
-                  {getPlaceNameByFeatureCode(featureCode)}
-                </Dropdown.Item>
-              ))}
-            </>
-          ) : (
-            <></>
-          )}
+          <Dropdown.Divider />
+          <Dropdown.Header>Council Areas</Dropdown.Header>
+          {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
+            <Dropdown.Item key={featureCode} eventKey={featureCode}>
+              {getPlaceNameByFeatureCode(featureCode)}
+            </Dropdown.Item>
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </div>

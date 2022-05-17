@@ -6,10 +6,12 @@ import "@testing-library/jest-dom/extend-expect";
 import "jest-canvas-mock";
 import fetchMock from "jest-fetch-mock";
 
+// eslint-disable-next-line jest/require-hook
 fetchMock.enableMocks();
 
 // To avoid JSDOM errors when rendering leaflet map in tests. From:
 // https://stackoverflow.com/questions/54382414/fixing-react-leaflet-testing-error-cannot-read-property-layeradd-of-null
+// eslint-disable-next-line jest/require-hook
 var createElementNSOrig = global.document.createElementNS;
 global.document.createElementNS = function (namespaceURI, qualifiedName) {
   if (
@@ -38,3 +40,8 @@ global.suppressConsoleWarnLogs = () =>
   });
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  fetch.resetMocks();
+});

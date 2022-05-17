@@ -2,53 +2,36 @@
 
 import React from "react";
 import RegionSingleValueBar from "./RegionSingleValueBar";
-import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import MockDate from "mockdate";
-import { createRoot } from "react-dom/client";
+import { render } from "@testing-library/react";
 
 const DATE_TODAY = "2020-10-17";
 
-var container = null;
-var root = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  root = createRoot(container);
-  fetch.resetMocks();
   MockDate.set(DATE_TODAY);
 });
 
 afterEach(() => {
-  // cleanup on exiting
-  root.unmount(container);
-  container.remove();
-  container = null;
   MockDate.reset();
-  jest.resetAllMocks();
 });
 
 describe("single value bar rendering", () => {
   it("scotland available", () => {
-    act(() => {
-      root.render(
-        <RegionSingleValueBar
-          allData={testAllData}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />
-      );
-    });
+    render(
+      <RegionSingleValueBar
+        allData={testAllData}
+        regionCode={FEATURE_CODE_SCOTLAND}
+      />
+    );
 
     expectNormalScotlandValues();
   });
 
   it("region available", () => {
-    act(() => {
-      root.render(
-        <RegionSingleValueBar allData={testAllData} regionCode="S08000017" />
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={testAllData} regionCode="S08000017" />
+    );
 
     checkSingleValue("dailyCases", "4", "reported today");
     checkSingleValue("weeklyCases", "501", "last 7 days");
@@ -59,41 +42,30 @@ describe("single value bar rendering", () => {
   });
 
   it("scotland unavailable", () => {
-    act(() => {
-      root.render(
-        <RegionSingleValueBar
-          allData={{ regions: {} }}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />
-      );
-    });
+    render(
+      <RegionSingleValueBar
+        allData={{ regions: {} }}
+        regionCode={FEATURE_CODE_SCOTLAND}
+      />
+    );
 
     expectValuesUnavailable();
 
-    act(() => {
-      root.render(
-        <RegionSingleValueBar allData={{}} regionCode={FEATURE_CODE_SCOTLAND} />
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={{}} regionCode={FEATURE_CODE_SCOTLAND} />
+    );
 
     expectValuesUnavailable();
 
-    act(() => {
-      root.render(<RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />);
-    });
+    render(<RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />);
 
     expectValuesUnavailable();
   });
 
   it("region unavailable", () => {
-    act(() => {
-      root.render(
-        <RegionSingleValueBar
-          allData={{ regions: {} }}
-          regionCode="S08000017"
-        />
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={{ regions: {} }} regionCode="S08000017" />
+    );
 
     expectValuesUnavailable();
   });
@@ -101,19 +73,13 @@ describe("single value bar rendering", () => {
 
 describe("regionCode", () => {
   it("missing should default to Scotland", () => {
-    act(() => {
-      root.render(<RegionSingleValueBar allData={testAllData} />);
-    });
+    render(<RegionSingleValueBar allData={testAllData} />);
 
     expectNormalScotlandValues();
   });
 
   it("null should default to Scotland", () => {
-    act(() => {
-      root.render(
-        <RegionSingleValueBar allData={testAllData} regionCode={null} />
-      );
-    });
+    render(<RegionSingleValueBar allData={testAllData} regionCode={null} />);
 
     expectNormalScotlandValues();
   });
@@ -122,11 +88,9 @@ describe("regionCode", () => {
     global.suppressConsoleErrorLogs();
 
     expect(() => {
-      act(() => {
-        root.render(
-          <RegionSingleValueBar allData={testAllData} regionCode="unknown" />
-        );
-      });
+      render(
+        <RegionSingleValueBar allData={testAllData} regionCode="unknown" />
+      );
     }).toThrow("Unrecognised regionCode: unknown");
   });
 });
@@ -162,7 +126,7 @@ function checkSingleValue(
   expectedValue,
   expectedSubtitle = null
 ) {
-  const singleValueElement = container.querySelector("#" + singleValueId);
+  const singleValueElement = document.querySelector("#" + singleValueId);
   const subtitle = singleValueElement.querySelector(".subtitle");
   const value = singleValueElement.querySelector(".single-value-number");
   expect(subtitle.textContent).toBe(

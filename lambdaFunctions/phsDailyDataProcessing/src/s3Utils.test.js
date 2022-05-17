@@ -3,7 +3,6 @@ import {
   storeObject,
   downloadAndStoreCsvData,
   downloadAndStoreMainCsvData,
-  downloadAndStoreAdditionalCsvData,
   jsonDataExists,
   storeJsonProcessedData,
   getRemainingCsvData,

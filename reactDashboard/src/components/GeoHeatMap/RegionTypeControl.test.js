@@ -2,77 +2,36 @@
 
 import React from "react";
 import { RegionTypeControl } from "./RegionTypeControl";
-import { act } from "react-dom/test-utils";
-import { AREATYPE_HEALTH_BOARDS } from "../HeatmapDataSelector/HeatmapConsts";
-import { createRoot } from "react-dom/client";
+import {
+  AREATYPE_COUNCIL_AREAS,
+  AREATYPE_HEALTH_BOARDS,
+} from "../HeatmapDataSelector/HeatmapConsts";
 import { MapContainer } from "react-leaflet";
+import { renderWithUser } from "../../ReactTestUtils";
 
-// eslint-disable-next-line jest/require-hook
-var storedAreaType = AREATYPE_HEALTH_BOARDS;
-const setAreaType = (value) => (storedAreaType = value);
-
-var container = null;
-var root = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  root = createRoot(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  root.unmount(container);
-  container.remove();
-  container = null;
-});
+const setAreaType = jest.fn();
 
 test("default render", async () => {
-  act(() => {
-    root.render(
-      <MapContainer>
-        <RegionTypeControl
-          areaType={storedAreaType}
-          setAreaType={setAreaType}
-        />
-      </MapContainer>
-    );
-  });
+  const { user } = renderWithUser(
+    <MapContainer>
+      <RegionTypeControl
+        areaType={AREATYPE_HEALTH_BOARDS}
+        setAreaType={setAreaType}
+      />
+    </MapContainer>
+  );
 
-  checkButtonText("Health Boards", "Council Areas");
-  checkStoredValues("health-boards");
+  expect(healthBoardsButton().textContent).toBe("Health Boards");
+  expect(councilAreasButton().textContent).toBe("Council Areas");
 
-  click(councilAreasButton());
-  checkStoredValues("council-areas");
+  await user.click(councilAreasButton());
+  expect(setAreaType).toHaveBeenLastCalledWith(AREATYPE_COUNCIL_AREAS);
 
-  click(healthBoardsButton());
-  checkStoredValues("health-boards");
+  await user.click(healthBoardsButton());
+  expect(setAreaType).toHaveBeenLastCalledWith(AREATYPE_HEALTH_BOARDS);
 });
 
-function checkButtonText(expectedHealthBoards, expectedCouncilAreas) {
-  expect(healthBoardsButton().textContent).toBe(expectedHealthBoards);
-  expect(councilAreasButton().textContent).toBe(expectedCouncilAreas);
-}
-
-function checkStoredValues(expectedAreaType) {
-  expect(storedAreaType).toBe(expectedAreaType);
-}
-
 const healthBoardsButton = () =>
-  container.querySelector("#healthBoards + label");
+  document.querySelector("#healthBoards + label");
 const councilAreasButton = () =>
-  container.querySelector("#councilAreas + label");
-
-function click(button) {
-  act(() => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    root.render(
-      <MapContainer>
-        <RegionTypeControl
-          areaType={storedAreaType}
-          setAreaType={setAreaType}
-        />
-      </MapContainer>
-    );
-  });
-}
+  document.querySelector("#councilAreas + label");
