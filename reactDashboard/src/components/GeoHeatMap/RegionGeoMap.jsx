@@ -101,6 +101,13 @@ function RegionBoundaryLayer({
   regionCode,
   setRegionCode,
 }) {
+  // Need a ref to avoid closures in selectRegion events
+  const regionCodeRef = useRef(regionCode);
+
+  useEffect(() => {
+    regionCodeRef.current = regionCode;
+  }, [regionCode]);
+
   const handleRegionTooltip = ({ target, latlng }) => {
     const featureCode = featureCodeForFeature(target.feature);
     const content =
@@ -113,7 +120,9 @@ function RegionBoundaryLayer({
   const selectRegion = ({ target }) => {
     const featureCode = featureCodeForFeature(target.feature);
     setRegionCode(
-      featureCode === regionCode ? FEATURE_CODE_SCOTLAND : featureCode
+      featureCode === regionCodeRef.current
+        ? FEATURE_CODE_SCOTLAND
+        : featureCode
     );
   };
 

@@ -44,7 +44,7 @@ test("supplied regionCode render", () => {
 });
 
 test("select dropdown items", async () => {
-  const { user, rerender } = renderWithUser(
+  const { user } = renderWithUser(
     <RegionDropdown
       regionCode={FEATURE_CODE_SCOTLAND}
       setRegionCode={setRegionCode}
