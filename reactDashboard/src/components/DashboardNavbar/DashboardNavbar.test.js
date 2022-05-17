@@ -22,10 +22,10 @@ describe("nav links content and highlighting", () => {
     );
 
     expect(overviewNavlink().getAttribute("href")).toBe("/");
-    expect(overviewNavlink().getAttribute("class")).toContain("active");
+    expect(overviewNavlink().getAttribute("class")).toContain("selected");
 
     expect(regionalNavlink().getAttribute("href")).toBe("/regional");
-    expect(regionalNavlink().getAttribute("class")).not.toContain("active");
+    expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
   });
 
   it("regional default page", async () => {
@@ -36,10 +36,10 @@ describe("nav links content and highlighting", () => {
     );
 
     expect(overviewNavlink().getAttribute("href")).toBe("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
 
     expect(regionalNavlink().getAttribute("href")).toBe("/regional");
-    expect(regionalNavlink().getAttribute("class")).toContain("active");
+    expect(regionalNavlink().getAttribute("class")).toContain("selected");
   });
 
   it("regional area page", async () => {
@@ -50,10 +50,10 @@ describe("nav links content and highlighting", () => {
     );
 
     expect(overviewNavlink().getAttribute("href")).toBe("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
 
     expect(regionalNavlink().getAttribute("href")).toBe("/regional");
-    expect(regionalNavlink().getAttribute("class")).toContain("active");
+    expect(regionalNavlink().getAttribute("class")).toContain("selected");
   });
 
   it("about page", async () => {
@@ -64,10 +64,10 @@ describe("nav links content and highlighting", () => {
     );
 
     expect(overviewNavlink().getAttribute("href")).toBe("/");
-    expect(overviewNavlink().getAttribute("class")).not.toContain("active");
+    expect(overviewNavlink().getAttribute("class")).not.toContain("selected");
 
     expect(regionalNavlink().getAttribute("href")).toBe("/regional");
-    expect(regionalNavlink().getAttribute("class")).not.toContain("active");
+    expect(regionalNavlink().getAttribute("class")).not.toContain("selected");
   });
 });
 
