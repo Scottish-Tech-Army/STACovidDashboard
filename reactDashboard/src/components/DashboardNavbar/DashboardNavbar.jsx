@@ -14,9 +14,10 @@ const DashboardNavbar = ({ darkmode }) => {
   function navLink(pageUrl, title) {
     return (
       <NavLink
-        className="nav-link"
         to={pageUrl}
-        activeClassName="selected"
+        className={({ isActive }) =>
+          isActive ? "nav-link selected" : "nav-link"
+        }
         onClick={() => setExpanded(false)}
       >
         {title}

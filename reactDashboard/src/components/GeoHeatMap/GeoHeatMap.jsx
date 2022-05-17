@@ -233,15 +233,15 @@ const ActiveRegionPopup = ({ featureCode, valueType, latlng, allData }) => {
 
   return (
     <Popup closeButton={false} position={latlng}>
-      <div class="region-popup">
+      <div className="region-popup">
         <div>{regionData.name.toUpperCase()}</div>
-        <div class="map-date-range">
+        <div className="map-date-range">
           {`${format(allData.currentWeekStartDate, "dd MMM")} - ${format(
             allData.endDate,
             "dd MMM"
           )}`}
         </div>
-        <div class="map-cases-count">
+        <div className="map-cases-count">
           {`${valueType === VALUETYPE_DEATHS ? "Deaths" : "Cases"}: ${count}`}
         </div>
       </div>
