@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./GeoHeatMap.css";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Map as LeafletMap, TileLayer, ZoomControl } from "react-leaflet";
+import { GeoJSON, MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import {
   AREATYPE_COUNCIL_AREAS,
   AREATYPE_HEALTH_BOARDS,
@@ -24,81 +23,24 @@ import {
 */
 import healthBoardBoundaries from "./geoJSONHealthBoards.json";
 import councilAreaBoundaries from "./geoJSONCouncilAreas.json";
-import Control from "react-leaflet-control";
-import RegionTypeSelector from "./RegionTypeSelector";
+import { RegionTypeControl } from "./RegionTypeControl";
 import {
-  setScotlandDefaultBounds,
   featureCodeForFeature,
   MAP_TILES_URL,
   DARK_MAP_TILES_URL,
+  ATTRIBUTION,
+  SCOTLAND_BOUNDS,
+  SCOTLAND_MAX_BOUNDS,
 } from "./GeoUtils";
 
 export default function RegionGeoMap({
   regionCode = FEATURE_CODE_SCOTLAND,
-  setRegionCode = null,
+  setRegionCode,
   darkmode,
 }) {
-  const [councilAreaBoundariesLayer, setCouncilAreaBoundariesLayer] = useState(
-    null
-  );
-  const [healthBoardBoundariesLayer, setHealthBoardBoundariesLayer] = useState(
-    null
-  );
-
-  const [currentBoundariesLayer, setCurrentBoundariesLayer] = useState(null);
   const [areaType, setAreaType] = useState(AREATYPE_HEALTH_BOARDS);
 
   const mapRef = useRef();
-
-  // Setup map boundaries layer
-  useEffect(() => {
-    const INVISIBLE_LAYER_STYLE = {
-      opacity: 0,
-      fillOpacity: 0,
-    };
-
-    const handleRegionPopup = (e) => {
-      const layer = e.target;
-      const featureCode = featureCodeForFeature(layer.feature);
-      const content =
-        "<p class='region-popup'><strong>" +
-        getPlaceNameByFeatureCode(featureCode) +
-        "</strong></p>";
-      layer.bindTooltip(content).openTooltip(e.latlng);
-    };
-
-    const selectRegion = (e) => {
-      const layer = e.target;
-      const featureCode = featureCodeForFeature(layer.feature);
-      setRegionCode((existing) =>
-        featureCode === existing ? FEATURE_CODE_SCOTLAND : featureCode
-      );
-    };
-
-    const regionLayerOptions = {
-      style: INVISIBLE_LAYER_STYLE,
-      onEachFeature: (feature, layer) => {
-        layer.on({
-          mouseover: handleRegionPopup,
-          click: selectRegion,
-        });
-      },
-    };
-
-    setCouncilAreaBoundariesLayer(
-      L.geoJSON(councilAreaBoundaries, regionLayerOptions)
-    );
-    setHealthBoardBoundariesLayer(
-      L.geoJSON(healthBoardBoundaries, regionLayerOptions)
-    );
-  }, [setRegionCode]);
-
-  // Fit bounds and restrict the panning
-  useEffect(() => {
-    if (mapRef.current && mapRef.current.leafletElement) {
-      setScotlandDefaultBounds(mapRef.current.leafletElement);
-    }
-  }, []);
 
   useEffect(() => {
     if (FEATURE_CODE_SCOTLAND === regionCode) {
@@ -112,67 +54,13 @@ export default function RegionGeoMap({
     }
   }, [regionCode, setAreaType]);
 
-  // Update active map boundaries layer
-  useEffect(() => {
-    if (mapRef.current && mapRef.current.leafletElement) {
-      const map = mapRef.current.leafletElement;
-      if (AREATYPE_COUNCIL_AREAS === areaType) {
-        if (healthBoardBoundariesLayer) {
-          healthBoardBoundariesLayer.removeFrom(map);
-        }
-        if (councilAreaBoundariesLayer) {
-          councilAreaBoundariesLayer.addTo(map);
-        }
-        setCurrentBoundariesLayer(councilAreaBoundariesLayer);
-      } else {
-        if (councilAreaBoundariesLayer) {
-          councilAreaBoundariesLayer.removeFrom(map);
-        }
-        if (healthBoardBoundariesLayer) {
-          healthBoardBoundariesLayer.addTo(map);
-        }
-        setCurrentBoundariesLayer(healthBoardBoundariesLayer);
-      }
-    }
-  }, [areaType, councilAreaBoundariesLayer, healthBoardBoundariesLayer]);
-
-  // Update counts to use to style map boundaries layer
-  useEffect(() => {
-    const SELECTED_COLOUR = "red";
-    const UNSELECTED_COLOUR = "black";
-    const BORDER_COLOUR = "black";
-    const DARK_SELECTED_COLOUR = "#c1def1";
-    const DARK_BORDER_COLOUR = "white";
-
-    function getRegionStyle(featureCode) {
-      const selectedColour = darkmode ? DARK_SELECTED_COLOUR : SELECTED_COLOUR;
-
-      return {
-        color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
-        fillColor:
-          featureCode === regionCode ? selectedColour : UNSELECTED_COLOUR,
-        opacity: 0.5,
-        fillOpacity: featureCode === regionCode ? 0.5 : 0,
-        weight: 1,
-      };
-    }
-
-    if (mapRef.current && mapRef.current.leafletElement) {
-      mapRef.current.leafletElement.closePopup();
-    }
-
-    if (currentBoundariesLayer) {
-      currentBoundariesLayer.setStyle((feature) =>
-        getRegionStyle(featureCodeForFeature(feature))
-      );
-    }
-  }, [regionCode, currentBoundariesLayer, darkmode]);
-
   return (
     <div className="geo-map">
-      <LeafletMap
+      <MapContainer
         ref={mapRef}
         id="regionmap"
+        bounds={SCOTLAND_BOUNDS}
+        maxBounds={SCOTLAND_MAX_BOUNDS}
         maxZoom={10}
         minZoom={6}
         dragging={!L.Browser.mobile}
@@ -181,14 +69,92 @@ export default function RegionGeoMap({
         scrollWheelZoom={false}
       >
         <TileLayer
+          key={darkmode}
           url={darkmode ? DARK_MAP_TILES_URL : MAP_TILES_URL}
-          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          attribution={ATTRIBUTION}
+        />
+        <RegionBoundaryLayer
+          key={areaType}
+          regionBoundaries={
+            AREATYPE_COUNCIL_AREAS === areaType
+              ? councilAreaBoundaries
+              : healthBoardBoundaries
+          }
+          darkmode={darkmode}
+          regionCode={regionCode}
+          setRegionCode={setRegionCode}
         />
         <ZoomControl position="topright" />
-        <Control position="topleft">
-          <RegionTypeSelector areaType={areaType} setAreaType={setAreaType} />
-        </Control>
-      </LeafletMap>
+        <RegionTypeControl
+          position="topleft"
+          areaType={areaType}
+          setAreaType={setAreaType}
+        />
+      </MapContainer>
     </div>
+  );
+}
+
+function RegionBoundaryLayer({
+  regionBoundaries,
+  darkmode,
+  regionCode,
+  setRegionCode,
+}) {
+  // Need a ref to avoid closures in selectRegion events
+  const regionCodeRef = useRef(regionCode);
+
+  useEffect(() => {
+    regionCodeRef.current = regionCode;
+  }, [regionCode]);
+
+  const handleRegionTooltip = ({ target, latlng }) => {
+    const featureCode = featureCodeForFeature(target.feature);
+    const content =
+      "<p class='region-popup'><strong>" +
+      getPlaceNameByFeatureCode(featureCode) +
+      "</strong></p>";
+    target.bindTooltip(content).openTooltip(latlng);
+  };
+
+  const selectRegion = ({ target }) => {
+    const featureCode = featureCodeForFeature(target.feature);
+    setRegionCode(
+      featureCode === regionCodeRef.current
+        ? FEATURE_CODE_SCOTLAND
+        : featureCode
+    );
+  };
+
+  const SELECTED_COLOUR = "red";
+  const UNSELECTED_COLOUR = "black";
+  const BORDER_COLOUR = "black";
+  const DARK_SELECTED_COLOUR = "#c1def1";
+  const DARK_BORDER_COLOUR = "white";
+
+  function getRegionStyle(featureCode) {
+    const selectedColour = darkmode ? DARK_SELECTED_COLOUR : SELECTED_COLOUR;
+
+    return {
+      color: darkmode ? DARK_BORDER_COLOUR : BORDER_COLOUR,
+      fillColor:
+        featureCode === regionCode ? selectedColour : UNSELECTED_COLOUR,
+      opacity: 0.5,
+      fillOpacity: featureCode === regionCode ? 0.5 : 0,
+      weight: 1,
+    };
+  }
+
+  return (
+    <GeoJSON
+      data={regionBoundaries}
+      style={(feature) => getRegionStyle(featureCodeForFeature(feature))}
+      onEachFeature={(_feature, layer) => {
+        layer.on({
+          mouseover: handleRegionTooltip,
+          click: selectRegion,
+        });
+      }}
+    ></GeoJSON>
   );
 }

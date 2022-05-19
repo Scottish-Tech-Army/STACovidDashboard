@@ -2,65 +2,24 @@
 
 import React from "react";
 import HeatmapDataSelector from "./HeatmapDataSelector";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import { AREATYPE_HEALTH_BOARDS, VALUETYPE_DEATHS } from "./HeatmapConsts";
+import {
+  AREATYPE_COUNCIL_AREAS,
+  AREATYPE_HEALTH_BOARDS,
+  VALUETYPE_CASES,
+  VALUETYPE_DEATHS,
+} from "./HeatmapConsts";
+import { render } from "@testing-library/react";
+import { renderWithUser } from "../../ReactTestUtils";
 
-var storedValueType = VALUETYPE_DEATHS;
-var storedAreaType = AREATYPE_HEALTH_BOARDS;
-const setValueType = (value) => (storedValueType = value);
-const setAreaType = (value) => (storedAreaType = value);
+const setValueType = jest.fn();
+const setAreaType = jest.fn();
 
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-function checkButtonText(
-  expectedHealthBoards,
-  expectedCouncilAreas,
-  expectedDeaths,
-  expectedCases
-) {
-  expect(healthBoardsButton().textContent).toBe(expectedHealthBoards);
-  expect(councilAreasButton().textContent).toBe(expectedCouncilAreas);
-  expect(deathsButton().textContent).toBe(expectedDeaths);
-  expect(casesButton().textContent).toBe(expectedCases);
-}
-
-function checkStoredValues(expectedAreaType, expectedValueType) {
-  expect(storedAreaType).toBe(expectedAreaType);
-  expect(storedValueType).toBe(expectedValueType);
-}
-
-const healthBoardsButton = () => container.querySelector("#healthBoards + label");
-const councilAreasButton = () => container.querySelector("#councilAreas + label");
-const deathsButton = () => container.querySelector("#deaths + label");
-const casesButton = () => container.querySelector("#cases + label");
-
-function click(button) {
-  act(() => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
-      <HeatmapDataSelector
-        areaType={storedAreaType}
-        valueType={storedValueType}
-        setAreaType={setAreaType}
-        setValueType={setValueType}
-      />,
-      container
-    );
-  });
-}
+const healthBoardsButton = () =>
+  document.querySelector("#healthBoards + label");
+const councilAreasButton = () =>
+  document.querySelector("#councilAreas + label");
+const deathsButton = () => document.querySelector("#deaths + label");
+const casesButton = () => document.querySelector("#cases + label");
 
 test("null/undefined input throws error", async () => {
   global.suppressConsoleErrorLogs();
@@ -72,8 +31,7 @@ test("null/undefined input throws error", async () => {
         valueType="deaths"
         setAreaType={setAreaType}
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised areaType: null");
 
@@ -83,8 +41,7 @@ test("null/undefined input throws error", async () => {
         valueType="deaths"
         setAreaType={setAreaType}
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised areaType: undefined");
 
@@ -94,8 +51,7 @@ test("null/undefined input throws error", async () => {
         areaType={AREATYPE_HEALTH_BOARDS}
         setAreaType={setAreaType}
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised valueType: undefined");
 
@@ -105,8 +61,7 @@ test("null/undefined input throws error", async () => {
         areaType="health-boards"
         valueType="deaths"
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised setAreaType: undefined");
 
@@ -116,8 +71,7 @@ test("null/undefined input throws error", async () => {
         areaType="health-boards"
         valueType="deaths"
         setAreaType={setAreaType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised setValueType: undefined");
 
@@ -128,8 +82,7 @@ test("null/undefined input throws error", async () => {
         valueType="deaths"
         setAreaType={setAreaType}
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised areaType: unknown");
 
@@ -140,37 +93,43 @@ test("null/undefined input throws error", async () => {
         valueType="unknown"
         setAreaType={setAreaType}
         setValueType={setValueType}
-      />,
-      container
+      />
     );
   }).toThrow("Unrecognised valueType: unknown");
 });
 
 test("default render", async () => {
-  act(() => {
-    render(
-      <HeatmapDataSelector
-        areaType={storedAreaType}
-        valueType={storedValueType}
-        setAreaType={setAreaType}
-        setValueType={setValueType}
-      />,
-      container
-    );
-  });
+  const { user, rerender } = renderWithUser(
+    <HeatmapDataSelector
+      areaType={AREATYPE_HEALTH_BOARDS}
+      valueType={VALUETYPE_DEATHS}
+      setAreaType={setAreaType}
+      setValueType={setValueType}
+    />
+  );
 
-  checkButtonText("Health Boards", "Council Areas", "Deaths", "Cases");
-  checkStoredValues("health-boards", "deaths");
+  expect(healthBoardsButton().textContent).toBe("Health Boards");
+  expect(councilAreasButton().textContent).toBe("Council Areas");
+  expect(deathsButton().textContent).toBe("Deaths");
+  expect(casesButton().textContent).toBe("Cases");
 
-  click(councilAreasButton());
-  checkStoredValues("council-areas", "deaths");
+  await user.click(councilAreasButton());
+  expect(setAreaType).toHaveBeenLastCalledWith(AREATYPE_COUNCIL_AREAS);
 
-  click(casesButton());
-  checkStoredValues("council-areas", "cases");
+  await user.click(casesButton());
+  expect(setValueType).toHaveBeenLastCalledWith(VALUETYPE_CASES);
 
-  click(healthBoardsButton());
-  checkStoredValues("health-boards", "cases");
+  rerender(
+    <HeatmapDataSelector
+      areaType={AREATYPE_COUNCIL_AREAS}
+      valueType={VALUETYPE_CASES}
+      setAreaType={setAreaType}
+      setValueType={setValueType}
+    />
+  );
+  await user.click(healthBoardsButton());
+  expect(setAreaType).toHaveBeenLastCalledWith(AREATYPE_HEALTH_BOARDS);
 
-  click(deathsButton());
-  checkStoredValues("health-boards", "deaths");
+  await user.click(deathsButton());
+  expect(setValueType).toHaveBeenLastCalledWith(VALUETYPE_DEATHS);
 });

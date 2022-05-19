@@ -1,36 +1,16 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { renderWithUser } from "./ReactTestUtils";
 import App from "./App";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
 
 test("default render", async () => {
   fetch.mockReject(new Error("fetch failed"));
   global.suppressConsoleErrorLogs();
 
-  const app = () => container.querySelector(".App");
+  const app = () => document.querySelector(".App");
 
-  await act(async () => {
-    render(<App />, container);
-  });
+  renderWithUser(<App />);
   expect(app().getAttribute("class")).not.toContain("darkmode");
-
 });
-
 
 const TOTALS_DATE = Date.parse("2021-01-21");
 

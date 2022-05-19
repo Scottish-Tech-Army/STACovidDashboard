@@ -11,13 +11,13 @@ import SvgIcon from "../Utils/SvgIcon";
 const DashboardNavbar = ({ darkmode }) => {
   const [expanded, setExpanded] = useState(false);
 
-  function navLink(pageUrl, title, exact = true) {
+  function navLink(pageUrl, title) {
     return (
       <NavLink
-        className="nav-link"
         to={pageUrl}
-        exact={exact}
-        activeClassName="selected"
+        className={({ isActive }) =>
+          isActive ? "nav-link selected" : "nav-link"
+        }
         onClick={() => setExpanded(false)}
       >
         {title}
@@ -58,7 +58,7 @@ const DashboardNavbar = ({ darkmode }) => {
         </Navbar.Brand>
         <Nav className="navbar-links">
           {navLink(URL_OVERVIEW, "Summary Statistics")}
-          {navLink(URL_REGIONAL, "Regional Insights", false)}
+          {navLink(URL_REGIONAL, "Regional Insights")}
         </Nav>
       </Navbar.Collapse>
       {darkmodeIcon("darkmode-btn")}

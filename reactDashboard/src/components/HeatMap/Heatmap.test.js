@@ -1,27 +1,9 @@
 import React from "react";
 import Heatmap, { createHeatbarLines } from "./Heatmap";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
+import { render } from "@testing-library/react";
 
 test("heatmap renders no data when fetch fails, shows loadingComponent", async () => {
-  await act(async () => {
-    render(<Heatmap />, container);
-  });
+  render(<Heatmap />);
 
   expect(loadingComponent()).not.toBeNull();
   expect(table()).toBeNull();
@@ -29,16 +11,13 @@ test("heatmap renders no data when fetch fails, shows loadingComponent", async (
 
 describe("heatmap renders dynamic fetched data", () => {
   it("council areas; deaths", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          allData={testAllData}
-          valueType="deaths"
-          areaType="council-areas"
-        />,
-        container
-      );
-    });
+    render(
+      <Heatmap
+        allData={testAllData}
+        valueType="deaths"
+        areaType="council-areas"
+      />
+    );
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
@@ -61,16 +40,13 @@ describe("heatmap renders dynamic fetched data", () => {
   });
 
   it("health boards; deaths", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          allData={testAllData}
-          valueType="deaths"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
+    render(
+      <Heatmap
+        allData={testAllData}
+        valueType="deaths"
+        areaType="health-boards"
+      />
+    );
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow(
@@ -92,16 +68,13 @@ describe("heatmap renders dynamic fetched data", () => {
   });
 
   it("health boards; cases", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          allData={testAllData}
-          valueType="cases"
-          areaType="health-boards"
-        />,
-        container
-      );
-    });
+    render(
+      <Heatmap
+        allData={testAllData}
+        valueType="cases"
+        areaType="health-boards"
+      />
+    );
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow("HEALTH BOARDS", "TOTAL CASES", "01 Mar 2020 - 09 Mar 2020");
@@ -119,16 +92,13 @@ describe("heatmap renders dynamic fetched data", () => {
   });
 
   it("council areas; cases", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          allData={testAllData}
-          valueType="cases"
-          areaType="council-areas"
-        />,
-        container
-      );
-    });
+    render(
+      <Heatmap
+        allData={testAllData}
+        valueType="cases"
+        areaType="council-areas"
+      />
+    );
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow("COUNCIL AREAS", "TOTAL CASES", "01 Mar 2020 - 09 Mar 2020");
@@ -146,16 +116,13 @@ describe("heatmap renders dynamic fetched data", () => {
   });
 
   it("missing region data", async () => {
-    await act(async () => {
-      render(
-        <Heatmap
-          allData={{ regions: {} }}
-          valueType="deaths"
-          areaType="council-areas"
-        />,
-        container
-      );
-    });
+    render(
+      <Heatmap
+        allData={{ regions: {} }}
+        valueType="deaths"
+        areaType="council-areas"
+      />
+    );
 
     expect(loadingComponent()).toBeNull();
     checkHeaderRow("COUNCIL AREAS", "TOTAL DEATHS", "Data not available");
@@ -165,8 +132,8 @@ describe("heatmap renders dynamic fetched data", () => {
   });
 });
 
-const loadingComponent = () => container.querySelector(".loading-component");
-const table = () => container.querySelector(".heatmap table");
+const loadingComponent = () => document.querySelector(".loading-component");
+const table = () => document.querySelector(".heatmap table");
 const headers = () => table().querySelectorAll("thead tr");
 const rows = () => table().querySelectorAll("tbody tr");
 
@@ -280,7 +247,7 @@ function checkHeatbar(heatbar, distinctHeatLevels) {
     expect(line.getAttribute("class")).toBe("l-" + distinctHeatLevels[i]);
     // Check x value is increasing
     var currentX = Number(line.getAttribute("x1"));
-    expect(currentX > lastX).toBe(true);
+    expect(currentX).toBeGreaterThan(lastX);
     lastX = currentX;
   });
 }

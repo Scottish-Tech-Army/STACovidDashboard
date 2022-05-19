@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import "../App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import RegionSingleValueBar from "../components/SingleValue/RegionSingleValueBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -15,74 +14,51 @@ import {
   getPlaceNameByFeatureCode,
 } from "../components/Utils/CsvUtils";
 import { stopAudio } from "../components/Utils/Sonification";
-import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import RouteMapRules from "../components/RouteMapRules/RouteMapRules";
+import { URL_REGIONAL } from "./PageConsts";
 
 // Exported for unit tests
-export function getRegionCodeFromUrl(location) {
-  const initialRegionCode = location.pathname.split("/").pop();
-  if (FEATURE_CODE_MAP[initialRegionCode] !== undefined) {
-    return initialRegionCode;
-  }
-  return FEATURE_CODE_SCOTLAND;
+export function getCheckedRegionCode(
+  initialRegionCode = FEATURE_CODE_SCOTLAND
+) {
+  return FEATURE_CODE_MAP.hasOwnProperty(initialRegionCode)
+    ? initialRegionCode
+    : FEATURE_CODE_SCOTLAND;
 }
 
 // Exported for unit tests
-export function getCanonicalUrl(baseUrl, regionCode) {
+export function getCanonicalUrl(regionCode) {
   return (
-    baseUrl + (regionCode === FEATURE_CODE_SCOTLAND ? "" : "/" + regionCode)
+    URL_REGIONAL +
+    (regionCode === FEATURE_CODE_SCOTLAND ? "" : "/" + regionCode)
   );
 }
 
 const Regional = ({ allData, darkmode }) => {
-  const match = useRouteMatch();
   const location = useLocation();
-  const [regionCode, setRegionCode] = useState(getRegionCodeFromUrl(location));
-  const history = useHistory();
+  const urlParams = useParams();
+  const navigate = useNavigate();
 
-  const currentRegionCode = useRef(regionCode);
-  const currentLocation = useRef(match.url);
+  const regionCode = getCheckedRegionCode(urlParams.regionCode);
 
-  // These two effects handle the browser url and the region code selection in sync.
-  // Either location or regionCode may be changed by user action, so the currentRegionCode
-  // and currentLocation refs are used to distinguish a change by user action, or internally
-  // here to keep the location and regionCode in sync.
-  //
-  // It is complicated by handling the canonicalisation of URLs
-  // eg .../regional/unknown is redirected to .../regional
+  // Change URL if regionCode changes
+  const setRegionCode = (newRegionCode) => navigate(getCanonicalUrl(newRegionCode));
 
+  // Redirect if on unrecognised URL
   useEffect(() => {
-    if (currentRegionCode.current !== regionCode) {
-      currentRegionCode.current = regionCode;
-      // Region code has changed: update URL
-      const newUrl = getCanonicalUrl(match.url, regionCode);
-      if (currentLocation.current !== newUrl) {
-        currentLocation.current = newUrl;
-        history.push(newUrl);
-      }
+    const newUrl = getCanonicalUrl(regionCode);
+    if (location.pathname !== newUrl) {
+      navigate(newUrl);
     }
-  }, [regionCode, history, match]);
-
-  useEffect(() => {
-    function setCanonicalLocation(newRegionCode) {
-      currentLocation.current = getCanonicalUrl(match.url, newRegionCode);
-      if (location.pathname !== currentLocation.current) {
-        history.push(currentLocation.current);
-      }
-    }
-
-    if (currentLocation.current !== location.pathname) {
-      // URL has changed: update regionCode
-      currentRegionCode.current = getRegionCodeFromUrl(location);
-      setRegionCode(currentRegionCode.current);
-      setCanonicalLocation(currentRegionCode.current);
-    }
-  }, [location, history, match]);
+  }, [regionCode, navigate, urlParams]);
 
   // Stop audio on chart, region or location change
   useEffect(() => {
     stopAudio();
   }, [regionCode, location]);
+
+  const placeName = getPlaceNameByFeatureCode(regionCode);
 
   return (
     <>
@@ -115,9 +91,7 @@ const Regional = ({ allData, darkmode }) => {
               setRegionCode={setRegionCode}
             />
             <hr aria-hidden={true} className="full-width-hr" />
-            <h2 className="visually-hidden">{`Headline statistics for ${getPlaceNameByFeatureCode(
-              regionCode
-            )}`}</h2>
+            <h2 className="visually-hidden">{`Headline statistics for ${placeName}`}</h2>
             <RegionSingleValueBar regionCode={regionCode} allData={allData} />
           </Col>
         </Row>
@@ -129,9 +103,7 @@ const Regional = ({ allData, darkmode }) => {
         <Row className="data-charts-container">
           <Col xs={12}>
             <h2 className="visually-hidden">
-              {`Time series statistics for ${getPlaceNameByFeatureCode(
-                regionCode
-              )}`}
+              {`Time series statistics for ${placeName}`}
             </h2>
             <DataCharts
               regionCode={regionCode}

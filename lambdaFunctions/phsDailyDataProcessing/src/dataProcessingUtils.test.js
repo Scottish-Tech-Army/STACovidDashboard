@@ -15,11 +15,13 @@ jest.mock("./featureCodes", () => {
   };
 });
 
+// eslint-disable-next-line jest/require-top-level-describe
 beforeAll(() => {
   console.warn = jest.fn();
   console.error = jest.fn();
 });
 
+// eslint-disable-next-line jest/require-top-level-describe
 afterAll(() => {
   jest.restoreAllMocks();
 });
@@ -247,7 +249,7 @@ describe("createJsonData handle bad data", () => {
     ).toStrictEqual(shortAllData);
   });
 
-  it("HB daily contains additional region", () => {
+  it("daily HB contains additional region", () => {
     expect(
       createJsonData(
         shortDailyCouncilAreasCsvData,

@@ -1,22 +1,6 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
 import DateRangeSlider, { getMarks } from "./DateRangeSlider";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
+import { render } from "@testing-library/react";
 
 const maxDateRange = {
   startDate: Date.parse("2020-02-28"),
@@ -78,22 +62,20 @@ describe("getMarks", () => {
 
   describe("check maximum date ranges", () => {
     const minimumDateValue = () =>
-      container
+      document
         .querySelector(".MuiSlider-root .MuiSlider-thumb")
         .getAttribute("aria-valuemin");
 
     const maximumDateValue = () =>
-      container
+      document
         .querySelector(".MuiSlider-root .MuiSlider-thumb")
         .getAttribute("aria-valuemax");
 
     it("check values", async () => {
-      await act(async () => {
-        render(
-          <DateRangeSlider maxDateRange={maxDateRange} dateRange={dateRange} />,
-          container
-        );
-      });
+      render(
+        <DateRangeSlider maxDateRange={maxDateRange} dateRange={dateRange} />
+      );
+
       expect(minimumDateValue()).toStrictEqual(
         String(Date.parse("2020-02-28"))
       );

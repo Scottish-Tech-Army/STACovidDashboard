@@ -9,16 +9,15 @@
     "bootstrap": "^5.1.1",
     "chart.js": "^3.0.2",
     "chartjs-adapter-date-fns": "^2.0.0",
-    "chartjs-plugin-annotation": "^1.0.0-rc",
+    "chartjs-plugin-annotation": "^1.4.0",
     "date-fns": "^2.20.1",
-    "leaflet": "^1.7.1",
-    "react": "^17.0.2",
+    "leaflet": "^1.8.0",
+    "react": "^18.1.0",
     "react-bootstrap": "^2.1.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.1.0",
     "react-gtm-module": "^2.0.11",
-    "react-leaflet": "^2.8.0",
-    "react-leaflet-control": "^2.1.2",
-    "react-router-dom": "^5.2.0",
+    "react-leaflet": "^4.0.0",
+    "react-router-dom": "^6.3.0",
     "standardized-audio-context": "^25.1.0",
     "use-dark-mode": "^2.3.1"
   },
@@ -37,6 +36,13 @@
     "extends": [
       "plugin:jest/all"
     ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
     "plugins": [
       "jest"
     ],
@@ -60,19 +66,41 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "eslint-plugin-jest": "^24.4.0",
+    "@testing-library/react": "^13.2.0",
+    "@testing-library/user-event": "^14.1.1",
+    "babel-jest": "^28.1.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "identity-obj-proxy": "^3.0.0",
     "jest-canvas-mock": "^2.2.0",
     "jest-fetch-mock": "^3.0.3",
     "mockdate": "^3.0.4",
     "npm": "^7.23.0",
     "react-scripts": "^5.0.0",
-    "react-test-renderer": "^17.0.2",
+    "react-test-renderer": "^18.1.0",
     "source-map-explorer": "^2.5.2"
   },
   "jest": {
-    "resetMocks": false
+    "moduleNameMapper": {
+      "^.+\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "resetMocks": false,
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": [
+        "babel-jest",
+        {
+          "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+          ]
+        }
+      ],
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(react-leaflet|@react-leaflet/core))"
+    ]
   }
 }

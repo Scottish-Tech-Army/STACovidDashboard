@@ -19,15 +19,16 @@ import { stopAudio } from "./components/Utils/Sonification";
 import DashboardNavbar from "./components/DashboardNavbar/DashboardNavbar";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Redirect,
   useLocation,
+  Routes,
+  Navigate,
 } from "react-router-dom";
 import useDarkMode from "use-dark-mode";
 
 const tagManagerArgs = { gtmId: "GTM-5LKHW33" };
 
+// eslint-disable-next-line jest/require-hook
 TagManager.initialize(tagManagerArgs);
 
 const ScrollToTop = () => {
@@ -79,24 +80,24 @@ const App = () => {
           <h1 className="visually-hidden">Scottish COVID-19 Statistics</h1>
           <DashboardNavbar darkmode={darkmode} />
         </header>
-        <Switch>
-          <Route exact path={URL_OVERVIEW}>
-            <Overview allData={allData} darkmode={darkmode.value} />
-          </Route>
-          <Route path={URL_REGIONAL}>
-            <Regional allData={allData} darkmode={darkmode.value} />
-          </Route>
-          <Route path={URL_ACCESSIBILITY}>
-            <Accessibility />
-          </Route>
-          <Route path={URL_DATA_SOURCES}>
-            <DataSources />
-          </Route>
-          <Route path={URL_ABOUT_US}>
-            <AboutUs />
-          </Route>
-          <Route path="*">{() => <Redirect to="/" />}</Route>
-        </Switch>
+        <Routes>
+          <Route
+            path={URL_OVERVIEW}
+            element={<Overview allData={allData} darkmode={darkmode.value} />}
+          />
+          <Route
+            path={`${URL_REGIONAL}`}
+            element={<Regional allData={allData} darkmode={darkmode.value} />}
+          />
+          <Route
+            path={`${URL_REGIONAL}/:regionCode`}
+            element={<Regional allData={allData} darkmode={darkmode.value} />}
+          />
+          <Route path={URL_ACCESSIBILITY} element={<Accessibility />} />
+          <Route path={URL_DATA_SOURCES} element={<DataSources />} />
+          <Route path={URL_ABOUT_US} element={<AboutUs />} />
+          <Route path="*" element={<Navigate to="/" />}/>
+        </Routes>
         <Footer />
       </Router>
     </div>

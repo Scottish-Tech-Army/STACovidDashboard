@@ -14,19 +14,15 @@ afterAll(() => {
 
 test("getPlaceNameByFeatureCode", async () => {
   // Health board
-  expect(getPlaceNameByFeatureCode("S08000031")).toStrictEqual(
+  expect(getPlaceNameByFeatureCode("S08000031")).toBe(
     "Greater Glasgow & Clyde"
   );
-  expect(getPlaceNameByFeatureCode("S08000017")).toStrictEqual(
-    "Dumfries & Galloway"
-  );
+  expect(getPlaceNameByFeatureCode("S08000017")).toBe("Dumfries & Galloway");
   // Council area
-  expect(getPlaceNameByFeatureCode("S12000040")).toStrictEqual("West Lothian");
-  expect(getPlaceNameByFeatureCode("S12000013")).toStrictEqual(
-    "Na h-Eileanan Siar"
-  );
+  expect(getPlaceNameByFeatureCode("S12000040")).toBe("West Lothian");
+  expect(getPlaceNameByFeatureCode("S12000013")).toBe("Na h-Eileanan Siar");
   // Country
-  expect(getPlaceNameByFeatureCode("S92000003")).toStrictEqual("Scotland");
+  expect(getPlaceNameByFeatureCode("S92000003")).toBe("Scotland");
   expect(() => getPlaceNameByFeatureCode("S12345678")).toThrow(
     "Unknown feature code: S12345678"
   );
@@ -44,23 +40,19 @@ test("getPlaceNameByFeatureCode", async () => {
 
 test("getPhoneticPlaceNameByFeatureCode", async () => {
   // Health board
-  expect(getPhoneticPlaceNameByFeatureCode("S08000031")).toStrictEqual(
+  expect(getPhoneticPlaceNameByFeatureCode("S08000031")).toBe(
     "Greater Glasgow & Clyde"
   );
-  expect(getPhoneticPlaceNameByFeatureCode("S08000017")).toStrictEqual(
+  expect(getPhoneticPlaceNameByFeatureCode("S08000017")).toBe(
     "Dumfries & Galloway"
   );
   // Council area
-  expect(getPhoneticPlaceNameByFeatureCode("S12000040")).toStrictEqual(
-    "West Lothian"
-  );
-  expect(getPhoneticPlaceNameByFeatureCode("S12000013")).toStrictEqual(
+  expect(getPhoneticPlaceNameByFeatureCode("S12000040")).toBe("West Lothian");
+  expect(getPhoneticPlaceNameByFeatureCode("S12000013")).toBe(
     "Nahelen an sheer"
   );
   // Country
-  expect(getPhoneticPlaceNameByFeatureCode("S92000003")).toStrictEqual(
-    "Scotland"
-  );
+  expect(getPhoneticPlaceNameByFeatureCode("S92000003")).toBe("Scotland");
   expect(() => getPhoneticPlaceNameByFeatureCode("S12345678")).toThrow(
     "Unknown feature code: S12345678"
   );

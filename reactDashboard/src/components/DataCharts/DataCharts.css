@@ -87,13 +87,6 @@
   background-color: #133a53;
 }
 
-.sonification-play-button.col {
-  border: none;
-  box-shadow: none;
-  display: hidden;
-  background: none;
-}
-
 #date-range-slider-position {
   position: absolute;
   bottom: 0;

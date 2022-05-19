@@ -2,43 +2,30 @@
 
 import React from "react";
 import SingleValue from "./SingleValue";
-import { render, unmountComponentAtNode } from "react-dom";
-
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
+import { render } from "@testing-library/react";
 
 test("singleValue renders correctly", () => {
-  render(<SingleValue value="Test count" subtitle={null} />, container);
+  const { rerender } = render(
+    <SingleValue value="Test count" subtitle="test date reported" />
+  );
+  checkSingleValue("Test count", "test date reported");
+
+  rerender(<SingleValue value="Test count" />);
   checkSingleValue("Test count", "");
 });
 
 test("singleValue renders error message when missing props", async () => {
-  render(<SingleValue value="Test count" />, container);
-  checkSingleValue("Test count", "");
-
-  render(<SingleValue subtitle="test date reported" />, container);
+  const { rerender } = render(<SingleValue subtitle="test date reported" />);
   checkSingleValue("Missing value", "test date reported");
 
-  render(<SingleValue />, container);
+  rerender(<SingleValue />);
   checkSingleValue("Missing value", "");
 });
 
-const subtitle = () => container.querySelector(".subtitle");
-const value = () => container.querySelector(".single-value-number");
+const subtitle = () => document.querySelector(".subtitle");
+const value = () => document.querySelector(".single-value-number");
 
-function checkSingleValue(expectedValue, expectedSubtitle=null) {
-  expect(subtitle().textContent).toBe(expectedSubtitle === null ? "" : expectedSubtitle);
+function checkSingleValue(expectedValue, expectedSubtitle) {
+  expect(subtitle().textContent).toBe(expectedSubtitle);
   expect(value().textContent).toBe(expectedValue);
 }

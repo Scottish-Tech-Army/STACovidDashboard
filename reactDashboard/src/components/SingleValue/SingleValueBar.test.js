@@ -2,9 +2,8 @@
 
 import React from "react";
 import SingleValueBar from "./SingleValueBar";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
 import MockDate from "mockdate";
+import { render } from "@testing-library/react";
 
 const TODAY = "2020-10-17";
 const TOMORROW = "2020-10-18";
@@ -12,27 +11,16 @@ const TOMORROW = "2020-10-18";
 const DATE_TODAY = Date.parse(TODAY);
 const DATE_TOMORROW = Date.parse(TOMORROW);
 
-var container = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
   MockDate.set(DATE_TODAY);
 });
 
 afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
   MockDate.reset();
 });
 
 test("singleValueBar renders default data when dataset is null", async () => {
-  await act(async () => {
-    render(<SingleValueBar />, container);
-  });
+  render(<SingleValueBar />);
 
   checkSingleValue("dailyCases", "Not available", "Not available");
   checkSingleValue(
@@ -50,9 +38,7 @@ test("singleValueBar renders default data when dataset is null", async () => {
 });
 
 test("singleValueBar renders dynamic fetched data for today", async () => {
-  await act(async () => {
-    render(<SingleValueBar allData={testAllData} />, container);
-  });
+  render(<SingleValueBar allData={testAllData} />);
 
   checkSingleValue("dailyCases", "1,167", "reported today");
   checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
@@ -64,9 +50,7 @@ test("singleValueBar renders dynamic fetched data for today", async () => {
 test("singleValueBar renders dynamic fetched data for yesterday", async () => {
   MockDate.set(DATE_TOMORROW);
 
-  await act(async () => {
-    render(<SingleValueBar allData={testAllData} />, container);
-  });
+  render(<SingleValueBar allData={testAllData} />);
 
   checkSingleValue("dailyCases", "1,167", "reported yesterday");
   checkSingleValue("totalCases", "46,399", "reported since 28 February, 2020");
@@ -80,7 +64,7 @@ function checkSingleValue(
   expectedValue,
   expectedSubtitle = null
 ) {
-  const singleValueElement = container.querySelector("#" + singleValueId);
+  const singleValueElement = document.querySelector("#" + singleValueId);
   const subtitle = singleValueElement.querySelector(".subtitle");
   const value = singleValueElement.querySelector(".single-value-number");
   expect(subtitle.textContent).toBe(

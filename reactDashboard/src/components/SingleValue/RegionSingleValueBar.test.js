@@ -2,56 +2,36 @@
 
 import React from "react";
 import RegionSingleValueBar from "./RegionSingleValueBar";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
 import { FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
 import MockDate from "mockdate";
+import { render } from "@testing-library/react";
 
 const DATE_TODAY = "2020-10-17";
 
-var container = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  fetch.resetMocks();
   MockDate.set(DATE_TODAY);
 });
 
 afterEach(() => {
-  // cleanup on exiting
   MockDate.reset();
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-  jest.resetAllMocks();
 });
 
 describe("single value bar rendering", () => {
   it("scotland available", () => {
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={testAllData}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
-      );
-    });
+    render(
+      <RegionSingleValueBar
+        allData={testAllData}
+        regionCode={FEATURE_CODE_SCOTLAND}
+      />
+    );
 
     expectNormalScotlandValues();
   });
 
   it("region available", () => {
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={testAllData}
-          regionCode="S08000017"
-        />,
-        container
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={testAllData} regionCode="S08000017" />
+    );
 
     checkSingleValue("dailyCases", "4", "reported today");
     checkSingleValue("weeklyCases", "501", "last 7 days");
@@ -62,50 +42,30 @@ describe("single value bar rendering", () => {
   });
 
   it("scotland unavailable", () => {
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={{ regions: {} }}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
-      );
-    });
+    render(
+      <RegionSingleValueBar
+        allData={{ regions: {} }}
+        regionCode={FEATURE_CODE_SCOTLAND}
+      />
+    );
 
     expectValuesUnavailable();
 
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={{}}
-          regionCode={FEATURE_CODE_SCOTLAND}
-        />,
-        container
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={{}} regionCode={FEATURE_CODE_SCOTLAND} />
+    );
 
     expectValuesUnavailable();
 
-    act(() => {
-      render(
-        <RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />,
-        container
-      );
-    });
+    render(<RegionSingleValueBar regionCode={FEATURE_CODE_SCOTLAND} />);
 
     expectValuesUnavailable();
   });
 
   it("region unavailable", () => {
-    act(() => {
-      render(
-        <RegionSingleValueBar
-          allData={{ regions: {} }}
-          regionCode="S08000017"
-        />,
-        container
-      );
-    });
+    render(
+      <RegionSingleValueBar allData={{ regions: {} }} regionCode="S08000017" />
+    );
 
     expectValuesUnavailable();
   });
@@ -113,20 +73,13 @@ describe("single value bar rendering", () => {
 
 describe("regionCode", () => {
   it("missing should default to Scotland", () => {
-    act(() => {
-      render(<RegionSingleValueBar allData={testAllData} />, container);
-    });
+    render(<RegionSingleValueBar allData={testAllData} />);
 
     expectNormalScotlandValues();
   });
 
   it("null should default to Scotland", () => {
-    act(() => {
-      render(
-        <RegionSingleValueBar allData={testAllData} regionCode={null} />,
-        container
-      );
-    });
+    render(<RegionSingleValueBar allData={testAllData} regionCode={null} />);
 
     expectNormalScotlandValues();
   });
@@ -136,8 +89,7 @@ describe("regionCode", () => {
 
     expect(() => {
       render(
-        <RegionSingleValueBar allData={testAllData} regionCode="unknown" />,
-        container
+        <RegionSingleValueBar allData={testAllData} regionCode="unknown" />
       );
     }).toThrow("Unrecognised regionCode: unknown");
   });
@@ -174,7 +126,7 @@ function checkSingleValue(
   expectedValue,
   expectedSubtitle = null
 ) {
-  const singleValueElement = container.querySelector("#" + singleValueId);
+  const singleValueElement = document.querySelector("#" + singleValueId);
   const subtitle = singleValueElement.querySelector(".subtitle");
   const value = singleValueElement.querySelector(".single-value-number");
   expect(subtitle.textContent).toBe(
@@ -183,7 +135,7 @@ function checkSingleValue(
   expect(value.textContent).toBe(expectedValue);
 }
 
-const testDate =  Date.parse(DATE_TODAY);
+const testDate = Date.parse(DATE_TODAY);
 
 const testAllData = {
   regions: {

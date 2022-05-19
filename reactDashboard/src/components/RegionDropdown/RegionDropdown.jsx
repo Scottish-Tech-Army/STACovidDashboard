@@ -13,14 +13,13 @@ import "../../common.css";
 const RegionDropdown = ({
   regionCode = FEATURE_CODE_SCOTLAND,
   setRegionCode,
-  showCouncilAreas = true,
 }) => {
   function isValidRegionCode() {
     return (
       regionCode !== null &&
       (FEATURE_CODE_SCOTLAND === regionCode ||
         FEATURE_CODE_HEALTH_BOARDS.includes(regionCode) ||
-        (showCouncilAreas && FEATURE_CODE_COUNCIL_AREAS.includes(regionCode)))
+        FEATURE_CODE_COUNCIL_AREAS.includes(regionCode))
     );
   }
 
@@ -30,6 +29,12 @@ const RegionDropdown = ({
   if (setRegionCode === null || setRegionCode === undefined) {
     throw new Error("Unrecognised setRegionCode: " + setRegionCode);
   }
+
+  const createDropdownItem = (featureCode) => (
+    <Dropdown.Item key={featureCode} eventKey={featureCode}>
+      {getPlaceNameByFeatureCode(featureCode)}
+    </Dropdown.Item>
+  );
 
   return (
     <div className="region-selector-row">
@@ -43,32 +48,13 @@ const RegionDropdown = ({
             : getPlaceNameByFeatureCode(regionCode)}
         </Dropdown.Toggle>
         <Dropdown.Menu className="region-menu">
-          <Dropdown.Item
-            key={FEATURE_CODE_SCOTLAND}
-            eventKey={FEATURE_CODE_SCOTLAND}
-          >
-            {getPlaceNameByFeatureCode(FEATURE_CODE_SCOTLAND)}
-          </Dropdown.Item>
+          {createDropdownItem(FEATURE_CODE_SCOTLAND)}
           <Dropdown.Divider />
           <Dropdown.Header>Health Boards</Dropdown.Header>
-          {FEATURE_CODE_HEALTH_BOARDS.map((featureCode) => (
-            <Dropdown.Item key={featureCode} eventKey={featureCode}>
-              {getPlaceNameByFeatureCode(featureCode)}
-            </Dropdown.Item>
-          ))}
-          {showCouncilAreas ? (
-            <>
-              <Dropdown.Divider />
-              <Dropdown.Header>Council Areas</Dropdown.Header>
-              {FEATURE_CODE_COUNCIL_AREAS.map((featureCode) => (
-                <Dropdown.Item key={featureCode} eventKey={featureCode}>
-                  {getPlaceNameByFeatureCode(featureCode)}
-                </Dropdown.Item>
-              ))}
-            </>
-          ) : (
-            <></>
-          )}
+          {FEATURE_CODE_HEALTH_BOARDS.map(createDropdownItem)}
+          <Dropdown.Divider />
+          <Dropdown.Header>Council Areas</Dropdown.Header>
+          {FEATURE_CODE_COUNCIL_AREAS.map(createDropdownItem)}
         </Dropdown.Menu>
       </Dropdown>
     </div>

@@ -2,44 +2,18 @@
 
 import React from "react";
 import QuickSelectDateRange from "./QuickSelectDateRange";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import { ALL_DATES } from "./DataChartsConsts";
+import { renderWithUser } from "../../ReactTestUtils";
+import { render } from "@testing-library/react";
 
-var storedDateRange = ALL_DATES;
-const setDateRange = (value) => (storedDateRange = value);
+const setDateRange = jest.fn();
 
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-function click(button) {
-  act(() => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-  });
-}
-
-function checkStoredValue(expectedDateRange) {
-  expect(storedDateRange).toStrictEqual(expectedDateRange);
-}
-
-const allDatesButton = () => container.querySelector("#select-all");
+const allDatesButton = () => document.querySelector("#select-all");
 const lastThreeMonthsButton = () =>
-  container.querySelector("#select-last-three-months");
-const lastMonthButton = () => container.querySelector("#select-last-month");
+  document.querySelector("#select-last-three-months");
+const lastMonthButton = () => document.querySelector("#select-last-month");
 const lastTwoWeeksButton = () =>
-  container.querySelector("#select-last-two-weeks");
-const lastWeekButton = () => container.querySelector("#select-last-week");
+  document.querySelector("#select-last-two-weeks");
+const lastWeekButton = () => document.querySelector("#select-last-week");
 
 describe("selectDateRange", () => {
   const TEST_DATE_RANGE = {
@@ -52,67 +26,61 @@ describe("selectDateRange", () => {
     endDate: 1,
   };
 
-  it("happy path dates", () => {
-    act(() => {
-      render(
-        <QuickSelectDateRange
-          setDateRange={setDateRange}
-          maxDateRange={TEST_DATE_RANGE}
-        />,
-        container
-      );
-    });
+  it("happy path dates", async () => {
+    const { user } = renderWithUser(
+      <QuickSelectDateRange
+        setDateRange={setDateRange}
+        maxDateRange={TEST_DATE_RANGE}
+      />
+    );
 
-    click(allDatesButton());
-    checkStoredValue(TEST_DATE_RANGE);
+    await user.click(allDatesButton());
+    expect(setDateRange).toHaveBeenLastCalledWith(TEST_DATE_RANGE);
 
-    click(lastThreeMonthsButton());
-    checkStoredValue({
+    await user.click(lastThreeMonthsButton());
+    expect(setDateRange).toHaveBeenLastCalledWith({
       startDate: Date.parse("2020-06-30"),
       endDate: Date.parse("2020-09-30"),
     });
 
-    click(lastMonthButton());
-    checkStoredValue({
+    await user.click(lastMonthButton());
+    expect(setDateRange).toHaveBeenLastCalledWith({
       startDate: Date.parse("2020-08-30"),
       endDate: Date.parse("2020-09-30"),
     });
 
-    click(lastTwoWeeksButton());
-    checkStoredValue({
+    await user.click(lastTwoWeeksButton());
+    expect(setDateRange).toHaveBeenLastCalledWith({
       startDate: Date.parse("2020-09-16"),
       endDate: Date.parse("2020-09-30"),
     });
 
-    click(lastWeekButton());
-    checkStoredValue({
+    await user.click(lastWeekButton());
+    expect(setDateRange).toHaveBeenLastCalledWith({
       startDate: Date.parse("2020-09-23"),
       endDate: Date.parse("2020-09-30"),
     });
   });
 
-  it("preloaded dates", () => {
-    act(() => {
-      render(
-        <QuickSelectDateRange
-          setDateRange={setDateRange}
-          maxDateRange={EMPTY_DATE_RANGE}
-        />,
-        container
-      );
-    });
+  it("preloaded dates", async () => {
+    const { user } = renderWithUser(
+      <QuickSelectDateRange
+        setDateRange={setDateRange}
+        maxDateRange={EMPTY_DATE_RANGE}
+      />
+    );
 
-    click(allDatesButton());
-    checkStoredValue(EMPTY_DATE_RANGE);
+    await user.click(allDatesButton());
+    expect(setDateRange).toHaveBeenLastCalledWith(EMPTY_DATE_RANGE);
 
-    click(lastWeekButton());
-    checkStoredValue(EMPTY_DATE_RANGE);
+    await user.click(lastWeekButton());
+    expect(setDateRange).toHaveBeenLastCalledWith(EMPTY_DATE_RANGE);
   });
 
   it("missing dates", () => {
     global.suppressConsoleErrorLogs();
-    expect(() => {
-      render(<QuickSelectDateRange setDateRange={setDateRange} />, container);
-    }).toThrow("missing maxDateRange");
+    expect(() =>
+      render(<QuickSelectDateRange setDateRange={setDateRange} />)
+    ).toThrow("missing maxDateRange");
   });
 });

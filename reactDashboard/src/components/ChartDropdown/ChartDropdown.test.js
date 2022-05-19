@@ -1,110 +1,65 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkDropdownMenuItems"] }] */
 import React from "react";
 import ChartDropdown from "./ChartDropdown";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
 import {
   DAILY_CASES,
   TOTAL_CASES,
   DAILY_DEATHS,
   TOTAL_DEATHS,
 } from "../DataCharts/DataChartsConsts";
+import { renderWithUser } from "../../ReactTestUtils";
+import { render } from "@testing-library/react";
 
-var storedChartType = DAILY_CASES;
-const setChartType = (value) => (storedChartType = value);
+const setChartType = jest.fn();
 
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-const selectedItem = () => container.querySelector(".selected-chart");
-const dropdownMenuItems = () => container.querySelectorAll(".chart-menu a");
+const selectedItem = () => document.querySelector(".selected-chart");
+const dropdownMenuItems = () => document.querySelectorAll(".chart-menu a");
 const dropdownMenuItem = (text) =>
   Array.from(dropdownMenuItems()).find((el) => el.textContent === text);
-
-async function click(button) {
-  await act(async () => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
-      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />,
-      container
-    );
-  });
-}
 
 describe("chartType input property", () => {
   it("null/unknown throws error", () => {
     global.suppressConsoleErrorLogs();
 
     expect(() => {
-      render(
-        <ChartDropdown chartType={null} setChartType={setChartType} />,
-        container
-      );
+      render(<ChartDropdown chartType={null} setChartType={setChartType} />);
     }).toThrow("Unrecognised chartType: null");
 
     expect(() => {
-      render(
-        <ChartDropdown chartType="unknown" setChartType={setChartType} />,
-        container
-      );
+      render(<ChartDropdown chartType="unknown" setChartType={setChartType} />);
     }).toThrow("Unrecognised chartType: unknown");
   });
 
   it("undefined", () => {
-    act(() => {
-      render(<ChartDropdown setChartType={setChartType} />, container);
-    });
+    render(<ChartDropdown setChartType={setChartType} />);
     expect(selectedItem().textContent).toBe("Daily Cases");
   });
 
   it("daily cases", () => {
-    act(() => {
-      render(
-        <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />,
-        container
-      );
-    });
+    render(
+      <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />
+    );
     expect(selectedItem().textContent).toBe("Daily Cases");
   });
 
   it("totalCases", () => {
-    act(() => {
-      render(
-        <ChartDropdown chartType={TOTAL_CASES} setChartType={setChartType} />,
-        container
-      );
-    });
+    render(
+      <ChartDropdown chartType={TOTAL_CASES} setChartType={setChartType} />
+    );
     expect(selectedItem().textContent).toBe("Total Cases");
   });
 
   it("dailyDeaths", () => {
-    act(() => {
-      render(
-        <ChartDropdown chartType={DAILY_DEATHS} setChartType={setChartType} />,
-        container
-      );
-    });
+    render(
+      <ChartDropdown chartType={DAILY_DEATHS} setChartType={setChartType} />
+    );
     expect(selectedItem().textContent).toBe("Daily Deaths");
   });
 
   it("totalDeaths", () => {
-    act(() => {
-      render(
-        <ChartDropdown chartType={TOTAL_DEATHS} setChartType={setChartType} />,
-        container
-      );
-    });
+    render(
+      <ChartDropdown chartType={TOTAL_DEATHS} setChartType={setChartType} />
+    );
     expect(selectedItem().textContent).toBe("Total Deaths");
   });
 });
@@ -118,19 +73,13 @@ describe("available choices", () => {
     });
   }
 
-  it("normal", () => {
-    act(() => {
-      render(
-        <ChartDropdown
-          chartType={storedChartType}
-          setChartType={setChartType}
-        />,
-        container
-      );
-    });
+  it("normal", async () => {
+    const { user } = renderWithUser(
+      <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />
+    );
 
     // Make the menu appear
-    click(selectedItem());
+    await user.click(selectedItem());
 
     checkDropdownMenuItems([
       "Daily Cases",
@@ -142,29 +91,22 @@ describe("available choices", () => {
 });
 
 test("choose chartTypes", async () => {
-  await act(async () => {
-    render(
-      <ChartDropdown chartType={storedChartType} setChartType={setChartType} />,
-      container
-    );
-  });
+  const { user } = renderWithUser(
+    <ChartDropdown chartType={DAILY_CASES} setChartType={setChartType} />
+  );
 
   // Make the menu appear
-  await click(selectedItem());
+  await user.click(selectedItem());
 
-  await click(dropdownMenuItem("Total Cases"));
-  expect(storedChartType).toBe(TOTAL_CASES);
-  expect(selectedItem().textContent).toBe("Total Cases");
+  await user.click(dropdownMenuItem("Total Cases"));
+  expect(setChartType).toHaveBeenLastCalledWith(TOTAL_CASES);
 
-  await click(dropdownMenuItem("Daily Deaths"));
-  expect(storedChartType).toBe(DAILY_DEATHS);
-  expect(selectedItem().textContent).toBe("Daily Deaths");
+  await user.click(dropdownMenuItem("Daily Deaths"));
+  expect(setChartType).toHaveBeenLastCalledWith(DAILY_DEATHS);
 
-  await click(dropdownMenuItem("Total Deaths"));
-  expect(storedChartType).toBe(TOTAL_DEATHS);
-  expect(selectedItem().textContent).toBe("Total Deaths");
+  await user.click(dropdownMenuItem("Total Deaths"));
+  expect(setChartType).toHaveBeenLastCalledWith(TOTAL_DEATHS);
 
-  await click(dropdownMenuItem("Daily Cases"));
-  expect(storedChartType).toBe(DAILY_CASES);
-  expect(selectedItem().textContent).toBe("Daily Cases");
+  await user.click(dropdownMenuItem("Daily Cases"));
+  expect(setChartType).toHaveBeenLastCalledWith(DAILY_CASES);
 });

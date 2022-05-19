@@ -1,128 +1,60 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkStoredValues"] }] */
-
 import React from "react";
 import RegionDropdown from "./RegionDropdown";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import {
-  FEATURE_CODE_MAP,
-  FEATURE_CODE_SCOTLAND,
-  FEATURE_CODE_HEALTH_BOARDS_MAP,
-} from "../Utils/CsvUtils";
+import { FEATURE_CODE_MAP, FEATURE_CODE_SCOTLAND } from "../Utils/CsvUtils";
+import { render } from "@testing-library/react";
+import { renderWithUser } from "../../ReactTestUtils";
 
-var showCouncilAreas = true;
-var storedRegionCode = FEATURE_CODE_SCOTLAND;
-const setRegionCode = (value) => (storedRegionCode = value);
+const setRegionCode = jest.fn();
 
-var container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  showCouncilAreas = true;
-  storedRegionCode = FEATURE_CODE_SCOTLAND;
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-const selectedItem = () => container.querySelector(".selected-region");
-const dropdownMenuItems = () => container.querySelectorAll(".region-menu a");
+const selectedItem = () => document.querySelector(".selected-region");
+const dropdownMenuItems = () => document.querySelectorAll(".region-menu a");
 const dropdownMenuItem = (text) =>
   Array.from(dropdownMenuItems()).find((el) => el.textContent === text);
-
-const FEATURE_CODE_CA_ABERDEEN_CITY = "S12000033";
-
-function click(button) {
-  act(() => {
-    button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    render(
-      <RegionDropdown
-        regionCode={storedRegionCode}
-        setRegionCode={setRegionCode}
-        showCouncilAreas={showCouncilAreas}
-      />,
-      container
-    );
-  });
-}
 
 test("null/undefined input throws error", async () => {
   global.suppressConsoleErrorLogs();
 
   expect(() => {
-    render(
-      <RegionDropdown regionCode={null} setRegionCode={setRegionCode} />,
-      container
-    );
+    render(<RegionDropdown regionCode={null} setRegionCode={setRegionCode} />);
   }).toThrow("Unrecognised regionCode: null");
 
   expect(() => {
-    render(<RegionDropdown regionCode={storedRegionCode} />, container);
+    render(<RegionDropdown regionCode={FEATURE_CODE_SCOTLAND} />);
   }).toThrow("Unrecognised setRegionCode: undefined");
 
   expect(() => {
     render(
-      <RegionDropdown regionCode="unknown" setRegionCode={setRegionCode} />,
-      container
+      <RegionDropdown regionCode="unknown" setRegionCode={setRegionCode} />
     );
   }).toThrow("Unrecognised regionCode: unknown");
-
-  expect(() => {
-    render(
-      <RegionDropdown
-        regionCode={FEATURE_CODE_CA_ABERDEEN_CITY}
-        setRegionCode={setRegionCode}
-        showCouncilAreas={false}
-      />,
-      container
-    );
-  }).toThrow("Unrecognised regionCode: " + FEATURE_CODE_CA_ABERDEEN_CITY);
 });
 
 test("default render", () => {
-  act(() => {
-    render(<RegionDropdown setRegionCode={setRegionCode} />, container);
-  });
+  render(<RegionDropdown setRegionCode={setRegionCode} />);
 
   expect(selectedItem().textContent).toBe("Scotland");
 });
 
 test("supplied regionCode render", () => {
-  act(() => {
-    render(
-      <RegionDropdown
-        regionCode="S12000036"
-        setRegionCode={setRegionCode}
-        showCouncilAreas={true}
-      />,
-      container
-    );
-  });
+  render(
+    <RegionDropdown regionCode="S12000036" setRegionCode={setRegionCode} />
+  );
 
   expect(selectedItem().textContent).toBe("City of Edinburgh");
 });
 
-test("select dropdown items", () => {
-  act(() => {
-    render(
-      <RegionDropdown
-        regionCode={storedRegionCode}
-        setRegionCode={setRegionCode}
-      />,
-      container
-    );
-  });
+test("select dropdown items", async () => {
+  const { user } = renderWithUser(
+    <RegionDropdown
+      regionCode={FEATURE_CODE_SCOTLAND}
+      setRegionCode={setRegionCode}
+    />
+  );
 
-  expect(storedRegionCode).toBe(FEATURE_CODE_SCOTLAND);
   expect(selectedItem().textContent).toBe("Scotland");
 
   // Make the menu appear
-  click(selectedItem());
+  await user.click(selectedItem());
 
   expect(dropdownMenuItems()).toHaveLength(
     Object.keys(FEATURE_CODE_MAP).length
@@ -133,56 +65,14 @@ test("select dropdown items", () => {
   expect(dropdownMenuItem("unknown")).toBeUndefined();
 
   // Pick a council area
-  click(dropdownMenuItem("City of Edinburgh"));
-  expect(storedRegionCode).toBe("S12000036");
-  expect(selectedItem().textContent).toBe("City of Edinburgh");
+  await user.click(dropdownMenuItem("City of Edinburgh"));
+  expect(setRegionCode).toHaveBeenLastCalledWith("S12000036");
 
   // Pick a health board
-  click(dropdownMenuItem("Greater Glasgow & Clyde"));
-  expect(storedRegionCode).toBe("S08000031");
-  expect(selectedItem().textContent).toBe("Greater Glasgow & Clyde");
+  await user.click(dropdownMenuItem("Greater Glasgow & Clyde"));
+  expect(setRegionCode).toHaveBeenLastCalledWith("S08000031");
 
   // Pick Scotland
-  click(dropdownMenuItem("Scotland"));
-  expect(storedRegionCode).toBe(FEATURE_CODE_SCOTLAND);
-  expect(selectedItem().textContent).toBe("Scotland");
-});
-
-test("select dropdown items, no council areas", () => {
-  showCouncilAreas = false;
-
-  act(() => {
-    render(
-      <RegionDropdown
-        regionCode={storedRegionCode}
-        setRegionCode={setRegionCode}
-        showCouncilAreas={showCouncilAreas}
-      />,
-      container
-    );
-  });
-
-  expect(storedRegionCode).toBe(FEATURE_CODE_SCOTLAND);
-  expect(selectedItem().textContent).toBe("Scotland");
-
-  // Make the menu appear
-  click(selectedItem());
-
-  expect(dropdownMenuItems()).toHaveLength(
-    Object.keys(FEATURE_CODE_HEALTH_BOARDS_MAP).length + 1
-  );
-  expect(dropdownMenuItem("Scotland")).not.toBeNull();
-  expect(dropdownMenuItem("Greater Glasgow & Clyde")).not.toBeNull();
-  expect(dropdownMenuItem("City of Edinburgh")).toBeUndefined();
-  expect(dropdownMenuItem("unknown")).toBeUndefined();
-
-  // Pick a health board
-  click(dropdownMenuItem("Greater Glasgow & Clyde"));
-  expect(storedRegionCode).toBe("S08000031");
-  expect(selectedItem().textContent).toBe("Greater Glasgow & Clyde");
-
-  // Pick Scotland
-  click(dropdownMenuItem("Scotland"));
-  expect(storedRegionCode).toBe(FEATURE_CODE_SCOTLAND);
-  expect(selectedItem().textContent).toBe("Scotland");
+  await user.click(dropdownMenuItem("Scotland"));
+  expect(setRegionCode).toHaveBeenLastCalledWith(FEATURE_CODE_SCOTLAND);
 });
